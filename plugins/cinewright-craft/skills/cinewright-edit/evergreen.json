@@ -1,0 +1,55 @@
+{
+  "evergreen": "1.0",
+  "name": "cinewright-edit",
+  "kind": "skill",
+  "main": "SKILL.md",
+  "files": {
+    "research": "RESEARCH.md",
+    "changelog": "CHANGELOG.md",
+    "learnings": "LEARNINGS.md",
+    "tests": "TESTS.md"
+  },
+  "protocol": "plugin",
+  "source": null,
+  "topic": "Film editing for AI video: assembly from takes, Murch's rule of six, J and L cuts, match cuts, cutting on action, pacing and average shot length, cutting around bad frames, cutting a battle, conform with ffmpeg",
+  "tier": "slow",
+  "interval_days": 120,
+  "last_checked": "2026-10-04",
+  "next_due": "2027-02-01",
+  "verify_at_use": false,
+  "volatile_claims": [],
+  "contradiction": null,
+  "events": [],
+  "streak": {
+    "quiet": 0,
+    "pinned_min": 0,
+    "pinned_max": 0,
+    "vau_quiet": 0
+  },
+  "history": [
+    {
+      "date": "2026-10-04",
+      "m": null,
+      "interval_after": 120,
+      "note": "created"
+    }
+  ],
+  "counts": {
+    "learnings": 2,
+    "changes": 1,
+    "research": 1,
+    "tests": 1
+  },
+  "consolidate_every": 25,
+  "tests": {
+    "last_run": "2026-10-04",
+    "harness": "claude -p (baselines only)",
+    "env": "windows/claude-code",
+    "cases": 6,
+    "passed": 0,
+    "failed": 0,
+    "failing": [],
+    "last_failure": null,
+    "research_after_days": null
+  }
+}

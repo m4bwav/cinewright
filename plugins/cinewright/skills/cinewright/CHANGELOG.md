@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261004-2 · 2026-10-04 · Pipeline names the S5 skills (edit, finish, sound)
+- because: user request (S5)
+- files: SKILL.md
+- The stage table's last row split into QC, Edit, Grade and deliver, Sound and mix, each naming its skill and evidence.
+
 ### C-20261004-1 · 2026-10-04 · Pipeline names the S3 skills; project layout adds script, design notes and the prop bible
 - because: user request (cinewright S3)
 - files: SKILL.md, references/project-layout.md

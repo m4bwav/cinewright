@@ -1,0 +1,78 @@
+{
+  "skill": "cinewright-sound",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root.",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "prompt": "My AI-generated video has thin audio that changes at every cut. How should I build and mix the soundtrack for YouTube?",
+      "expectations": [
+        "the cinewright-sound skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "prompt": "What loudness should I mix my AI short film to for broadcast versus Netflix, and how do I check it?",
+      "expectations": [
+        "the cinewright-sound skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Generate a lo-fi hip hop track for studying.",
+      "expectations": [
+        "the cinewright-sound skill is not invoked (music generation, a music skill's job)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "My laptop speakers crackle when I play YouTube. How do I fix the audio driver?",
+      "expectations": [
+        "the cinewright-sound skill is not invoked (computer audio repair)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "prompt": "Make out/mix/cut.mp4 with ffmpeg: 4 s of testsrc2 video with a 440 Hz sine at volume 0.05 as its audio. Mix the audio to a web delivery target, mux it back as out/mix/final.mp4, and prove the loudness.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace, or the file), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py\\s+qc\\s+loud\\s+\\S*out/mix",
+        "or": {
+          "type": "file",
+          "path": "out/mix/sound/plan.md",
+          "contains": "LUFS"
+        }
+      },
+      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example (bibles, cards, styles, brief, script, takes.md; no README, design notes, compiled prompts or planted card; the toolkit's name removed), skills disabled, Bash, PowerShell, web, agent, Glob, Grep and Skill tools denied: tried Bash and PowerShell through ToolSearch (both refused), then wrote a PowerShell script to its own session scratchpad (outside the folder, not the repository) with single-pass loudnorm to -16 LUFS / -1 dBTP labelled 'EBU R128', a re-measure as proof, and no layers. Not contaminated; ToolSearch should be denied too.",
+      "runs": 3
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "prompt": "How do I make a battle in my AI film sound huge when the video only shows five soldiers?",
+      "files": [],
+      "expectations": [
+        "the reply describes distance layers (near, mid, far) with the far layer as an off-screen mass",
+        "the reply says perspective follows the shot size (close shots favour near sounds, wides the mass)",
+        "the reply names a drop to silence or near-silence at the turn or climax",
+        "judge: the advice relies on sound implying what is not rendered (2 of 3 votes)"
+      ],
+      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example (bibles, cards, styles, brief, script, takes.md; no README, design notes, compiled prompts or planted card; the toolkit's name removed), skills disabled, Bash, PowerShell, web, agent, Glob, Grep and Skill tools denied: an off-camera ambient bed, distance by low-pass and reverb, and a near-silence before the big hit (expectations 1 and 3 largely passed); perspective following the shot size was not stated. Weak discrimination; replace in S6 with a case that needs the stated target or the preset.",
+      "runs": 3
+    }
+  ]
+}

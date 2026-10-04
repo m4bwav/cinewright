@@ -307,3 +307,77 @@ test_style_option_and_schema (tests.test_cine.TestStyle.test_style_option_and_sc
 Ran 5 tests in 0.373s
 ```
 ## [2026-10-04] index | rebuilt (12 entries)
+
+## 2026-10-04: session S5, post (edit, finish, sound)
+
+- The S4 PR #5 was still open with no review comments, so `s5/post` branched off `s4/camera-history`. The S5 PR is #6, https://github.com/m4bwav/cinewright/pull/6, based on that branch. No answer yet on the runtime budget row: genvideo's folder reads yellow (157 of 150 KB) and is reported, not cut.
+- Built three craft skills, each a full evergreen unit with evals and baselines: `cinewright-edit` (slow; rule-of-six, j-and-l-cuts, match-cuts, cutting-on-action, pacing, cutting-around-bad-frames, cutting-a-battle, assembly-to-delivery), `cinewright-finish` (moderate; grade-order, color-spaces, delivery-color, crop-to-frame, day-for-night, crowd-multiplication, compositing-and-cleanup, upscale-and-interpolation) and `cinewright-sound` (moderate; sound-layers, chion-terms, generated-audio, battle-sound, music-spotting, mix-and-loudness). Shared vocab: `cut-terms` (edit, sound) and `loudness-targets` (sound, qc).
+- Runtime: `qc loud --preset web|ebu-r128|atsc-a85|netflix|music-streaming`, default web (-18 ± 2 LUFS, -2 dBTP), test `test_loud_preset` ([decision](decisions/2026-10-04-loudness-presets-with-a-web-default.md)).
+- Loudness re-verified from primary pages by a research pass (EBU R128 v4 and s2, Tech 3344, ATSC A/85:2026-07, both Netflix pages in Chrome, Spotify, BS.1770-5). The brief was wrong on two counts: R128 has no ±0.5 LU tolerance (the target is -23.0, with ±1.0 LU only where it is not practical), and A/85:2013 is superseded. YouTube -14, Apple -16 and AES TD1008 stay unverified. Color: ACES 2 (2025), ACEScct, BT.1886-0, BT.2100-3, DCI direct-view addendum v1.1; ffmpeg loudnorm, minterpolate and zscale docs.
+- Exit check on the S2 render (take 2, media in the local render folder; private note in the vault sidecar). Cut: scene detection found the model's cuts at 6.000 and 10.458 s; 3 frames off 1B's head, 6 off 1C's held end; 336 frames, 14.000 s. Grade: blacks of 1B and 1C matched to 1A (20.0, 19.5, 19.7) by linear luma maps, a look over all, sRGB transfer tag replaced with bt709 by `setparams`. Mix: model audio resampled 32 to 48 kHz, a rain and wind bed 12.7 dB under, gain and limiter, then a linear loudnorm pass to the web preset.
+- Lessons: cinewright-edit L-001 `scene-detect-multi-shot-takes`, L-002 `strip-before-trimming-a-bad-opening`; cinewright-finish L-001 `setparams-for-delivery-tags`, L-002 `lutyuv-not-eq-for-balance`; cinewright-sound L-001 `linear-loudnorm-needs-headroom`, L-002 `netflix-pages-need-a-browser`. Take 2 measures -27.6 LUFS (the S2 log's -29.6 was take 1).
+- Descriptions: the new three were cut to 251, 256 and 248 characters; all 13 total 3,799 of 4,000, leaving about 200 for curate.
+- Baselines (Sonnet, headless, scratch folder on another drive, stripped example, skills disabled; Bash, PowerShell, web, agent, Glob, Grep and Skill denied): none contaminated. Edit action wrote its own cut list with only 1C (3.9 s; refused the failed takes) and no check; finish action stopped with no shell; sound action wrote a script with single-pass loudnorm to -16 labelled EBU R128. Outcomes: edit proposed flipping the shot for the scar; finish missed the normal-exposure render and warm practicals; sound gave most battle layering unaided (weak case, replace in S6). Two harness facts: Bash-denied baselines cannot reach ffmpeg action cases, and ToolSearch can load Bash (refused) so it should be denied too; user-level instructions still load in the baseline.
+- evergreen lint flagged `cinewright-sound R-20261004-1` in qc's CHANGELOG as an undefined ID; cross-unit R- IDs are cited by file name instead.
+
+Exit check output (2026-10-04, Windows 11, Python 3.14.6 and 3.9.25, ffmpeg 9.0.1):
+
+```
+$ python -m unittest discover -s tests
+Ran 63 tests in 15.910s
+
+OK
+$ py -V:Astral/CPython3.9.25 -m unittest discover -s tests
+Ran 63 tests in 15.829s
+
+OK
+$ python scripts/cine.py kb lint
+kb lint: 13 skills, 0 errors
+$ python scripts/cine.py budget
+measure                                   value  green<= yellow<=  status worst
+SKILL.md lines                               58       80      120  green  plugins/cinewright/skills/cinewright/SKILL.md
+SKILL.md body tokens (est.)                 968     1200     2000  green  plugins/cinewright/skills/cinewright-qc/SKILL.md
+one description, characters                 334      350      500  green  cinewright-qc
+all descriptions, characters               3799     4000     5500  green  13 skills
+core descriptions, characters              1580     1800     2500  green  plugins/cinewright
+reference entry lines                        50       60      100  green  plugins/cinewright/skills/cinewright/references/pipeline.md
+reference entry tokens (est.)               700      700     1200  green  plugins/cinewright/skills/cinewright-shots/references/coverage.md
+model card tokens (est.)                    699      900     1200  green  plugins/cinewright/skills/cinewright-genvideo/references/minimax-h3.md
+references/INDEX.md tokens (est.)           739     1500     3000  green  plugins/cinewright/skills/cinewright-genvideo/references/INDEX.md
+skill folder KB                             157      150      300  yellow cinewright-genvideo
+files per plugin                            211      350      450  green  cinewright-craft
+repo ZIP KB                                 683     2048     5120  green  tracked files
+duplicate paragraphs across skills            0        0     1000  green  
+budget: YELLOW (tokens are bytes / 4, an estimate)
+$ claude plugin validate .
+✔ Validation passed
+$ claude plugin validate plugins/cinewright
+✔ Validation passed
+$ claude plugin validate plugins/cinewright-craft
+✔ Validation passed
+$ claude plugin validate plugins/cinewright-dev
+✔ Validation passed
+$ evergreen.py lint <each skill>
+cinewright-camera, cinewright-design, cinewright-edit, cinewright-finish, cinewright-history, cinewright-movement, cinewright-script, cinewright-sound, cinewright-continuity, cinewright-genvideo, cinewright-qc, cinewright-shots, cinewright: lint OK
+$ ffmpeg -i take2.mp4 -vf "select='gt(scene,0.25)',showinfo" -f null - 2>&1 | grep -o 'pts_time:[0-9.]*'
+pts_time:6
+pts_time:10.458333
+$ ffprobe -v error -show_entries format=duration -show_entries stream=nb_frames,codec_type -of compact cut.mov
+stream|codec_type=video|nb_frames=336
+format|duration=14.000000
+$ ffprobe -v error -show_entries stream=color_transfer,color_space,color_primaries,color_range -of compact final.mp4
+stream|color_range=tv|color_space=bt709|color_transfer=bt709|color_primaries=bt709
+$ python scripts/cine.py qc loud final.mp4 --preset web
+preset web: web video (EBU R128 s2 distribution range -20 to -16 LUFS; -2 dBTP before a lossy encoder)
+integrated -17.6 LUFS (target -18.0 +/- 2.0): PASS
+true peak -6.3 dBTP (max -2.0): PASS
+loudness range 5.3 LU
+qc loud: PASS
+$ python scripts/cine.py qc spec final.mp4 --project <render project> --card 1A+1B+1C --params <render project>/compiled/minimax-h3/1A+1B+1C.params.json
+PASS length 14.00s for a 14s card
+PASS fps 24, planned 24
+PASS aspect 864x480 (1.800), planned 16:9
+PASS size 864x480, settings 864x480
+qc spec: 4 checks, 0 failed
+```
+## [2026-10-04] index | rebuilt (13 entries)
