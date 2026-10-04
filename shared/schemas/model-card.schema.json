@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Model card",
+  "description": "A reference entry for one video model. Frontmatter is entry.schema.json plus the required fields below; the body holds a Compile section with one fenced json block validated by $defs/compile.",
+  "type": "object",
+  "required": ["title", "slug", "summary", "tags", "last_checked", "sources", "model", "vendor", "version", "status", "volatile_claims"],
+  "properties": {
+    "model": {"type": "string", "pattern": "^[a-z0-9-]+$", "description": "Compiler key, e.g. veo."},
+    "vendor": {"type": "string"},
+    "version": {"type": "string"},
+    "status": {"enum": ["current", "preview", "deprecated", "shut-down"]},
+    "volatile_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  },
+  "$defs": {
+    "compile": {
+      "type": "object",
+      "required": ["model_id", "durations_s", "aspect_ratios", "resolutions", "max_words", "order", "dialogue", "audio"],
+      "additionalProperties": false,
+      "properties": {
+        "model_id": {"type": "string"},
+        "durations_s": {"type": "array", "minItems": 1, "items": {"type": "number"}},
+        "aspect_ratios": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "resolutions": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "resolution_duration_s": {"type": "object", "additionalProperties": {"type": "number"}, "description": "Duration forced at a resolution, e.g. 1080p: 8."},
+        "max_words": {"type": "integer", "minimum": 20, "description": "Warning threshold, not a hard cut."},
+        "order": {"type": "array", "minItems": 3, "items": {"enum": ["camera", "subject", "action", "context", "light", "style", "audio"]}},
+        "dialogue": {"type": "string", "description": "Template with {name}, {tone_clause} and {line}."},
+        "audio": {"type": "string", "description": "Template with {sound}."},
+        "timestamp": {"type": "string", "description": "Template with {start} and {end} as MM:SS, for several shots in one generation."},
+        "max_reference_images": {"type": "integer", "minimum": 0},
+        "reference_duration_s": {"type": "number", "description": "Duration forced when reference images are used."},
+        "negative_prompt": {"enum": ["field", "none"]},
+        "negative_terms": {"type": "string", "description": "Nouns for the negative prompt field, never phrased as 'no X'."},
+        "seed": {"type": "boolean"}
+      }
+    }
+  }
+}

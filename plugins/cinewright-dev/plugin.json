@@ -1,0 +1,16 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "cinewright-dev",
+  "version": "0.0.1",
+  "description": "Maintainer skills for the cinewright knowledge base (add, verify and retire entries, refresh model cards). Placeholder: no skills yet. Not needed to make films.",
+  "author": {
+    "name": "Mark Rogers"
+  },
+  "repository": "https://github.com/m4bwav/cinewright",
+  "license": "MIT",
+  "keywords": [
+    "maintenance",
+    "knowledge-base",
+    "evergreen"
+  ]
+}

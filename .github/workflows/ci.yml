@@ -1,0 +1,34 @@
+name: ci
+
+# While the repository is private there are no paid Actions minutes (PLAN D6).
+# Manual dispatch only, on a self-hosted runner. No runner was registered on
+# 2026-10-03, so the same checks run locally before each PR (see ai-docs/log.md).
+# Once public: add push and pull_request triggers and a GitHub-hosted
+# ubuntu-latest, windows-latest, macos-latest matrix with Python 3.9 and 3.x.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  checks:
+    runs-on: [self-hosted]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tests
+        run: python -m unittest discover -s tests
+      - name: Knowledge-base lint (schemas, links, copies, manifests, hygiene)
+        run: python scripts/cine.py kb lint
+      - name: Size budget (fails at red)
+        run: python scripts/cine.py budget
+      - name: Worked example passes
+        run: |
+          python scripts/cine.py cards validate examples/three-shot
+          python scripts/cine.py continuity diff examples/three-shot
+      - name: Plugin manifests
+        shell: bash
+        run: |
+          if command -v claude >/dev/null 2>&1; then
+            for d in . plugins/cinewright plugins/cinewright-craft plugins/cinewright-dev; do claude plugin validate "$d"; done
+          else
+            echo "claude CLI not on this runner; plugin validate skipped"
+          fi
