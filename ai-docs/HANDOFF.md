@@ -1,7 +1,7 @@
 # Handoff
 
 ## Current state
-- S4 (camera, lighting and history) was done on 2026-10-04 on branch `s4/camera-history` off `main` (the S3 PR #4 was merged with no comments). Its PR waits for Mark's review: PR_LINK. The repo is private: https://github.com/m4bwav/cinewright.
+- S4 (camera, lighting and history) was done on 2026-10-04 on branch `s4/camera-history` off `main` (the S3 PR #4 was merged with no comments). Its PR waits for Mark's review: PR #5, https://github.com/m4bwav/cinewright/pull/5. The repo is private: https://github.com/m4bwav/cinewright.
 - Built: `cinewright-camera` (9 entries) and `cinewright-history` (11 entries, about 70 style cards) in craft, each a full evergreen unit with evals and baselines; shared vocab `aspect-ratios`, `lens-terms`, `lighting-terms`. Runtime: style-bible fields `lighting`, `frame_aspect`, `allowed_moves`, `history`; `lens_family` now checked; compile guard for the style strings; LENS and MOVE diff warnings; `--style FILE` on validate, diff and compile; `uniqueItems` in the validator. 62 tests. Layout: [../CODEMAP.md](../CODEMAP.md).
 - Mark asked mid-session for battle and fight coverage: fights already lived in movement's `fights-and-stunts`; S4 added movement's `battle-scenes` entry, and PLAN §2 and §10 S5 now name the post half (cutting a battle, crowd multiplication, battle sound).
 - The example shows the exit check: [styles/new-hollywood-239.json](../examples/three-shot/styles/new-hollywood-239.json) compiled to `compiled/veo-new-hollywood/` ([README §7](../examples/three-shot/README.md)).
