@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261003-2 · 2026-10-03 · Every model card and compiler; failure codes; staging in sequences (cinewright S2)
+- because: user request, R-20261003-2, L-003, L-004
+- files: references/ (8 new model cards, veo-3-1 re-checked, compile-rule), SKILL.md, needs.json (failure codes), shared/lib/cine.py, shared/schemas/model-card.schema.json
+- The Compile block gains vendor parameter names, ref tags, sentence moves, frame and size grids, layouts, multi-shot markers and cost. Sequence blocks now restate positions and props in hand.
+
 ### C-20261003-1 · 2026-10-03 · Created as an evergreen unit (cinewright S1)
 - because: user request, R-20261003-1
 - files: SKILL.md, references/, needs.json, RESEARCH.md, LEARNINGS.md, TESTS.md, evals/evals.json, evergreen.json, MAINTENANCE.md

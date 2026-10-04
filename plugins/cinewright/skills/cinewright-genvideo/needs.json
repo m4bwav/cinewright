@@ -3,7 +3,9 @@
     "shot-sizes.md",
     "camera-moves.md",
     "camera-angles.md",
-    "screen-direction.md"
+    "screen-direction.md",
+    "failures-picture.md",
+    "failures-motion.md"
   ],
   "lib": [
     "cine.py"

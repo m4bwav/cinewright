@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "cinewright",
   "version": "0.0.1",
-  "description": "Plan AI video like a film crew: a director router, a script supervisor that diffs every shot card against character, location and axis bibles, and a compiler that turns generator-neutral shot cards into model prompts (Veo 3.1 first).",
+  "description": "Plan AI video like a film crew: a director router, a script supervisor that diffs every shot card against character, location and axis bibles, a compiler that turns generator-neutral shot cards into prompts for nine video models, and a take reviewer that routes failures to the cheapest fix.",
   "author": {
     "name": "Mark Rogers"
   },

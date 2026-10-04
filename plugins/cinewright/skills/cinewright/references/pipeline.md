@@ -22,7 +22,7 @@ Stages in order. A stage starts only when the one before passed its gate.
 | Prompts | one compiled file per card, warnings read and handled |
 | Reference sheets and keyframes | identity refs exist for every recurring character before the first render |
 | Render | one take per card logged with seed and verdict |
-| QC | each take checked against its card; fails routed by the repair ladder |
+| QC | each take checked against its card (`qc rubric`); each fail gets a failure code and its rung on the repair ladder (cinewright-qc) |
 | Edit, grade, mix, deliver | the cut matches target length; loudness and format to spec |
 
 - Plan few long generations over many short ones when the model can hold several shots in one generation (timestamp blocks): every seam between separate generations can read as the scene restarting.

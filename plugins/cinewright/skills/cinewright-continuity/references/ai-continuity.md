@@ -29,4 +29,4 @@ sources: ["https://cloud.google.com/blog/products/ai-machine-learning/ultimate-p
 
 ## Notes
 
-- 2026-10-03: numbers from one local model's renders; unverified on hosted models. Re-check per model in S2.
+- 2026-10-03: numbers from one local model's renders; unverified on hosted models. Re-check on the first hosted render (needs the maintainer's go).
