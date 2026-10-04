@@ -68,3 +68,99 @@ wrote ...\dist\cinewright-continuity.zip: 25 files, 38 KB, top folder cinewright
 $ evergreen.py lint <each skill>
 cinewright: lint OK / cinewright-continuity: lint OK / cinewright-genvideo: lint OK
 ```
+
+## 2026-10-03: session S2, genvideo and qc
+
+- PR #2 (S1) was merged with no comments, so there were no changes to make. Branch `s2/genvideo-qc` comes off `main`.
+- Four subagents re-verified the nine models from vendor pages ([research](research/2026-10-03-s2-model-verification.md)). These corrections come from the vendors:
+  - Luma's API model is `ray-3.2`; Ray3 and 3.14 have no API ID.
+  - LTX-2.5 is current.
+  - Wan 2.2 has no first/last-frame or VACE (those are 2.1).
+  - Seedance 2.5 is live, and its tags have a space (`@Image 1`).
+  - H3's official prompt uses labelled fields, `[Shot N]` cuts, `with small amplitude at slow speed` and `<d>[English] ...</d>` dialogue. The guide never mentions the old bracket camera syntax.
+  - Runway Gen-4.5 has no audio, refs or negative prompt.
+  - Gemini Omni Flash is real (stable on the Gemini API since 2026-08-27) and documents no dialogue syntax.
+- Built:
+  - Eight new model cards and the Veo re-check.
+  - The Compile block grew vendor parameter names, ref tags, sentence moves, frame and size grids, layouts, multi-shot markers and cost per second, plus `compile --resolution`.
+  - 24 failure codes in two shared vocab entries, parsed by `qc rubric` ([decision](decisions/2026-10-03-failure-codes-live-in-shared-vocab-and-drive-the-rubric.md)).
+  - The `cinewright-qc` skill (full evergreen unit, SETUP.md for ffmpeg).
+  - `qc sheet|spec|loud|rubric` and `takes log|lastframe`.
+  - Tests went from 29 to 47: one per model, each with a regex that must match the vendor's own example too, and the identity guard on every model.
+- Compiler gaps found and fixed:
+  - Sequence blocks dropped each shot's frame positions and props in hand (genvideo L-004, new `staging` part).
+  - Eyelines named no target (genvideo L-005, proven by the re-render below).
+  - `qc spec` judged a multi-shot generation against one card (qc L-001).
+- First real render ([render media decision](decisions/2026-10-03-render-media-stays-in-the-local-render-folder.md); private note in the vault sidecar):
+  - The three-shot example went through as one 14.4 s local H3 generation, seed 101, 864x480, 21.6 min per take.
+  - Take 1: 1B failed `eyeline-wrong` (Maren looks into the lens), 1A `bad-opening` and `prop-drift`, 1C `end-state-wrong`.
+  - The routed fix (rung 1, eyeline names its target) was the only change. Take 2 with the same seed fixed 1B's eyeline, and 1C passed.
+  - The full frames showed Maren's scar on the wrong side in both takes; it had been missed at sheet size (qc L-002).
+  - Loudness came out at -29.6 LUFS, which is for the mix.
+- Budget: model cards went yellow during the build (H3 843, Veo 802, the failure tables up to 805). All were brought under 700 by cutting repetition, not facts. Every card now sits at 646-700. A separate model-card row (green at 900 or less) is proposed for Mark, not applied ([decision](decisions/2026-10-03-proposed-model-card-budget-row.md)). The genvideo skill folder is at 147 of 150 KB, mostly the runtime `cine.py` copy (67 KB).
+- Bash heredocs mangled `\\n` and apostrophes again. Patches were written as files with the Write tool.
+
+Exit check output (2026-10-03, Windows 11, Python 3.14.6 and 3.9.25):
+
+```
+$ python -m unittest discover -s tests
+Ran 47 tests in 15.824s
+
+OK
+$ py -V:Astral/CPython3.9.25 -m unittest discover -s tests
+Ran 47 tests in 10.755s
+
+OK
+$ python scripts/cine.py kb lint
+kb lint: 4 skills, 0 errors
+$ python scripts/cine.py budget
+reference entry tokens (est.)               699      700     1200  green  plugins/cinewright/skills/cinewright-genvideo/references/minimax-h3.md
+skill folder KB                             147      150      300  green  cinewright-genvideo
+budget: GREEN (tokens are bytes / 4, an estimate)
+$ claude plugin validate .
+✔ Validation passed
+$ claude plugin validate plugins/cinewright
+✔ Validation passed
+$ claude plugin validate plugins/cinewright-craft
+✔ Validation passed
+$ claude plugin validate plugins/cinewright-dev
+✔ Validation passed
+== 1A  veo-3.1-generate-001  6s 16:9 720p  191 words  est. $2.40
+== 1A+1B  gemini-omni-1.1-flash  10s 16:9 720p  255 words  est. $1.00
+== 1A+1B+1C  kling-v3  14s 16:9 720p  300 words
+== 1A+1B+1C  dreamina-seedance-2-5-260628  15s 16:9 720p  308 words
+== 1A+1B  gen4.5  10s 16:9 720p  228 words  est. $1.20
+== 1A  Wan2.2-T2V-A14B  5.062s 16:9 720p  179 words
+== 1A+1B+1C  LTX-2.5  14.042s 16:9 720p  305 words
+== 1A+1B+1C  H3-Base-FL2VA  14.375s 16:9 480p  336 words
+$ python -m unittest tests.test_cine.TestModelCards -v
+test_every_model_compiles_and_keeps_identity (tests.test_cine.TestModelCards.test_every_model_compiles_and_keeps_identity) ... ok
+test_identity_guard_fires_on_every_model (tests.test_cine.TestModelCards.test_identity_guard_fires_on_every_model) ... ok
+test_kling (tests.test_cine.TestModelCards.test_kling) ... ok
+test_ltx2 (tests.test_cine.TestModelCards.test_ltx2) ... ok
+test_luma (tests.test_cine.TestModelCards.test_luma) ... ok
+test_minimax_h3 (tests.test_cine.TestModelCards.test_minimax_h3) ... ok
+test_omni (tests.test_cine.TestModelCards.test_omni) ... ok
+test_runway (tests.test_cine.TestModelCards.test_runway) ... ok
+test_seedance (tests.test_cine.TestModelCards.test_seedance) ... ok
+test_status_and_claims_on_every_card (tests.test_cine.TestModelCards.test_status_and_claims_on_every_card) ... ok
+test_veo (tests.test_cine.TestModelCards.test_veo) ... ok
+test_wan (tests.test_cine.TestModelCards.test_wan) ... ok
+$ cine.py qc spec take2_s101_00001_.mp4 --project <render project> --card 1A+1B+1C --params compiled/minimax-h3/1A+1B+1C.params.json
+PASS length 14.38s for a 14s card
+PASS fps 24, planned 24
+PASS aspect 864x480 (1.800), planned 16:9
+PASS size 864x480, settings 864x480
+qc spec: 4 checks, 0 failed
+$ cine.py qc rubric --read qc/1B.take1.rubric.json
+rung 1  eyeline:maren      eyeline-wrong      `looking toward frame left/right`
+qc rubric 1B: FAIL, 1 failed. Next take changes one thing: `looking toward frame left/right` (eyeline-wrong). Then: takes log ... --verdict fail --fix eyeline-wrong
+$ cine.py qc rubric --read qc/1C.take2.rubric.json
+qc rubric 1C: PASS (15 items)
+$ cine.py qc loud take1_s101_00001_.mp4
+integrated -29.6 LUFS (target -16.0 +/- 1.0): FAIL
+true peak -12.3 dBTP (max -1.0): PASS
+$ evergreen.py lint <each skill>
+cinewright-continuity: lint OK / cinewright-genvideo: lint OK / cinewright-qc: lint OK / cinewright: lint OK
+```
+## [2026-10-03] index | rebuilt (9 entries)

@@ -21,3 +21,27 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: C-20261003-1 (references/veo-3-1.md Numbers), confirmed 2026-10-03
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-03
+
+### L-003 · 2026-10-03 · Take a model's syntax from the vendor's guide, not from notes or briefs
+- Trigger: 2026-10-03 re-verification: three syntax claims in the research brief and local field notes differed from vendor guides (Seedance `@Image1` vs `@Image 1`; H3 bracket moves vs amplitude sentences; H3 Timeline beats vs labelled fields)
+- Hypothesis: Second-hand prompt syntax drifts as vendors revise guides; local notes record what worked once, not the documented form
+- Rule: Write a card's Compile block from the vendor's own example and test it with a regex that must match that example too
+- Evidence: C-20261003-2 (tests/test_cine.py TestModelCards), confirmed 2026-10-03
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-03
+
+### L-004 · 2026-10-03 · Shots in one generation must restate where each person stands
+- Trigger: 2026-10-03, first local H3 compile of the three-shot example with `--sequence`: card 1A's frame positions and props in hand were missing, because people are described once in the shared header
+- Hypothesis: The header carries who people are; where they stand changes per shot and has to travel with the shot
+- Rule: Every sequence block includes the staging part (position and prop in hand); a new layout must keep it
+- Evidence: C-20261003-2 (shared/lib/cine.py card_parts staging), confirmed 2026-10-03
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-03
+
+### L-005 · 2026-10-03 · An eyeline needs a target, not only a frame direction
+- Trigger: 2026-10-03, first local H3 render of the three-shot example (one 14 s generation, seed 101): card 1B said 'Maren is looking toward frame right' and she looked almost into the lens; take 2, same seed, with 'looking toward frame right, at Tomas' fixed it
+- Hypothesis: A bare direction is weak conditioning next to a close-up's pull toward the lens; a named person or object gives the gaze somewhere to land
+- Rule: The compiler writes every eyeline as direction plus the card's looks_at (a character by name, an object as written); cards should always fill looks_at
+- Evidence: C-20261003-2 (shared/lib/cine.py card_parts, failures-picture eyeline-wrong row), confirmed 2026-10-03 by a same-seed re-render
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-03

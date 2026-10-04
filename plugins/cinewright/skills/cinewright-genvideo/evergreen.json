@@ -11,15 +11,16 @@
   },
   "protocol": "plugin",
   "source": null,
-  "topic": "AI video model prompting and compiling (Veo, Kling, Seedance, Runway, Luma, Wan, LTX-2, MiniMax H3)",
+  "topic": "AI video model prompting and compiling (Veo, Gemini Omni, Kling, Seedance, Runway, Luma, MiniMax H3, Wan, LTX-2)",
   "tier": "fast",
   "interval_days": 14,
   "last_checked": "2026-10-03",
   "next_due": "2026-10-17",
   "verify_at_use": true,
   "volatile_claims": [
-    "Veo 3.1 model IDs, status and shutdown dates (references/veo-3-1.md)",
-    "Veo 3.1 durations, resolutions and reference-image limits"
+    "each model card's volatile_claims (frontmatter); re-check the card in use",
+    "Veo 3.1 Gemini API previews shut down 2026-10-22; Vertex GA retires 2026-11-17 or later",
+    "Seedance 2.0 discounts end 2026-10-07"
   ],
   "contradiction": null,
   "events": [],
@@ -35,12 +36,18 @@
       "m": null,
       "interval_after": 14,
       "note": "created"
+    },
+    {
+      "date": "2026-10-03",
+      "m": null,
+      "interval_after": 14,
+      "note": "S2 build: nine cards verified at creation, not a refresh"
     }
   ],
   "counts": {
-    "learnings": 2,
-    "changes": 1,
-    "research": 1,
+    "learnings": 5,
+    "changes": 2,
+    "research": 2,
     "tests": 0
   },
   "consolidate_every": 25,

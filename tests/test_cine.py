@@ -1,6 +1,7 @@
 """Tests for scripts/cine.py and shared/lib/cine.py. Run: python -m unittest discover -s tests"""
 import importlib.util
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -177,6 +178,8 @@ class TestCompile(Base):
             self.assertEqual(params["model"], "veo-3.1-generate-001")
         self.assertEqual(durations, {"1A": 6, "1B": 4, "1C": 4})
         self.assertIn("Maren says quietly: Last one.", (out_dir / "1B.txt").read_text(encoding="utf-8"))
+        self.assertIn("Maren is looking toward frame right, at Tomas.", (out_dir / "1B.txt").read_text(encoding="utf-8"))
+        self.assertIn("Maren is looking down, at the tin matchbox.", (out_dir / "1A.txt").read_text(encoding="utf-8"))
 
     def test_example_compiled_files_are_current(self):
         for sub, extra in (("veo", []), ("veo-sequence", ["--sequence"])):
@@ -309,3 +312,284 @@ class TestVocabularyAgreement(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# ---------- S2: one test per model card, checked against the vendor's own example ----------
+
+# Short excerpts of each vendor's published example prompt, kept only to prove the shape rules below
+# also hold for the vendor's text. Sources: the model card's `sources`.
+VENDOR = {
+    "veo": "the man in the red hat says: Where is the rabbit?",  # Vertex prompt guide
+    "veo-seq": "[00:00-00:02] Medium shot from behind a young female explorer",  # Cloud blog, Veo 3.1 guide
+    "omni": "Continuous, unbroken handheld shot of a fluffy tabby cat sitting on a sunny windowsill. Sound design: Gentle breeze, distant bird chirps.",
+    "omni-seq": "[0-3s] A person is walking",
+    "kling": "Mom (softly, in a surprised tone): Wow, I didn't expect this plot at all.",
+    "seedance": "Shot 2: Girl @Image 1 pushes the door open and enters the dormitory. One of them smiles and asks {How did the exam go? Did you pass?}.",
+    "runway": "Medium shot of a cowboy perched on a horse in a dusty environment. The horse rears violently, its body twisting, causing the cowboy to lose his seat and begin to fall off to the left.",
+    "luma": "A golden retriever running through a wheat field, ears flapping in the wind, dust particles catching golden hour sunlight, camera tracking alongside.",
+    "h3": ("integrated_multimodal_description: [Shot 1] Live-action, cinematic, a medium-wide shot frames a baker opening the shutters of a small street bakery before sunrise. "
+           "The camera pushes in with small amplitude at slow speed as the middle-aged baker with a calm, slightly raspy voice (S1) places a fresh loaf on the wooden counter and says: <d>[English] First batch of the morning.</d> "
+           "[Shot 2] At 00:05.000, the camera cuts to a close-up of steam rising from the sliced bread while the baker's final words carry over from the previous shot."
+           "\n\noverall_soundscape: Wooden shutters scrape open over a quiet street as trays clink softly inside the bakery."
+           "\n\nnon_diegetic_music: A soft acoustic-guitar pattern at a moderate tempo, joined by sparse upright-bass notes and a gentle fade at the end."),
+    "wan": "Two anthropomorphic cats in comfy boxing gear and bright gloves fight intensely on a spotlighted stage.",
+    "ltx": ("A wide shot frames a rainy city intersection at dusk, neon signs reflecting on wet asphalt. She speaks quietly to herself, \"He's late.\" "
+            "A hard cut jumps to a low-angle shot of a man's scuffed boots stepping into a puddle at the curb; the music drops to a low drone."),
+}
+MODELS = ["veo", "omni", "kling", "seedance", "runway", "luma", "minimax-h3", "wan", "ltx2"]
+DRAFT_RES = {"minimax-h3": "480p"}  # the example's 720p is not on H3's size ladder
+
+
+def model_project(tmp, refs=False):
+    proj = tmp / "proj"
+    shutil.copytree(EXAMPLE, proj)
+    if refs:
+        edit(proj / "bibles/characters.json", '"voice": "low, dry, unhurried",', '"voice": "low, dry, unhurried",\n      "refs": ["refs/maren-turnaround.png"],')
+    return proj
+
+
+def compile_one(proj, model, card=None, sequence=False):
+    p = lib.Project(proj)
+    _, _, prof = lib.find_model_card(repo_ctx(), model)
+    cards = [c for c in p.cards if card is None or c["id"] == card]
+    return p, prof, lib.compile_cards(p, cards, prof, sequence, DRAFT_RES.get(model))
+
+
+def repo_ctx():
+    dirs = [s / "references" for s in sorted(p.parent for p in SKILLS.glob("*/SKILL.md"))]
+    return lib.Context(dirs, dirs, REPO / "shared" / "schemas")
+
+
+class TestModelCards(Base):
+    def both(self, pattern, vendor_key, text, flags=0):
+        """The shape rule must hold for the vendor's own example and for our output."""
+        self.assertRegex(VENDOR[vendor_key], re.compile(pattern, flags), "rule does not fit the vendor example")
+        self.assertRegex(text, re.compile(pattern, flags))
+
+    def test_every_model_compiles_and_keeps_identity(self):
+        bible = {c["id"]: c["identity"] for c in json.loads((EXAMPLE / "bibles/characters.json").read_text(encoding="utf-8"))["characters"]}
+        cards = {c["id"]: c for c in lib.Project(EXAMPLE).cards}
+        for model in MODELS:
+            _, prof, _ = compile_one(EXAMPLE, model, "1A")
+            for seq in ([False, True] if "timestamp" in prof else [False]):
+                _, _, res = compile_one(EXAMPLE, model, sequence=seq)
+                for label, text, params, warnings, info in res:
+                    for cid in label.split("+"):
+                        for m in cards[cid]["cast"]:
+                            self.assertIn(bible[m["id"]], text, (model, label, m["id"]))
+
+    def test_identity_guard_fires_on_every_model(self):
+        p = lib.Project(EXAMPLE)
+        for model in MODELS:
+            _, _, prof = lib.find_model_card(repo_ctx(), model)
+            broken = dict(prof, order=[k for k in prof["order"] if k != "subject"])
+            with self.assertRaises(SystemExit, msg=model) as cm:
+                lib.compile_cards(p, [p.cards[1]], broken, False, DRAFT_RES.get(model))
+            self.assertIn("identity of maren not verbatim", str(cm.exception))
+
+    def test_veo(self):
+        _, _, res = compile_one(EXAMPLE, "veo", "1B")
+        self.both(r"\bsays( \w+)?: [A-Z][^\"]*\?|\bsays( \w+)?: [A-Z][^\"]+\.", "veo", res[0][1])
+        _, _, res = compile_one(EXAMPLE, "veo", sequence=True)
+        self.both(r"^\[[0-9]{2}:[0-9]{2}-[0-9]{2}:[0-9]{2}\] [A-Z]", "veo-seq", res[1][1], re.M)
+
+    def test_omni(self):
+        _, _, res = compile_one(EXAMPLE, "omni", "1B")
+        label, text, params, warnings, info = res[0]
+        self.assertTrue(text.startswith("In a single continuous shot."))
+        self.both(r"Sound design: [A-Za-z]", "omni", text)
+        self.assertNotIn("seed", params)
+        self.assertEqual(info["est_usd"], 0.4)
+        _, _, res = compile_one(EXAMPLE, "omni", sequence=True)
+        self.assertEqual(res[0][0], "1A+1B", "10 s cap: 1A and 1B share a generation")
+        self.both(r"^\[[0-9]+-[0-9]+s\] [A-Za-z]", "omni-seq", res[0][1], re.M)
+
+    def test_kling(self):
+        _, _, res = compile_one(EXAMPLE, "kling", "1B")
+        text, params = res[0][1], res[0][2]
+        self.both(r"\b[A-Z][a-z]+ \([^)]+\): [A-Z][^\"]", "kling", text)
+        self.assertTrue(text.startswith("The round lamp room"), "setting first, as in the guide's examples")
+        self.assertEqual(params["duration"], 4)
+        _, _, res = compile_one(EXAMPLE, "kling", sequence=True)
+        label, text, params, _, info = res[0]
+        self.assertEqual(label, "1A+1B+1C")
+        self.assertIn("Shot 2, ", text)
+        self.assertEqual(sum(params["multi_shot"]), params["duration"])
+
+    def test_seedance(self):
+        proj = model_project(self.tmp, refs=True)
+        _, _, res = compile_one(proj, "seedance", "1B")
+        text, params = res[0][1], res[0][2]
+        self.both(r"\b[A-Z][a-z]+ @Image \d", "seedance", text)
+        self.both(r"\b(says|asks)( \w+)? \{[^}]+\}", "seedance", text)
+        self.assertEqual(params["reference_images"], ["refs/maren-turnaround.png"])
+        self.assertNotIn("seed", params)
+        self.assertTrue(text.endswith("Avoid generating any text, subtitles or watermark."))
+        _, _, res = compile_one(EXAMPLE, "seedance", sequence=True)
+        self.both(r"^Shot \d: [A-Z]", "seedance", res[0][1], re.M)
+
+    def test_runway(self):
+        _, _, res = compile_one(EXAMPLE, "runway", "1B")
+        text, params, warnings = res[0][1], res[0][2], res[0][3]
+        self.both(r"^(Medium|Wide|Close|Extreme|Full)[ -]?\w* (shot|close-up)", "runway", text)
+        self.assertLessEqual(len(text), 1000)
+        self.assertEqual(params["ratio"], "1280:720")
+        self.assertNotIn("Last one", text)
+        self.assertTrue(any("no speech" in w for w in warnings))
+
+    def test_luma(self):
+        _, _, res = compile_one(EXAMPLE, "luma", "1B")
+        text, params = res[0][1], res[0][2]
+        self.both(r"^[A-Z][^.]*?\b(a|an)\b", "luma", text)  # subject first, not a camera term
+        self.assertFalse(re.match(r"^(Medium|Wide|Close)", text))
+        self.both(r"camera (tracking|dolly|pan)|dolly in|tracking", "luma", text)
+        self.assertEqual(params["duration"], "5s")
+
+    def test_minimax_h3(self):
+        proj = model_project(self.tmp, refs=True)
+        _, _, res = compile_one(proj, "minimax-h3", "1B")
+        text, params = res[0][1], res[0][2]
+        self.both(r"^integrated_multimodal_description: \[Shot 1\] ", "h3", text)
+        self.both(r"\n\noverall_soundscape: [A-Z].*\n\nnon_diegetic_music: ", "h3", text, re.S)
+        self.both(r"The camera \w+ in with small amplitude at slow speed", "h3", text)
+        self.both(r"\(S1\)[^:<]* says[^:]*: <d>\[English\] [^<]+</d>", "h3", text)
+        self.assertIn("Maren <Picture 1>, a lean woman", text)
+        self.assertEqual((params["width"] % 32, params["height"] % 32, (params["length"] - 5) % 17), (0, 0, 0))
+        _, _, res = compile_one(EXAMPLE, "minimax-h3", sequence=True)
+        label, text, params, _, _ = res[0]
+        self.assertEqual(label, "1A+1B+1C")
+        self.both(r"\[Shot 2\] At 00:\d\d\.\d{3}, the camera cuts to [a-z]", "h3", text)
+        self.assertEqual(text.count("\n\n"), 2, "one description paragraph, then the two sound fields")
+
+    def test_wan(self):
+        _, _, res = compile_one(EXAMPLE, "wan", "1B")
+        text, params = res[0][1], res[0][2]
+        self.both(r"^[A-Z0-9][^\[\]<>{}]*\.$", "wan", text)  # plain prose, no tags or brackets
+        self.assertTrue(text.startswith("35mm film look"), "style first")
+        self.assertEqual((params["frame_num"] % 4, params["width"] % 16, params["height"] % 16, params["fps"]), (1, 0, 0, 16))
+        self.assertIn("字幕", params["negative_prompt"])
+        _, _, res = compile_one(EXAMPLE, "wan", "1A")
+        self.assertEqual(res[0][2]["frame_num"], 81, "a 6 s card stops at the 81-frame default")
+        self.assertTrue(any("split the card" in w for w in res[0][3]))
+
+    def test_ltx2(self):
+        _, _, res = compile_one(EXAMPLE, "ltx2", "1B")
+        text, params = res[0][1], res[0][2]
+        self.both(r"\b[a-z]+, \"[^\"]+\"", "ltx", text)
+        self.assertNotIn("\n", text)
+        self.assertEqual((params["num_frames"] % 8, params["width"] % 32, params["height"] % 32), (1, 0, 0))
+        _, _, res = compile_one(EXAMPLE, "ltx2", sequence=True)
+        self.assertNotIn("\n", res[0][1])
+        self.both(r"A hard cut jumps to [a-z]", "ltx", res[0][1])
+
+    def test_status_and_claims_on_every_card(self):
+        for model in MODELS:
+            path, meta, prof = lib.find_model_card(repo_ctx(), model)
+            self.assertEqual(meta["status"], "current", model)
+            self.assertTrue(meta["volatile_claims"], model)
+            self.assertEqual(meta["last_checked"], "2026-10-03", model)
+
+
+@unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"), "ffmpeg not installed")
+class TestQc(Base):
+    def setUp(self):
+        super().setUp()
+        self.clip = self.tmp / "take.mp4"
+        r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=24:duration=4",
+                            "-f", "lavfi", "-i", "sine=frequency=440:duration=4", "-shortest", "-c:v", "mpeg4", "-c:a", "aac",
+                            str(self.clip)], capture_output=True)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.proj = model_project(self.tmp)
+
+    def test_sheet(self):
+        out = self.tmp / "s.png"
+        code, text = run("qc", "sheet", self.clip, "--out", out)
+        self.assertEqual(code, 0, text)
+        self.assertIn("8 frames at 2 fps", text)
+        self.assertGreater(out.stat().st_size, 1000)
+
+    def test_spec_pass_and_fail(self):
+        code, text = run("qc", "spec", self.clip, "--project", self.proj, "--card", "1B")
+        self.assertEqual(code, 0, text)
+        self.assertIn("0 failed", text)
+        code, text = run("qc", "spec", self.clip, "--project", self.proj, "--card", "1A")
+        self.assertEqual(code, 1, text)
+        self.assertIn("card needs 6s", text)
+        self.assertIn("spec-mismatch", text)
+        long = self.tmp / "long.mp4"
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=24:duration=8",
+                        "-f", "lavfi", "-i", "sine=frequency=440:duration=8", "-shortest", "-c:v", "mpeg4", "-c:a", "aac", str(long)], check=True)
+        code, text = run("qc", "spec", long, "--project", self.proj, "--card", "1B+1C")
+        self.assertEqual(code, 0, text)
+        self.assertIn("for a 8s card", text)
+
+    def test_loud(self):
+        code, text = run("qc", "loud", self.clip)
+        self.assertEqual(code, 1, text)
+        self.assertRegex(text, r"integrated -\d+\.\d LUFS")
+        code, text = run("qc", "loud", self.clip, "--target", "-22", "--tolerance", "2")
+        self.assertEqual(code, 0, text)
+
+    def test_rubric_round_trip(self):
+        code, text = run("qc", "rubric", self.proj, "--card", "1B", "--clip", self.clip)
+        self.assertEqual(code, 0, text)
+        path = self.proj / "qc" / "1B.rubric.json"
+        rub = json.loads(path.read_text(encoding="utf-8"))
+        ids = [i["id"] for i in rub["items"]]
+        for want in ("identity:maren", "wardrobe:maren", "props:maren", "eyeline:maren", "camera", "end-state", "audio", "seam", "text"):
+            self.assertIn(want, ids)
+        self.assertNotIn("direction:maren", ids, "no travel on this card")
+        for it in rub["items"]:
+            self.assertTrue(it["codes"], "check %s has no failure code" % it["check"])
+            it["verdict"] = "pass"
+        lib.write_text(path, json.dumps(rub))
+        code, text = run("qc", "rubric", "--read", path)
+        self.assertEqual(code, 0, text)
+        self.assertIn("PASS", text)
+        for it in rub["items"]:
+            if it["id"] == "identity:maren":
+                it.update(verdict="fail", code="identity-drift", note="braid gone after 2 s")
+            if it["id"] == "camera":
+                it.update(verdict="fail", code="wrong-move", note="fast push")
+            if it["id"] == "style":
+                it.update(verdict="fail", code="look-drift")
+        lib.write_text(path, json.dumps(rub))
+        code, text = run("qc", "rubric", "--read", path)
+        self.assertEqual(code, 1, text)
+        self.assertIn("FAIL, 3 failed", text)
+        self.assertLess(text.index("rung 1"), text.index("rung 7"))
+        self.assertIn("--fix", text)
+        rub["items"][0]["code"] = "loudness-off"
+        lib.write_text(path, json.dumps(rub))
+        code, text = run("qc", "rubric", "--read", path)
+        self.assertEqual(code, 1)
+        self.assertIn("does not belong", text)
+
+    def test_every_check_has_codes_and_every_code_a_check(self):
+        codes = lib.taxonomy(repo_ctx())
+        self.assertGreaterEqual(len(codes), 20)
+        self.assertEqual(set(x["check"] for x in codes.values()), set(lib.CHECKS))
+        for c, x in codes.items():
+            self.assertIn(x["rung"], range(1, 9), c)
+
+    def test_takes_log_and_lastframe(self):
+        code, text = run("compile", self.proj, "--model", "veo", "--out", self.proj / "compiled" / "veo")
+        self.assertEqual(code, 0, text)
+        for i in range(3):
+            code, text = run("takes", "log", self.proj, "--card", "1B", "--model", "veo", "--verdict", "fail",
+                             "--fix", "identity-drift", "--file", self.clip, "--change", "seed 103" if i else "first take")
+            self.assertEqual(code, 0, text)
+        self.assertIn("three strikes", text)
+        rec = json.loads((self.proj / "takes" / "1B-3.json").read_text(encoding="utf-8"))
+        self.assertEqual(rec["model_id"], "veo-3.1-generate-001")
+        self.assertEqual(len(rec["prompt_sha256"]), 64)
+        code, text = run("takes", "log", self.proj, "--card", "1B", "--model", "veo", "--verdict", "fail", "--fix", "nonsense")
+        self.assertNotEqual(code, 0)
+        png = self.tmp / "last.png"
+        code, text = run("takes", "lastframe", self.clip, "--out", png, "--take", self.proj / "takes" / "1B-3.json",
+                         "--observed", "match held out toward frame right")
+        self.assertEqual(code, 0, text)
+        self.assertTrue(png.is_file())
+        self.assertIn("planned end state: Match held out", text)
+        rec = json.loads((self.proj / "takes" / "1B-3.json").read_text(encoding="utf-8"))
+        self.assertEqual(rec["observed_end_state"], "match held out toward frame right")
