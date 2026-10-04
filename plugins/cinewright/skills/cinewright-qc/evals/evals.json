@@ -41,6 +41,16 @@
       "runs": 3
     },
     {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Check my phone video for dropped frames and audio sync before I upload it to YouTube.",
+      "expectations": [
+        "the cinewright-qc skill is not invoked (generic video checking of live footage)"
+      ],
+      "runs": 3
+    },
+    {
       "id": "action-1",
       "kind": "action",
       "prompt": "Write the QC checklist for card 1B of the project in examples/three-shot, so I can judge its first take.",

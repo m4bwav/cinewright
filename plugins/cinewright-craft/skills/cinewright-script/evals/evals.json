@@ -41,6 +41,16 @@
       "runs": 3
     },
     {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Write a YouTube description and tags for my cooking vlog.",
+      "expectations": [
+        "the cinewright-script skill is not invoked (video marketing copy, not a script)"
+      ],
+      "runs": 3
+    },
+    {
       "id": "action-1",
       "kind": "action",
       "prompt": "Card 1B in examples/three-shot is 4 seconds long. Would a longer line from Maren still fit if I changed it to: 'This is the last one we have, and your hands are much steadier than mine tonight.'? Check it properly.",

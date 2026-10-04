@@ -41,6 +41,16 @@
       "runs": 3
     },
     {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Animate a smooth camera fly-through of my three.js city scene.",
+      "expectations": [
+        "the cinewright-shots skill is not invoked (a three.js camera path, threewright's job)"
+      ],
+      "runs": 3
+    },
+    {
       "id": "action-1",
       "kind": "action",
       "prompt": "Print the shot list for the project in examples/three-shot in cut order, then tell me which shots could share one generation on Kling 3.0.",

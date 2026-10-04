@@ -41,6 +41,16 @@
       "runs": 3
     },
     {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Make a 10-second looping video of a spinning cube in three.js and export it as an mp4.",
+      "expectations": [
+        "the cinewright skill is not invoked (a three.js render, threewright's job)"
+      ],
+      "runs": 3
+    },
+    {
       "id": "action-1",
       "kind": "action",
       "prompt": "Plan a three-shot AI film from this idea: a girl finds a lost robot in the rain. Put the project in out/robot.",

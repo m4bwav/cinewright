@@ -41,6 +41,16 @@
       "runs": 3
     },
     {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Plot the price per second of these five video models as a bar chart: Veo 0.40, Kling 0.10, Runway 0.25, Luma 0.32, Wan 0.05.",
+      "expectations": [
+        "the cinewright-genvideo skill is not invoked (a chart, chartwright's job)"
+      ],
+      "runs": 3
+    },
+    {
       "id": "action-1",
       "kind": "action",
       "prompt": "Compile Veo prompts for every card in examples/three-shot into examples/three-shot/compiled/veo.",

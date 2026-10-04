@@ -41,6 +41,16 @@
       "runs": 3
     },
     {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Cut the ums and long pauses out of my talking-head vlog and add subtitles in Premiere.",
+      "expectations": [
+        "the cinewright-edit skill is not invoked (generic video editing of live footage)"
+      ],
+      "runs": 3
+    },
+    {
       "id": "action-1",
       "kind": "action",
       "prompt": "Copy examples/three-shot to out/cut. Its takes are listed in out/cut/takes.md (each card's clip and its length). Cut the film to the brief's target length: write the cut list with in and out points and a reason for every cut, and check the total.",

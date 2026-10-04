@@ -41,6 +41,16 @@
       "runs": 3
     },
     {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Upscale my old family VHS tapes to 4K and remove the tracking noise.",
+      "expectations": [
+        "the cinewright-finish skill is not invoked (restoring home video, not generated clips)"
+      ],
+      "runs": 3
+    },
+    {
       "id": "action-1",
       "kind": "action",
       "prompt": "Copy examples/three-shot to out/finish and use its styles/new-hollywood-239.json as the style bible. Make out/finish/clip.mp4 with ffmpeg (4 s of testsrc2 at 1280x720, 24 fps). Finish it for that style: crop to the film's frame and deliver a tagged Rec.709 H.264 file at out/finish/final.mp4, with the steps written down.",

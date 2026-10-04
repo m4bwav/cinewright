@@ -41,6 +41,16 @@
       "runs": 3
     },
     {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Normalize my podcast episode to -16 LUFS and remove the background hum.",
+      "expectations": [
+        "the cinewright-sound skill is not invoked (podcast audio, not a film mix)"
+      ],
+      "runs": 3
+    },
+    {
       "id": "action-1",
       "kind": "action",
       "prompt": "Make out/mix/cut.mp4 with ffmpeg: 4 s of testsrc2 video with a 440 Hz sine at volume 0.05 as its audio. Mix the audio to a web delivery target, mux it back as out/mix/final.mp4, and prove the loudness.",
@@ -63,15 +73,57 @@
     {
       "id": "outcome-1",
       "kind": "outcome",
-      "prompt": "How do I make a battle in my AI film sound huge when the video only shows five soldiers?",
+      "prompt": "out/mix/cut.mp4 is the locked cut of my AI short: a steady tone bed with one loud hit at 3 s. Mix its audio for web video delivery and save it as out/mix/final.mp4, video untouched.",
       "files": [],
-      "expectations": [
-        "the reply describes distance layers (near, mid, far) with the far layer as an off-screen mass",
-        "the reply says perspective follows the shot size (close shots favour near sounds, wides the mass)",
-        "the reply names a drop to silence or near-silence at the turn or climax",
-        "judge: the advice relies on sound implying what is not rendered (2 of 3 votes)"
+      "setup": [
+        [
+          "ffmpeg",
+          "-y",
+          "-v",
+          "error",
+          "-f",
+          "lavfi",
+          "-i",
+          "testsrc2=size=640x360:rate=24:duration=6",
+          "-f",
+          "lavfi",
+          "-i",
+          "sine=frequency=220:duration=6,volume=0.4",
+          "-f",
+          "lavfi",
+          "-i",
+          "sine=frequency=1000:duration=0.2,volume=7,adelay=3000",
+          "-filter_complex",
+          "[1:a][2:a]amix=inputs=2:normalize=0[a]",
+          "-map",
+          "0:v",
+          "-map",
+          "[a]",
+          "-c:v",
+          "libx264",
+          "-pix_fmt",
+          "yuv420p",
+          "-c:a",
+          "aac",
+          "-b:a",
+          "192k",
+          "-ar",
+          "48000",
+          "out/mix/cut.mp4"
+        ]
       ],
-      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example (bibles, cards, styles, brief, script, takes.md; no README, design notes, compiled prompts or planted card; the toolkit's name removed), skills disabled, Bash, PowerShell, web, agent, Glob, Grep and Skill tools denied: an off-camera ambient bed, distance by low-pass and reverb, and a near-silence before the big hit (expectations 1 and 3 largely passed); perspective following the shot size was not stated. Weak discrimination; replace in S6 with a case that needs the stated target or the preset.",
+      "checks": [
+        [
+          "python",
+          "evals/check_mix.py",
+          "{work}"
+        ]
+      ],
+      "expectations": [
+        "check: out/mix/final.mp4 keeps its video and measures -18 +/- 2 LUFS integrated with true peak at or below -2 dBTP, metered by ffmpeg ebur128 (evals/check_mix.py exits 0)",
+        "judge: the reply states the loudness target it mixed to and the measured result (2 of 3 votes)"
+      ],
+      "baseline": "not yet run; replaces the S5 battle-layers case, which passed most expectations without the skill (T-20261004-1).",
       "runs": 3
     }
   ]

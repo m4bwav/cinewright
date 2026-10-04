@@ -43,7 +43,7 @@
     {
       "id": "action-1",
       "kind": "action",
-      "prompt": "Copy examples/three-shot to out/lighthouse and delete out/lighthouse/bibles/props.json. Then make the tin matchbox look the same in every shot of out/lighthouse, and check the project afterwards.",
+      "prompt": "out/lighthouse is my film project. Make the tin matchbox look the same in every shot of it, and check the project afterwards.",
       "expectations": [
         "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
       ],
@@ -57,7 +57,18 @@
         }
       },
       "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder holding only a copy of examples/three-shot, no cinewright installed: first run (old prompt) found props.json already present and said so, which led to the self-contained prompt; second run (this prompt) searched the disk, found this repository, read the design skill and ran its cine.py. CONTAMINATED: not a valid without-skill baseline (cinewright-script L-001).",
-      "runs": 3
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/lighthouse"
+        ],
+        [
+          "delete",
+          "out/lighthouse/bibles/props.json"
+        ]
+      ]
     },
     {
       "id": "outcome-1",

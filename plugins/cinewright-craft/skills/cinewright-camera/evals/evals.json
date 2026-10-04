@@ -41,6 +41,16 @@
       "runs": 3
     },
     {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Set up the camera and lights in my three.js scene so the product model looks dramatic.",
+      "expectations": [
+        "the cinewright-camera skill is not invoked (a three.js scene, threewright's job)"
+      ],
+      "runs": 3
+    },
+    {
       "id": "action-1",
       "kind": "action",
       "prompt": "Copy examples/three-shot to out/noir. Give out/noir a film-noir camera and lighting plan: lens family, lighting and frame in its style bible, a lens on every card, and check the project afterwards.",
@@ -63,15 +73,20 @@
     {
       "id": "outcome-1",
       "kind": "outcome",
-      "prompt": "In one scene of my AI film the lamp lights her from the left in one shot and from the right in the next, and one shot comes out orange while the next is blue. What rules stop this?",
+      "prompt": "Copy examples/three-shot to out/cabin. Frame the film for 2.39 widescreen even though the video model renders 16:9, and keep the lamp lighting Maren from the same side in the same warm color in every shot. Put this in the project so every prompt carries it, then compile the Veo prompts into out/cabin/compiled/veo.",
       "files": [],
-      "expectations": [
-        "the reply says to fix one light source per scene with its direction and color, stated once for every shot of the scene",
-        "the reply says the key side changes in frame only because the camera moved to the other side, not because the light moved",
-        "the reply says to keep one white balance or color temperature per scene and name the source's color in words",
-        "judge: the advice is written as rules to put in the plan or prompts, not only as fixes in the grade (2 of 3 votes)"
+      "checks": [
+        [
+          "python",
+          "evals/check_cabin.py",
+          "{work}"
+        ]
       ],
-      "baseline": "2026-10-04, one run, same setup: passed the first three expectations without the skill (one locked lighting spec reused verbatim, key side follows the camera, fixed color temperature) and also pushed fixing color in post. Does not discriminate; replace in S6 with a case that needs the style fields or the diff.",
+      "expectations": [
+        "check: the style bible keeps aspect_ratio 16:9, sets frame_aspect 2.39:1 and a lighting rule; cards validate and continuity diff pass; every compiled Veo prompt carries the lighting rule and the 2.39 composition sentence word for word (evals/check_cabin.py exits 0)",
+        "judge: the reply treats 2.39 as a crop of the 16:9 render planned in the composition, not as a render setting (2 of 3 votes)"
+      ],
+      "baseline": "not yet run; replaces the S4 lighting-rules case, which passed without the skill (T-20261004-1).",
       "runs": 3
     }
   ]
