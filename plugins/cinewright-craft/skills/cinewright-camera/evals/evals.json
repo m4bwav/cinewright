@@ -1,0 +1,78 @@
+{
+  "skill": "cinewright-camera",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root.",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "prompt": "My AI video clips all look flat and evenly lit. How should I light a night scene in a cabin so it looks moody and stays the same across shots?",
+      "expectations": [
+        "the cinewright-camera skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "prompt": "Which lens and depth of field should I use for the close-ups in my AI short film, and how do I get a 2.39 widescreen frame when the video model only renders 16:9?",
+      "expectations": [
+        "the cinewright-camera skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "What camera should I buy for vlogging for under 800 dollars?",
+      "expectations": [
+        "the cinewright-camera skill is not invoked (buying gear, not shooting AI video)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Make the shadows in my Unity scene softer and the directional light warmer",
+      "expectations": [
+        "the cinewright-camera skill is not invoked (game engine lighting, a Unity skill's job)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "prompt": "Copy examples/three-shot to out/noir. Give out/noir a film-noir camera and lighting plan: lens family, lighting and frame in its style bible, a lens on every card, and check the project afterwards.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace, or the file), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py\\s+(cards\\s+validate|continuity\\s+diff)\\s+\\S*out/noir",
+        "or": {
+          "type": "file",
+          "path": "out/noir/bibles/style.json",
+          "contains": "\"lighting\""
+        }
+      },
+      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example (no README, design notes or compiled prompts; the toolkit's name removed), Bash, web and agent tools denied: wrote a sound noir plan into style.json but invented a `frame` field, wrote a 290-character lighting string (schema maximum 200), set lens_mm on every card and 'checked' by reading files only. Not contaminated (every read inside the folder).",
+      "runs": 3
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "prompt": "In one scene of my AI film the lamp lights her from the left in one shot and from the right in the next, and one shot comes out orange while the next is blue. What rules stop this?",
+      "files": [],
+      "expectations": [
+        "the reply says to fix one light source per scene with its direction and color, stated once for every shot of the scene",
+        "the reply says the key side changes in frame only because the camera moved to the other side, not because the light moved",
+        "the reply says to keep one white balance or color temperature per scene and name the source's color in words",
+        "judge: the advice is written as rules to put in the plan or prompts, not only as fixes in the grade (2 of 3 votes)"
+      ],
+      "baseline": "2026-10-04, one run, same setup: passed the first three expectations without the skill (one locked lighting spec reused verbatim, key side follows the camera, fixed color temperature) and also pushed fixing color in post. Does not discriminate; replace in S6 with a case that needs the style fields or the diff.",
+      "runs": 3
+    }
+  ]
+}

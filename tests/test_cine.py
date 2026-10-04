@@ -183,7 +183,8 @@ class TestCompile(Base):
 
     def test_example_compiled_files_are_current(self):
         for sub, model, extra in (("veo", "veo", []), ("veo-sequence", "veo", ["--sequence"]),
-                                  ("minimax-h3-sequence", "minimax-h3", ["--sequence", "--resolution", "480p"])):
+                                  ("minimax-h3-sequence", "minimax-h3", ["--sequence", "--resolution", "480p"]),
+                                  ("veo-new-hollywood", "veo", ["--style", EXAMPLE / "styles" / "new-hollywood-239.json"])):
             out_dir = self.tmp / sub
             code, out = run("compile", EXAMPLE, "--model", model, "--out", out_dir, *extra)
             self.assertEqual(code, 0, out)
@@ -687,3 +688,95 @@ class TestPreproduction(Base):
         for c in p.cards:
             for d in c.get("dialogue", []):
                 self.assertIn(d["line"], script)
+
+
+# ---------- S4: style fields from cinewright-camera and cinewright-history ----------
+
+NH = EXAMPLE / "styles" / "new-hollywood-239.json"
+
+
+class TestStyle(Base):
+    """PLAN §10 S4 exit check: "shoot it like 1970s New Hollywood, 2.39" changes the compiled prompts in checkable ways."""
+    BOX = TestPreproduction.BOX
+
+    def styled(self, model, sequence=False):
+        p = lib.Project(EXAMPLE, style=NH)
+        _, _, prof = lib.find_model_card(repo_ctx(), model)
+        return p, lib.compile_cards(p, p.cards, prof, sequence, DRAFT_RES.get(model))
+
+    def test_new_hollywood_changes_compiled_prompts(self):
+        nh = json.loads(NH.read_text(encoding="utf-8"))
+        base = json.loads((EXAMPLE / "bibles/style.json").read_text(encoding="utf-8"))
+        frame = "Composed for a 2.39:1 widescreen crop, heads and action inside the middle 74% of the frame height."
+        for model, seq in (("veo", False), ("minimax-h3", True), ("kling", False)):
+            _, _, before = compile_one(EXAMPLE, model, sequence=seq)
+            p, after = self.styled(model, seq)
+            self.assertEqual(len(before), len(after))
+            for (_, old, oldp, _, _), (_, new, newp, _, _) in zip(before, after):
+                self.assertIn(nh["look"], new)
+                self.assertNotIn(base["look"], new)
+                self.assertIn(nh["lighting"], new, "lighting compiles verbatim")
+                self.assertIn(frame, new, "the 2.39 frame becomes a composition sentence")
+                self.assertNotIn("2.39", old)
+                self.assertEqual(oldp.get("aspectRatio"), newp.get("aspectRatio"), "the render aspect stays a size the model offers")
+                self.assertEqual(new.count(nh["lighting"]), 1, "said once per generation")
+            for c in p.cards:
+                for m in c.get("cast", []):
+                    self.assertTrue(any(p.chars[m["id"]]["identity"] in t for _, t, _, _, _ in after))
+        _, h3 = self.styled("minimax-h3", True)
+        self.assertIn("Maren is on the left of the frame, holding " + self.BOX, h3[0][1], "staging part kept (genvideo L-004)")
+
+    def test_style_guard(self):
+        orig = lib.card_parts
+
+        def lossy(*a, **k):
+            return {key: v.replace("Low-key light, ", "") for key, v in orig(*a, **k).items()}
+        lib.card_parts = lossy
+        try:
+            p = lib.Project(EXAMPLE, style=NH)
+            _, _, prof = lib.find_model_card(repo_ctx(), "veo")
+            with self.assertRaises(SystemExit) as cm:
+                lib.compile_cards(p, [p.cards[0]], prof)
+            self.assertIn("style lighting not verbatim", str(cm.exception))
+        finally:
+            lib.card_parts = orig
+
+    def test_lens_and_move_warnings(self):
+        def warn(p):
+            return sorted({(i["card"], i["code"]) for i in lib.continuity_diff(p) if i["level"] == "warning"})
+        p = lib.Project(EXAMPLE, style=NH)
+        self.assertEqual(warn(p), [])
+        p.style["lens_family"] = "spherical zooms, 25-250mm"
+        self.assertEqual(warn(p), [("1A", "LENS")], "24mm is outside 25-250mm")
+        p.style["allowed_moves"] = ["static", "zoom-in", "zoom-out", "handheld"]
+        self.assertIn(("1B", "MOVE"), warn(p), "a dolly-in in a zooms-only style")
+        p.style.pop("lens_family")
+        p.style.pop("allowed_moves")
+        self.assertEqual(warn(p), [], "no family and no move list: nothing to check")
+
+    def test_frame_words(self):
+        st = {"aspect_ratio": "16:9"}
+        self.assertEqual(lib.frame_words(st), "")
+        st["frame_aspect"] = "1.78:1"
+        self.assertEqual(lib.frame_words(st), "", "same as the render")
+        st["frame_aspect"] = "1.37:1"
+        self.assertIn("middle 77% of the frame width", lib.frame_words(st))
+        self.assertEqual(lib.lens_range("primes 24-50mm and a 25-250mm zoom"), (24, 250))
+        self.assertIsNone(lib.lens_range("vintage primes"))
+
+    def test_style_option_and_schema(self):
+        for args in (("cards", "validate"), ("continuity", "diff")):
+            code, out = run(*args, EXAMPLE, "--style", NH)
+            self.assertEqual(code, 0, out)
+        bad = self.tmp / "bad.json"
+        st = json.loads(NH.read_text(encoding="utf-8"))
+        st["allowed_moves"] = ["static", "fly", "static"]
+        st["frame_aspect"] = "scope"
+        bad.write_text(json.dumps(st), encoding="utf-8")
+        code, out = run("cards", "validate", EXAMPLE, "--style", bad)
+        self.assertEqual(code, 1)
+        for msg in ("'fly' is not one of", "items repeat", "'scope' does not match"):
+            self.assertIn(msg, out)
+        code, out = run("compile", EXAMPLE, "--model", "veo", "--card", "1B", "--style", NH)
+        self.assertIn("Composed for a 2.39:1 widescreen crop", out)
+        self.assertIn('"aspectRatio": "16:9"', out)
