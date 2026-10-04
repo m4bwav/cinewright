@@ -1,0 +1,73 @@
+{
+  "skill": "cinewright-script",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root.",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "prompt": "Write a 30-second script for an AI video ad about a bakery opening at dawn, with one line of dialogue.",
+      "expectations": [
+        "the cinewright-script skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "prompt": "give me a logline and beats for a short film about a boy who finds a lost robot",
+      "expectations": [
+        "the cinewright-script skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "proofread my cover letter and make it sound more confident",
+      "expectations": [
+        "the cinewright-script skill is not invoked (general writing, not a film script)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "write a Python script that renames my video files by date",
+      "expectations": [
+        "the cinewright-script skill is not invoked ('script' as code)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "prompt": "Card 1B in examples/three-shot is 4 seconds long. Would a longer line from Maren still fit if I changed it to: 'This is the last one we have, and your hands are much steadier than mine tonight.'? Check it properly.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py\\s+continuity\\s+diff"
+      },
+      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder holding only a copy of examples/three-shot, no cinewright installed: searched the whole disk, found this repository and ran its cine.py continuity diff on the scratch copy; stopped at the 20-turn limit with no answer. CONTAMINATED: not a valid without-skill baseline (L-001).",
+      "runs": 3
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "prompt": "Write the brief and script for a 20-second AI film in out/robot: a girl finds a lost robot in the rain. Include one line of dialogue.",
+      "files": [],
+      "expectations": [
+        "out/robot/brief.md holds a one-sentence logline and 2-3 numbered beats",
+        "out/robot/script.md has a slugline in the INT./EXT. PLACE - TIME form",
+        "the dialogue line has at most 12 words",
+        "judge: the script names one scene turn the camera can see (2 of 3 votes)"
+      ],
+      "baseline": "not run separately; S6 runs it without the skill.",
+      "runs": 3
+    }
+  ]
+}

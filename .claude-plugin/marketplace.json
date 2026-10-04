@@ -11,13 +11,13 @@
     {
       "name": "cinewright",
       "source": "./plugins/cinewright",
-      "description": "Core: plan, continuity-check and compile AI video shots",
+      "description": "Core: plan shots, continuity-check and compile AI video prompts, review takes",
       "version": "0.0.1"
     },
     {
       "name": "cinewright-craft",
       "source": "./plugins/cinewright-craft",
-      "description": "Craft: film roles beyond the core (empty until later releases)",
+      "description": "Craft: script, design and movement now; camera, edit, finish, sound and history later",
       "version": "0.0.1"
     },
     {

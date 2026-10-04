@@ -114,6 +114,7 @@ Measured by `cine.py budget`; CI fails at red; at yellow the session tells Mark 
 | Core descriptions only (5 skills) | ≤ 1,800 | 1,801-2,500 | > 2,500 |
 | Reference entry lines | ≤ 60 | 61-100 | > 100 |
 | Reference entry tokens (est.) | ≤ 700 | 701-1,200 | > 1,200 |
+| Model card tokens (est.), Compile block included (entries with `model`) | ≤ 900 | 901-1,200 | > 1,200 |
 | `references/INDEX.md` tokens per skill | ≤ 1,500 | 1,501-3,000 | > 3,000 |
 | Skill folder size | ≤ 150 KB | 151-300 KB | > 300 KB |
 | Files per plugin (directory cap 512) | ≤ 350 | 351-450 | > 450 |
