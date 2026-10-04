@@ -4,7 +4,7 @@ You are building stage S3 of cinewright, a plugin set for AI video that is priva
 
 ## Read first (only these, in order)
 
-1. `ai-docs/HANDOFF.md`, then Mark's review of the S2 PR (`gh pr list -R m4bwav/cinewright --state all`, then `gh pr view <n> -R m4bwav/cinewright --comments`). If the S2 PR is still open, branch `s3/preproduction` off `s2/genvideo-qc` and say so. If he asked for changes, make those first. He was asked about a model-card budget row (`ai-docs/decisions/2026-10-03-proposed-model-card-budget-row.md`): apply his answer.
+1. `ai-docs/HANDOFF.md`, then Mark's review of the S2 PR (`gh pr list -R m4bwav/cinewright --state all`, then `gh pr view <n> -R m4bwav/cinewright --comments`). If the S2 PR (#3) is still open, branch `s3/preproduction` off `s2/genvideo-qc` and say so. If he asked for changes, make those first. He was asked about a model-card budget row (`ai-docs/decisions/2026-10-03-proposed-model-card-budget-row.md`): apply his answer.
 2. `ai-docs/decisions/` (S1 and S2 decisions: shared copies, field-lesson citations, failure codes in shared vocab, render media location).
 3. `ai-docs/plans/PLAN.md` §2 (skill set and slices: `shots` is core, the other three are `cinewright-craft`), §4, §6 budgets, §7 tiers, §10 S3. This is the spec.
 4. `CODEMAP.md`. Run `python scripts/cine.py --help`; read only the functions you change.
