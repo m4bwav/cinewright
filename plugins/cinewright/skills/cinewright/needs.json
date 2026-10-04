@@ -1,0 +1,14 @@
+{
+  "vocab": [],
+  "lib": [
+    "cine.py"
+  ],
+  "schemas": [
+    "shot-card.schema.json",
+    "style-bible.schema.json",
+    "character-bible.schema.json",
+    "location-bible.schema.json",
+    "scene-axis-bible.schema.json",
+    "take.schema.json"
+  ]
+}

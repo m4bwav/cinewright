@@ -1,44 +1,40 @@
-# cinewright: session S1 (scaffold and one vertical slice)
+# cinewright: session S2 (genvideo and qc)
 
-You are building stage S1 of cinewright, a public-at-release, evergreen plugin set that gives an agent the craft of every film role plus AI video generation, so generated video is coherent within and between shots. The plan is settled; this session builds the skeleton and proves one path end to end. It does not write the craft knowledge (S3-S5) or more than one model card (S2).
+You are building stage S2 of cinewright, a public-at-release, evergreen plugin set that gives an agent the craft of every film role plus AI video generation, so generated video is coherent within and between shots. S1 built the scaffold, three core skills (`cinewright`, `cinewright-continuity`, `cinewright-genvideo` as a Veo-only stub), the `cine.py` CLI, and a worked three-shot example. This session fills genvideo with every model card and its compiler, adds the qc skill and its scripts, and runs the first real render. It does not write craft knowledge (S3-S5).
 
 ## Read first (only these, in order)
 
-1. `ai-docs/HANDOFF.md` and the decisions Mark answered (look for his replies in the PR #1 conversation, `gh pr view 1 -R m4bwav/cinewright --comments`, or in `ai-docs/decisions/`). If D2 (license) or D3 (slices) is unanswered, build with the recommendation and say so.
-2. `ai-docs/plans/PLAN.md` §1-§7 and §10 S1. This is the spec.
-3. `ai-docs/research/2026-10-03-packaging-verification.md`: manifest rules (`strict`, the six frontmatter keys, the Agent Plugins `$schema`, directory file limits, no `bin/`, no symlinks).
-4. The evergreen unit rules: `<projects>/evergreen-protocol/protocol/PROTOCOL.md` §2 and §9, `TESTING.md`, and `templates/SKILL.md.template`, `evals.json.template`, `SETUP.md.template` in that repo. Use `evergreen.py` to scaffold `evergreen.json` rather than hand-writing it.
-5. Skim `<projects>/threewright/skills/threewright/SKILL.md` and `kb/SCHEMA.md` for shape only.
-6. Brief §6 Veo entry and the Veo prompt guide (https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1 and https://docs.cloud.google.com/vertex-ai/generative-ai/docs/video/video-gen-prompt-guide): re-check Veo 3.1 durations, sizes, reference images and timestamp syntax before writing its card.
-
-Delegate wide reading to subagents and keep their summaries.
+1. `ai-docs/HANDOFF.md`, then Mark's review of the S1 PR (`gh pr list -R m4bwav/cinewright --state all`, then `gh pr view <n> -R m4bwav/cinewright --comments`). If the S1 PR is still open, branch `s2/genvideo-qc` off `s1/scaffold` and say so; if he asked for changes, make those first.
+2. `ai-docs/decisions/` (three S1 decisions: defaults used for D1-D7, how shared sources are copied and drift-checked, how private field lessons are cited).
+3. `ai-docs/plans/PLAN.md` §5 (scripts: `qc`, `takes`), §6 budgets, §7 tiers, §10 S2. This is the spec.
+4. `CODEMAP.md` for where things live. Run `python scripts/cine.py --help` rather than reading `shared/lib/cine.py`; read only the functions you change (`compile_cards`, `card_parts`).
+5. `plugins/cinewright/skills/cinewright-genvideo/references/veo-3-1.md` (the one existing card, its Compile block shape) and `shared/schemas/model-card.schema.json`.
+6. Brief §6 (`ai-docs/research/2026-10-03-research-brief.md`) for the model list. Re-verify each model from its vendor's own docs before writing its card; delegate one subagent per two or three models and keep their summaries.
 
 ## The step
 
-Work on a branch off `main` (`s1/scaffold`).
-
-1. Layout from PLAN §3: root `.claude-plugin/marketplace.json`; `plugins/cinewright/`, `plugins/cinewright-craft/` (empty skills list for now, README says so), `plugins/cinewright-dev/`, each with `.claude-plugin/plugin.json` and an Agent Plugins `plugin.json`; `shared/vocab/`, `shared/schemas/`, `shared/lib/`; `scripts/cine.py`; `tests/`; LICENSE (MIT unless Mark chose otherwise); README stub of 40+ words.
-2. Schemas in `shared/schemas/`: reference entry, shot card, bibles (style, character, location, scene axis), model card, take record. Keep the shot card generator-neutral and built from film practice (shot list and script-supervisor columns), not from any competitor's card.
-3. `cine.py` groups `kb` (index, search, show, lint), `cards` (new, validate, export --film-json), `compile` (Veo only), `continuity diff`, `budget` (PLAN §6 thresholds, duplicate detection), `zip`, `build` (copies `shared/vocab` entries per `needs.json` with sha256 headers; lint fails on drift). Python 3.9+ stdlib, cross-platform. A test per command; `python -m unittest` runs them.
-4. Skills, each a full evergreen unit (SKILL.md ≤ 80 lines, RESEARCH, CHANGELOG, LEARNINGS, TESTS, evergreen.json, evals/evals.json with 2 triggers, 2 decoys, 1 action, 1 outcome, baseline): `cinewright` (router and pipeline), `cinewright-continuity` (bibles, axis and screen direction, 30-degree rule, eyelines, per-shot checklist; generalise local-render lessons L-005, L-011, L-012 and L-013 by title, without private context). `cinewright-genvideo` as a stub with only the Veo 3.1 card and the compile rule. Descriptions: trigger words first, within PLAN §6 character budgets, six frontmatter keys only.
-5. One worked example under `examples/three-shot/`: a one-line idea → shot cards → bibles → `continuity diff` (clean, then one planted error caught) → compiled Veo prompts. Not rendered.
-6. CI: `.github/workflows/ci.yml` running tests, `cine.py kb lint`, `cine.py budget`, `claude plugin validate` if available. Per D6, set `runs-on` for a self-hosted runner while private, or leave it manual-dispatch and run the same checks locally if no runner exists; say which.
-7. Exit check (PLAN §10 S1): the example passes, budget green, `claude plugin validate .` passes for the marketplace and each plugin, tests pass, `cine.py zip` builds a claude.ai ZIP for `cinewright-continuity` with the skill folder at the top. Run every check yourself and quote the output in the log.
+1. Model cards, one entry each in genvideo `references/`, re-verified from vendor docs with sources and `volatile_claims`: Veo 3.1 (re-check: Gemini API previews were due to shut down 2026-10-22), Gemini Omni Flash (`gemini-omni-1.1-flash`, found in S1 as Veo's replacement on the Gemini API), Kling 3.0, Seedance 2.0 (2.5 if confirmed), Runway Gen-4.5, Luma Ray3, MiniMax H3, Wan 2.2, LTX-2. Mark anything unverified. Status `shut-down` cards are not written (Sora 2).
+2. Compiler for all of them: extend the Compile block and `card_parts` only as far as the cards need (Kling `Name (tone):` dialogue, Seedance `@Image1` refs, H3 moves written in the sentence as type, amplitude and speed, Wan sizes divisible by 16 and frames 4n+1). One test per model that checks the output against a prompt from that vendor's own guide (shape, order, syntax), and the identity-verbatim guard on every model.
+3. Failure taxonomy: about 20 codes, symptom, cause, cheapest fix (the repair ladder in the router's `pipeline` entry), each mapped to a qc rubric item. One entry, or two if the budget needs it.
+4. `cinewright-qc` skill, a full evergreen unit (SKILL.md 80 lines or fewer, RESEARCH, CHANGELOG, LEARNINGS, TESTS, evergreen.json with tier moderate, evals with 2 triggers, 2 decoys, 1 action, 1 outcome, baseline), with SETUP.md for ffmpeg made from the evergreen `SETUP.md.template`. Commands in `shared/lib/cine.py`: `qc sheet`, `qc spec`, `qc loud`, `qc rubric`, `takes log`, `takes lastframe` (PLAN §5). Tests use a tiny clip generated by ffmpeg in the test itself, and skip cleanly when ffmpeg is missing.
+5. First real render: the S1 example through the maintainer's local renderer (MiniMax H3 through the local-render skill; no cost). Contact sheet, rubric, one failure routed to a fix and re-rendered. Clips, sheets and verdicts stay outside the repo (vault sidecar); the repo gets only the lesson, written as a LEARNINGS entry with a "field lesson" style citation if it names private context.
+6. Budgets: model cards sit near the 700-token entry line (the Veo card measured 695 in S1, frontmatter and Compile block included). If cards cannot fit without losing facts, propose a separate model-card budget row to Mark with numbers; do not change thresholds silently.
 
 ## Rules
 
 - No AI attribution anywhere: commits, PRs, files.
-- Public-repo hygiene: no LAN IPs, hostnames, GPU model, local paths under `D:/`, or names of Mark's private projects in any file that will ship. Private notes go in the vault sidecar (`everlast.py note --private`).
+- Public-repo hygiene: no LAN IPs, hostnames, GPU model, local paths under `D:/`, or names of Mark's private projects in any file that will ship. `cine.py kb lint` checks paths, LAN addresses and GPU names; names are on you. Private notes go in the vault sidecar (`everlast.py note --private`).
 - Write knowledge as rules, numbers and vocabulary the model lacks. One default, not a menu. Cite primary sources; mark what is unverified; date what changes.
 - Ideas from other skill repos only, never text. Nothing adapted from smixs/visual-skills without attribution.
-- Relative markdown links, never wikilinks. Cite lessons with their code names; local-render's lessons have none, so cite them by ID and title.
-- Run commands yourself; do not hand them to Mark.
+- Relative markdown links, never wikilinks. Cite lessons with their code names; private field lessons as "field lesson NNN" with a title.
+- Edit `shared/`, then `python scripts/cine.py build`; never edit copies inside skills.
+- Run commands yourself; do not hand them to Mark. Python 3.9+ stdlib only; test on 3.9 too (`py -V:Astral/CPython3.9.25`).
 - At a yellow budget reading, tell Mark in one line and keep going; red fails the build.
 - Record as you go: `ai-docs/log.md`, LEARNINGS in the skill that taught it, decisions in `ai-docs/decisions/`.
 
 ## Stop and ask Mark when
 
-S1's exit check passes: open a PR, assign `m4bwav`, add the `needs-review` label, give him the PR link and a short summary of what works, and stop. The PR holds code, so it waits for his review; do not merge it. Also stop if a choice would cost money (a hosted render, a paid API), publish anything (the repo stays private), or change another repo.
+S2's exit check passes (PLAN §10 S2: compile output for every model checked against its vendor's own examples; qc runs on a real clip; one failure routed to a fix and re-rendered; tests, `kb lint`, `budget` green, `claude plugin validate` on the root and each plugin, all quoted in the log): open a PR, assign `m4bwav`, add the `needs-review` label, give him the PR link and a short summary of what works, and stop. The PR holds code, so it waits for his review; do not merge it. Also stop before any hosted render (Veo, Kling, Seedance, Runway, Luma cost money: show the prompt, the settings and the expected cost and wait), before publishing anything (the repo stays private), or before changing another repo (local-render is used, not edited).
 
 ## Chain rule
 
