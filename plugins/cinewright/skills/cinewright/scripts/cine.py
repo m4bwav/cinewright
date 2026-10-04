@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:c652df7cb0bb73fe25a9cac0e3fdff2572439aa7050d309f6b32f61653b3a979; edit the source
-"""cinewright runtime CLI: kb, cards, compile, continuity.
+# copied from shared/lib/cine.py sha256:312069943ae02dd24cb8d25368c296cfc69d1fe447045ac7a44c9642dcf274d5; edit the source
+"""cinewright runtime CLI: kb, cards, compile, continuity, qc, takes.
 
 Run it; do not read it. Python 3.9+, standard library only.
 
@@ -8,16 +8,23 @@ Run it; do not read it. Python 3.9+, standard library only.
   python scripts/cine.py cards new PROJECT --id 1D --scene 1 [--cast a,b]
   python scripts/cine.py cards validate PROJECT
   python scripts/cine.py cards export PROJECT --film-json [--out FILE]
-  python scripts/cine.py compile PROJECT --model veo [--card ID ...] [--sequence] [--out DIR]
+  python scripts/cine.py compile PROJECT --model MODEL [--card ID ...] [--sequence] [--resolution R] [--out DIR]
   python scripts/cine.py continuity diff PROJECT [--with CARD.json] [--json]
+  python scripts/cine.py qc sheet CLIP | qc spec CLIP --project P --card ID | qc loud FILE
+  python scripts/cine.py qc rubric PROJECT --card ID | qc rubric --read RUBRIC.json
+  python scripts/cine.py takes log PROJECT --card ID --model M --verdict V | takes lastframe CLIP --out PNG
 
 A PROJECT folder holds bibles/style.json, characters.json, locations.json,
 scenes.json and cards/*.json (one shot card per file).
 """
 import argparse
 import datetime
+import hashlib
 import json
+import math
 import re
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -583,25 +590,73 @@ def find_model_card(ctx, model):
 
 def _sentence(s):
     s = s.strip()
-    return s if not s or s[-1] in ".!?\"" else s + "."
+    return s if not s or s[-1] in ".!?\"'>}" else s + "."
 
 
 def _cap(s):
     return s[:1].upper() + s[1:]
 
 
-def card_parts(p, card, prof):
+def _low(s):
+    return s[:1].lower() + s[1:]
+
+
+# Moves written as a sentence of type + amplitude + speed (Compile "move_style": "sentence").
+MOVE_SENTENCES = {
+    "static": "The camera stays static", "pan-left": "The camera pans left", "pan-right": "The camera pans right",
+    "tilt-up": "The camera tilts up", "tilt-down": "The camera tilts down",
+    "dolly-in": "The camera pushes in", "dolly-out": "The camera pulls out",
+    "truck-left": "The camera trucks left", "truck-right": "The camera trucks right",
+    "track": "The camera tracks the subject", "crane-up": "The camera pedestals up",
+    "crane-down": "The camera pedestals down", "handheld": "The camera shakes",
+    "zoom-in": "The camera zooms in", "zoom-out": "The camera zooms out",
+}
+# Generic parameter names; a Compile block's "param_names" renames them, null drops one.
+DEFAULT_PARAMS = {"model": "model", "duration": "durationSeconds", "aspect": "aspectRatio", "resolution": "resolution",
+                  "seed": "seed", "refs": "referenceImages", "negative": "negativePrompt",
+                  "width": "width", "height": "height", "frames": "frames", "fps": "fps"}
+
+
+def generation_refs(p, cards, prof):
+    """Ordered reference list for one generation and the tag text per character id."""
+    refs, tags = [], {}
+    for c in cards:
+        for m in c.get("cast", []):
+            for r in p.chars[m["id"]].get("refs", []):
+                if r not in refs:
+                    refs.append(r)
+        for r in c.get("refs", []):
+            if r not in refs:
+                refs.append(r)
+    if prof.get("ref_tag"):
+        for cid, ch in p.chars.items():
+            mine = [refs.index(r) + 1 for r in ch.get("refs", []) if r in refs]
+            if mine:
+                tags[cid] = " ".join(prof["ref_tag"].format(n=n, n0=n - 1, name=ch["name"]) for n in mine)
+    return refs, tags
+
+
+def card_parts(p, card, prof, tags=None, speakers=None):
     sc = p.scene_map[card["scene"]]
     loc = p.locs[sc["location"]]
     cam = card["camera"]
     flipped = cam.get("side") == "B"
+    tags, speakers = tags or {}, speakers or {}
+    sentence_moves = prof.get("move_style") == "sentence"
     parts = {}
     lens = ", %smm lens" % int(cam["lens_mm"]) if cam.get("lens_mm") else ""
-    parts["camera"] = _sentence("%s, %s%s, %s" % (_cap(SIZE_WORDS[cam["size"]]), ANGLE_WORDS[cam["angle"]], lens, MOVE_WORDS[cam["move"]]))
+    move = "" if sentence_moves else ", " + MOVE_WORDS[cam["move"]]
+    parts["camera"] = _sentence("%s, %s%s%s" % (_cap(SIZE_WORDS[cam["size"]]), ANGLE_WORDS[cam["angle"]], lens, move))
+    if sentence_moves:
+        suffix = "" if cam["move"] == "static" else prof.get("move_suffix", "")
+        parts["move"] = _sentence(MOVE_SENTENCES[cam["move"]] + suffix)
     subj = []
     for m in card.get("cast", []):
         ch = p.chars[m["id"]]
-        line = "%s, %s, wearing %s" % (ch["name"], ch["identity"].rstrip("."), wardrobe_for(ch, sc["id"]).rstrip("."))
+        who = ch["name"]
+        if m["id"] in tags:
+            who = tags[m["id"]] if prof.get("ref_replaces_name") else "%s %s" % (who, tags[m["id"]])
+        line = "%s, %s, wearing %s" % (who, ch["identity"].rstrip("."), wardrobe_for(ch, sc["id"]).rstrip("."))
         if m.get("position"):
             line += ", %s" % POSITION_WORDS[m["position"]]
         if m.get("holding"):
@@ -610,6 +665,15 @@ def card_parts(p, card, prof):
     if card.get("subject"):
         subj.append(_sentence(_cap(card["subject"])))
     parts["subject"] = " ".join(subj)
+    # --sequence: people are introduced once in the header, so each shot restates where they stand and what they hold
+    stage = []
+    for m in card.get("cast", []):
+        bits = [POSITION_WORDS[m["position"]]] if m.get("position") else []
+        if m.get("holding"):
+            bits.append("holding the %s" % m["holding"])
+        if bits:
+            stage.append(_sentence("%s is %s" % (p.chars[m["id"]]["name"], ", ".join(bits))))
+    parts["staging"] = " ".join(stage)
     act = [_sentence(card["action"])]
     for m in card.get("cast", []):
         name = p.chars[m["id"]]["name"]
@@ -618,7 +682,10 @@ def card_parts(p, card, prof):
             t = t if m.get("travel") or not flipped else FLIP.get(t, t)
             act.append(_sentence("%s is %s" % (name, TRAVEL_WORDS[t])))
         if m.get("eyeline") in EYELINE_WORDS:
-            act.append(_sentence("%s is %s" % (name, EYELINE_WORDS[m["eyeline"]])))
+            target = m.get("looks_at")
+            target = p.chars[target]["name"] if target in p.chars else ("the %s" % target if target else "")
+            on = ", at %s" % target if target and m["eyeline"] != "camera" else ""
+            act.append(_sentence("%s is %s%s" % (name, EYELINE_WORDS[m["eyeline"]], on)))
     parts["action"] = " ".join(act)
     tod = card.get("time_of_day", sc["time_of_day"]).replace("-", " ")
     parts["context"] = _sentence(_cap("%s, %s" % (loc["description"].rstrip("."), tod)))
@@ -635,13 +702,18 @@ def card_parts(p, card, prof):
     parts["sun"] = _sentence(_cap(sc["sun"])) if sc.get("sun") else ""
     parts["key"] = _sentence(_cap(", ".join(lt[1:] if sc.get("sun") else lt))) if lt[1 if sc.get("sun") else 0:] else ""
     parts["style"] = _sentence(p.style["look"])
-    audio = []
-    for d in card.get("dialogue", []):
-        tone = d.get("tone")
-        audio.append(prof["dialogue"].format(name=p.chars[d["character"]]["name"], tone_clause=(" " + tone) if tone else "", line=d["line"]))
-    if card.get("sound"):
-        audio.append(prof["audio"].format(sound=card["sound"].rstrip(".")))
-    parts["audio"] = " ".join(_sentence(x) for x in audio)
+    lines = []
+    if prof["dialogue"]:
+        for d in card.get("dialogue", []):
+            ch = p.chars[d["character"]]
+            tone = d.get("tone")
+            lines.append(_sentence(prof["dialogue"].format(
+                name=ch["name"], line=d["line"], tone=tone or "", tone_clause=(" " + tone) if tone else "",
+                tone_paren=(" (%s)" % tone) if tone else "", speaker=speakers.get(d["character"], "S1"),
+                voice_clause=(" with a %s voice" % ch["voice"]) if ch.get("voice") else "")))
+    parts["dialogue"] = " ".join(lines)
+    parts["sound"] = _sentence(_cap(prof["audio"].format(sound=card["sound"].rstrip(".")))) if card.get("sound") and prof["audio"] else ""
+    parts["audio"] = " ".join(x for x in (parts["dialogue"], parts["sound"]) if x)
     return parts
 
 
@@ -650,17 +722,51 @@ def snap_duration(seconds, allowed):
     return up[0] if up else max(allowed)
 
 
-def compile_cards(p, cards, prof, sequence=False):
-    """Return a list of (label, prompt, params, warnings)."""
+def plan_length(total, prof):
+    """Rendered length in seconds and frame count (None unless the model has a frame grid)."""
+    fr = prof.get("frames")
+    if not fr:
+        return snap_duration(total, prof["durations_s"]), None
+    lo, hi = min(prof["durations_s"]), max(prof["durations_s"])
+    fps, step, off = fr["fps"], fr["step"], fr["offset"]
+    want = min(max(total, lo), hi) * fps
+    frames = int(max(0, math.ceil((want - off) / float(step)))) * step + off
+    while frames / float(fps) > hi + 1e-9 and frames - step >= off:
+        frames -= step
+    return round(frames / float(fps), 3), frames
+
+
+def model_size(prof, resolution, aspect):
+    sizes = prof.get("sizes", {}).get(resolution)
+    if sizes is not None:
+        if aspect not in sizes:
+            raise SystemExit("%s has no %s size at %s (%s)" % (prof["model_id"], aspect, resolution, ", ".join(sizes)))
+        w, h = (int(x) for x in sizes[aspect].split("x"))
+        return w, h
+    w, h = resolution_size(resolution, aspect)
+    m = prof.get("size_multiple", 1)
+    return w // m * m, h // m * m
+
+
+def _stamp(tpl, n, start, end):
+    mins, secs = divmod(start, 60)
+    return tpl.format(n=n, start="%02d:%02d" % divmod(int(round(start)), 60), end="%02d:%02d" % divmod(int(round(end)), 60),
+                      start_s="%g" % round(start, 3), end_s="%g" % round(end, 3), start_ms="%02d:%06.3f" % (mins, secs))
+
+
+def compile_cards(p, cards, prof, sequence=False, resolution=None):
+    """Return a list of (label, prompt, params, warnings, info); info holds seconds and est_usd."""
     out = []
     st = p.style
+    res = resolution or st["resolution"]
     problems = []
     if st["aspect_ratio"] not in prof["aspect_ratios"]:
         problems.append("aspect %s not offered (%s)" % (st["aspect_ratio"], ", ".join(prof["aspect_ratios"])))
-    if st["resolution"] not in prof["resolutions"]:
-        problems.append("resolution %s not offered (%s)" % (st["resolution"], ", ".join(prof["resolutions"])))
+    if res not in prof["resolutions"]:
+        problems.append("resolution %s not offered (%s); pick one with --resolution or change the style bible" % (res, ", ".join(prof["resolutions"])))
     if problems:
         raise SystemExit("style bible does not fit %s: %s" % (prof["model_id"], "; ".join(problems)))
+    names = dict(DEFAULT_PARAMS, **prof.get("param_names", {}))
     groups = [[c] for c in cards]
     if sequence:
         groups, cur = [], []
@@ -674,63 +780,119 @@ def compile_cards(p, cards, prof, sequence=False):
             groups.append(cur)
     for g in groups:
         warnings = []
-        refs = []
+        refs, tags = generation_refs(p, g, prof)
+        speakers = {}
         for c in g:
-            refs += [r for r in c.get("refs", []) if r not in refs]
+            for d in c.get("dialogue", []):
+                speakers.setdefault(d["character"], "S%d" % (len(speakers) + 1))
+        sound = []
         if len(g) == 1:
-            parts = card_parts(p, g[0], prof)
-            text = " ".join(parts[k] for k in prof["order"] if parts.get(k))
+            parts = card_parts(p, g[0], prof, tags, speakers)
+            main = " ".join(parts[k] for k in prof["order"] if parts.get(k))
+            if parts["sound"]:
+                sound.append(parts["sound"])
             total = g[0]["duration_s"]
+            shots = [total]
         elif "timestamp" not in prof:
-            raise SystemExit("%s has no timestamp syntax; compile without --sequence" % prof["model_id"])
+            raise SystemExit("%s has no multi-shot syntax; compile without --sequence" % prof["model_id"])
         else:
-            first = card_parts(p, g[0], prof)
+            first = card_parts(p, g[0], prof, tags, speakers)
             people = []
             for c in g:
                 for m in c.get("cast", []):
                     ch = p.chars[m["id"]]
-                    line = _sentence("%s, %s, wearing %s" % (ch["name"], ch["identity"].rstrip("."), wardrobe_for(ch, c["scene"]).rstrip(".")))
+                    who = ch["name"]
+                    if m["id"] in tags:
+                        who = tags[m["id"]] if prof.get("ref_replaces_name") else "%s %s" % (who, tags[m["id"]])
+                    line = _sentence("%s, %s, wearing %s" % (who, ch["identity"].rstrip("."), wardrobe_for(ch, c["scene"]).rstrip(".")))
                     if line not in people:
                         people.append(line)
-            head = " ".join(people + [first[k] for k in ("context", "sun", "style") if first.get(k)])
+            pool = dict(first, people=" ".join(people))
+            head = " ".join(pool[k] for k in prof.get("sequence_head", ["people", "context", "sun", "style"]) if pool.get(k))
             blocks, t = [], 0.0
-            for c in g:
-                parts = card_parts(p, c, prof)
+            for i, c in enumerate(g):
+                parts = card_parts(p, c, prof, tags, speakers)
+                if parts["sound"]:
+                    sound.append(parts["sound"])
                 start, end = t, t + c["duration_s"]
-                stamp = prof["timestamp"].format(start="%02d:%02d" % divmod(int(start), 60), end="%02d:%02d" % divmod(int(end), 60))
-                body = " ".join(parts[k] for k in ("camera", "action", "key", "audio") if parts.get(k))
-                blocks.append("%s %s" % (stamp, body))
+                tpl = prof["timestamp"] if i == 0 else prof.get("timestamp_next", prof["timestamp"])
+                stamp = _stamp(tpl, i + 1, start, end)
+                body = " ".join(parts[k] for k in prof.get("sequence_block", ["camera", "staging", "action", "key", "audio"]) if parts.get(k))
+                if stamp and stamp.rstrip()[-1:] not in ".:]),":
+                    body = _low(body)
+                blocks.append(("%s %s" % (stamp, body)).strip())
                 t = end
-            text = head + "\n" + "\n".join(blocks)
+            if prof.get("sequence_join", "\n") == "\n":
+                main = head + "\n" + "\n".join(blocks)
+            else:
+                main = " ".join([head] + blocks)
             total = t
-        dur = snap_duration(total, prof["durations_s"])
-        forced = prof.get("resolution_duration_s", {}).get(st["resolution"])
+            shots = [c["duration_s"] for c in g]
+        if prof.get("prefix"):
+            main = prof["prefix"] + " " + main
+        if prof.get("single_shot") and len(g) == 1:
+            main = prof["single_shot"] + " " + main
+        if prof.get("negative_prompt") == "inline" and prof.get("negative_terms"):
+            main = main + " " + prof["negative_terms"]
+        if prof.get("layout"):
+            text = prof["layout"].format(main=main, sound=" ".join(sound) or prof.get("empty", "N/A"))
+        else:
+            text = main
+        dur, frames = plan_length(total, prof)
+        forced = prof.get("resolution_duration_s", {}).get(res)
         if refs and prof.get("reference_duration_s"):
             forced = prof["reference_duration_s"]
         if forced:
             dur = forced
+        if total > max(prof["durations_s"]):
+            warnings.append("planned %ss, %s renders at most %ss: split the card or cut it shorter" % (total, prof["model_id"], max(prof["durations_s"])))
+        elif abs(dur - total) > 0.1:
+            warnings.append("planned %ss, rendered at %ss: trim in the edit" % (total, dur))
         if refs and len(refs) > prof.get("max_reference_images", 0):
             warnings.append("%d reference images, %s takes %d" % (len(refs), prof["model_id"], prof.get("max_reference_images", 0)))
-        if dur != total:
-            warnings.append("planned %ss, rendered at %ss: trim in the edit" % (total, dur))
+        if not prof["dialogue"] and any(c.get("dialogue") for c in g):
+            warnings.append("%s makes no speech: record the dialogue and lay it in the mix" % prof["model_id"])
+        if not prof["audio"] and any(c.get("sound") for c in g):
+            warnings.append("%s makes no sound: the sound goes in the mix" % prof["model_id"])
         words = len(text.split())
         if words > prof["max_words"]:
             warnings.append("%d words, over the %d-word guide: shorten action or context, never the identity string" % (words, prof["max_words"]))
+        if prof.get("max_chars") and len(text) > prof["max_chars"]:
+            warnings.append("%d characters, the API limit is %d: shorten action or context, never the identity string" % (len(text), prof["max_chars"]))
         for c in g:
             for m in c.get("cast", []):
                 if p.chars[m["id"]]["identity"] not in text:
                     raise SystemExit("compiler bug: identity of %s not verbatim in %s" % (m["id"], c["id"]))
-        params = {"model": prof["model_id"], "durationSeconds": dur, "aspectRatio": st["aspect_ratio"],
-                  "resolution": st["resolution"]}
+        params = {}
+
+        def put(key, val):
+            if names.get(key):
+                params[names[key]] = val
+        put("model", prof["model_id"])
+        if frames is None:
+            put("duration", prof["duration_format"].format(d=dur) if prof.get("duration_format") else dur)
+        put("aspect", prof.get("aspect_values", {}).get(st["aspect_ratio"], st["aspect_ratio"]))
+        put("resolution", res)
+        if frames is not None or prof.get("sizes") or prof.get("size_multiple"):
+            w, h = model_size(prof, res, st["aspect_ratio"])
+            put("width", w)
+            put("height", h)
+        if frames is not None:
+            put("frames", frames)
+            put("fps", prof["frames"]["fps"])
+        if len(g) > 1 and prof.get("shot_lengths"):
+            params[prof["shot_lengths"]] = shots
         seeds = [c["seed"] for c in g if "seed" in c]
         if seeds and prof.get("seed"):
-            params["seed"] = seeds[0]
+            put("seed", seeds[0])
         if refs:
-            params["referenceImages"] = refs
+            put("refs", refs)
         if prof.get("negative_prompt") == "field" and prof.get("negative_terms"):
-            params["negativePrompt"] = prof["negative_terms"]
+            put("negative", prof["negative_terms"])
+        rate = prof.get("usd_per_s", {}).get(res)
+        info = {"seconds": dur, "est_usd": round(rate * dur, 2) if rate is not None else None}
         label = "+".join(c["id"] for c in g)
-        out.append((label, text, params, warnings))
+        out.append((label, text, params, warnings, info))
     return out
 
 
@@ -746,21 +908,363 @@ def cmd_compile(ctx, a):
     if not cards:
         print("no matching cards", file=sys.stderr)
         return 1
-    results = compile_cards(p, cards, prof, a.sequence)
-    for label, text, params, warnings in results:
+    results = compile_cards(p, cards, prof, a.sequence, a.resolution)
+    cost = 0.0
+    for label, text, params, warnings, info in results:
         if a.out:
             out = Path(a.out)
             write_text(out / ("%s.txt" % label), text + "\n")
-            write_text(out / ("%s.params.json" % label), json.dumps(params, indent=2) + "\n")
-        print("== %s  %s  %ss %s %s  %d words" % (label, params["model"], params["durationSeconds"], params["aspectRatio"], params["resolution"], len(text.split())))
+            write_text(out / ("%s.params.json" % label), json.dumps(params, indent=2, ensure_ascii=False) + "\n")
+        price = "" if info["est_usd"] is None else "  est. $%.2f" % info["est_usd"]
+        cost += info["est_usd"] or 0
+        print("== %s  %s  %ss %s %s  %d words%s" % (label, prof["model_id"], info["seconds"], p.style["aspect_ratio"], a.resolution or p.style["resolution"], len(text.split()), price))
         if not a.out:
             print(text)
-            print("params: %s" % json.dumps(params))
+            print("params: %s" % json.dumps(params, ensure_ascii=False))
         for w in warnings:
             print("  warning: %s" % w)
     if a.out:
         print("wrote %d prompts to %s (model card %s, last_checked %s)" % (len(results), a.out, path.name, meta.get("last_checked")))
+    if cost:
+        print("est. $%.2f for one take of each (list price on %s; a render needs the user's go)" % (cost, meta.get("last_checked")))
     return 0
+
+
+# ---------- qc: rendered takes against their cards ----------
+
+# Rubric checks: (check, what to look at, question). The failure-code entries map codes to checks.
+RUBRIC = [
+    ("identity", "sheet", "Does {name} match the identity string in every frame: {identity}?"),
+    ("wardrobe", "sheet", "Is {name} wearing exactly: {wardrobe}? No added marks or badges?"),
+    ("props", "sheet", "{name} holds the {holding} at the start{holding_end}; same size and shape throughout?"),
+    ("position", "first and last frame", "Is {name} {position_words}?"),
+    ("direction", "sheet", "Does {name} keep {travel_words} for the whole take?"),
+    ("eyeline", "sheet", "Is {name} {eyeline_words}?"),
+    ("light", "sheet", "Light as planned ({light}), with no change of side or time of day?"),
+    ("style", "sheet", "Does the look match: {look}?"),
+    ("camera", "sheet", "Is it a {size}, {angle}, with {move} and no other move?"),
+    ("action", "sheet", "Does the action happen and finish at normal speed, already moving at frame 1: {action}"),
+    ("opening", "first frame", "Does the first frame match the start state: {start_state}"),
+    ("end-state", "last frame", "Does the last frame match the end state: {end_state} Write what it shows."),
+    ("anatomy", "sheet", "Are hands, limbs and faces whole in every frame?"),
+    ("physics", "sheet", "Do objects keep their shape, contact and weight (nothing merges, slides or passes through)?"),
+    ("text", "sheet", "Is the frame free of subtitles, captions, watermarks and garbled writing?"),
+    ("audio", "listen", "Is the sound as planned ({audio}), spoken by the right person in sync?"),
+    ("seam", "the previous take's last frame and this sheet", "Does the cut from {prev} read as one continuous scene, not a restart?"),
+    ("spec", "qc spec", "Run `qc spec`: fps, size, aspect and length as planned?"),
+    ("loudness", "qc loud", "At the mix: run `qc loud`; loudness on target?"),
+]
+CHECKS = [r[0] for r in RUBRIC]
+TAX_ROW = re.compile(r"^\|\s*`([a-z-]+)`\s*\|(.+)\|\s*$")
+VERDICTS = ("pass", "fail", "na")
+
+
+def taxonomy(ctx):
+    """Failure codes from every entry tagged `failures`: code -> symptom, cause, fix, rung, check."""
+    codes, seen = {}, set()
+    for d in ctx.ref_dirs:
+        for p, meta, body in entries(d):
+            if "failures" not in meta.get("tags", []) or meta.get("slug") in seen:
+                continue
+            seen.add(meta.get("slug"))
+            for line in body.split("\n"):
+                m = TAX_ROW.match(line.strip())
+                if not m:
+                    continue
+                cells = [c.strip() for c in m.group(2).split("|")]
+                if len(cells) == 5 and cells[3].isdigit():
+                    codes[m.group(1)] = {"symptom": cells[0], "cause": cells[1], "fix": cells[2],
+                                         "rung": int(cells[3]), "check": cells[4], "entry": meta.get("slug")}
+    return codes
+
+
+def need_tool(name):
+    exe = shutil.which(name)
+    if not exe:
+        raise SystemExit("%s not found on PATH. qc and takes lastframe need it; see SETUP.md in cinewright-qc." % name)
+    return exe
+
+
+def run_tool(args):
+    r = subprocess.run(args, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if r.returncode != 0:
+        raise SystemExit("%s failed (%d): %s" % (Path(args[0]).name, r.returncode, r.stderr.strip()[-600:]))
+    return r
+
+
+def probe(clip):
+    r = run_tool([need_tool("ffprobe"), "-v", "error", "-show_entries",
+                  "stream=codec_type,width,height,r_frame_rate:format=duration", "-of", "json", str(clip)])
+    j = json.loads(r.stdout)
+    info = {"duration": float(j.get("format", {}).get("duration") or 0), "audio": False}
+    for s in j.get("streams", []):
+        if s.get("codec_type") == "video" and "width" not in info:
+            num, _, den = s.get("r_frame_rate", "0/1").partition("/")
+            info.update(width=s["width"], height=s["height"], fps=float(num) / float(den or 1))
+        elif s.get("codec_type") == "audio":
+            info["audio"] = True
+    if "width" not in info:
+        raise SystemExit("%s has no video stream" % clip)
+    return info
+
+
+def contact_sheet(clip, out, fps=None, cols=4, width=320):
+    info = probe(clip)
+    fps = fps or (2 if info["duration"] <= 10 else 1)
+    n = max(1, int(math.ceil(info["duration"] * fps)))
+    rows = int(math.ceil(n / float(cols)))
+    Path(out).parent.mkdir(parents=True, exist_ok=True)
+    run_tool([need_tool("ffmpeg"), "-v", "error", "-y", "-i", str(clip), "-vf",
+              "fps=%s,scale=%d:-2,tile=%dx%d:padding=4:margin=4" % (fps, width, cols, rows),
+              "-frames:v", "1", "-update", "1", str(out)])
+    return n, fps, info
+
+
+def last_frame(clip, out):
+    out = Path(out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    run_tool([need_tool("ffmpeg"), "-v", "error", "-y", "-sseof", "-0.5", "-i", str(clip),
+              "-update", "1", "-q:v", "2", str(out)])
+    if not out.is_file():
+        raise SystemExit("no frame written to %s" % out)
+    return out
+
+
+def loudness(path):
+    r = subprocess.run([need_tool("ffmpeg"), "-nostats", "-hide_banner", "-i", str(path), "-filter_complex",
+                        "ebur128=peak=true", "-f", "null", "-"], capture_output=True, text=True, encoding="utf-8", errors="replace")
+    tail = r.stderr[r.stderr.rfind("Summary:"):] if "Summary:" in r.stderr else ""
+    i = re.search(r"I:[\s]+(-?[\d.]+|-inf) LUFS", tail)
+    if r.returncode != 0 or not i:
+        raise SystemExit("ffmpeg could not measure loudness of %s (no audio stream?): %s" % (path, r.stderr.strip()[-300:]))
+    tp = re.search(r"True peak:[\s]+Peak:[\s]+(-?[\d.]+|-inf) dBFS", tail)
+    lra = re.search(r"LRA:[\s]+(-?[\d.]+) LU", tail)
+
+    def num(m):
+        return float("-inf") if m.group(1) == "-inf" else float(m.group(1))
+    return {"integrated_lufs": num(i), "true_peak_dbtp": num(tp) if tp else None, "lra_lu": num(lra) if lra else None}
+
+
+def card_by_id(p, cid):
+    for c in p.cards:
+        if c["id"] == cid:
+            return c
+    raise SystemExit("no card %s in %s" % (cid, p.root))
+
+
+def spec_check(info, p, card, params=None):
+    """Return a list of (status, text); status is PASS, FAIL or INFO."""
+    st, out, params = p.style, [], params or {}
+    want, dur = card["duration_s"], info["duration"]
+    if dur + 0.05 < want:
+        out.append(("FAIL", "length %.2fs, card needs %ss" % (dur, want)))
+    elif dur > want + 0.5:
+        out.append(("INFO", "length %.2fs, card %ss: trim %.2fs in the edit" % (dur, want, dur - want)))
+    else:
+        out.append(("PASS", "length %.2fs for a %ss card" % (dur, want)))
+    fps = params.get("fps", st["fps"])
+    out.append(("PASS" if abs(info["fps"] - fps) < 0.01 else "FAIL", "fps %.3g, planned %s" % (info["fps"], fps)))
+    a, b = (float(x) for x in st["aspect_ratio"].split(":"))
+    got = info["width"] / float(info["height"])
+    ok = abs(got - a / b) / (a / b) <= 0.02
+    out.append(("PASS" if ok else "FAIL", "aspect %dx%d (%.3f), planned %s" % (info["width"], info["height"], got, st["aspect_ratio"])))
+    if "width" in params and "height" in params:
+        same = (info["width"], info["height"]) == (params["width"], params["height"])
+        out.append(("PASS" if same else "FAIL", "size %dx%d, settings %dx%d" % (info["width"], info["height"], params["width"], params["height"])))
+    if (card.get("dialogue") or card.get("sound")) and not info["audio"]:
+        out.append(("FAIL", "no audio stream, but the card has dialogue or sound (add it in the mix if the model makes none)"))
+    return out
+
+
+def rubric_items(p, card):
+    sc = p.scene_map[card["scene"]]
+    cam, light = card["camera"], card.get("light", {})
+    prev = [c for c in p.cards if c["scene"] == card["scene"] and c["order"] < card["order"]]
+    lt = [sc["sun"]] if sc.get("sun") else []
+    if light.get("key_side"):
+        lt.append("%s key from %s" % (light.get("quality", "soft"), light["key_side"].replace("-", " ")))
+    audio = ["%s says: %s" % (p.chars[d["character"]]["name"], d["line"]) for d in card.get("dialogue", [])]
+    if card.get("sound"):
+        audio.append(card["sound"])
+    base = {"look": p.style["look"], "light": "; ".join(lt) or "as the scene bible", "size": SIZE_WORDS[cam["size"]],
+            "angle": ANGLE_WORDS[cam["angle"]], "move": MOVE_WORDS[cam["move"]], "action": _sentence(card["action"]),
+            "start_state": _sentence(card.get("start_state", "")), "end_state": _sentence(card.get("end_state", "")),
+            "audio": "; ".join(audio), "prev": prev[-1]["id"] if prev else ""}
+    items = []
+    for check, look, ask in RUBRIC:
+        rows = []
+        if "{name}" in ask:
+            for m in card.get("cast", []):
+                ch = p.chars[m["id"]]
+                travel = m.get("travel") or sc.get("axis", {}).get("travel", {}).get(m["id"])
+                v = dict(base, name=ch["name"], identity=ch["identity"], wardrobe=wardrobe_for(ch, sc["id"]),
+                         holding=m.get("holding") or "",
+                         holding_end=(" and the %s at the end" % m["holding_end"]) if m.get("holding_end") else "",
+                         position_words=POSITION_WORDS.get(m.get("position"), ""),
+                         travel_words=TRAVEL_WORDS.get(travel, ""), eyeline_words=EYELINE_WORDS.get(m.get("eyeline"), ""))
+                need = {"props": "holding", "position": "position_words", "direction": "travel_words", "eyeline": "eyeline_words"}.get(check)
+                if not need or v[need]:
+                    rows.append(("%s:%s" % (check, m["id"]), ask.format(**v)))
+        else:
+            need = {"opening": "start_state", "end-state": "end_state", "audio": "audio", "seam": "prev"}.get(check)
+            if not need or base[need]:
+                rows.append((check, ask.format(**base)))
+        for rid, text in rows:
+            items.append({"id": rid, "check": check, "look": look, "ask": text, "verdict": None, "code": None, "note": ""})
+    return items
+
+
+def repair_plan(rub, codes):
+    """Fails in a filled rubric -> ([(rung, item id, code, fix)] cheapest first, errors)."""
+    plan, errs = [], []
+    for it in rub["items"]:
+        v = it.get("verdict")
+        if v not in VERDICTS:
+            errs.append("%s: verdict must be one of %s (got %r)" % (it["id"], ", ".join(VERDICTS), v))
+            continue
+        if v != "fail":
+            continue
+        cands = [c for c, x in codes.items() if x["check"] == it["check"]]
+        code = it.get("code")
+        if code and codes.get(code, {}).get("check") != it["check"]:
+            errs.append("%s: code %s does not belong to check %s; use one of %s" % (it["id"], code, it["check"], ", ".join(cands)))
+            continue
+        if not code:
+            if len(cands) != 1:
+                errs.append("%s: pick a code: %s" % (it["id"], ", ".join(cands)))
+                continue
+            code = cands[0]
+        plan.append((codes[code]["rung"], it["id"], code, codes[code]["fix"]))
+    plan.sort()
+    return plan, errs
+
+
+def cmd_qc(ctx, a):
+    if a.cmd == "sheet":
+        out = a.out or str(Path(a.clip).with_suffix("")) + ".sheet.png"
+        n, fps, info = contact_sheet(a.clip, out, a.fps, a.cols, a.width)
+        print("wrote %s: %d frames at %s fps from %.2fs, %dx%d" % (out, n, fps, info["duration"], info["width"], info["height"]))
+        print("Read it once, whole, then fill the rubric (qc rubric).")
+        return 0
+    if a.cmd == "spec":
+        info = probe(a.clip)
+        p = Project(a.project)
+        group = [card_by_id(p, cid) for cid in a.card.split("+")]
+        card = dict(group[0], duration_s=sum(c["duration_s"] for c in group),
+                    dialogue=[d for c in group for d in c.get("dialogue", [])], sound=" ".join(c.get("sound", "") for c in group).strip())
+        rows = spec_check(info, p, card, json.loads(read_text(a.params)) if a.params else None)
+        fails = sum(1 for s, _ in rows if s == "FAIL")
+        if a.json:
+            print(json.dumps({"clip": str(a.clip), "probe": info, "checks": [{"status": s, "text": t} for s, t in rows]}, indent=2))
+        else:
+            for s, t in rows:
+                print("%-4s %s" % (s, t))
+            print("qc spec: %d checks, %d failed%s" % (len(rows), fails, " (code spec-mismatch)" if fails else ""))
+        return 1 if fails else 0
+    if a.cmd == "loud":
+        m = loudness(a.file)
+        ok_i = abs(m["integrated_lufs"] - a.target) <= a.tolerance
+        ok_tp = m["true_peak_dbtp"] is not None and m["true_peak_dbtp"] <= a.true_peak
+        print("integrated %.1f LUFS (target %.1f +/- %.1f): %s" % (m["integrated_lufs"], a.target, a.tolerance, "PASS" if ok_i else "FAIL"))
+        print("true peak %s dBTP (max %.1f): %s" % (m["true_peak_dbtp"], a.true_peak, "PASS" if ok_tp else "FAIL"))
+        if m["lra_lu"] is not None:
+            print("loudness range %.1f LU" % m["lra_lu"])
+        print("qc loud: %s" % ("PASS" if ok_i and ok_tp else "FAIL (code loudness-off): normalise in the mix"))
+        return 0 if ok_i and ok_tp else 1
+    if a.cmd == "rubric":
+        codes = taxonomy(ctx)
+        if not codes:
+            print("no failure-code entries (tag failures) found; install cinewright-qc", file=sys.stderr)
+            return 1
+        if a.read:
+            rub = json.loads(read_text(a.read))
+            plan, errs = repair_plan(rub, codes)
+            for e in errs:
+                print("error: %s" % e)
+            if errs:
+                return 1
+            if not plan:
+                print("qc rubric %s: PASS (%d items)" % (rub.get("card"), len(rub["items"])))
+                return 0
+            for rung, rid, code, fix in plan:
+                print("rung %d  %-18s %-18s %s" % (rung, rid, code, fix))
+            rung, rid, code, fix = plan[0]
+            verdict = "keep-fix-in-edit" if all(r[0] >= 7 for r in plan) else "fail"
+            print("qc rubric %s: %s, %d failed. Next take changes one thing: %s (%s). Then: takes log ... --verdict %s --fix %s"
+                  % (rub.get("card"), verdict.upper(), len(plan), fix, code, verdict, code))
+            return 1
+        if not a.project or not a.card:
+            print("qc rubric needs PROJECT --card ID, or --read RUBRIC.json", file=sys.stderr)
+            return 2
+        p = Project(a.project)
+        card = card_by_id(p, a.card)
+        items = rubric_items(p, card)
+        for it in items:
+            it["codes"] = [c for c, x in codes.items() if x["check"] == it["check"]]
+        rub = {"card": card["id"], "clip": a.clip or "", "sheet": a.sheet or "",
+               "how": "Set each verdict to pass, fail or na. On a fail set code (one of codes) and a note. Then run: qc rubric --read THIS_FILE",
+               "items": items}
+        out = a.out or str(p.root / "qc" / ("%s.rubric.json" % card["id"]))
+        write_text(out, json.dumps(rub, indent=2, ensure_ascii=False) + "\n")
+        print("wrote %s: %d items for card %s" % (out, len(items), card["id"]))
+        return 0
+    return 2
+
+
+def cmd_takes(ctx, a):
+    if a.cmd == "lastframe":
+        out = last_frame(a.clip, a.out)
+        print("wrote %s" % out)
+        if a.take:
+            rec = json.loads(read_text(a.take))
+            if a.observed:
+                rec["observed_end_state"] = a.observed
+                write_text(a.take, json.dumps(rec, indent=2, ensure_ascii=False) + "\n")
+                print("observed_end_state written to %s" % a.take)
+            try:
+                card = card_by_id(Project(Path(a.take).resolve().parent.parent), rec["card"])
+                print("planned end state: %s" % card.get("end_state", "(none)"))
+            except (OSError, SystemExit, KeyError):
+                pass
+        if not a.observed:
+            print('Look at the frame, then record what it shows: takes lastframe CLIP --out PNG --take TAKE.json --observed "...". The next card copies it into start_state.')
+        return 0
+    if a.cmd == "log":
+        p = Project(a.project)
+        card = card_by_id(p, a.card)
+        tdir = p.root / "takes"
+        nums = [int(m.group(1)) for f in tdir.glob("%s-*.json" % card["id"]) for m in [re.match(r".*-(\d+)\.json$", f.name)] if m]
+        n = 1 + max(nums or [0])
+        rec = {"card": card["id"], "take": n, "model": a.model, "date": datetime.date.today().isoformat(), "verdict": a.verdict}
+        cdir = p.root / "compiled" / a.model
+        comp = [f for f in sorted(cdir.glob("*.txt")) if card["id"] in f.stem.split("+")] if cdir.is_dir() else []
+        if comp:
+            rec["prompt_sha256"] = hashlib.sha256(read_text(comp[0]).encode("utf-8")).hexdigest()
+            pf = comp[0].with_name(comp[0].stem + ".params.json")
+            if pf.is_file():
+                rec["params"] = json.loads(read_text(pf))
+                rec["model_id"] = str(rec["params"].get("model", ""))
+        rec["seed"] = a.seed if a.seed is not None else rec.get("params", {}).get("seed", card.get("seed"))
+        for k, v in (("file", a.file), ("fix_code", a.fix), ("change_from_previous", a.change),
+                     ("observed_end_state", a.observed), ("notes", a.notes)):
+            if v:
+                rec[k] = v
+        if a.fix:
+            codes = taxonomy(ctx)
+            if codes and a.fix not in codes:
+                raise SystemExit("unknown fix code %s; run kb show failures-picture or failures-motion" % a.fix)
+        errs = validate(rec, load_schema(ctx, "take"))
+        if errs:
+            raise SystemExit("take record invalid: %s" % "; ".join(errs))
+        out = tdir / ("%s-%d.json" % (card["id"], n))
+        write_text(out, json.dumps(rec, indent=2, ensure_ascii=False) + "\n")
+        takes = [json.loads(read_text(f)) for f in sorted(tdir.glob("%s-*.json" % card["id"]))]
+        fails = sum(1 for t in takes if t["verdict"] == "fail")
+        print("wrote %s; card %s: %d takes, %d failed" % (out, card["id"], len(takes), fails))
+        if fails >= 3 and a.verdict == "fail":
+            print("three strikes: stop rerolling and re-plan card %s (rung 6)" % card["id"])
+        return 0
+    return 2
 
 
 # ---------- argument parsing ----------
@@ -798,6 +1302,7 @@ def build_parser(prog="cine.py"):
     s.add_argument("--model", required=True)
     s.add_argument("--card", action="append", help="card id; repeat; default all")
     s.add_argument("--sequence", action="store_true", help="join consecutive cards of a scene into one timestamped generation")
+    s.add_argument("--resolution", help="override the style bible's resolution, e.g. a cheap draft size")
     s.add_argument("--out")
 
     c = g.add_parser("continuity", help="script supervisor checks").add_subparsers(dest="cmd", required=True)
@@ -805,10 +1310,54 @@ def build_parser(prog="cine.py"):
     s.add_argument("project")
     s.add_argument("--json", action="store_true")
     s.add_argument("--with", dest="with_card", action="append", metavar="FILE", help="check this card in place of the project card with the same id")
+
+    q = g.add_parser("qc", help="check rendered takes (needs ffmpeg)").add_subparsers(dest="cmd", required=True)
+    s = q.add_parser("sheet", help="contact sheet of a clip at 1-2 fps")
+    s.add_argument("clip")
+    s.add_argument("--out")
+    s.add_argument("--fps", type=float)
+    s.add_argument("--cols", type=int, default=4)
+    s.add_argument("--width", type=int, default=320)
+    s = q.add_parser("spec", help="fps, size, aspect, length and audio against the card")
+    s.add_argument("clip")
+    s.add_argument("--project", required=True)
+    s.add_argument("--card", required=True, help="card id, or a generation label such as 1B+1C")
+    s.add_argument("--params", help="the compiled settings file used for this take")
+    s.add_argument("--json", action="store_true")
+    s = q.add_parser("loud", help="integrated loudness and true peak (EBU R128 meter)")
+    s.add_argument("file")
+    s.add_argument("--target", type=float, default=-16.0, help="integrated LUFS")
+    s.add_argument("--tolerance", type=float, default=1.0, help="LU either side")
+    s.add_argument("--true-peak", type=float, default=-1.0, help="maximum dBTP")
+    s = q.add_parser("rubric", help="write a take's checklist, or read its verdicts back as fixes")
+    s.add_argument("project", nargs="?")
+    s.add_argument("--card")
+    s.add_argument("--clip")
+    s.add_argument("--sheet")
+    s.add_argument("--out")
+    s.add_argument("--read", metavar="RUBRIC.json", help="read a filled rubric and print the repair plan")
+
+    t = g.add_parser("takes", help="take records").add_subparsers(dest="cmd", required=True)
+    s = t.add_parser("log", help="write takes/<card>-<n>.json")
+    s.add_argument("project")
+    s.add_argument("--card", required=True)
+    s.add_argument("--model", required=True)
+    s.add_argument("--verdict", required=True, choices=["pending", "pass", "fail", "keep-fix-in-edit"])
+    s.add_argument("--file")
+    s.add_argument("--seed", type=int)
+    s.add_argument("--fix", help="failure code")
+    s.add_argument("--change", help="the one thing changed from the previous take")
+    s.add_argument("--observed", help="what the last frame shows")
+    s.add_argument("--notes")
+    s = t.add_parser("lastframe", help="extract the last frame for the next card's start")
+    s.add_argument("clip")
+    s.add_argument("--out", required=True)
+    s.add_argument("--take", help="take record to update")
+    s.add_argument("--observed", help="what the frame shows; written to the take record")
     return ap
 
 
-HANDLERS = {"kb": cmd_kb, "cards": cmd_cards, "compile": cmd_compile, "continuity": cmd_continuity}
+HANDLERS = {"kb": cmd_kb, "cards": cmd_cards, "compile": cmd_compile, "continuity": cmd_continuity, "qc": cmd_qc, "takes": cmd_takes}
 
 
 def main(argv=None, ctx=None):

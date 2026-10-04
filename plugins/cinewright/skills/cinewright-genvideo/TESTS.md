@@ -8,6 +8,10 @@ Entry shape: `### T-YYYYMMDD-n · date · harness · env · passed/total`, one l
 
 ## Runs
 
+### T-20261003-2 · 2026-10-03 · unittest (repo tests) · windows/claude-code · 12/12 model-card tests
+- One test per model checks shape, order and syntax with a regex that also matches the vendor's own example; the identity guard is tested on every model. Python 3.14 and 3.9.
+- led to: C-20261003-2
+
 ### T-20261003-1 · 2026-10-03 · claude -p (Sonnet, headless) · windows/claude-code · baseline only, 1 case
 - action-1 baseline without the skill: ran out of turns searching for a compiler; no prompt written (evidence absent)
 - Trigger, decoy and with-skill runs on three models are S6.

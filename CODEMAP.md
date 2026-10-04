@@ -12,9 +12,11 @@ Where things live in cinewright. Rules are in [AGENTS.md](AGENTS.md); the plan i
 | `.../needs.json` | which `shared/` files `build` copies into the skill | yes |
 | `.../scripts/cine.py`, `.../scripts/schemas/`, copied vocab entries | copies from `shared/`, with a `copied from ... sha256:` header | no |
 | `.../RESEARCH.md`, `CHANGELOG.md`, `LEARNINGS.md`, `TESTS.md`, `evergreen.json`, `evals/evals.json`, `MAINTENANCE.md` | evergreen companions | yes |
-| `shared/vocab/` | shot sizes, moves, angles, screen-direction phrases | yes, then build |
+| `shared/vocab/` | shot sizes, moves, angles, screen-direction phrases, failure codes (`failures-*.md`, parsed by `qc rubric`) | yes, then build |
 | `shared/schemas/` | entry, model card, shot card, four bibles, take record | yes, then build |
-| `shared/lib/cine.py` | runtime CLI shipped in every skill: kb, cards, compile, continuity | yes, then build |
+| `shared/lib/cine.py` | runtime CLI shipped in every skill: kb, cards, compile, continuity, qc, takes | yes, then build |
+| `plugins/cinewright/skills/cinewright-genvideo/references/<model>.md` | one model card per model; its `## Compile` json block drives `compile` (fields in `shared/schemas/model-card.schema.json`) | yes |
+| `plugins/cinewright/skills/cinewright-qc/SETUP.md` | ffmpeg and ffprobe needs, read by `evergreen.py setup` | yes |
 | `scripts/cine.py` | maintainer CLI: imports the runtime and adds `kb lint`, `budget`, `zip`, `build`, `--root` | yes |
 | `tests/test_cine.py` | unittest suite, one or more tests per command | yes |
 | `examples/three-shot/` | worked example; `compiled/` must match a fresh compile (a test checks) | yes, then recompile |

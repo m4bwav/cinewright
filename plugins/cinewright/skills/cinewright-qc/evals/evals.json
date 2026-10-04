@@ -1,0 +1,73 @@
+{
+  "skill": "cinewright-qc",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root.",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "prompt": "I just rendered shot 1B of examples/three-shot with a video model. How do I check whether the take matches the shot card before I keep it?",
+      "expectations": [
+        "the cinewright-qc skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "prompt": "My AI-generated clip has the character's face changing halfway through and the camera moves too fast. Reroll or keep, and what do I change?",
+      "expectations": [
+        "the cinewright-qc skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "trim my vacation.mp4 to the first 5 seconds and convert it to a gif with ffmpeg",
+      "expectations": [
+        "the cinewright-qc skill is not invoked (plain ffmpeg editing, no generated take or shot card)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "write a pytest test that checks my video upload endpoint returns 413 for files over 2 GB",
+      "expectations": [
+        "the cinewright-qc skill is not invoked (application testing)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "prompt": "Write the QC checklist for card 1B of the project in examples/three-shot, so I can judge its first take.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py\\s+qc\\s+rubric"
+      },
+      "baseline": "2026-10-03, not run yet; S6 runs it without the skill.",
+      "runs": 3
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "prompt": "A take of card 1B in examples/three-shot came back: Maren's silver braid is gone (her hair is loose) and the camera pushes in fast instead of slowly. Everything else matches. What exactly do I change for the next take?",
+      "files": [],
+      "expectations": [
+        "the reply names identity drift (the braid) and the camera move as separate failures",
+        "the reply proposes exactly one change for the next take, not both at once, and says the other comes after",
+        "the identity fix keeps the bible's identity string verbatim (braid included) rather than rewording it",
+        "judge: the seed advice is right for an end-of-clip or whole-clip problem, never 'change everything' (2 of 3 votes)"
+      ],
+      "baseline": "2026-10-03, not run yet; S6 runs it without the skill.",
+      "runs": 3
+    }
+  ]
+}

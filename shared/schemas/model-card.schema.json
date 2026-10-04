@@ -3,35 +3,301 @@
   "title": "Model card",
   "description": "A reference entry for one video model. Frontmatter is entry.schema.json plus the required fields below; the body holds a Compile section with one fenced json block validated by $defs/compile.",
   "type": "object",
-  "required": ["title", "slug", "summary", "tags", "last_checked", "sources", "model", "vendor", "version", "status", "volatile_claims"],
+  "required": [
+    "title",
+    "slug",
+    "summary",
+    "tags",
+    "last_checked",
+    "sources",
+    "model",
+    "vendor",
+    "version",
+    "status",
+    "volatile_claims"
+  ],
   "properties": {
-    "model": {"type": "string", "pattern": "^[a-z0-9-]+$", "description": "Compiler key, e.g. veo."},
-    "vendor": {"type": "string"},
-    "version": {"type": "string"},
-    "status": {"enum": ["current", "preview", "deprecated", "shut-down"]},
-    "volatile_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+    "model": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Compiler key, e.g. veo."
+    },
+    "vendor": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "current",
+        "preview",
+        "deprecated",
+        "shut-down"
+      ]
+    },
+    "volatile_claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    }
   },
   "$defs": {
     "compile": {
       "type": "object",
-      "required": ["model_id", "durations_s", "aspect_ratios", "resolutions", "max_words", "order", "dialogue", "audio"],
+      "required": [
+        "model_id",
+        "durations_s",
+        "aspect_ratios",
+        "resolutions",
+        "max_words",
+        "order",
+        "dialogue",
+        "audio"
+      ],
       "additionalProperties": false,
       "properties": {
-        "model_id": {"type": "string"},
-        "durations_s": {"type": "array", "minItems": 1, "items": {"type": "number"}},
-        "aspect_ratios": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-        "resolutions": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-        "resolution_duration_s": {"type": "object", "additionalProperties": {"type": "number"}, "description": "Duration forced at a resolution, e.g. 1080p: 8."},
-        "max_words": {"type": "integer", "minimum": 20, "description": "Warning threshold, not a hard cut."},
-        "order": {"type": "array", "minItems": 3, "items": {"enum": ["camera", "subject", "action", "context", "light", "style", "audio"]}},
-        "dialogue": {"type": "string", "description": "Template with {name}, {tone_clause} and {line}."},
-        "audio": {"type": "string", "description": "Template with {sound}."},
-        "timestamp": {"type": "string", "description": "Template with {start} and {end} as MM:SS, for several shots in one generation."},
-        "max_reference_images": {"type": "integer", "minimum": 0},
-        "reference_duration_s": {"type": "number", "description": "Duration forced when reference images are used."},
-        "negative_prompt": {"enum": ["field", "none"]},
-        "negative_terms": {"type": "string", "description": "Nouns for the negative prompt field, never phrased as 'no X'."},
-        "seed": {"type": "boolean"}
+        "model_id": {
+          "type": "string"
+        },
+        "durations_s": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "number"
+          }
+        },
+        "aspect_ratios": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "resolutions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "resolution_duration_s": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          },
+          "description": "Duration forced at a resolution, e.g. 1080p: 8."
+        },
+        "max_words": {
+          "type": "integer",
+          "minimum": 20,
+          "description": "Warning threshold, not a hard cut."
+        },
+        "order": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "enum": [
+              "camera",
+              "move",
+              "subject",
+              "action",
+              "context",
+              "light",
+              "style",
+              "audio",
+              "dialogue",
+              "sound"
+            ]
+          }
+        },
+        "dialogue": {
+          "type": "string",
+          "description": "Template with {name}, {line}, {tone}, {tone_clause} (' quietly'), {tone_paren} (' (quietly)'), {voice_clause} (' with a low voice'), {speaker} (S1, S2 per generation). Empty: the model makes no speech."
+        },
+        "audio": {
+          "type": "string",
+          "description": "Template with {sound}. Empty: the model makes no sound."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Multi-shot marker for --sequence: {n}, {start}/{end} as MM:SS, {start_s}/{end_s} in seconds, {start_ms} as MM:SS.mmm."
+        },
+        "max_reference_images": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reference_duration_s": {
+          "type": "number",
+          "description": "Duration forced when reference images are used."
+        },
+        "negative_prompt": {
+          "enum": [
+            "field",
+            "inline",
+            "none"
+          ]
+        },
+        "negative_terms": {
+          "type": "string",
+          "description": "field: nouns for the negative field, never 'no X'. inline: the vendor's own constraint sentence, appended to the prompt."
+        },
+        "seed": {
+          "type": "boolean"
+        },
+        "timestamp_next": {
+          "type": "string",
+          "description": "Marker for shots after the first; a marker not ending in punctuation lowercases the shot's first word."
+        },
+        "sequence_head": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "people",
+              "context",
+              "sun",
+              "style"
+            ]
+          },
+          "description": "Parts written once before the shots (default people, context, sun, style)."
+        },
+        "sequence_block": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "camera",
+              "move",
+              "subject",
+              "action",
+              "context",
+              "light",
+              "style",
+              "audio",
+              "dialogue",
+              "sound",
+              "key",
+              "staging"
+            ]
+          },
+          "description": "Parts per shot (default camera, staging, action, key, audio); staging restates frame position and prop in hand."
+        },
+        "sequence_join": {
+          "enum": [
+            "\n",
+            " "
+          ],
+          "description": "Newline (default) or one paragraph."
+        },
+        "shot_lengths": {
+          "type": "string",
+          "description": "Parameter name that receives the list of shot lengths."
+        },
+        "prefix": {
+          "type": "string",
+          "description": "Written before every prompt."
+        },
+        "single_shot": {
+          "type": "string",
+          "description": "Written before a one-shot prompt, e.g. to stop the model cutting."
+        },
+        "layout": {
+          "type": "string",
+          "description": "Whole-prompt template with {main} and {sound}; sound parts then leave the main text."
+        },
+        "empty": {
+          "type": "string",
+          "description": "Text for an empty {sound} in the layout (default N/A)."
+        },
+        "move_style": {
+          "enum": [
+            "words",
+            "sentence"
+          ],
+          "description": "words: the move in the camera phrase; sentence: its own sentence of type plus move_suffix."
+        },
+        "move_suffix": {
+          "type": "string",
+          "description": "Amplitude and speed after a sentence move."
+        },
+        "ref_tag": {
+          "type": "string",
+          "description": "How the prompt names a reference: {n} from 1, {n0} from 0, {name}."
+        },
+        "ref_replaces_name": {
+          "type": "boolean"
+        },
+        "frames": {
+          "type": "object",
+          "required": [
+            "fps",
+            "step",
+            "offset"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "fps": {
+              "type": "number"
+            },
+            "step": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "offset": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "description": "Frame grid: frames = step*k + offset. durations_s then holds the shortest and longest length."
+        },
+        "sizes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "pattern": "^[0-9]+x[0-9]+$"
+            }
+          },
+          "description": "resolution -> aspect -> WxH, for models with fixed sizes."
+        },
+        "size_multiple": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "param_names": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "description": "Renames generic settings (model, duration, aspect, resolution, seed, refs, negative, width, height, frames, fps); null drops one."
+        },
+        "aspect_values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "duration_format": {
+          "type": "string",
+          "description": "e.g. {d}s"
+        },
+        "max_chars": {
+          "type": "integer",
+          "minimum": 100,
+          "description": "API limit on prompt characters (warning)."
+        },
+        "usd_per_s": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          },
+          "description": "List price per second by resolution, for the cost line."
+        }
       }
     }
   }

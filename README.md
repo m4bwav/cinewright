@@ -8,7 +8,7 @@ Status: early development (0.0.1), private. Not ready to install.
 
 | Plugin | Skills | For |
 |---|---|---|
-| `cinewright` | `cinewright` (director and router), `cinewright-continuity` (script supervisor), `cinewright-genvideo` (prompt compiler; Veo 3.1 only so far) | everyone |
+| `cinewright` | `cinewright` (director and router), `cinewright-continuity` (script supervisor), `cinewright-genvideo` (prompt compiler for nine models), `cinewright-qc` (take review with ffmpeg) | everyone |
 | `cinewright-craft` | none yet (script, camera, design, movement, edit, finish, sound, history come later) | deeper craft |
 | `cinewright-dev` | none yet (knowledge-base upkeep) | maintainers |
 
@@ -16,7 +16,7 @@ A worked example lives in [examples/three-shot/](examples/three-shot/): a one-li
 
 ## What it runs and fetches
 
-Each skill ships `scripts/cine.py` (Python 3.9+, standard library only). It reads and writes JSON and Markdown in your project folder. It makes no network calls and never renders: writing a prompt never starts a paid render.
+Each skill ships `scripts/cine.py` (Python 3.9+, standard library only). It reads and writes JSON and Markdown in your project folder. It makes no network calls and never renders: writing a prompt never starts a paid render. The qc commands call ffmpeg and ffprobe on clips you already have.
 
 ## Developing
 
