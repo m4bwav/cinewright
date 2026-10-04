@@ -1,0 +1,10 @@
+*.mp4
+*.webm
+*.gif
+*.wav
+*.png
+!skills/**/*.png
+dist/
+__pycache__/
+*.pyc
+evals/*/results/
