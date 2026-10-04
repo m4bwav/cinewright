@@ -64,3 +64,19 @@ Each prompt holds its cast's identity strings and the held prop's description wo
 ## 6. Export for a local long-render pipeline
 
 `python scripts/cine.py cards export examples/three-shot --film-json` prints the shot list as a `film.json` (name, target seconds, size, seeds, lengths in frames).
+
+## 7. A style change: "shoot it like 1970s New Hollywood, 2.39" (cinewright-history, cinewright-camera)
+
+The history skill picked two cards (`new-hollywood`, `era-1970s-zoom`) and translated their tags into [styles/new-hollywood-239.json](styles/new-hollywood-239.json), a copy of the style bible with a new `look`, a `lighting` string, a `lens_family` with ranges, `frame_aspect` 2.39:1, `allowed_moves` and the card ids in `history`. No director or film name goes into a field that compiles. The look is tried with `--style` before it replaces `bibles/style.json`:
+
+```
+$ python scripts/cine.py cards validate examples/three-shot --style examples/three-shot/styles/new-hollywood-239.json
+cards validate: 3 cards, 0 errors
+$ python scripts/cine.py continuity diff examples/three-shot --style examples/three-shot/styles/new-hollywood-239.json
+continuity diff: 3 cards, 0 errors, 0 warnings
+$ python scripts/cine.py compile examples/three-shot --model veo --style examples/three-shot/styles/new-hollywood-239.json --out examples/three-shot/compiled/veo-new-hollywood
+```
+
+What changed in [compiled/veo-new-hollywood/1B.txt](compiled/veo-new-hollywood/1B.txt) against [compiled/veo/1B.txt](compiled/veo/1B.txt): the look sentence is replaced, and two sentences are added, the lighting string and "Composed for a 2.39:1 widescreen crop, heads and action inside the middle 74% of the frame height." The settings file is identical: Veo still renders 16:9, and finishing crops to 2.39. Identity strings and prop descriptions are unchanged. 1A reaches 250 words, exactly Veo's guide, so the variant's look and lighting strings were kept short.
+
+The diff checks the new fields: a card lens outside `lens_family` warns LENS, and a move missing from `allowed_moves` warns MOVE (with "spherical zooms, 25-250mm", 1A's 24mm lens would warn). A test (`TestStyle` in `tests/test_cine.py`) checks all of this for Veo, Kling and the MiniMax H3 sequence.

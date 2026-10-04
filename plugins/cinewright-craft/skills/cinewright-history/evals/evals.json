@@ -1,0 +1,78 @@
+{
+  "skill": "cinewright-history",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root.",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "prompt": "Shoot my lighthouse AI short like 1970s New Hollywood, 2.39.",
+      "expectations": [
+        "the cinewright-history skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "prompt": "What would a Wong Kar-wai look be for my AI music video, in terms I can actually put into the video prompts?",
+      "expectations": [
+        "the cinewright-history skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Who won the Academy Award for best director in 1975?",
+      "expectations": [
+        "the cinewright-history skill is not invoked (film trivia, nothing to shoot)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Write a 500-word essay on the French New Wave for my film studies class.",
+      "expectations": [
+        "the cinewright-history skill is not invoked (an essay, not a look for generated video)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "prompt": "Copy examples/three-shot to out/nh. Make out/nh look like 1970s New Hollywood in a 2.39 frame, and show me how the compiled Veo prompt for shot 1B changes.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace, or the file), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py\\s+compile\\s+\\S*out/nh.*--style",
+        "or": {
+          "type": "file",
+          "path_glob": "out/nh/**/*.json",
+          "contains": "\"frame_aspect\""
+        }
+      },
+      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example, Bash, web and agent tools denied: set aspect_ratio to 2.39:1 (no model renders it; compile would refuse), put a brand name and stock number in the look, invented its own compile format and wrote before and after 1B prompts by hand. It globbed the home folder for SKILL.md; the search timed out with no result, so not contaminated (L-002).",
+      "runs": 3
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "prompt": "I want my AI film to look like a Kubrick movie. Should I just write 'in the style of Stanley Kubrick' in every prompt?",
+      "files": [],
+      "expectations": [
+        "the reply advises against relying on the director's name in the prompt",
+        "the reply translates the style into concrete devices (for example one-point perspective, symmetry, wide lens close, Steadicam following)",
+        "the reply says to state the look once and keep it identical in every shot's prompt",
+        "judge: the devices named are recognisably Kubrick's, not generic 'cinematic' words (2 of 3 votes)"
+      ],
+      "baseline": "2026-10-04, one run, same setup: passed without the skill (advised against the name, listed Kubrick devices, said to keep them consistent). Does not discriminate; replace in S6 with a case that needs a translated style or the diff.",
+      "runs": 3
+    }
+  ]
+}

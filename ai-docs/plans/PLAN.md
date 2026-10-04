@@ -39,10 +39,10 @@ Merged from the 15-skill draft by trigger overlap and listing cost (every descri
 | `cinewright-script` | logline, beats, structure, scene turns, screenplay format, dialogue for generated voices | craft |
 | `cinewright-camera` | DP and gaffer: lens, depth of field, exposure, frame rate and shutter, aspect, lighting ratios and setups, color temperature | craft |
 | `cinewright-design` | production design, sets, props, locations, period, costume, hair and makeup, character and turnaround sheets | craft |
-| `cinewright-movement` | choreography, stunts, fights, crowds, animals, physics that models get wrong | craft |
+| `cinewright-movement` | choreography, stunts, fights, large battles (map, sides, phases, scale), crowds, animals, physics that models get wrong | craft |
 | `cinewright-edit` | cutting: Murch's six, J and L cuts, match cuts, pacing, cutting around bad frames, assembly to delivery | craft |
-| `cinewright-finish` | color (correct, balance, match, look; color spaces) and VFX (compositing, cleanup, upscale, interpolation) | craft |
-| `cinewright-sound` | sound design, foley, ambience, music, dialogue, stems, mix, loudness targets | craft |
+| `cinewright-finish` | color (correct, balance, match, look; color spaces) and VFX (compositing, cleanup, upscale, interpolation, crowd multiplication for battle wides, the crop to `frame_aspect`) | craft |
+| `cinewright-sound` | sound design, foley, ambience, music, dialogue, stems, mix, loudness targets, battle layers (implied mass, distance, weapons) | craft |
 | `cinewright-history` | movements, eras, genres, director and DP style cards | craft |
 | `cinewright-curate` | knowledge base upkeep: add, verify, retire entries; refresh model cards | dev |
 
@@ -167,7 +167,7 @@ Estimates are agent time and output size. Each stage writes the next stage's ful
 
 **S4. Camera, lighting and history.** camera references (lens, DoF, exposure, fps and shutter, aspect, lighting ratios, setups, color temperature), history cards (12 movements, 8 eras, 10 genres, about 40 directors and DPs). Exit: "shoot it like 1970s New Hollywood, 2.39" changes the compiled prompts in checkable ways. About 90 files, 3 agent hours.
 
-**S5. Post.** edit, finish, sound: Murch, J and L cuts, cutting around bad frames, grade order and color spaces, upscale and interpolation last, loudness targets re-verified (EBU R128 v4, ATSC A/85, Netflix in a browser, web). Exit: the S2 render cut, graded and mixed to a stated target, `qc loud` within tolerance. About 45 files, 3 agent hours.
+**S5. Post.** edit, finish, sound: Murch, J and L cuts, cutting around bad frames, cutting a battle (geography wides between fights), crowd multiplication in compositing and battle sound layers (asked for on 2026-10-04; movement's battle-scenes entry plans the shoot), the crop to `frame_aspect`, grade order and color spaces, upscale and interpolation last, loudness targets re-verified (EBU R128 v4, ATSC A/85, Netflix in a browser, web). Exit: the S2 render cut, graded and mixed to a stated target, `qc loud` within tolerance. About 45 files, 3 agent hours.
 
 **S6. Evals and tuning.** Full suite on Haiku, Sonnet, Opus; decoys against neighbours (chartwright, threewright, comfyui-gen, generic video editing); tune failures with evergreen-tune; worth check per skill (`evergreen.py worth`); merge or cut skills that test redundant. Exit: all cases pass, no skill marked CUT, results in each TESTS.md. 4-6 agent hours (run time dominates).
 
