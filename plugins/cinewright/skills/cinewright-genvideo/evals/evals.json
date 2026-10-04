@@ -1,0 +1,77 @@
+{
+  "skill": "cinewright-genvideo",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root.",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "prompt": "write a Veo 3.1 prompt for this shot: medium close-up of an old woman holding out a match in a storm-lit lighthouse",
+      "expectations": [
+        "the cinewright-genvideo skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "prompt": "turn the shot cards in examples/three-shot into prompts for Veo",
+      "expectations": [
+        "the cinewright-genvideo skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "make an image of a lighthouse at night with ComfyUI",
+      "expectations": [
+        "the cinewright-genvideo skill is not invoked (image generation, a ComfyUI skill's job)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "give my clip a teal and orange grade in DaVinci Resolve",
+      "expectations": [
+        "the cinewright-genvideo skill is not invoked (color grading (later cinewright-finish))"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "prompt": "Compile Veo prompts for every card in examples/three-shot into examples/three-shot/compiled/veo.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace or a written file), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py\\s+compile",
+        "or": {
+          "type": "file",
+          "path": "examples/three-shot/compiled/veo/1A.txt"
+        }
+      },
+      "baseline": "2026-10-03, one run, Sonnet, claude -p in a bare folder without cinewright: read every bible and card, searched the disk for a compiler or a Veo guide, made the output folder and ran out of 20 turns before writing any prompt. Evidence absent.",
+      "runs": 3
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "prompt": "Compile Veo prompts for the cards in examples/three-shot and give me the settings for each.",
+      "files": [],
+      "expectations": [
+        "each prompt holds every cast member's identity string from bibles/characters.json word for word",
+        "every durationSeconds is 4, 6 or 8; 1A is 6",
+        "no prompt says 'no' or 'avoid' for an exclusion",
+        "judge: camera size, angle and move come first in each prompt (2 of 3 votes)"
+      ],
+      "baseline": "not yet run",
+      "runs": 3
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "evergreen": "1.0",
+  "name": "cinewright-genvideo",
+  "kind": "skill",
+  "main": "SKILL.md",
+  "files": {
+    "research": "RESEARCH.md",
+    "changelog": "CHANGELOG.md",
+    "learnings": "LEARNINGS.md",
+    "tests": "TESTS.md"
+  },
+  "protocol": "plugin",
+  "source": null,
+  "topic": "AI video model prompting and compiling (Veo, Kling, Seedance, Runway, Luma, Wan, LTX-2, MiniMax H3)",
+  "tier": "fast",
+  "interval_days": 14,
+  "last_checked": "2026-10-03",
+  "next_due": "2026-10-17",
+  "verify_at_use": true,
+  "volatile_claims": [
+    "Veo 3.1 model IDs, status and shutdown dates (references/veo-3-1.md)",
+    "Veo 3.1 durations, resolutions and reference-image limits"
+  ],
+  "contradiction": null,
+  "events": [],
+  "streak": {
+    "quiet": 0,
+    "pinned_min": 0,
+    "pinned_max": 0,
+    "vau_quiet": 0
+  },
+  "history": [
+    {
+      "date": "2026-10-03",
+      "m": null,
+      "interval_after": 14,
+      "note": "created"
+    }
+  ],
+  "counts": {
+    "learnings": 2,
+    "changes": 1,
+    "research": 1,
+    "tests": 0
+  },
+  "consolidate_every": 25,
+  "tests": {
+    "last_run": null,
+    "harness": null,
+    "env": null,
+    "cases": 6,
+    "passed": 0,
+    "failed": 0,
+    "failing": [],
+    "last_failure": null,
+    "research_after_days": null
+  }
+}

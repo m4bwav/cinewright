@@ -1,0 +1,36 @@
+{
+  "id": "1A",
+  "scene": "1",
+  "order": 1,
+  "duration_s": 6,
+  "beat": "The lamp is out and only one match is left.",
+  "camera": {"size": "WS", "angle": "eye-level", "azimuth_deg": 90, "move": "static", "lens_mm": 24, "side": "A", "framing": "two-shot"},
+  "cast": [
+    {
+      "id": "maren",
+      "identity": "a lean woman in her sixties with deep-set grey eyes, silver hair in a single braid and a thin white scar through her left eyebrow",
+      "wardrobe": "a navy wool fisherman's sweater with a frayed collar",
+      "position": "frame-left",
+      "looks_at": "tin matchbox",
+      "eyeline": "down",
+      "holding": "tin matchbox",
+      "holding_end": "single match"
+    },
+    {
+      "id": "tomas",
+      "identity": "a wiry boy of about twelve with a mop of curly black hair, brown eyes and a gap between his front teeth",
+      "wardrobe": "an oversized yellow oilskin coat over a grey shirt",
+      "position": "frame-right",
+      "looks_at": "maren",
+      "eyeline": "frame-left",
+      "holding": null
+    }
+  ],
+  "action": "Maren tips the tin matchbox open and lifts out a single match.",
+  "sound": "rain lashing the windows and wind howling around the tower",
+  "time_of_day": "night",
+  "light": {"key_side": "frame-right", "quality": "soft"},
+  "start_state": "Lens dark, Maren holds the closed matchbox, Tomas beside the lens.",
+  "end_state": "Maren holds one match up between finger and thumb.",
+  "seed": 101
+}

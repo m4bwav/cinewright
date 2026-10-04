@@ -1,0 +1,12 @@
+{
+  "title": "The Last Match",
+  "logline": "In a storm, an old lighthouse keeper hands her young apprentice the last match to relight the lamp.",
+  "target_seconds": 14,
+  "aspect_ratio": "16:9",
+  "resolution": "720p",
+  "fps": 24,
+  "look": "35mm film look, cold blue storm light against warm amber flame, deep shadows, soft film grain, naturalistic color",
+  "palette": ["storm blue", "brass", "amber"],
+  "lens_family": "spherical primes, 24-50mm",
+  "allow_dutch": false
+}

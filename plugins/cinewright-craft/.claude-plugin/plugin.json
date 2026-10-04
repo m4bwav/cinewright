@@ -1,0 +1,18 @@
+{
+  "name": "cinewright-craft",
+  "version": "0.0.1",
+  "description": "Film craft skills for AI video (script, camera and lighting, design, movement, edit, color and VFX, sound, film history). Placeholder: no skills yet; they arrive in later releases. Needs the cinewright plugin.",
+  "author": {
+    "name": "Mark Rogers"
+  },
+  "license": "MIT",
+  "keywords": [
+    "film",
+    "cinematography",
+    "editing",
+    "sound",
+    "color",
+    "evergreen"
+  ],
+  "repository": "https://github.com/m4bwav/cinewright"
+}

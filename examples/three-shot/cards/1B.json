@@ -1,0 +1,24 @@
+{
+  "id": "1B",
+  "scene": "1",
+  "order": 2,
+  "duration_s": 4,
+  "beat": "Maren chooses to trust the boy.",
+  "camera": {"size": "MCU", "angle": "eye-level", "azimuth_deg": 45, "move": "dolly-in", "lens_mm": 50, "side": "A", "framing": "single"},
+  "cast": [
+    {
+      "id": "maren",
+      "identity": "a lean woman in her sixties with deep-set grey eyes, silver hair in a single braid and a thin white scar through her left eyebrow",
+      "wardrobe": "a navy wool fisherman's sweater with a frayed collar",
+      "looks_at": "tomas",
+      "eyeline": "frame-right",
+      "holding": "single match"
+    }
+  ],
+  "action": "Maren holds the single match out toward Tomas, off screen.",
+  "dialogue": [{"character": "maren", "line": "Last one. Your hands are steadier than mine.", "tone": "quietly"}],
+  "sound": "rain on the glass, muffled wind",
+  "light": {"key_side": "frame-right", "quality": "soft"},
+  "end_state": "Match held out at arm's length toward frame right.",
+  "seed": 102
+}
