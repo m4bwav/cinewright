@@ -1,0 +1,77 @@
+{
+  "skill": "cinewright-design",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root.",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "prompt": "The matchbox in my AI film looks different in every shot. How do I keep a prop consistent?",
+      "expectations": [
+        "the cinewright-design skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "prompt": "design the costumes and a color palette for my three AI video characters, including how their clothes get dirtier",
+      "expectations": [
+        "the cinewright-design skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "design a logo for my bakery",
+      "expectations": [
+        "the cinewright-design skill is not invoked (graphic design, not film design)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "generate a portrait of a knight in silver armor with ComfyUI",
+      "expectations": [
+        "the cinewright-design skill is not invoked (image generation, a ComfyUI skill's job)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "prompt": "Copy examples/three-shot to out/lighthouse and delete out/lighthouse/bibles/props.json. Then make the tin matchbox look the same in every shot of out/lighthouse, and check the project afterwards.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py\\s+(cards\\s+validate|continuity\\s+diff)\\s+\\S*out/lighthouse",
+        "or": {
+          "type": "file",
+          "path": "out/lighthouse/bibles/props.json"
+        }
+      },
+      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder holding only a copy of examples/three-shot, no cinewright installed: first run (old prompt) found props.json already present and said so, which led to the self-contained prompt; second run (this prompt) searched the disk, found this repository, read the design skill and ran its cine.py. CONTAMINATED: not a valid without-skill baseline (cinewright-script L-001).",
+      "runs": 3
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "prompt": "My reference picture for Maren has a small anchor pendant and a shop logo on her sweater, and both keep showing up in every clip even though the prompt says no jewelry. What do I do?",
+      "files": [],
+      "expectations": [
+        "the reply says the reference image outranks the prompt text",
+        "the reply says to paint the marks out of the reference before using it, keeping the original",
+        "the reply says to check the cleaned reference at full size",
+        "judge: no advice to rely on a stronger negative prompt as the fix (2 of 3 votes)"
+      ],
+      "baseline": "not run separately; S6 runs it without the skill.",
+      "runs": 3
+    }
+  ]
+}

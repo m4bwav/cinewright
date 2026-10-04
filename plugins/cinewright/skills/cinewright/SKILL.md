@@ -24,8 +24,10 @@ One default path (`kb show pipeline` for gates and the repair ladder). Each row 
 
 | Stage | Writes | Skill |
 |---|---|---|
+| Script | `brief.md`, `script.md` | cinewright-script (craft) |
 | Bibles | `bibles/*.json` | cinewright-continuity |
-| Shot list | `cards/*.json`, 3-8 s, one subject, one action, one move | here (`CINE cards new`); cinewright-shots when installed |
+| Design | `bibles/props.json`, wardrobe, palette, `refs/`, `design.md` | cinewright-design (craft) |
+| Shot list | `cards/*.json`, 3-8 s, one subject, one action, one move; `CINE cards list` | cinewright-shots; actions by cinewright-movement (craft) |
 | Check | `continuity diff` with 0 errors | cinewright-continuity |
 | Prompts | `compiled/<model>/` | cinewright-genvideo |
 | Render | takes in `takes/` | the user's renderer, after their go if it costs money |

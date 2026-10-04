@@ -3,7 +3,7 @@
   "scene": "1",
   "order": 2,
   "duration_s": 4,
-  "beat": "Maren chooses to trust the boy.",
+  "beat": "Turn: Maren chooses to trust the boy.",
   "camera": {"size": "MCU", "angle": "eye-level", "azimuth_deg": 45, "move": "dolly-in", "lens_mm": 50, "side": "A", "framing": "single"},
   "cast": [
     {
@@ -15,7 +15,7 @@
       "holding": "single match"
     }
   ],
-  "action": "Maren holds the single match out toward Tomas, off screen.",
+  "action": "Maren slowly stretches her arm out toward Tomas, off screen, the match steady in her fingers.",
   "dialogue": [{"character": "maren", "line": "Last one. Your hands are steadier than mine.", "tone": "quietly"}],
   "sound": "rain on the glass, muffled wind",
   "light": {"key_side": "frame-right", "quality": "soft"},

@@ -1,0 +1,73 @@
+{
+  "skill": "cinewright-movement",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root.",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "prompt": "In my AI video the horses' legs are a mess and the cavalry charge in the distance looks terrible. How should I shoot it?",
+      "expectations": [
+        "the cinewright-movement skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "prompt": "choreograph a short sword fight between two characters for AI video clips",
+      "expectations": [
+        "the cinewright-movement skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "animate a bouncing ball in CSS",
+      "expectations": [
+        "the cinewright-movement skill is not invoked (web animation, not film movement)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "which three.js physics engine should I use for a ragdoll",
+      "expectations": [
+        "the cinewright-movement skill is not invoked (3D programming)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "prompt": "I want to add a card 1D to examples/three-shot: a wide shot where a herd of horses gallops past the lighthouse in the storm. Write the card and check it against the project.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py\\s+continuity\\s+diff"
+      },
+      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder holding only a copy of examples/three-shot, no cinewright installed: read every project file, added a second scene and a 1D card by hand, edited design.md and README.md, searched the disk for a cine.py it did not find, and stopped at the 20-turn limit with no answer. No cine.py call, evidence absent; no HARD-SUBJECT reasoning seen in its tool calls.",
+      "runs": 3
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "prompt": "Rewrite this AI video shot so it works: 'A huge army of riders charges across the plain toward the enemy, swords flashing, then they clash.'",
+      "files": [],
+      "expectations": [
+        "the rewrite frames a few riders (5 or fewer) large in frame, with the mass in the background",
+        "the rewrite uses a side-on or three-quarter view and frame-relative direction (frame left to frame right), not 'toward the enemy'",
+        "the charge and the clash are split into separate shots",
+        "judge: each foreground rider or horse is described differently (2 of 3 votes)"
+      ],
+      "baseline": "not run separately; S6 runs it without the skill.",
+      "runs": 3
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "vocab": [
+    "shot-sizes.md",
+    "camera-angles.md",
+    "camera-moves.md",
+    "screen-direction.md",
+    "thirty-degree-rule.md"
+  ],
+  "lib": [
+    "cine.py"
+  ],
+  "schemas": [
+    "shot-card.schema.json",
+    "style-bible.schema.json",
+    "character-bible.schema.json",
+    "prop-bible.schema.json",
+    "location-bible.schema.json",
+    "scene-axis-bible.schema.json"
+  ]
+}

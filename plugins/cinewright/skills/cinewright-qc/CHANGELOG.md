@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261004-1 · 2026-10-04 · Prop rubric item shows the prop's description
+- because: first local render: 1A failed prop-drift (a cardboard box for a tin one) with nothing on the rubric to say what tin looks like
+- files: scripts/cine.py (copy), scripts/schemas/prop-bible.schema.json (copy), needs.json
+- `qc rubric` writes the props check as `holds the <name> (<description>)` when the prop bible describes it.
+
 ### C-20261003-2 · 2026-10-03 · Lessons from the first real render
 - because: L-001, L-002
 - files: SKILL.md (Step 1, Step 3), references/qc-loop.md, shared/lib/cine.py (qc spec takes a generation label)
