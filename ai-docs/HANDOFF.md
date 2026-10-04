@@ -1,7 +1,7 @@
 # Handoff
 
 ## Current state
-- S3 (pre-production craft) was done on 2026-10-04 on branch `s3/preproduction` off `main` (the S2 PR #3 was merged with no comments). Its PR waits for Mark's review. The repo is private: https://github.com/m4bwav/cinewright.
+- S3 (pre-production craft) was done on 2026-10-04 on branch `s3/preproduction` off `main` (the S2 PR #3 was merged with no comments). Its PR (#4, https://github.com/m4bwav/cinewright/pull/4) waits for Mark's review. The repo is private: https://github.com/m4bwav/cinewright.
 - Built: `cinewright-shots` in core; `cinewright-script`, `cinewright-design` and `cinewright-movement` in craft (17 knowledge entries, each a full evergreen unit with evals and a baseline). Runtime: optional `bibles/props.json` (schema, validate, compile pastes the description with a verbatim guard, diff, qc rubric), `cards list`, DIALOGUE and HARD-SUBJECT diff warnings. The thirty-degree rule moved to shared vocab. 57 tests. Layout: [../CODEMAP.md](../CODEMAP.md).
 - The example now runs brief, script, design notes, shot list, bibles with props, a clean diff and compiles for Veo and MiniMax H3 ([../examples/three-shot/README.md](../examples/three-shot/README.md)).
 - Mark's answer on the model-card budget row was applied: cards are green at 900 est. tokens ([decision](decisions/2026-10-03-proposed-model-card-budget-row.md)).
