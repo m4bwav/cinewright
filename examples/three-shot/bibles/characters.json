@@ -1,0 +1,19 @@
+{
+  "characters": [
+    {
+      "id": "maren",
+      "name": "Maren",
+      "identity": "a lean woman in her sixties with deep-set grey eyes, silver hair in a single braid and a thin white scar through her left eyebrow",
+      "voice": "low, dry, unhurried",
+      "wardrobe": {"default": "a navy wool fisherman's sweater with a frayed collar"},
+      "props": ["tin matchbox", "single match"]
+    },
+    {
+      "id": "tomas",
+      "name": "Tomas",
+      "identity": "a wiry boy of about twelve with a mop of curly black hair, brown eyes and a gap between his front teeth",
+      "voice": "young, a little breathless",
+      "wardrobe": {"default": "an oversized yellow oilskin coat over a grey shirt"}
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "1C",
+  "scene": "1",
+  "order": 3,
+  "duration_s": 4,
+  "beat": "Tomas accepts the job.",
+  "camera": {"size": "MCU", "angle": "eye-level", "azimuth_deg": 135, "move": "static", "lens_mm": 50, "side": "B", "framing": "single"},
+  "cast": [
+    {
+      "id": "tomas",
+      "identity": "a wiry boy of about twelve with a mop of curly black hair, brown eyes and a gap between his front teeth",
+      "wardrobe": "an oversized yellow oilskin coat over a grey shirt",
+      "looks_at": "maren",
+      "eyeline": "frame-left",
+      "holding": null,
+      "holding_end": "single match"
+    }
+  ],
+  "action": "Tomas takes the match from a hand entering frame left and closes his fist around it.",
+  "sound": "rain on the glass, a distant ship's horn",
+  "light": {"key_side": "frame-left", "quality": "soft"},
+  "end_state": "Tomas holds the match in a closed fist at chest height.",
+  "seed": 103
+}

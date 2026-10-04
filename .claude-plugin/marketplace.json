@@ -1,0 +1,30 @@
+{
+  "name": "cinewright",
+  "owner": {
+    "name": "Mark Rogers"
+  },
+  "metadata": {
+    "description": "Film craft and AI video coherence: plan, continuity-check and compile shots for video models",
+    "version": "0.0.1"
+  },
+  "plugins": [
+    {
+      "name": "cinewright",
+      "source": "./plugins/cinewright",
+      "description": "Core: plan, continuity-check and compile AI video shots",
+      "version": "0.0.1"
+    },
+    {
+      "name": "cinewright-craft",
+      "source": "./plugins/cinewright-craft",
+      "description": "Craft: film roles beyond the core (empty until later releases)",
+      "version": "0.0.1"
+    },
+    {
+      "name": "cinewright-dev",
+      "source": "./plugins/cinewright-dev",
+      "description": "Dev: knowledge-base upkeep for cinewright maintainers",
+      "version": "0.0.1"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Reference entry frontmatter",
+  "description": "Frontmatter of one knowledge entry (references/<slug>.md). Body sections allowed: Rules, Numbers, Vocabulary, Pitfalls, Verify, Notes, Compile.",
+  "type": "object",
+  "required": ["title", "slug", "summary", "tags", "last_checked", "sources"],
+  "properties": {
+    "title": {"type": "string", "minLength": 3, "maxLength": 80},
+    "slug": {"type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "description": "Equals the file name without .md."},
+    "summary": {"type": "string", "minLength": 20, "maxLength": 200, "description": "Becomes the line in references/INDEX.md."},
+    "tags": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^[a-z0-9-]+$"}},
+    "last_checked": {"type": "string", "format": "date"},
+    "sources": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 5}, "description": "URLs, or books as author, title, edition or year."},
+    "model": {"type": "string"},
+    "vendor": {"type": "string"},
+    "version": {"type": "string"},
+    "status": {"enum": ["current", "preview", "deprecated", "shut-down"]},
+    "volatile_claims": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

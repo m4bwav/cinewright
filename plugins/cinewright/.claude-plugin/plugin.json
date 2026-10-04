@@ -1,0 +1,21 @@
+{
+  "name": "cinewright",
+  "version": "0.0.1",
+  "description": "Plan AI video like a film crew: a director router, a script supervisor that diffs every shot card against character, location and axis bibles, and a compiler that turns generator-neutral shot cards into model prompts (Veo 3.1 first).",
+  "author": {
+    "name": "Mark Rogers"
+  },
+  "license": "MIT",
+  "keywords": [
+    "film",
+    "video",
+    "ai-video",
+    "veo",
+    "continuity",
+    "shot-list",
+    "storyboard",
+    "prompting",
+    "evergreen"
+  ],
+  "repository": "https://github.com/m4bwav/cinewright"
+}

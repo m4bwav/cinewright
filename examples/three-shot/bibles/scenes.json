@@ -1,0 +1,18 @@
+{
+  "scenes": [
+    {
+      "id": "1",
+      "heading": "INT. LIGHTHOUSE LAMP ROOM - NIGHT",
+      "location": "lamp-room",
+      "time_of_day": "night",
+      "sun": "cold blue storm light through the windows from the sea side, lightning flashes",
+      "props": ["tin matchbox", "single match"],
+      "axis": {
+        "line": "between Maren and Tomas, across the lens",
+        "camera_side": "A",
+        "positions": {"maren": "frame-left", "tomas": "frame-right"},
+        "travel": {}
+      }
+    }
+  ]
+}

@@ -4,7 +4,7 @@ Rules for any AI agent (Claude Code, Copilot, Cursor, Codex) working in this rep
 
 ## What this is
 
-cinewright: an evergreen plugin set that gives an agent the craft of every film role plus AI video generation, so generated video is coherent within and between shots. Status: planning. The plan is [ai-docs/plans/PLAN.md](ai-docs/plans/PLAN.md); the next session's prompt is [ai-docs/next-session-prompt.md](ai-docs/next-session-prompt.md); start with [ai-docs/HANDOFF.md](ai-docs/HANDOFF.md).
+cinewright: an evergreen plugin set that gives an agent the craft of every film role plus AI video generation, so generated video is coherent within and between shots. Status: S1 built (scaffold, three core skills, Veo 3.1 compile, worked example); where things live is in [CODEMAP.md](CODEMAP.md). The plan is [ai-docs/plans/PLAN.md](ai-docs/plans/PLAN.md); the next session's prompt is [ai-docs/next-session-prompt.md](ai-docs/next-session-prompt.md); start with [ai-docs/HANDOFF.md](ai-docs/HANDOFF.md).
 
 ## Rules
 
@@ -16,6 +16,9 @@ cinewright: an evergreen plugin set that gives an agent the craft of every film 
 - Relative markdown links, never wikilinks. Cite lessons with their code names, not bare IDs.
 - No AI attribution anywhere: no Co-Authored-By trailers, no "generated with" lines in commits, PRs or files.
 - Prose: plain short sentences, no em dashes.
+- Edit vocabulary, schemas and the runtime library in `shared/`, never the copies inside a skill. Run `python scripts/cine.py build`, then the checks below; lint fails on drift.
+- Before a PR: `python -m unittest discover -s tests`, `python scripts/cine.py kb lint`, `python scripts/cine.py budget` (red fails; tell Mark about a yellow in one line), `claude plugin validate` on the root and each `plugins/*` folder. CI is manual-dispatch while private, so run these locally and quote the output in `ai-docs/log.md`.
+- Shipped files cite lessons from private projects as "field lesson NNN" with a title, never the project's name (see the decision in `ai-docs/decisions/`).
 
 ## everlast (session knowledge, load on demand)
 

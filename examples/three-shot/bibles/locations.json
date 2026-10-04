@@ -1,0 +1,11 @@
+{
+  "locations": [
+    {
+      "id": "lamp-room",
+      "name": "Lamp room",
+      "int_ext": "INT",
+      "description": "the round lamp room atop a stone lighthouse, a huge dark brass-and-glass lens in the center, rain-streaked windows all around",
+      "props": ["brass lens", "workbench"]
+    }
+  ]
+}

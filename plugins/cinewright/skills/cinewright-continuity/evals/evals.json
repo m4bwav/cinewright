@@ -1,0 +1,73 @@
+{
+  "skill": "cinewright-continuity",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root.",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "prompt": "My AI video clips keep flipping which side the two characters are on between shots. How do I keep them consistent?",
+      "expectations": [
+        "the cinewright-continuity skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "prompt": "check the shot cards in examples/three-shot for continuity errors before I render",
+      "expectations": [
+        "the cinewright-continuity skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "generate a portrait of a knight in silver armor with ComfyUI",
+      "expectations": [
+        "the cinewright-continuity skill is not invoked (image generation, a ComfyUI skill's job)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "write a Python function that diffs two JSON files and prints the changed keys",
+      "expectations": [
+        "the cinewright-continuity skill is not invoked (plain coding)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "prompt": "Run a continuity check on the project in examples/three-shot with planted/1C.json in place of its 1C card, and tell me what is wrong.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace or a written file), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py\\s+continuity\\s+diff"
+      },
+      "baseline": "2026-10-03, one run, Sonnet, claude -p in a bare folder without cinewright: read all 9 project files and found the side-B axis cross, but the planted card then held a note announcing the error (removed after this run). No cine.py call, so the action evidence is absent.",
+      "runs": 3
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "prompt": "Check examples/three-shot for continuity problems if planted/1C.json replaced its 1C card. What breaks, and how do I fix it?",
+      "files": [],
+      "expectations": [
+        "the reply names card 1C and the axis (side B, crossing the line or the 180-degree rule)",
+        "the reply names Tomas's eyeline as a consequence",
+        "the fix offered is camera back to side A, or crosses_axis with an on-screen reason",
+        "judge: no invented errors on 1A or 1B (2 of 3 votes)"
+      ],
+      "baseline": "not run separately; the action baseline suggests a careful reader finds a single axis error, so this case may be redundant: sharpen it in S6 (a subtler plant, such as a one-word wardrobe change or a 30-degree jump).",
+      "runs": 3
+    }
+  ]
+}
