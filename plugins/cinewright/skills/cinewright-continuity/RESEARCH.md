@@ -10,7 +10,7 @@ Topic: Film continuity (script supervision) applied to AI-generated video. Tier 
 - Settled (AI-specific, field lessons 005, 011, 012, 013): each generation starts from nothing, so identity, props, direction and sound must be restated verbatim in every prompt; a first frame carries composition, not identity.
 - Settled: a verbatim identity string plus reference images is the strongest identity carrier; Veo takes up to 3 asset refs (genvideo card).
 - Moving: models with multi-shot generation (Kling, Seedance, Veo timestamps) reduce seam problems; the rules stay, their weight shifts.
-- Unverified: the head-trim and audio-overlap numbers in ai-continuity come from one local model; re-check on hosted models in S2.
+- Unverified: the head-trim and audio-overlap numbers in ai-continuity come from one local model; re-check on the first hosted render (S2 rendered locally only).
 
 ## Open questions
 

@@ -1,12 +1,12 @@
 ---
 name: cinewright-genvideo
-description: "AI video prompts: compiles a shot card plus bibles into one model's prompt and settings (Veo 3.1 now; Kling, Seedance, Runway, Luma, Wan, LTX-2, MiniMax H3 later), with refs, seeds and takes. Use when writing a Veo prompt or turning a shot list into video-model prompts. Also 'refresh cinewright-genvideo'."
+description: "AI video prompts: compiles shot cards plus bibles into one model's prompt and settings (Veo, Gemini Omni, Kling, Seedance, Runway, Luma, MiniMax H3, Wan, LTX-2), with refs, seeds, takes and cost. Use when writing a prompt for one of these models or turning a shot list into video-model prompts. Also 'refresh cinewright-genvideo'."
 license: MIT
 ---
 
 # cinewright-genvideo
 
-Turn checked shot cards into prompts a given video model follows, without retyping identity, wardrobe or direction by hand. Outcome: one prompt file and one settings file per card in `compiled/<model>/`. Stub: only the Veo 3.1 card exists so far.
+Turn checked shot cards into prompts a given video model follows, without retyping identity, wardrobe or direction by hand. Outcome: one prompt file and one settings file per card (or per multi-shot generation) in `compiled/<model>/`.
 
 `CINE` means `python scripts/cine.py` run from the folder holding this file (run it, never read it). Knowledge: read [references/INDEX.md](references/INDEX.md) once, then `CINE kb show <slug> --section Rules`. Never read the whole folder.
 
@@ -20,10 +20,11 @@ Cards must pass `CINE continuity diff <project>` with 0 errors (cinewright-conti
 
 ## Step 2: compile
 
-1. Pick the model card: `CINE kb show veo-3-1 --section Numbers`. Check the style bible's aspect and resolution are on the list.
-2. Run `CINE compile <project> --model veo --out <project>/compiled/veo`. Evidence: the line `wrote N prompts to ...` and the files.
+1. Pick the model the user renders with. Keys and cards: `veo` (veo-3-1), `omni` (gemini-omni), `kling` (kling-3), `seedance` (seedance-2-5), `runway` (runway-gen-4-5), `luma` (luma-ray-3-2), `minimax-h3`, `wan` (wan-2-2), `ltx2` (ltx-2). Read its Rules and Numbers: `CINE kb show <card> --section Rules`.
+2. Run `CINE compile <project> --model <key> --out <project>/compiled/<key>`. A size the model lacks stops the compile: change the bible or pass `--resolution` (a cheap local draft). Evidence: the line `wrote N prompts to ...` and the files.
 3. Read each warning. A duration warning means trim in the edit; a word warning means shorten action or context, never the identity string.
-4. Several short cards of one scene in one generation: add `--sequence` (timestamp blocks).
+4. Several cards of one scene in one generation, when the model has multi-shot syntax: add `--sequence`. Prefer it: every seam between generations can read as a restart.
+5. Hosted models print `est. $` per prompt: quote it when asking for the go.
 
 The compile rule (what goes where, and why): `kb show compile-rule`.
 
@@ -31,7 +32,7 @@ The compile rule (what goes where, and why): `kb show compile-rule`.
 
 - A render on a hosted model costs money. Show the prompt and settings and ask before any call. Local renders need no ask.
 - One change per reroll. Keep the seed when only the end of a take is wrong; change it when the opening is wrong.
-- Record each take in `takes/<card>-<n>.json` (shape: `scripts/schemas/take.schema.json`).
+- Record each take with `CINE takes log` and judge it with cinewright-qc. Failure codes and fixes: `kb show failures-picture`, `kb show failures-motion`.
 
 ## Output
 

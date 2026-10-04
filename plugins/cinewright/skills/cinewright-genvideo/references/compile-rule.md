@@ -26,4 +26,4 @@ sources: ["https://cloud.google.com/blog/products/ai-machine-learning/ultimate-p
 
 ## Notes
 
-- 2026-10-03: only the Veo 3.1 card exists. S2 adds Kling, Seedance, Runway, Luma, MiniMax H3, Wan and LTX-2.
+- 2026-10-03: nine model cards. Models without sound drop dialogue and sound with a warning; local models get frame counts and sizes on their grid.
