@@ -44,6 +44,7 @@ BUDGETS = [  # key, label, green max, yellow max
     ("desc_core", "core descriptions, characters", 1800, 2500),
     ("entry_lines", "reference entry lines", 60, 100),
     ("entry_tokens", "reference entry tokens (est.)", 700, 1200),
+    ("card_tokens", "model card tokens (est.)", 900, 1200),
     ("index_tokens", "references/INDEX.md tokens (est.)", 1500, 3000),
     ("skill_kb", "skill folder KB", 150, 300),
     ("plugin_files", "files per plugin", 350, 450),
@@ -346,7 +347,8 @@ def measure(root):
                 worst("index_tokens", tokens(t), rel(root, p))
             else:
                 worst("entry_lines", len(t.rstrip("\n").split("\n")), rel(root, p))
-                worst("entry_tokens", tokens(t), rel(root, p))
+                # a model card also carries the compiler's Compile block, so it has its own row
+                worst("card_tokens" if "model" in lib.parse_frontmatter(t)[0] else "entry_tokens", tokens(t), rel(root, p))
         kb = sum(f.stat().st_size for f in s.rglob("*") if f.is_file() and "__pycache__" not in f.parts) // 1024
         worst("skill_kb", kb, s.name)
     rows["desc_total"] = (total, "%d skills" % len(skills(root)))

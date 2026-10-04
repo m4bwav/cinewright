@@ -1,0 +1,12 @@
+{
+  "props": [
+    {
+      "name": "tin matchbox",
+      "description": "a small dented tin matchbox with a hinged lid, scratched silver, the size of a palm"
+    },
+    {
+      "name": "single match",
+      "description": "one long wooden kitchen match with a red head"
+    }
+  ]
+}

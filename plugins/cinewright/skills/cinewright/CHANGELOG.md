@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261004-1 · 2026-10-04 · Pipeline names the S3 skills; project layout adds script, design notes and the prop bible
+- because: user request (cinewright S3)
+- files: SKILL.md, references/project-layout.md
+- The Step 2 table gains Script and Design rows and routes the shot list to cinewright-shots with cinewright-movement for actions; the layout lists `script.md`, `design.md` and the optional `bibles/props.json`.
+
 ### C-20261003-1 · 2026-10-03 · Created as an evergreen unit (cinewright S1)
 - because: user request, R-20261003-1
 - files: SKILL.md, references/, needs.json, RESEARCH.md, LEARNINGS.md, TESTS.md, evals/evals.json, evergreen.json, MAINTENANCE.md

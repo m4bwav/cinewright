@@ -182,9 +182,10 @@ class TestCompile(Base):
         self.assertIn("Maren is looking down, at the tin matchbox.", (out_dir / "1A.txt").read_text(encoding="utf-8"))
 
     def test_example_compiled_files_are_current(self):
-        for sub, extra in (("veo", []), ("veo-sequence", ["--sequence"])):
+        for sub, model, extra in (("veo", "veo", []), ("veo-sequence", "veo", ["--sequence"]),
+                                  ("minimax-h3-sequence", "minimax-h3", ["--sequence", "--resolution", "480p"])):
             out_dir = self.tmp / sub
-            code, out = run("compile", EXAMPLE, "--model", "veo", "--out", out_dir, *extra)
+            code, out = run("compile", EXAMPLE, "--model", model, "--out", out_dir, *extra)
             self.assertEqual(code, 0, out)
             for f in out_dir.iterdir():
                 committed = EXAMPLE / "compiled" / sub / f.name
@@ -264,10 +265,20 @@ class TestContinuity(Base):
 
 
 class TestBudgetZip(Base):
-    def test_budget_green(self):
+    def test_budget_not_red(self):
+        # PLAN 6: CI fails at red; a yellow row is reported to Mark, not failed
         code, out = run("budget")
         self.assertEqual(code, 0, out)
-        self.assertIn("budget: GREEN", out)
+        self.assertNotIn("budget: RED", out)
+
+    def test_model_cards_have_their_own_row(self):
+        spec = importlib.util.spec_from_file_location("cine_cli", CLI)
+        cli = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cli)
+        rows = cli.measure(REPO)
+        self.assertIn("cinewright-genvideo/references/", rows["card_tokens"][1])
+        worst = REPO / rows["entry_tokens"][1]
+        self.assertNotIn("model", lib.parse_frontmatter(lib.read_text(worst))[0], "model cards must not count as entries")
 
     def test_budget_status_thresholds(self):
         spec = importlib.util.spec_from_file_location("cine_cli", CLI)
@@ -593,3 +604,86 @@ class TestQc(Base):
         self.assertIn("planned end state: Match held out", text)
         rec = json.loads((self.proj / "takes" / "1B-3.json").read_text(encoding="utf-8"))
         self.assertEqual(rec["observed_end_state"], "match held out toward frame right")
+
+
+# ---------- S3: prop bible, shot list, dialogue and hard-subject checks ----------
+
+class TestPreproduction(Base):
+    BOX = "a small dented tin matchbox with a hinged lid, scratched silver, the size of a palm"
+
+    def project(self):
+        return lib.Project(EXAMPLE)
+
+    def warnings(self, p):
+        return sorted({(i["card"], i["code"]) for i in lib.continuity_diff(p) if i["level"] == "warning"})
+
+    def test_prop_description_compiled_verbatim(self):
+        _, _, res = compile_one(EXAMPLE, "veo", "1A")
+        self.assertIn("holding " + self.BOX, res[0][1])
+        _, _, res = compile_one(EXAMPLE, "minimax-h3", sequence=True)
+        self.assertIn("Maren is on the left of the frame, holding " + self.BOX, res[0][1], "the staging part carries the prop (genvideo L-004)")
+
+    def test_prop_guard(self):
+        orig = lib.card_parts
+
+        def lossy(*a, **k):
+            return {key: v.replace("dented ", "") for key, v in orig(*a, **k).items()}
+        lib.card_parts = lossy
+        try:
+            p = self.project()
+            _, _, prof = lib.find_model_card(repo_ctx(), "veo")
+            with self.assertRaises(SystemExit) as cm:
+                lib.compile_cards(p, [p.cards[0]], prof)
+            self.assertIn("prop 'tin matchbox' not verbatim", str(cm.exception))
+        finally:
+            lib.card_parts = orig
+
+    def test_prop_bible_validated(self):
+        proj = self.tmp / "p"
+        shutil.copytree(EXAMPLE, proj)
+        edit(proj / "bibles/props.json", '"description": "one long wooden kitchen match with a red head"', '"description": "a match"')
+        code, out = run("cards", "validate", proj)
+        self.assertEqual(code, 1)
+        self.assertIn("bibles/prop-bible", out)
+
+    def test_prop_without_description_warns(self):
+        p = self.project()
+        p.props.pop("single match")
+        self.assertIn(("1B", "PROP"), self.warnings(p))
+        p.props = {}
+        self.assertEqual(self.warnings(p), [], "no prop bible: listed props need no description")
+
+    def test_rubric_names_prop_description(self):
+        items = lib.rubric_items(self.project(), self.project().cards[0])
+        props = [i["ask"] for i in items if i["check"] == "props"]
+        self.assertTrue(props and self.BOX in props[0], props)
+
+    def test_dialogue_length(self):
+        p = self.project()
+        self.assertEqual(self.warnings(p), [])
+        p.cards[1]["dialogue"][0]["line"] = "This is the last one we have, and your hands are much steadier than mine tonight."
+        self.assertIn(("1B", "DIALOGUE"), self.warnings(p))
+        p.cards[1]["duration_s"] = 8
+        self.assertNotIn(("1B", "DIALOGUE"), self.warnings(p))
+
+    def test_hard_subject(self):
+        p = self.project()
+        p.cards[0]["action"] = "A herd of horses gallops past the lighthouse in the storm."
+        self.assertIn(("1A", "HARD-SUBJECT"), self.warnings(p))
+        p.cards[0]["camera"]["size"] = "MS"
+        self.assertNotIn(("1A", "HARD-SUBJECT"), self.warnings(p))
+
+    def test_cards_list(self):
+        code, out = run("cards", "list", EXAMPLE)
+        self.assertEqual(code, 0, out)
+        self.assertIn("| 2 | 1B | MCU | eye-level | 45 | dolly-in | 50 | Maren |", out)
+        self.assertTrue(out.rstrip().endswith("shot list: 3 shots, 1 scene(s), 14s"), out[-80:])
+
+    def test_example_script_matches_bibles_and_cards(self):
+        script = (EXAMPLE / "script.md").read_text(encoding="utf-8")
+        p = self.project()
+        for s in p.scenes["scenes"]:
+            self.assertIn(s["heading"] + "\n", script)
+        for c in p.cards:
+            for d in c.get("dialogue", []):
+                self.assertIn(d["line"], script)

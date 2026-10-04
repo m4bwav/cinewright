@@ -164,3 +164,71 @@ $ evergreen.py lint <each skill>
 cinewright-continuity: lint OK / cinewright-genvideo: lint OK / cinewright-qc: lint OK / cinewright: lint OK
 ```
 ## [2026-10-03] index | rebuilt (9 entries)
+
+## 2026-10-04: session S3, pre-production craft
+
+- S2 PR #3 was merged with no comments, so `s3/preproduction` branched off `main`. Mark answered the model-card budget question ("apply your budget thing if you think its cool"): applied, cards green at 900 est. tokens ([decision](decisions/2026-10-03-proposed-model-card-budget-row.md)).
+- Built: `cinewright-shots` (core) and `cinewright-script`, `cinewright-design`, `cinewright-movement` (craft), 17 knowledge entries, each skill a full evergreen unit. Runtime: optional `bibles/props.json` through schema, validate, compile (verbatim guard), diff and qc rubric; `cards list`; DIALOGUE and HARD-SUBJECT warnings; the thirty-degree rule moved to shared vocab ([decision](decisions/2026-10-04-prop-bible-and-pre-production-checks.md)). Field lessons 017, 019, 020 and 021 became design L-001, L-002 and movement L-001, L-002; the S2 render's prop drift became design L-003.
+- Example: brief with the scene turn, `script.md`, `design.md`, `bibles/props.json`, movement pass on the actions, and a MiniMax H3 sequence compile beside the Veo ones. The H3 prompt is 377 words against a 300-word guide (S2's 336 rendered well).
+- Budget: one row yellow, the genvideo folder (151, then 152 KB of 150), because the shared 70 KB runtime copy grew. Not cut; proposed a separate runtime row ([decision](decisions/2026-10-04-proposed-runtime-budget-row.md)). `test_budget_green` became `test_budget_not_red`, matching PLAN §6. `coverage` went to 728 tokens once and was trimmed.
+- Baselines (Sonnet, headless, scratch folders with a copy of the example): shots wrote the shot list by hand; movement wrote a 1D card by hand and hit the turn limit; script and design searched the disk, found this repository and used its cine.py: contaminated (cinewright-script L-001). The design action prompt was first trivially satisfied (props.json already in the example) and was rewritten to copy the example without it. The repository was checked clean after every run.
+- Windows: `subprocess` cannot start `claude` by bare name (it is `claude.CMD`); use `shutil.which("claude")`.
+
+Exit check output (2026-10-04, Windows 11, Python 3.14 and 3.9.25):
+
+```
+$ python -m unittest discover -s tests
+Ran 57 tests in 10.038s
+
+OK
+$ py -V:Astral/CPython3.9.25 -m unittest discover -s tests
+Ran 57 tests in 9.575s
+
+OK
+$ python scripts/cine.py kb lint
+kb lint: 8 skills, 0 errors
+$ python scripts/cine.py budget
+measure                                   value  green<= yellow<=  status worst
+SKILL.md lines                               55       80      120  green  plugins/cinewright/skills/cinewright/SKILL.md
+SKILL.md body tokens (est.)                 948     1200     2000  green  plugins/cinewright/skills/cinewright-qc/SKILL.md
+one description, characters                 334      350      500  green  cinewright-qc
+all descriptions, characters               2403     4000     5500  green  8 skills
+core descriptions, characters              1580     1800     2500  green  plugins/cinewright
+reference entry lines                        50       60      100  green  plugins/cinewright/skills/cinewright/references/pipeline.md
+reference entry tokens (est.)               700      700     1200  green  plugins/cinewright/skills/cinewright-shots/references/coverage.md
+model card tokens (est.)                    699      900     1200  green  plugins/cinewright/skills/cinewright-genvideo/references/minimax-h3.md
+references/INDEX.md tokens (est.)           739     1500     3000  green  plugins/cinewright/skills/cinewright-genvideo/references/INDEX.md
+skill folder KB                             152      150      300  yellow cinewright-genvideo
+files per plugin                            134      350      450  green  cinewright
+repo ZIP KB                                 527     2048     5120  green  tracked files
+duplicate paragraphs across skills            0        0     1000  green  
+budget: YELLOW (tokens are bytes / 4, an estimate)
+$ claude plugin validate .
+✔ Validation passed
+$ claude plugin validate plugins/cinewright
+✔ Validation passed
+$ claude plugin validate plugins/cinewright-craft
+✔ Validation passed
+$ claude plugin validate plugins/cinewright-dev
+✔ Validation passed
+$ evergreen.py lint <each skill>
+cinewright-design: lint OK
+/cinewright-movement: lint OK
+/cinewright-script: lint OK
+/cinewright-continuity: lint OK
+/cinewright-genvideo: lint OK
+/cinewright-qc: lint OK
+/cinewright-shots: lint OK
+/cinewright: lint OK
+$ python scripts/cine.py cards validate examples/three-shot
+cards validate: 3 cards, 0 errors
+$ python scripts/cine.py continuity diff examples/three-shot
+continuity diff: 3 cards, 0 errors, 0 warnings
+$ python scripts/cine.py cards list examples/three-shot | tail -1
+shot list: 3 shots, 1 scene(s), 14s
+$ python scripts/cine.py compile examples/three-shot --model minimax-h3 --sequence --resolution 480p
+== 1A+1B+1C  H3-Base-FL2VA  14.375s 16:9 480p  377 words
+  warning: planned 14.0s, rendered at 14.375s: trim in the edit
+  warning: 377 words, over the 300-word guide: shorten action or context, never the identity string
+```
+## [2026-10-04] index | rebuilt (11 entries)
