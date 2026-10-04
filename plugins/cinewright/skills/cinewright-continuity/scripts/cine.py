@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:fc9da84c1ba8ef4204a6ff8304337281f98496bdc51f15032f992bb2f3c2cc05; edit the source
+# copied from shared/lib/cine.py sha256:fe65e4acafc09c13fe80255ead063517770d4bbd7fe2aa2e73e162e87611a6eb; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -219,6 +219,8 @@ def validate(inst, schema, path="$", root=None):
     if isinstance(inst, list):
         if len(inst) < schema.get("minItems", 0):
             errs.append("%s: needs at least %d items" % (path, schema["minItems"]))
+        if schema.get("uniqueItems") and len({json.dumps(v, sort_keys=True) for v in inst}) < len(inst):
+            errs.append("%s: items repeat" % path)
         if "items" in schema:
             for i, v in enumerate(inst):
                 errs += validate(v, schema["items"], "%s[%d]" % (path, i), root)
@@ -326,10 +328,11 @@ def cmd_kb(ctx, a):
 # ---------- projects and cards ----------
 
 class Project:
-    def __init__(self, root, overrides=None):
+    def __init__(self, root, overrides=None, style=None):
         self.root = Path(root)
         b = self.root / "bibles"
-        self.style = json.loads(read_text(b / "style.json"))
+        # --style FILE: try a look on the whole film without editing bibles/style.json
+        self.style = json.loads(read_text(style or b / "style.json"))
         self.characters = json.loads(read_text(b / "characters.json"))
         self.locations = json.loads(read_text(b / "locations.json"))
         self.scenes = json.loads(read_text(b / "scenes.json"))
@@ -346,6 +349,33 @@ class Project:
         self.locs = {x["id"]: x for x in self.locations.get("locations", [])}
         self.scene_map = {s["id"]: s for s in self.scenes.get("scenes", [])}
         self.props = {x["name"]: x for x in (self.props_bible or {}).get("props", [])}
+
+
+MM_RANGE = re.compile(r"(\d+)\s*-\s*(\d+)\s*mm")
+
+
+def lens_range(text):
+    """(shortest, longest) focal length named by a lens family string, or None."""
+    r = [(int(a), int(b)) for a, b in MM_RANGE.findall(text or "")]
+    return (min(a for a, _ in r), max(b for _, b in r)) if r else None
+
+
+def aspect_value(s):
+    w, h = s.split(":")
+    return float(w) / float(h)
+
+
+def frame_words(st):
+    """The composition sentence for a frame aspect other than the rendered one, else ''."""
+    fa = st.get("frame_aspect")
+    if not fa:
+        return ""
+    frame, render = aspect_value(fa), aspect_value(st["aspect_ratio"])
+    if abs(frame - render) < 0.01:
+        return ""
+    if frame > render:
+        return "Composed for a %s widescreen crop, heads and action inside the middle %d%% of the frame height." % (fa, round(100 * render / frame))
+    return "Composed for a %s crop, the subject inside the middle %d%% of the frame width." % (fa, round(100 * frame / render))
 
 
 def wardrobe_for(char, scene_id):
@@ -444,7 +474,7 @@ def film_json(p, xfade=0.16):
 
 
 def cmd_cards(ctx, a):
-    p = Project(a.project)
+    p = Project(a.project, style=getattr(a, "style", None))
     if a.cmd == "validate":
         errs = validate_project(ctx, p)
         for e in errs:
@@ -515,6 +545,13 @@ def continuity_diff(p):
             add("error", card, "SUN", "sun '%s' differs from the scene's '%s'" % (sun, sc["sun"]))
         if cam.get("angle") == "dutch" and not p.style.get("allow_dutch"):
             add("warning", card, "STYLE", "dutch angle but the style bible does not allow it")
+        lr = lens_range(p.style.get("lens_family"))
+        if lr and cam.get("lens_mm") and not lr[0] <= cam["lens_mm"] <= lr[1]:
+            add("warning", card, "LENS", "%gmm is outside the style's lens family (%s, %d-%dmm); change the lens or the family" % (
+                cam["lens_mm"], p.style["lens_family"], lr[0], lr[1]))
+        moves = p.style.get("allowed_moves")
+        if moves and cam.get("move") and cam["move"] not in moves:
+            add("warning", card, "MOVE", "%s is not one of the style's moves (%s)" % (cam["move"], ", ".join(moves)))
         positions = axis.get("positions", {})
         travel = axis.get("travel", {})
         allowed_props = set(sc.get("props", [])) | set(p.locs.get(sc.get("location"), {}).get("props", [])) | set(p.props)
@@ -598,7 +635,7 @@ def continuity_diff(p):
 
 
 def cmd_continuity(ctx, a):
-    p = Project(a.project, a.with_card)
+    p = Project(a.project, a.with_card, a.style)
     issues = continuity_diff(p)
     errors = [i for i in issues if i["level"] == "error"]
     if a.json:
@@ -739,7 +776,8 @@ def card_parts(p, card, prof, tags=None, speakers=None):
     # --sequence: the scene's sun goes in the shared header, each shot keeps its own key side
     parts["sun"] = _sentence(_cap(sc["sun"])) if sc.get("sun") else ""
     parts["key"] = _sentence(_cap(", ".join(lt[1:] if sc.get("sun") else lt))) if lt[1 if sc.get("sun") else 0:] else ""
-    parts["style"] = _sentence(p.style["look"])
+    # look, then the style's lighting and frame: said once per generation, identical in every shot
+    parts["style"] = " ".join(_sentence(x) for x in (p.style["look"], p.style.get("lighting", ""), frame_words(p.style)) if x)
     lines = []
     if prof["dialogue"]:
         for d in card.get("dialogue", []):
@@ -903,6 +941,9 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None):
                     raise SystemExit("compiler bug: identity of %s not verbatim in %s" % (m["id"], c["id"]))
                 if m.get("holding") in p.props and prop_words(p, m["holding"]) not in text:
                     raise SystemExit("compiler bug: prop '%s' not verbatim in %s" % (m["holding"], c["id"]))
+        for key, want in (("lighting", st.get("lighting", "").rstrip(".")), ("frame_aspect", frame_words(st).rstrip("."))):
+            if want and want not in text:
+                raise SystemExit("compiler bug: style %s not verbatim in %s" % (key, "+".join(c["id"] for c in g)))
         params = {}
 
         def put(key, val):
@@ -937,7 +978,7 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None):
 
 
 def cmd_compile(ctx, a):
-    p = Project(a.project)
+    p = Project(a.project, style=a.style)
     path, meta, prof = find_model_card(ctx, a.model)
     if not prof:
         print("no model card for '%s'. Install cinewright-genvideo, or check `kb search %s`." % (a.model, a.model), file=sys.stderr)
@@ -1331,6 +1372,7 @@ def build_parser(prog="cine.py"):
     s.add_argument("--order", type=int)
     s = cards.add_parser("validate", help="check bibles and cards against the schemas")
     s.add_argument("project")
+    s.add_argument("--style", metavar="FILE", help="check this style bible in place of bibles/style.json")
     s = cards.add_parser("list", help="print the shot list in cut order")
     s.add_argument("project")
     s = cards.add_parser("export", help="export the shot list")
@@ -1345,6 +1387,7 @@ def build_parser(prog="cine.py"):
     s.add_argument("--card", action="append", help="card id; repeat; default all")
     s.add_argument("--sequence", action="store_true", help="join consecutive cards of a scene into one timestamped generation")
     s.add_argument("--resolution", help="override the style bible's resolution, e.g. a cheap draft size")
+    s.add_argument("--style", metavar="FILE", help="compile with this style bible in place of bibles/style.json")
     s.add_argument("--out")
 
     c = g.add_parser("continuity", help="script supervisor checks").add_subparsers(dest="cmd", required=True)
@@ -1352,6 +1395,7 @@ def build_parser(prog="cine.py"):
     s.add_argument("project")
     s.add_argument("--json", action="store_true")
     s.add_argument("--with", dest="with_card", action="append", metavar="FILE", help="check this card in place of the project card with the same id")
+    s.add_argument("--style", metavar="FILE", help="check against this style bible in place of bibles/style.json")
 
     q = g.add_parser("qc", help="check rendered takes (needs ffmpeg)").add_subparsers(dest="cmd", required=True)
     s = q.add_parser("sheet", help="contact sheet of a clip at 1-2 fps")

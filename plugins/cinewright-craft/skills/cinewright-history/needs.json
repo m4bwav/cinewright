@@ -1,0 +1,18 @@
+{
+  "vocab": [
+    "aspect-ratios.md",
+    "lens-terms.md",
+    "lighting-terms.md"
+  ],
+  "lib": [
+    "cine.py"
+  ],
+  "schemas": [
+    "shot-card.schema.json",
+    "style-bible.schema.json",
+    "character-bible.schema.json",
+    "prop-bible.schema.json",
+    "location-bible.schema.json",
+    "scene-axis-bible.schema.json"
+  ]
+}

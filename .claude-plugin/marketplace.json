@@ -17,7 +17,7 @@
     {
       "name": "cinewright-craft",
       "source": "./plugins/cinewright-craft",
-      "description": "Craft: script, design and movement now; camera, edit, finish, sound and history later",
+      "description": "Craft: script, design, movement, camera and lighting, film history styles; edit, finish and sound later",
       "version": "0.0.1"
     },
     {

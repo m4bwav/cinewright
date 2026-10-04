@@ -232,3 +232,78 @@ $ python scripts/cine.py compile examples/three-shot --model minimax-h3 --sequen
   warning: 377 words, over the 300-word guide: shorten action or context, never the identity string
 ```
 ## [2026-10-04] index | rebuilt (11 entries)
+
+## 2026-10-04: session S4, camera, lighting and history
+
+- S3 PR #4 was merged with no comments, so `s4/camera-history` branched off `main`. No answer yet on the runtime budget row: genvideo's folder reads yellow (156 of 150 KB; the runtime copy grew again) and is reported, not cut.
+- Built: `cinewright-camera` (lens choice, depth of field, exposure, frame rate and shutter, aspect and framing, anamorphic, lighting ratios, lighting setups, color temperature) and `cinewright-history` (two movement entries, eras by format, two genre entries, four director entries, cinematographers, applying-styles; about 70 cards), each a full evergreen unit. Shared vocab: `aspect-ratios`, `lens-terms`, `lighting-terms` (camera and history; camera also takes `camera-moves`).
+- Runtime ([decision](decisions/2026-10-04-style-fields-carry-camera-and-history.md)): style-bible `lighting`, `frame_aspect`, `allowed_moves`, `history`; the style part compiles look + lighting + a composition sentence for a frame other than the render, under a verbatim guard; LENS and MOVE diff warnings; `--style FILE` on `cards validate`, `continuity diff` and `compile`; `uniqueItems` in the validator. The render aspect never changes: no model renders 2.39 (cinewright-camera L-001).
+- Example: `styles/new-hollywood-239.json` compiled to `compiled/veo-new-hollywood/` (README §7). The S2-rendered prompts are untouched. The variant's strings were trimmed by two words so 1A lands at Veo's 250-word guide.
+- Mark asked mid-session for a component for large battle scenes and fight scenes. Fights were covered (movement `fights-and-stunts`); added movement `battle-scenes` (map, two sides with fixed screen direction, phases as scenes, scale from few large figures, haze and compositing) and named the post half in PLAN §2 and §10 S5 (cutting a battle, crowd multiplication, battle sound).
+- Sources checked this session: RED shutter tutorial, Wikipedia aspect ratio, color temperature, anamorphic format and film stock list, Film and Digital Times on the 25-250mm zoom, the ASC magazine page. The Vertex and Gemini Veo prompt-guide pages rendered only navigation, so camera entries cite no Veo URL; model behaviour claims are marked unverified. History timestamps marked `~` are approximate and unchecked.
+- Baselines (Sonnet, headless, scratch folder on another drive with a stripped copy of the example, Bash, web and agent tools denied): camera action wrote a noir plan with an invented `frame` field and an over-long lighting string, no check; history action set the render aspect to 2.39:1 (unrenderable) and hand-made a compile; both outcome cases passed without the skill and are flagged for replacement in S6. The history run globbed the home folder (timed out, nothing found): not contaminated, but Glob and Grep are not refused outside the folder (cinewright-history L-002).
+- Companion generation bug: splitting the design templates on `### C-` and `### T-` cut the header's "Entry shape" line; evergreen lint caught it, fixed.
+
+Exit check output (2026-10-04, Windows 11, Python 3.14 and 3.9.25):
+
+```
+$ python -m unittest discover -s tests
+Ran 62 tests in 17.090s
+
+OK
+$ py -V:Astral/CPython3.9.25 -m unittest discover -s tests
+Ran 62 tests in 20.543s
+
+OK
+$ python scripts/cine.py kb lint
+kb lint: 10 skills, 0 errors
+$ python scripts/cine.py budget
+measure                                   value  green<= yellow<=  status worst
+SKILL.md lines                               55       80      120  green  plugins/cinewright/skills/cinewright/SKILL.md
+SKILL.md body tokens (est.)                 948     1200     2000  green  plugins/cinewright/skills/cinewright-qc/SKILL.md
+one description, characters                 334      350      500  green  cinewright-qc
+all descriptions, characters               3044     4000     5500  green  10 skills
+core descriptions, characters              1580     1800     2500  green  plugins/cinewright
+reference entry lines                        50       60      100  green  plugins/cinewright/skills/cinewright/references/pipeline.md
+reference entry tokens (est.)               700      700     1200  green  plugins/cinewright/skills/cinewright-shots/references/coverage.md
+model card tokens (est.)                    699      900     1200  green  plugins/cinewright/skills/cinewright-genvideo/references/minimax-h3.md
+references/INDEX.md tokens (est.)           739     1500     3000  green  plugins/cinewright/skills/cinewright-genvideo/references/INDEX.md
+skill folder KB                             156      150      300  yellow cinewright-genvideo
+files per plugin                            134      350      450  green  cinewright
+repo ZIP KB                                 543     2048     5120  green  tracked files
+duplicate paragraphs across skills            0        0     1000  green  
+budget: YELLOW (tokens are bytes / 4, an estimate)
+$ claude plugin validate .
+✔ Validation passed
+$ claude plugin validate plugins/cinewright
+✔ Validation passed
+$ claude plugin validate plugins/cinewright-craft
+✔ Validation passed
+$ claude plugin validate plugins/cinewright-dev
+✔ Validation passed
+$ evergreen.py lint <each skill>
+cinewright-camera: lint OK
+cinewright-design: lint OK
+cinewright-history: lint OK
+cinewright-movement: lint OK
+cinewright-script: lint OK
+cinewright-continuity: lint OK
+cinewright-genvideo: lint OK
+cinewright-qc: lint OK
+cinewright-shots: lint OK
+cinewright: lint OK
+$ python scripts/cine.py cards validate examples/three-shot --style examples/three-shot/styles/new-hollywood-239.json
+cards validate: 3 cards, 0 errors
+$ python scripts/cine.py continuity diff examples/three-shot --style examples/three-shot/styles/new-hollywood-239.json
+continuity diff: 3 cards, 0 errors, 0 warnings
+$ python scripts/cine.py continuity diff examples/three-shot
+continuity diff: 3 cards, 0 errors, 0 warnings
+$ python -m unittest tests.test_cine.TestStyle -v
+test_frame_words (tests.test_cine.TestStyle.test_frame_words) ... ok
+test_lens_and_move_warnings (tests.test_cine.TestStyle.test_lens_and_move_warnings) ... ok
+test_new_hollywood_changes_compiled_prompts (tests.test_cine.TestStyle.test_new_hollywood_changes_compiled_prompts) ... ok
+test_style_guard (tests.test_cine.TestStyle.test_style_guard) ... ok
+test_style_option_and_schema (tests.test_cine.TestStyle.test_style_option_and_schema) ... ok
+Ran 5 tests in 0.373s
+```
+## [2026-10-04] index | rebuilt (12 entries)

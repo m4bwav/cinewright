@@ -1,0 +1,8 @@
+{
+  "model": "veo-3.1-generate-001",
+  "durationSeconds": 6,
+  "aspectRatio": "16:9",
+  "resolution": "720p",
+  "seed": 101,
+  "negativePrompt": "subtitles, captions, on-screen text"
+}

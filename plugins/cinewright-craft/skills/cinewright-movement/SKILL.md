@@ -1,6 +1,6 @@
 ---
 name: cinewright-movement
-description: "Movement director for AI video: weight, contact and follow-through, one movement phrase per shot, fights, stunts, and hard subjects (animals, crowds, hands, liquids). Use when an action looks floaty, melts, has broken legs, or needs choreography. Also 'refresh cinewright-movement'."
+description: "Movement director for AI video: weight, contact and follow-through, one movement phrase per shot, fights, battles, stunts, and hard subjects (animals, crowds, hands, liquids). Use when an action looks floaty, melts, has broken legs, or needs choreography. Also 'refresh cinewright-movement'."
 license: MIT
 ---
 
@@ -28,7 +28,7 @@ Animals, crowds, animal-drawn vehicles, hands at fine work, liquids, spins: 1-5 
 
 ## Step 4: fights and stunts
 
-One exchange per card, fighters on fixed sides, take-off and landing in separate cards, a simple camera (`kb show fights-and-stunts`). Weapons go in `bibles/props.json`.
+One exchange per card, fighters on fixed sides, take-off and landing in separate cards, a simple camera (`kb show fights-and-stunts`). Weapons go in `bibles/props.json`. A battle: map, two sides with fixed screen direction, phases as scenes, scale from few large figures and compositing (`kb show battle-scenes`).
 
 ## Step 5: check
 

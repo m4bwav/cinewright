@@ -1,7 +1,7 @@
 {
   "name": "cinewright-craft",
   "version": "0.0.1",
-  "description": "Film craft skills for AI video: cinewright-script (logline, beats, scene turns, dialogue for generated voices), cinewright-design (turnaround sheets, clean references, prop descriptions, costume arc, color script) and cinewright-movement (weight, one phrase per shot, fights, hard subjects). Camera, edit, finish, sound and history come later. Needs the cinewright plugin.",
+  "description": "Film craft skills for AI video: cinewright-script (logline, beats, scene turns, dialogue for generated voices), cinewright-design (turnaround sheets, clean references, prop descriptions, costume arc, color script), cinewright-movement (weight, one phrase per shot, fights, battles, hard subjects), cinewright-camera (lens, depth of field, exposure, shutter, aspect and framing, lighting, color temperature) and cinewright-history (movement, era, genre, director and cinematographer style cards). Edit, finish and sound come later. Needs the cinewright plugin.",
   "author": {
     "name": "Mark Rogers"
   },
@@ -13,7 +13,10 @@
     "costume",
     "choreography",
     "ai-video",
-    "evergreen"
+    "evergreen",
+    "cinematography",
+    "lighting",
+    "film-history"
   ],
   "repository": "https://github.com/m4bwav/cinewright"
 }
