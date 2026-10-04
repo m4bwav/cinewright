@@ -3,7 +3,7 @@ title: The QC loop
 slug: qc-loop
 summary: How to judge a take against its card from a contact sheet, last frame and audio; verdict rules, frame sampling numbers, one change per reroll, three strikes.
 tags: [qc, review, rubric, takes, sampling]
-last_checked: 2026-10-03
+last_checked: 2026-10-04
 sources: ["https://arxiv.org/abs/2503.21755", "https://tech.ebu.ch/publications/r128", "Pat P. Miller, Script Supervising and Film Continuity, 3rd ed., 1999"]
 ---
 
@@ -26,7 +26,7 @@ sources: ["https://arxiv.org/abs/2503.21755", "https://tech.ebu.ch/publications/
 
 - Sheet sampling: 2 fps for clips up to 10 s, 1 fps beyond; 4 columns, 320 px wide frames.
 - Spec: length may run long (trim in the edit) but not 0.05 s short; aspect within 2 %; fps exact.
-- Loudness default: -16 LUFS integrated within 1 LU, true peak at or below -1 dBTP (cinewright's web default; broadcast is -23 LUFS under EBU R128). Re-checked in S5.
+- Loudness default: the `web` preset, -18 ± 2 LUFS integrated, true peak at or below -2 dBTP (EBU R128 s2 range; broadcast is -23 LUFS under EBU R128 v4). Every preset and its source: shared vocab loudness-targets, re-checked 2026-10-04.
 
 ## Pitfalls
 

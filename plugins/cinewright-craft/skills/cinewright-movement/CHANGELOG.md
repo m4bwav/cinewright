@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261004-3 · 2026-10-04 · battle-scenes links the post half
+- because: user request (S5)
+- files: references/battle-scenes.md
+- The scale rule now names cinewright-finish crowd-multiplication, cinewright-sound battle-sound and cinewright-edit cutting-a-battle instead of 'planned in S5'.
+
 ### C-20261004-2 · 2026-10-04 · Added battle-scenes (map, sides, phases, scale without a rendered crowd)
 - because: user request (Mark, S4 session: a component for designing and shooting large battle scenes and fight scenes)
 - files: references/battle-scenes.md, SKILL.md (step 4 and description)

@@ -37,7 +37,7 @@ A hosted re-render costs money: show the prompt, settings and cost, and ask firs
 
 ## Step 4: loudness at the mix
 
-`CINE qc loud <mixed file>`: integrated loudness within 1 LU of -16 LUFS and true peak at or below -1 dBTP by default; pass `--target` for another delivery spec.
+`CINE qc loud <mixed file> --preset <target>`: integrated loudness and true peak against a delivery preset (`web`, the default: -18 ± 2 LUFS, -2 dBTP; also `ebu-r128`, `atsc-a85`, `netflix`, `music-streaming`; `kb show loudness-targets`).
 
 ## Output
 

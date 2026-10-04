@@ -1,0 +1,55 @@
+{
+  "evergreen": "1.0",
+  "name": "cinewright-finish",
+  "kind": "skill",
+  "main": "SKILL.md",
+  "files": {
+    "research": "RESEARCH.md",
+    "changelog": "CHANGELOG.md",
+    "learnings": "LEARNINGS.md",
+    "tests": "TESTS.md"
+  },
+  "protocol": "plugin",
+  "source": null,
+  "topic": "Color grading and VFX finishing for AI video: grade order, color spaces and delivery, crop to the film's frame, day for night, crowd multiplication, compositing and cleanup, upscale and interpolation",
+  "tier": "moderate",
+  "interval_days": 30,
+  "last_checked": "2026-10-04",
+  "next_due": "2026-11-03",
+  "verify_at_use": false,
+  "volatile_claims": [],
+  "contradiction": null,
+  "events": [],
+  "streak": {
+    "quiet": 0,
+    "pinned_min": 0,
+    "pinned_max": 0,
+    "vau_quiet": 0
+  },
+  "history": [
+    {
+      "date": "2026-10-04",
+      "m": null,
+      "interval_after": 30,
+      "note": "created"
+    }
+  ],
+  "counts": {
+    "learnings": 2,
+    "changes": 1,
+    "research": 1,
+    "tests": 1
+  },
+  "consolidate_every": 25,
+  "tests": {
+    "last_run": "2026-10-04",
+    "harness": "claude -p (baselines only)",
+    "env": "windows/claude-code",
+    "cases": 6,
+    "passed": 0,
+    "failed": 0,
+    "failing": [],
+    "last_failure": null,
+    "research_after_days": null
+  }
+}

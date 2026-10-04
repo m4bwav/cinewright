@@ -8,4 +8,8 @@ Film craft skills for AI video, one per crew role. Each works on the project fol
 - `cinewright-camera`: the cinematographer and gaffer. Lens family and per-shot lenses, depth of field, exposure, frame rate and shutter, the film's frame (2.39 inside a 16:9 render), anamorphic, lighting ratios and setups, color temperature. Writes them into the style bible, where the compiler and the continuity diff use them.
 - `cinewright-history`: the film historian. About 70 compact style cards (movements, format eras, genres, directors, cinematographers); a request such as "shoot it like 1970s New Hollywood, 2.39" becomes style-bible fields, tried with `--style` before it is adopted.
 
-Editing, color and VFX, and sound arrive in later releases. This plugin needs the core `cinewright` plugin installed. License: MIT.
+- `cinewright-edit`: the editor. Assembles passing takes in card order, finds a multi-shot generation's own cuts, trims settle and drift frames, chooses each cut by Murch's rule of six, splits dialogue with J and L cuts, sets pace by average shot length, cuts battles around geography wides, and conforms the cut list with ffmpeg.
+- `cinewright-finish`: the colorist and VFX finisher. Grade order (correct, balance, match, look) with measured values, color spaces for display-referred AI clips, the crop to the style's `frame_aspect`, day for night, crowd multiplication and cleanup in compositing, upscale and interpolation last, a tagged Rec.709 delivery.
+- `cinewright-sound`: the sound designer and mixer. Six layers and stems, Chion's terms, fixing generated audio, battle sound in distance layers, music spotting, and a mix brought to a stated loudness target (web, EBU R128, ATSC A/85, Netflix, music streaming) and proven with `qc loud --preset`.
+
+This plugin needs the core `cinewright` plugin installed. License: MIT.

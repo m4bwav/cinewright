@@ -14,7 +14,7 @@ Topic: Quality control of AI-generated video takes against shot cards. Tier `mod
 ## Open questions
 
 - Should the sheet carry timestamps per frame (drawtext needs a font path, which differs per OS)?
-- Delivery loudness targets per platform: re-verified in S5 (cinewright-sound).
+- Delivery loudness targets per platform: re-verified 2026-10-04 (cinewright-sound); copied here as shared vocab `loudness-targets`, one preset each in `qc loud --preset`.
 
 ## Search plan
 

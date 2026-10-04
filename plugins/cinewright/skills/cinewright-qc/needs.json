@@ -3,7 +3,8 @@
     "failures-picture.md",
     "failures-motion.md",
     "shot-sizes.md",
-    "camera-moves.md"
+    "camera-moves.md",
+    "loudness-targets.md"
   ],
   "lib": [
     "cine.py"

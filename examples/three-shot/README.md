@@ -80,3 +80,23 @@ $ python scripts/cine.py compile examples/three-shot --model veo --style example
 What changed in [compiled/veo-new-hollywood/1B.txt](compiled/veo-new-hollywood/1B.txt) against [compiled/veo/1B.txt](compiled/veo/1B.txt): the look sentence is replaced, and two sentences are added, the lighting string and "Composed for a 2.39:1 widescreen crop, heads and action inside the middle 74% of the frame height." The settings file is identical: Veo still renders 16:9, and finishing crops to 2.39. Identity strings and prop descriptions are unchanged. 1A reaches 250 words, exactly Veo's guide, so the variant's look and lighting strings were kept short.
 
 The diff checks the new fields: a card lens outside `lens_family` warns LENS, and a move missing from `allowed_moves` warns MOVE (with "spherical zooms, 25-250mm", 1A's 24mm lens would warn). A test (`TestStyle` in `tests/test_cine.py`) checks all of this for Veo, Kling and the MiniMax H3 sequence.
+
+## 8. Post: cut, grade, mix (cinewright-edit, cinewright-finish, cinewright-sound)
+
+The H3 render of the original style ([takes.md](takes.md); media kept outside the repository) went through post with ffmpeg 9.0.1. Commands are in each skill's entries; the numbers:
+
+- **Cut.** Scene detection found the model's cuts at 6.000 s and 10.458 s. Trims: 3 frames off 1B's head (cut into the reach), 6 off 1C's held end. 336 frames, 14.000 s against a 14 s target. The lamp glow and the scar could not be cut around; they stay with qc.
+- **Grade.** Correct: none needed. Balance: blacks of 1B and 1C (YLOW 22.4, 24.7) matched to 1A (19.9) with linear luma maps pinned at each shot's mid, landing at 20.0, 19.5, 19.7. Look: a gentle S curve, cool shadows, warm highlights, grain. No crop (the film's frame is 16:9). The render was tagged with the sRGB transfer; `setparams` retagged it bt709.
+- **Mix.** Stated target: `qc loud` preset `web` (-18 ± 2 LUFS, true peak -2 dBTP or lower). The take measured -27.6 LUFS, -10.3 dBTP at 32 kHz; resampled to 48 kHz, a rain and wind bed 12.7 dB under it, gain and limiter, then a linear loudnorm pass.
+
+```
+$ python scripts/cine.py qc loud final.mp4 --preset web
+preset web: web video (EBU R128 s2 distribution range -20 to -16 LUFS; -2 dBTP before a lossy encoder)
+integrated -17.6 LUFS (target -18.0 +/- 2.0): PASS
+true peak -6.3 dBTP (max -2.0): PASS
+loudness range 5.3 LU
+qc loud: PASS
+$ python scripts/cine.py qc spec final.mp4 --project <render project> --card 1A+1B+1C --params <render project>/compiled/minimax-h3/1A+1B+1C.params.json
+PASS length 14.00s for a 14s card
+qc spec: 4 checks, 0 failed
+```
