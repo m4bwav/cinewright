@@ -71,13 +71,29 @@
       "prompt": "Plan the shots for this scene in out/sisters: two sisters argue in a kitchen at night; the younger one leaves. Use the bibles you write there.",
       "files": [],
       "expectations": [
-        "`python scripts/cine.py cards validate out/sisters` ends with 0 errors",
-        "`python scripts/cine.py continuity diff out/sisters` ends with 0 errors",
+        "check: `python scripts/cine.py cards validate out/sisters` ends with 0 errors",
+        "check: `python scripts/cine.py continuity diff out/sisters` ends with 0 errors",
         "a wide or master shot comes before the first single, and there is at least one insert or reaction",
         "judge: singles in the shot-reverse pair share size and lens (2 of 3 votes)"
       ],
       "baseline": "not run separately; S6 runs it without the skill.",
-      "runs": 3
+      "runs": 3,
+      "checks": [
+        [
+          "python",
+          "scripts/cine.py",
+          "cards",
+          "validate",
+          "{work}/out/sisters"
+        ],
+        [
+          "python",
+          "scripts/cine.py",
+          "continuity",
+          "diff",
+          "{work}/out/sisters"
+        ]
+      ]
     }
   ]
 }

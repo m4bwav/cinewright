@@ -53,7 +53,7 @@
     {
       "id": "action-1",
       "kind": "action",
-      "prompt": "Copy examples/three-shot to out/nh. Make out/nh look like 1970s New Hollywood in a 2.39 frame, and show me how the compiled Veo prompt for shot 1B changes.",
+      "prompt": "out/nh is a copy of examples/three-shot. Make out/nh look like 1970s New Hollywood in a 2.39 frame, and show me how the compiled Veo prompt for shot 1B changes.",
       "expectations": [
         "the action happened, proven by the evidence below (a tool call in the trace, or the file), not by the reply saying so"
       ],
@@ -68,12 +68,19 @@
         }
       },
       "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example, Bash, web and agent tools denied: set aspect_ratio to 2.39:1 (no model renders it; compile would refuse), put a brand name and stock number in the look, invented its own compile format and wrote before and after 1B prompts by hand. It globbed the home folder for SKILL.md; the search timed out with no result, so not contaminated (L-002).",
-      "runs": 3
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/nh"
+        ]
+      ]
     },
     {
       "id": "outcome-1",
       "kind": "outcome",
-      "prompt": "Copy examples/three-shot to out/kubrick. Make it look like a Stanley Kubrick film while keeping it renderable, change any card that breaks that look, then compile the Veo prompts into out/kubrick/compiled/veo.",
+      "prompt": "out/kubrick is a copy of examples/three-shot. Make it look like a Stanley Kubrick film while keeping it renderable, change any card that breaks that look, then compile the Veo prompts into out/kubrick/compiled/veo.",
       "files": [],
       "checks": [
         [
@@ -87,7 +94,14 @@
         "judge: the look is carried by concrete devices (for example one-point perspective, symmetry, a wide lens close, slow dolly or Steadicam), not by the director's name (2 of 3 votes)"
       ],
       "baseline": "not yet run; replaces the S4 Kubrick advice case, which passed without the skill (T-20261004-1).",
-      "runs": 3
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/kubrick"
+        ]
+      ]
     }
   ]
 }

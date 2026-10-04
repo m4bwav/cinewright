@@ -75,13 +75,22 @@
       "prompt": "Compile Veo prompts for the cards in examples/three-shot and give me the settings for each.",
       "files": [],
       "expectations": [
-        "each prompt holds every cast member's identity string from bibles/characters.json word for word",
-        "every durationSeconds is 4, 6 or 8; 1A is 6",
+        "check: each prompt holds every cast member's identity string from bibles/characters.json word for word",
+        "check: every durationSeconds is 4, 6 or 8 (evals/check_veo.py)",
+        "1A's durationSeconds is 6",
         "no prompt says 'no' or 'avoid' for an exclusion",
         "judge: camera size, angle and move come first in each prompt (2 of 3 votes)"
       ],
       "baseline": "not yet run",
-      "runs": 3
+      "runs": 3,
+      "checks": [
+        [
+          "python",
+          "evals/check_veo.py",
+          "{work}",
+          "{reply}"
+        ]
+      ]
     }
   ]
 }

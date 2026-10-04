@@ -17,6 +17,7 @@ Grading (evidence, never the reply's claim):
   python evals/run_evals.py plan [--skill S] [--model haiku,sonnet,opus] [--runs 3]
   python evals/run_evals.py run  [--skill S] [--case ID] [--model M] [--runs 3] [--arm with|without|both] [--jobs 4]
   python evals/run_evals.py report [--out DIR] [--md FILE]
+  python evals/run_evals.py export-worth [--out DIR]   then: evergreen.py worth <skill> --results DIR/worth/<skill>
 
 Results go to --out (default: <temp>/cinewright-evals): results.jsonl, traces/, runs/. They stay outside the repository.
 """
@@ -45,9 +46,14 @@ TIMEOUT = {"trigger": 300, "action": 1200, "outcome": 1200}
 TOOLS = ["Read", "Write", "Edit", "Bash"]
 DENY = ["WebFetch", "WebSearch", "Agent", "Task", "Glob", "Grep", "ToolSearch", "PowerShell", "NotebookEdit"]
 BASH_ALLOW = [
-    "Bash(python scripts/cine.py:*)", "Bash(python3 scripts/cine.py:*)", "Bash(py scripts/cine.py:*)",
+    # the runtime in any form a model writes it (relative from the skill folder, or by its absolute path, quoted);
+    # python -c and other scripts stay refused
+    "Bash(python scripts/cine.py:*)", "Bash(python *cine.py*)", "Bash(python3 *cine.py*)", "Bash(py *cine.py*)",
     "Bash(ffmpeg:*)", "Bash(ffprobe:*)",
-    "Bash(cp:*)", "Bash(mkdir:*)", "Bash(ls:*)", "Bash(dir:*)",  # the path scan flags any that reach outside the run folder
+    # read-only and single-file commands; --restricted refuses their reads outside the working directories, and the
+    # path scan flags any that reach out. dontAsk refuses a recursive cp whatever the rule: cases copy in `setup`.
+    "Bash(cp:*)", "Bash(mkdir:*)", "Bash(ls:*)", "Bash(dir:*)", "Bash(cd:*)", "Bash(cat:*)", "Bash(head:*)",
+    "Bash(tail:*)", "Bash(echo:*)", "Bash(wc:*)",
 ]
 LOCK = threading.Lock()
 
@@ -305,10 +311,10 @@ def evidence_ok(ev, uses, work):
     return ok, why
 
 
-def run_checks(case, skill_dir, work):
+def run_checks(case, skill_dir, work, reply_file):
     res = []
     for c in case.get("checks", []):
-        cmd = [x.replace("{work}", str(work)) for x in c]
+        cmd = [x.replace("{work}", str(work)).replace("{reply}", str(reply_file)) for x in c]
         if cmd[0] in ("python", "python3"):
             cmd[0] = sys.executable
         p = subprocess.run(cmd, cwd=str(skill_dir), capture_output=True, text=True, encoding="utf-8", errors="replace")
@@ -439,10 +445,11 @@ def one(job, out, keep):
     elif k == "action":
         r["pass"], r["evidence"] = evidence_ok(case.get("evidence"), uses, work)
     else:
-        checks = run_checks(case, sk, work)
-        r["checks"] = checks
         reply = final_text(events)
         r["reply"] = reply[:4000]
+        (rdir / "reply.txt").write_text(reply, encoding="utf-8")
+        checks = run_checks(case, sk, work, rdir / "reply.txt")
+        r["checks"] = checks
         ok_checks = all(c["exit"] == 0 for c in checks)
         ok_judge, per = judge(case, reply, written_files(work), rdir / "judge")
         r["judged"] = per
@@ -565,14 +572,41 @@ def cmd_report(a):
         Path(a.md).write_text(txt + "\n", encoding="utf-8")
 
 
+def cmd_export_worth(a):
+    """One aggregate-result.json per skill in `claude plugin eval`'s shape, the value cases' with and without arms
+    pooled over the models, for `evergreen.py worth <skill> --results <dir>/<skill> --record`."""
+    out = Path(a.out)
+    rows = summarise(out)
+    for name, (plugin, sk) in skills().items():
+        cases = []
+        for c in load_cases(sk):
+            if kind_of(c) not in ("action", "outcome"):
+                continue
+            arms = {}
+            for arm in ("with", "without"):
+                arms[arm] = [{"passed": bool(r["pass"]), "costUsd": r.get("cost_usd") or 0, "turns": r.get("turns") or 0,
+                              "durationSeconds": r.get("seconds") or 0, "model": r.get("model")}
+                             for m in MODELS for r in rows.get((name, c["id"], m, arm), [])]
+            if arms["with"] and arms["without"]:
+                cases.append({"name": c["id"], "arms": arms})
+        if not cases:
+            continue
+        d = out / "worth" / name
+        d.mkdir(parents=True, exist_ok=True)
+        agg = {"suite": {"ablation": "with-without", "harness": "evals/run_evals.py (claude -p, --restricted)",
+                         "models": MODELS}, "startedAt": time.strftime("%Y-%m-%dT%H:%M:%S"), "cases": cases}
+        (d / "aggregate-result.json").write_text(json.dumps(agg, indent=2), encoding="utf-8")
+        print("%-22s %s" % (name, d))
+
+
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for nm in ("plan", "run", "report"):
+    for nm in ("plan", "run", "report", "export-worth"):
         s = sub.add_parser(nm)
         s.add_argument("--out", default=str(out_default()))
-        if nm != "report":
+        if nm in ("plan", "run"):
             s.add_argument("--skill", help="comma-separated skill names (default all)")
             s.add_argument("--case", help="case id glob")
             s.add_argument("--model", default=",".join(MODELS))
@@ -585,7 +619,7 @@ def main():
         if nm == "report":
             s.add_argument("--md", help="also write the matrix to this file")
     a = ap.parse_args()
-    {"plan": cmd_plan, "run": cmd_run, "report": cmd_report}[a.cmd](a)
+    {"plan": cmd_plan, "run": cmd_run, "report": cmd_report, "export-worth": cmd_export_worth}[a.cmd](a)
 
 
 if __name__ == "__main__":

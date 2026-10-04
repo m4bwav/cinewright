@@ -53,7 +53,7 @@
     {
       "id": "action-1",
       "kind": "action",
-      "prompt": "Copy examples/three-shot to out/noir. Give out/noir a film-noir camera and lighting plan: lens family, lighting and frame in its style bible, a lens on every card, and check the project afterwards.",
+      "prompt": "out/noir is a copy of examples/three-shot. Give out/noir a film-noir camera and lighting plan: lens family, lighting and frame in its style bible, a lens on every card, and check the project afterwards.",
       "expectations": [
         "the action happened, proven by the evidence below (a tool call in the trace, or the file), not by the reply saying so"
       ],
@@ -68,12 +68,19 @@
         }
       },
       "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example (no README, design notes or compiled prompts; the toolkit's name removed), Bash, web and agent tools denied: wrote a sound noir plan into style.json but invented a `frame` field, wrote a 290-character lighting string (schema maximum 200), set lens_mm on every card and 'checked' by reading files only. Not contaminated (every read inside the folder).",
-      "runs": 3
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/noir"
+        ]
+      ]
     },
     {
       "id": "outcome-1",
       "kind": "outcome",
-      "prompt": "Copy examples/three-shot to out/cabin. Frame the film for 2.39 widescreen even though the video model renders 16:9, and keep the lamp lighting Maren from the same side in the same warm color in every shot. Put this in the project so every prompt carries it, then compile the Veo prompts into out/cabin/compiled/veo.",
+      "prompt": "out/cabin is a copy of examples/three-shot. Frame the film for 2.39 widescreen even though the video model renders 16:9, and keep the lamp lighting Maren from the same side in the same warm color in every shot. Put this in the project so every prompt carries it, then compile the Veo prompts into out/cabin/compiled/veo.",
       "files": [],
       "checks": [
         [
@@ -87,7 +94,14 @@
         "judge: the reply treats 2.39 as a crop of the 16:9 render planned in the composition, not as a render setting (2 of 3 votes)"
       ],
       "baseline": "not yet run; replaces the S4 lighting-rules case, which passed without the skill (T-20261004-1).",
-      "runs": 3
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/cabin"
+        ]
+      ]
     }
   ]
 }

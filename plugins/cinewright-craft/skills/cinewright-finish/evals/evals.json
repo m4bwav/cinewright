@@ -53,7 +53,7 @@
     {
       "id": "action-1",
       "kind": "action",
-      "prompt": "Copy examples/three-shot to out/finish and use its styles/new-hollywood-239.json as the style bible. Make out/finish/clip.mp4 with ffmpeg (4 s of testsrc2 at 1280x720, 24 fps). Finish it for that style: crop to the film's frame and deliver a tagged Rec.709 H.264 file at out/finish/final.mp4, with the steps written down.",
+      "prompt": "out/finish is a copy of examples/three-shot; use its styles/new-hollywood-239.json as the style bible. Make out/finish/clip.mp4 with ffmpeg (4 s of testsrc2 at 1280x720, 24 fps). Finish it for that style: crop to the film's frame and deliver a tagged Rec.709 H.264 file at out/finish/final.mp4, with the steps written down.",
       "expectations": [
         "the action happened, proven by the evidence below (a tool call in the trace, or the file), not by the reply saying so"
       ],
@@ -68,7 +68,14 @@
         }
       },
       "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example (bibles, cards, styles, brief, script, takes.md; no README, design notes, compiled prompts or planted card; the toolkit's name removed), skills disabled, Bash, PowerShell, web, agent, Glob, Grep and Skill tools denied: with no shell it could not copy the folder or run ffmpeg, so it stopped and offered to hand over commands; nothing written. The case needs Bash; with Bash denied the baseline cannot reach it, so S6 should run it in a sandbox that allows ffmpeg only. Not contaminated.",
-      "runs": 3
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/finish"
+        ]
+      ]
     },
     {
       "id": "outcome-1",
