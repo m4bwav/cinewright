@@ -26,7 +26,7 @@
       "holding": null
     }
   ],
-  "action": "Maren tips the tin matchbox open and lifts out a single match.",
+  "action": "Maren thumbs the tin matchbox open with a click and pinches out a single match, holding it still between finger and thumb.",
   "sound": "rain lashing the windows and wind howling around the tower",
   "time_of_day": "night",
   "light": {"key_side": "frame-right", "quality": "soft"},

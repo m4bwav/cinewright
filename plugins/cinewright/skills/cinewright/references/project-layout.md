@@ -3,7 +3,7 @@ title: Project folder layout
 slug: project-layout
 summary: The folders and files a cinewright film project holds, which stage writes each, and the commands that read them.
 tags: [project, layout, files, pipeline]
-last_checked: 2026-10-03
+last_checked: 2026-10-04
 sources: ["https://github.com/m4bwav/cinewright/tree/main/examples/three-shot"]
 ---
 
@@ -13,11 +13,14 @@ sources: ["https://github.com/m4bwav/cinewright/tree/main/examples/three-shot"]
 
 ```
 <project>/
-  brief.md              logline, target length, format, beats
+  brief.md              logline, target length, format, beats, scene turn
+  script.md             plain-text screenplay; sluglines = scene headings
+  design.md             color script, costume and prop reasons, ref prompts
   bibles/style.json     format and the look string
   bibles/characters.json identity strings, wardrobe by scene
   bibles/locations.json one description per place
   bibles/scenes.json    axis, camera side, positions, travel, time, sun
+  bibles/props.json     optional: one description per held prop
   cards/<id>.json       one shot card per shot, id = scene + letter (1A)
   compiled/<model>/     <id>.txt prompt and <id>.params.json settings
   refs/                 reference sheets and keyframes

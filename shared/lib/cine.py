@@ -64,6 +64,10 @@ POSITION_WORDS = {"frame-left": "on the left of the frame", "center": "in the ce
 FLIP = {"left-to-right": "right-to-left", "right-to-left": "left-to-right",
         "frame-left": "frame-right", "frame-right": "frame-left"}
 POS_INDEX = {"frame-left": 0, "center": 1, "frame-right": 2}
+SPEECH_WPS = 2.5  # words a second a generated voice speaks clearly (about 150 a minute)
+SPEECH_LEAD_S = 0.5  # breath before the first word
+# Many small figures in a wide frame: legs, faces and clones break (field lessons 020, 021)
+HARD_SUBJECT = re.compile(r"\b(crowds?|herds?|flocks?|swarms?|army|armies|troops|cavalry|caravans?|stampedes?|hordes?|columns? of|dozens|hundreds)\b", re.I)
 SECTIONS = ["Rules", "Numbers", "Vocabulary", "Pitfalls", "Verify", "Notes", "Compile"]
 
 
@@ -328,6 +332,8 @@ class Project:
         self.characters = json.loads(read_text(b / "characters.json"))
         self.locations = json.loads(read_text(b / "locations.json"))
         self.scenes = json.loads(read_text(b / "scenes.json"))
+        pf = b / "props.json"
+        self.props_bible = json.loads(read_text(pf)) if pf.is_file() else None
         self.card_files = sorted((self.root / "cards").glob("*.json"))
         self.cards = [json.loads(read_text(p)) for p in self.card_files]
         for f in overrides or []:
@@ -338,6 +344,7 @@ class Project:
         self.chars = {c["id"]: c for c in self.characters.get("characters", [])}
         self.locs = {x["id"]: x for x in self.locations.get("locations", [])}
         self.scene_map = {s["id"]: s for s in self.scenes.get("scenes", [])}
+        self.props = {x["name"]: x for x in (self.props_bible or {}).get("props", [])}
 
 
 def wardrobe_for(char, scene_id):
@@ -350,6 +357,8 @@ def validate_project(ctx, p):
     for name, data in [("style-bible", p.style), ("character-bible", p.characters),
                        ("location-bible", p.locations), ("scene-axis-bible", p.scenes)]:
         errs += ["bibles/%s: %s" % (name, e) for e in validate(data, load_schema(ctx, name))]
+    if p.props_bible is not None:
+        errs += ["bibles/prop-bible: %s" % e for e in validate(p.props_bible, load_schema(ctx, "prop-bible"))]
     card_schema = load_schema(ctx, "shot-card")
     seen_ids, seen_orders = set(), set()
     for path, card in zip(p.card_files, [json.loads(read_text(f)) for f in p.card_files]):
@@ -449,6 +458,18 @@ def cmd_cards(ctx, a):
         write_text(out, json.dumps(card, indent=2, ensure_ascii=False) + "\n")
         print("wrote %s (fill every TODO, then run cards validate)" % out)
         return 0
+    if a.cmd == "list":
+        print("| # | Slate | Size | Angle | Az | Move | Lens | Cast | Action | s |")
+        print("|---|---|---|---|---|---|---|---|---|---|")
+        for c in p.cards:
+            cam = c.get("camera", {})
+            cast = ", ".join(p.chars.get(m["id"], {}).get("name", m["id"]) for m in c.get("cast", [])) or c.get("subject", "")
+            print("| %s | %s | %s | %s | %s | %s | %s | %s | %s | %g |" % (
+                c.get("order"), c.get("id"), cam.get("size"), cam.get("angle"), cam.get("azimuth_deg", ""), cam.get("move"),
+                cam.get("lens_mm", ""), cast, c.get("action", "").replace("|", "/"), c.get("duration_s", 0)))
+        scenes = len({c.get("scene") for c in p.cards})
+        print("shot list: %d shots, %d scene(s), %gs" % (len(p.cards), scenes, sum(c.get("duration_s", 0) for c in p.cards)))
+        return 0
     if a.cmd == "export":
         if not a.film_json:
             raise SystemExit("choose an export format: --film-json")
@@ -495,7 +516,7 @@ def continuity_diff(p):
             add("warning", card, "STYLE", "dutch angle but the style bible does not allow it")
         positions = axis.get("positions", {})
         travel = axis.get("travel", {})
-        allowed_props = set(sc.get("props", [])) | set(p.locs.get(sc.get("location"), {}).get("props", []))
+        allowed_props = set(sc.get("props", [])) | set(p.locs.get(sc.get("location"), {}).get("props", [])) | set(p.props)
         on_screen = []
         for m in card.get("cast", []):
             ch = p.chars.get(m.get("id"))
@@ -527,6 +548,8 @@ def continuity_diff(p):
             for key in ("holding", "holding_end"):
                 if m.get(key) and m[key] not in allowed_props:
                     add("warning", card, "PROP", "%s holds '%s', which no bible lists" % (ch["name"], m[key]))
+                elif m.get(key) and p.props and m[key] not in p.props:
+                    add("warning", card, "PROP", "%s holds '%s', which has no description in bibles/props.json, so the model invents its look" % (ch["name"], m[key]))
         for i, a in enumerate(on_screen):
             for b in on_screen[i + 1:]:
                 want = POS_INDEX[positions[a["id"]]] - POS_INDEX[positions[b["id"]]]
@@ -538,6 +561,15 @@ def continuity_diff(p):
         action = card.get("action", "")
         if len(re.findall(r"[.!?](\s|$)", action.strip())) > 1 or re.search(r"\b(then|and then|after that)\b", action):
             add("warning", card, "ONE-ACTION", "the action reads as more than one action; split the card")
+        words = sum(len(d.get("line", "").split()) for d in card.get("dialogue", []))
+        room = SPEECH_WPS * (card.get("duration_s", 0) - SPEECH_LEAD_S)
+        if words > room:
+            add("warning", card, "DIALOGUE", "%d words of dialogue in %ss; at %.1f words a second the shot holds %d: cut the line or lengthen the shot" % (
+                words, card.get("duration_s"), SPEECH_WPS, int(room)))
+        hard = HARD_SUBJECT.search("%s %s" % (action, card.get("subject", "")))
+        if hard and cam.get("size") in ("EWS", "WS"):
+            add("warning", card, "HARD-SUBJECT", "'%s' in a %s: many small figures come out with broken legs and clones; frame 1-5 of them large and side-on, "
+                "the mass as background dust (cinewright-movement, entry hard-subjects)" % (hard.group(0), SIZE_WORDS[cam["size"]]))
         prev = prev_by_scene.get(sc["id"])
         if prev:
             pcast = {m["id"]: m for m in prev.get("cast", [])}
@@ -635,6 +667,12 @@ def generation_refs(p, cards, prof):
     return refs, tags
 
 
+def prop_words(p, name):
+    """A held prop as the prop bible's verbatim description, else 'the <name>'."""
+    d = p.props.get(name, {}).get("description")
+    return d.rstrip(".") if d else "the %s" % name
+
+
 def card_parts(p, card, prof, tags=None, speakers=None):
     sc = p.scene_map[card["scene"]]
     loc = p.locs[sc["location"]]
@@ -659,7 +697,7 @@ def card_parts(p, card, prof, tags=None, speakers=None):
         if m.get("position"):
             line += ", %s" % POSITION_WORDS[m["position"]]
         if m.get("holding"):
-            line += ", holding the %s" % m["holding"]
+            line += ", holding %s" % prop_words(p, m["holding"])
         subj.append(_sentence(line))
     if card.get("subject"):
         subj.append(_sentence(_cap(card["subject"])))
@@ -669,7 +707,7 @@ def card_parts(p, card, prof, tags=None, speakers=None):
     for m in card.get("cast", []):
         bits = [POSITION_WORDS[m["position"]]] if m.get("position") else []
         if m.get("holding"):
-            bits.append("holding the %s" % m["holding"])
+            bits.append("holding %s" % prop_words(p, m["holding"]))
         if bits:
             stage.append(_sentence("%s is %s" % (p.chars[m["id"]]["name"], ", ".join(bits))))
     parts["staging"] = " ".join(stage)
@@ -862,6 +900,8 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None):
             for m in c.get("cast", []):
                 if p.chars[m["id"]]["identity"] not in text:
                     raise SystemExit("compiler bug: identity of %s not verbatim in %s" % (m["id"], c["id"]))
+                if m.get("holding") in p.props and prop_words(p, m["holding"]) not in text:
+                    raise SystemExit("compiler bug: prop '%s' not verbatim in %s" % (m["holding"], c["id"]))
         params = {}
 
         def put(key, val):
@@ -1097,7 +1137,7 @@ def rubric_items(p, card):
                 ch = p.chars[m["id"]]
                 travel = m.get("travel") or sc.get("axis", {}).get("travel", {}).get(m["id"])
                 v = dict(base, name=ch["name"], identity=ch["identity"], wardrobe=wardrobe_for(ch, sc["id"]),
-                         holding=m.get("holding") or "",
+                         holding=("%s (%s)" % (m["holding"], prop_words(p, m["holding"])) if m.get("holding") in p.props else m.get("holding") or ""),
                          holding_end=(" and the %s at the end" % m["holding_end"]) if m.get("holding_end") else "",
                          position_words=POSITION_WORDS.get(m.get("position"), ""),
                          travel_words=TRAVEL_WORDS.get(travel, ""), eyeline_words=EYELINE_WORDS.get(m.get("eyeline"), ""))
@@ -1289,6 +1329,8 @@ def build_parser(prog="cine.py"):
     s.add_argument("--cast", help="comma-separated character ids")
     s.add_argument("--order", type=int)
     s = cards.add_parser("validate", help="check bibles and cards against the schemas")
+    s.add_argument("project")
+    s = cards.add_parser("list", help="print the shot list in cut order")
     s.add_argument("project")
     s = cards.add_parser("export", help="export the shot list")
     s.add_argument("project")

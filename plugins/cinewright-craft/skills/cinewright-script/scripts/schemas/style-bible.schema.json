@@ -1,0 +1,63 @@
+{
+  "$comment": "copied from shared/schemas/style-bible.schema.json sha256:9a80b578608c611f960bf7ed0ea9474f1bcfe8a885f671cd679004d92cbf415a; edit the source",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Style bible",
+  "description": "One per project (bibles/style.json): format and the look string every compiled prompt ends with.",
+  "type": "object",
+  "required": [
+    "title",
+    "aspect_ratio",
+    "resolution",
+    "fps",
+    "look"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "logline": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "target_seconds": {
+      "type": "number",
+      "minimum": 1
+    },
+    "aspect_ratio": {
+      "type": "string",
+      "pattern": "^[0-9.]+:[0-9.]+$"
+    },
+    "resolution": {
+      "type": "string"
+    },
+    "fps": {
+      "type": "number",
+      "minimum": 1
+    },
+    "look": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 300,
+      "description": "Verbatim style string: medium, palette, light, lens, grain."
+    },
+    "palette": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lens_family": {
+      "type": "string"
+    },
+    "allow_dutch": {
+      "type": "boolean"
+    },
+    "refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

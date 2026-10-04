@@ -1,0 +1,73 @@
+{
+  "skill": "cinewright-shots",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root.",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "prompt": "Break this scene into shots for an AI video: two sisters argue in a kitchen at night and one walks out.",
+      "expectations": [
+        "the cinewright-shots skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "prompt": "what coverage do I need for a two-person dialogue scene if every AI clip costs money?",
+      "expectations": [
+        "the cinewright-shots skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "make a bar chart of shot counts per scene from this CSV",
+      "expectations": [
+        "the cinewright-shots skill is not invoked (charting, a chart skill's job)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "write unit tests for the camera module in my Unity game",
+      "expectations": [
+        "the cinewright-shots skill is not invoked (game code, not film planning)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "prompt": "Print the shot list for the project in examples/three-shot in cut order, then tell me which shots could share one generation on Kling 3.0.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py\\s+cards\\s+list"
+      },
+      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder holding only a copy of examples/three-shot, no cinewright installed: read every card and wrote the shot list table by hand, then answered the Kling grouping from the cards; 13 turns, no cine.py call, so the action evidence is absent. The answer was usable, so S6 should judge the outcome case, where blocking and coverage choices matter.",
+      "runs": 3
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "prompt": "Plan the shots for this scene in out/sisters: two sisters argue in a kitchen at night; the younger one leaves. Use the bibles you write there.",
+      "files": [],
+      "expectations": [
+        "`python scripts/cine.py cards validate out/sisters` ends with 0 errors",
+        "`python scripts/cine.py continuity diff out/sisters` ends with 0 errors",
+        "a wide or master shot comes before the first single, and there is at least one insert or reaction",
+        "judge: singles in the shot-reverse pair share size and lens (2 of 3 votes)"
+      ],
+      "baseline": "not run separately; S6 runs it without the skill.",
+      "runs": 3
+    }
+  ]
+}

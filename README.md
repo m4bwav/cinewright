@@ -8,11 +8,11 @@ Status: early development (0.0.1), private. Not ready to install.
 
 | Plugin | Skills | For |
 |---|---|---|
-| `cinewright` | `cinewright` (director and router), `cinewright-continuity` (script supervisor), `cinewright-genvideo` (prompt compiler for nine models), `cinewright-qc` (take review with ffmpeg) | everyone |
-| `cinewright-craft` | none yet (script, camera, design, movement, edit, finish, sound, history come later) | deeper craft |
+| `cinewright` | `cinewright` (director and router), `cinewright-shots` (shot list and coverage), `cinewright-continuity` (script supervisor), `cinewright-genvideo` (prompt compiler for nine models), `cinewright-qc` (take review with ffmpeg) | everyone |
+| `cinewright-craft` | `cinewright-script` (logline, beats, dialogue), `cinewright-design` (turnarounds, props, costume, color), `cinewright-movement` (weight, fights, hard subjects); camera, edit, finish, sound, history come later | deeper craft |
 | `cinewright-dev` | none yet (knowledge-base upkeep) | maintainers |
 
-A worked example lives in [examples/three-shot/](examples/three-shot/): a one-line idea taken to shot cards, bibles, a continuity diff that catches a planted error, and compiled Veo prompts.
+A worked example lives in [examples/three-shot/](examples/three-shot/): a one-line idea taken through brief, script, shot list, bibles, design notes, a continuity diff that catches a planted error, and compiled Veo and MiniMax H3 prompts.
 
 ## What it runs and fetches
 
@@ -32,7 +32,7 @@ Edit shared vocabulary, schemas and the library in `shared/`, never the copies i
 
 ## Credits
 
-Ideas (not text) from MIT-licensed skill repositories, including DirectorSKILL: response-size ceilings, the repair cost ladder, one owning reference per dimension, continuing from the previous take's observed end state, one change per reroll. Film craft from Arijon, Katz, Mascelli, Miller, Murch and Rowlands, cited in each entry.
+Ideas (not text) from MIT-licensed skill repositories, including DirectorSKILL: response-size ceilings, the repair cost ladder, one owning reference per dimension, continuing from the previous take's observed end state, one change per reroll. Film craft from Arijon, Block, Field, Katz, Landis, LoBrutto, Mascelli, McKee, Miller, Murch, Riley, Rowlands, Snyder, Thomas and Johnston, and Weston, cited in each entry.
 
 ## License
 

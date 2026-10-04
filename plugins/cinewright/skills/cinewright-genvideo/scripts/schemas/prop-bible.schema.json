@@ -1,0 +1,44 @@
+{
+  "$comment": "copied from shared/schemas/prop-bible.schema.json sha256:30d67f8f71b632d11a95a17d4ae95c1725be093a244e9de8fd4c0c30ee524557; edit the source",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Prop bible",
+  "description": "bibles/props.json (optional): one description string per prop that is held or seen in close shots, compiled verbatim wherever a card holds it.",
+  "type": "object",
+  "required": [
+    "props"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "props": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "description"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name cards use in holding and holding_end, e.g. tin matchbox."
+          },
+          "description": {
+            "type": "string",
+            "minLength": 15,
+            "maxLength": 200,
+            "description": "Material, size against a hand, shape, color, wear. One article, no emblems unless the story needs them."
+          },
+          "refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Clean reference image ids."
+          }
+        }
+      }
+    }
+  }
+}

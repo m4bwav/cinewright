@@ -1,0 +1,60 @@
+{
+  "$comment": "copied from shared/schemas/location-bible.schema.json sha256:602d58f28d9b9c6c0315ce95a7edc19522f8a27a1cf13799872265f05eeb41d8; edit the source",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Location bible",
+  "description": "bibles/locations.json: one description string per location, copied verbatim into prompts.",
+  "type": "object",
+  "required": [
+    "locations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "locations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "int_ext",
+          "description"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "int_ext": {
+            "enum": [
+              "INT",
+              "EXT",
+              "INT/EXT"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 300
+          },
+          "props": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -16,7 +16,7 @@
       "holding_end": "single match"
     }
   ],
-  "action": "Tomas takes the match from a hand entering frame left and closes his fist around it.",
+  "action": "Tomas takes the match from a hand entering frame left and closes his fist tight around it, pulling it to his chest.",
   "sound": "rain on the glass, a distant ship's horn",
   "light": {"key_side": "frame-left", "quality": "soft"},
   "end_state": "Tomas holds the match in a closed fist at chest height.",
