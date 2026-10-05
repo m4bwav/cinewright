@@ -58,15 +58,29 @@
     {
       "id": "outcome-1",
       "kind": "outcome",
-      "prompt": "Check examples/three-shot for continuity problems if planted/1C.json replaced its 1C card. What breaks, and how do I fix it?",
+      "prompt": "Before I render, check examples/three-shot for anything that will not match between its shots. What breaks, and how do I fix it?",
       "files": [],
-      "expectations": [
-        "the reply names card 1C and the axis (side B, crossing the line or the 180-degree rule)",
-        "the reply names Tomas's eyeline as a consequence",
-        "the fix offered is camera back to side A, or crosses_axis with an on-screen reason",
-        "judge: no invented errors on 1A or 1B (2 of 3 votes)"
+      "setup": [
+        [
+          "replace",
+          "examples/three-shot/cards/1B.json",
+          "scar through her left eyebrow",
+          "scar through her right eyebrow"
+        ],
+        [
+          "replace",
+          "examples/three-shot/cards/1A.json",
+          "a navy wool fisherman",
+          "a grey wool fisherman"
+        ]
       ],
-      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 1 of 3 passed (Haiku fail, Sonnet fail, Opus pass).",
+      "expectations": [
+        "the reply names card 1B's description of Maren as differing from the character bible (the scar on the right eyebrow instead of the left)",
+        "the reply names card 1A's sweater as grey where the bible says navy",
+        "the fix offered is to copy the bible's identity and wardrobe strings into the cards word for word",
+        "judge: no invented errors on the axis, eyelines or any other card (2 of 3 votes)"
+      ],
+      "baseline": "not yet run; replaces the S1 axis case, which a careful reader found without the skill (T-20261003-1 note, S6 matrix T-20261004-1).",
       "runs": 3
     }
   ]

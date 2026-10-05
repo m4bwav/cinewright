@@ -153,13 +153,20 @@ def make_fixture(work):
 
 
 def run_setup(case, work):
-    """A case's `setup`: ["copy", src, dst], ["delete", path] or a command (ffmpeg ...), all inside the run folder."""
+    """A case's `setup`: ["copy", src, dst], ["delete", path], ["replace", path, old, new] or a command (ffmpeg ...), all inside the run folder."""
     for cmd in case.get("setup", []):
         if cmd[0] == "copy":
             shutil.copytree(work / cmd[1], work / cmd[2])
             continue
         if cmd[0] == "delete":
             (work / cmd[1]).unlink()
+            continue
+        if cmd[0] == "replace":  # ["replace", path, old, new]: plant a fault in a fixture file
+            f = work / cmd[1]
+            t = f.read_text(encoding="utf-8")
+            if cmd[2] not in t:
+                raise RuntimeError("setup replace: %r not in %s" % (cmd[2], cmd[1]))
+            f.write_text(t.replace(cmd[2], cmd[3], 1), encoding="utf-8")
             continue
         args = [shutil.which(cmd[0]) or cmd[0]] + cmd[1:]
         for d in {Path(a).parent for a in cmd[1:] if a.startswith("out/")}:
