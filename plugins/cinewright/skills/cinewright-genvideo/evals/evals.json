@@ -55,18 +55,14 @@
       "kind": "action",
       "prompt": "Compile Veo prompts for every card in examples/three-shot into examples/three-shot/compiled/veo.",
       "expectations": [
-        "the action happened, proven by the evidence below (a tool call in the trace or a written file), not by the reply saying so"
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
       ],
       "evidence": {
         "type": "trace",
         "tool": "Bash",
-        "input_match": "cine\\.py\\s+compile",
-        "or": {
-          "type": "file",
-          "path": "examples/three-shot/compiled/veo/1A.txt"
-        }
+        "input_match": "cine\\.py\\s+compile"
       },
-      "baseline": "2026-10-03, one run, Sonnet, claude -p in a bare folder without cinewright: read every bible and card, searched the disk for a compiler or a Veo guide, made the output folder and ran out of 20 turns before writing any prompt. Evidence absent.",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     },
     {
@@ -81,7 +77,7 @@
         "no prompt says 'no' or 'avoid' for an exclusion",
         "judge: camera size, angle and move come first in each prompt (2 of 3 votes)"
       ],
-      "baseline": "not yet run",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3,
       "checks": [
         [

@@ -1,6 +1,6 @@
 ---
 name: cinewright-genvideo
-description: "AI video prompts: compiles shot cards plus bibles into one model's prompt and settings (Veo, Gemini Omni, Kling, Seedance, Runway, Luma, MiniMax H3, Wan, LTX-2), with refs, seeds, takes and cost. Use when writing a prompt for one of these models or turning a shot list into video-model prompts. Also 'refresh cinewright-genvideo'."
+description: "Writes AI video prompts: compiles shot cards plus bibles into one model's prompt and settings (Veo, Gemini Omni, Kling, Seedance, Runway, Luma, MiniMax H3, Wan, LTX-2), with refs, seeds, takes and cost. Use when asked for a prompt for one of these models or to turn shots into video-model prompts. Also 'refresh cinewright-genvideo'."
 license: MIT
 ---
 

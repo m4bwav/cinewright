@@ -55,18 +55,14 @@
       "kind": "action",
       "prompt": "Plan a three-shot AI film from this idea: a girl finds a lost robot in the rain. Put the project in out/robot.",
       "expectations": [
-        "the action happened, proven by the evidence below (a tool call in the trace or a written file), not by the reply saying so"
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
       ],
       "evidence": {
         "type": "trace",
         "tool": "Bash",
-        "input_match": "cine\\.py\\s+cards\\s+(new|validate)",
-        "or": {
-          "type": "file",
-          "path": "out/robot/bibles/characters.json"
-        }
+        "input_match": "cine\\.py\\s+cards\\s+(new|validate)"
       },
-      "baseline": "2026-10-03, one run, Sonnet, claude -p in a bare folder without cinewright: invoked a local-render image and video skill, wrote a film.json, three per-shot prompt files and a plan.md; no bibles, no shot cards, no continuity check. Evidence absent (no cine.py call, no bibles/characters.json).",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     },
     {
@@ -80,7 +76,7 @@
         "every card has duration_s between 3 and 8 and exactly one camera.move",
         "judge: the three cards tell the idea in order (2 of 3 votes)"
       ],
-      "baseline": "not yet run",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3,
       "checks": [
         [

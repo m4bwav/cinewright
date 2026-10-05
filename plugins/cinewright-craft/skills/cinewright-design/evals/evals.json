@@ -50,13 +50,9 @@
       "evidence": {
         "type": "trace",
         "tool": "Bash",
-        "input_match": "cine\\.py\\s+(cards\\s+validate|continuity\\s+diff)\\s+\\S*out/lighthouse",
-        "or": {
-          "type": "file",
-          "path": "out/lighthouse/bibles/props.json"
-        }
+        "input_match": "cine\\.py\\s+(cards\\s+validate|continuity\\s+diff)\\s+\\S*out/lighthouse"
       },
-      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder holding only a copy of examples/three-shot, no cinewright installed: first run (old prompt) found props.json already present and said so, which led to the self-contained prompt; second run (this prompt) searched the disk, found this repository, read the design skill and ran its cine.py. CONTAMINATED: not a valid without-skill baseline (cinewright-script L-001).",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3,
       "setup": [
         [
@@ -81,7 +77,7 @@
         "the reply says to check the cleaned reference at full size",
         "judge: no advice to rely on a stronger negative prompt as the fix (2 of 3 votes)"
       ],
-      "baseline": "not run separately; S6 runs it without the skill.",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     }
   ]

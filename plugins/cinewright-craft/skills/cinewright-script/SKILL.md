@@ -31,7 +31,7 @@ For each scene, write its goal, its opposition and its turn, with the value and 
 ## Step 4: hand off and check
 
 1. Hand the script to cinewright-shots for cards. If it is not installed, say "install the cinewright plugin for shot lists".
-2. Once cards exist, run `CINE continuity diff <project>` and quote its last line; it must show no DIALOGUE warning. Fix the line, not the shot length, unless the beat needs the time.
+2. Once cards exist, and whenever a line changes, put the line in its card and run `CINE continuity diff <project>`; quote its last line and any DIALOGUE warning. Never count words by hand instead: the diff is the check. Fix the line, not the shot length, unless the beat needs the time.
 
 ## Output
 

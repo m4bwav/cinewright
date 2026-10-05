@@ -1,6 +1,6 @@
 ---
 name: cinewright-shots
-description: "Shot list and coverage for AI video: blocking, which shots a scene needs, sizes, angles, moves, framing, cut order and grouping shots into generations. Use when breaking a script or scene into shots, planning coverage or a storyboard. Also 'refresh cinewright-shots'."
+description: "Shot list and coverage for AI video: blocking, which shots a scene needs, sizes, angles, moves, cut order and grouping shots into generations. Use when breaking a scene into shots, asking what coverage a scene needs, or planning a storyboard. Also 'refresh cinewright-shots'."
 license: MIT
 ---
 

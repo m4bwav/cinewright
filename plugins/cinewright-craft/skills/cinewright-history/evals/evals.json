@@ -55,19 +55,14 @@
       "kind": "action",
       "prompt": "out/nh is a copy of examples/three-shot. Make out/nh look like 1970s New Hollywood in a 2.39 frame, and show me how the compiled Veo prompt for shot 1B changes.",
       "expectations": [
-        "the action happened, proven by the evidence below (a tool call in the trace, or the file), not by the reply saying so"
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
       ],
       "evidence": {
         "type": "trace",
         "tool": "Bash",
-        "input_match": "cine\\.py\\s+compile\\s+\\S*out/nh.*--style",
-        "or": {
-          "type": "file",
-          "path_glob": "out/nh/**/*.json",
-          "contains": "\"frame_aspect\""
-        }
+        "input_match": "cine\\.py\\s+compile\\s+\\S*out/nh.*--style"
       },
-      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example, Bash, web and agent tools denied: set aspect_ratio to 2.39:1 (no model renders it; compile would refuse), put a brand name and stock number in the look, invented its own compile format and wrote before and after 1B prompts by hand. It globbed the home folder for SKILL.md; the search timed out with no result, so not contaminated (L-002).",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3,
       "setup": [
         [
@@ -75,6 +70,9 @@
           "examples/three-shot",
           "out/nh"
         ]
+      ],
+      "plugins": [
+        "cinewright"
       ]
     },
     {
@@ -93,7 +91,7 @@
         "check: the style bible stays 16:9, names the kubrick card in history and sets allowed_moves and lens_family; continuity diff has no errors and no MOVE or LENS warnings; no compiled Veo prompt or style field names Kubrick (evals/check_kubrick.py exits 0)",
         "judge: the look is carried by concrete devices (for example one-point perspective, symmetry, a wide lens close, slow dolly or Steadicam), not by the director's name (2 of 3 votes)"
       ],
-      "baseline": "not yet run; replaces the S4 Kubrick advice case, which passed without the skill (T-20261004-1).",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3,
       "setup": [
         [
@@ -101,6 +99,9 @@
           "examples/three-shot",
           "out/kubrick"
         ]
+      ],
+      "plugins": [
+        "cinewright"
       ]
     }
   ]

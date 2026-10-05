@@ -45,3 +45,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: C-20261003-2 (shared/lib/cine.py card_parts, failures-picture eyeline-wrong row), confirmed 2026-10-03 by a same-seed re-render
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-03
+
+### L-006 · 2026-10-04 · Lead the description with the verb users type
+- Trigger: 2026-10-04, S6 matrix T-20261004-1: trigger-1 (write a Veo 3.1 prompt for this shot) and trigger-2 (turn the shot cards into prompts for Veo) invoked the skill Haiku 0 of 3 each; Haiku answered trigger-1 in one turn with no tool; Sonnet and Opus 3 of 3
+- Hypothesis: A description that opens with a noun phrase ("AI video prompts: compiles ...") gives a small model no action to match a request against
+- Rule: Open with "Writes AI video prompts" and say "Use when asked for a prompt for one of these models or to turn shots into video-model prompts"
+- Evidence: C-20261004-2 (description); rerun pending
+- Scope: skill
+- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-04

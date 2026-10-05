@@ -67,7 +67,7 @@
           "contains": "1C"
         }
       },
-      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example (bibles, cards, styles, brief, script, takes.md; no README, design notes, compiled prompts or planted card; the toolkit's name removed), skills disabled, Bash, PowerShell, web, agent, Glob, Grep and Skill tools denied: copied the cards and wrote out/cut/cutlist.md using only 1C (3.917 s against 14 s), because takes.md marks 1A and 1B fail; it named the gap and asked for re-renders, which is right, but ran no check and wrote no reason per cut. No evidence route matched. Not contaminated (every path inside the folder).",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3,
       "setup": [
         [
@@ -80,7 +80,7 @@
     {
       "id": "outcome-1",
       "kind": "outcome",
-      "prompt": "Each of my generated clips starts with a few frames where the face swims, and in one clip the character's scar is on the wrong side for the whole shot. What can the edit fix and what can't it?",
+      "prompt": "Each of my generated clips starts with a few frames where the face swims, one clip has a hand that melts for half a second in the middle, and in another the character's scar is on the wrong side for the whole shot. What can the edit fix and what can't it?",
       "files": [],
       "expectations": [
         "the reply says to set the in point after the settle frames at the head (and the out point before tail drift)",
@@ -88,7 +88,7 @@
         "the reply says short mid-shot faults can be covered by a cutaway, reaction or cutting on action",
         "judge: the answer separates edit fixes from re-render fixes as a rule, not case by case (2 of 3 votes)"
       ],
-      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example (bibles, cards, styles, brief, script, takes.md; no README, design notes, compiled prompts or planted card; the toolkit's name removed), skills disabled, Bash, PowerShell, web, agent, Glob, Grep and Skill tools denied: trimming the swimming head frames passed; for the scar it proposed flipping the whole shot horizontally (which mirrors the set and screen direction) or VFX paint before a re-render; cutaways were not offered. Partly discriminates.",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     }
   ]

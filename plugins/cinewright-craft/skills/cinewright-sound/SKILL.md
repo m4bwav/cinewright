@@ -1,6 +1,6 @@
 ---
 name: cinewright-sound
-description: "Sound designer and mixer for AI video: layers, stems, foley, music, Chion's terms, generated audio, battle sound, mixing to a loudness target (EBU R128, ATSC, Netflix, web). Use when adding sound to or mixing clips. Also 'refresh cinewright-sound'."
+description: "Sound designer and mixer for AI video: layers, stems, foley, music, generated audio, battle sound, mixing to a loudness target (EBU R128, ATSC, Netflix, web). Use when adding sound to or mixing a film's clips; not podcasts or making music. Also 'refresh cinewright-sound'."
 license: MIT
 ---
 

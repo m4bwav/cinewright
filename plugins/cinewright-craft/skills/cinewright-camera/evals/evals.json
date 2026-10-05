@@ -55,19 +55,14 @@
       "kind": "action",
       "prompt": "out/noir is a copy of examples/three-shot. Give out/noir a film-noir camera and lighting plan: lens family, lighting and frame in its style bible, a lens on every card, and check the project afterwards.",
       "expectations": [
-        "the action happened, proven by the evidence below (a tool call in the trace, or the file), not by the reply saying so"
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
       ],
       "evidence": {
         "type": "trace",
         "tool": "Bash",
-        "input_match": "cine\\.py\\s+(cards\\s+validate|continuity\\s+diff)\\s+\\S*out/noir",
-        "or": {
-          "type": "file",
-          "path": "out/noir/bibles/style.json",
-          "contains": "\"lighting\""
-        }
+        "input_match": "cine\\.py\\s+(cards\\s+validate|continuity\\s+diff)\\s+\\S*out/noir"
       },
-      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example (no README, design notes or compiled prompts; the toolkit's name removed), Bash, web and agent tools denied: wrote a sound noir plan into style.json but invented a `frame` field, wrote a 290-character lighting string (schema maximum 200), set lens_mm on every card and 'checked' by reading files only. Not contaminated (every read inside the folder).",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3,
       "setup": [
         [
@@ -93,7 +88,7 @@
         "check: the style bible keeps aspect_ratio 16:9, sets frame_aspect 2.39:1 and a lighting rule; cards validate and continuity diff pass; every compiled Veo prompt carries the lighting rule and the 2.39 composition sentence word for word (evals/check_cabin.py exits 0)",
         "judge: the reply treats 2.39 as a crop of the 16:9 render planned in the composition, not as a render setting (2 of 3 votes)"
       ],
-      "baseline": "not yet run; replaces the S4 lighting-rules case, which passed without the skill (T-20261004-1).",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3,
       "setup": [
         [
@@ -101,6 +96,9 @@
           "examples/three-shot",
           "out/cabin"
         ]
+      ],
+      "plugins": [
+        "cinewright"
       ]
     }
   ]

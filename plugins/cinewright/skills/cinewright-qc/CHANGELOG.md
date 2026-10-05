@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261004-3 · 2026-10-04 · Description tuned (S6)
+- because: T-20261004-1
+- files: SKILL.md
+- Description trimmed by 42 characters (take logs and last frames left the list) to make room for the S6 trigger fixes in other skills; the body still covers both
+
 ### C-20261004-2 · 2026-10-04 · Loudness presets and the loudness-targets vocab
 - because: user request (S5) and the S5 loudness re-check recorded in cinewright-sound RESEARCH.md
 - files: SKILL.md, references/qc-loop.md, needs.json, references/loudness-targets.md (copy), shared/lib/cine.py

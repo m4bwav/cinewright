@@ -52,7 +52,7 @@
         "tool": "Bash",
         "input_match": "cine\\.py\\s+continuity\\s+diff"
       },
-      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder holding only a copy of examples/three-shot, no cinewright installed: read every project file, added a second scene and a 1D card by hand, edited design.md and README.md, searched the disk for a cine.py it did not find, and stopped at the 20-turn limit with no answer. No cine.py call, evidence absent; no HARD-SUBJECT reasoning seen in its tool calls.",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     },
     {
@@ -66,7 +66,7 @@
         "the charge and the clash are split into separate shots",
         "judge: each foreground rider or horse is described differently (2 of 3 votes)"
       ],
-      "baseline": "not run separately; S6 runs it without the skill.",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     }
   ]

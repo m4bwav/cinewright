@@ -67,7 +67,7 @@
           "contains": "534"
         }
       },
-      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example (bibles, cards, styles, brief, script, takes.md; no README, design notes, compiled prompts or planted card; the toolkit's name removed), skills disabled, Bash, PowerShell, web, agent, Glob, Grep and Skill tools denied: with no shell it could not copy the folder or run ffmpeg, so it stopped and offered to hand over commands; nothing written. The case needs Bash; with Bash denied the baseline cannot reach it, so S6 should run it in a sandbox that allows ffmpeg only. Not contaminated.",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3,
       "setup": [
         [
@@ -88,7 +88,7 @@
         "the reply says practical lights stay warm and bright and the sky goes darkest",
         "judge: the steps are ordered after correction and balance, with the look on top (2 of 3 votes)"
       ],
-      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example (bibles, cards, styles, brief, script, takes.md; no README, design notes, compiled prompts or planted card; the toolkit's name removed), skills disabled, Bash, PowerShell, web, agent, Glob, Grep and Skill tools denied: graded down, desaturated and cooled (expectation 2 passed) and masked the sky, but did not say to render a normal exposure with the night's light direction, kept no practicals warm, and also proposed an AI video-to-video relight. The reply named the user's local renderer from user-level instructions, which the harness loads (not the repository).",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     }
   ]

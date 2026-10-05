@@ -8,6 +8,15 @@ Entry shape: `### T-YYYYMMDD-n · date · harness · env · passed/total`, one l
 
 ## Runs
 
+### T-20261004-2 · 2026-10-04 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Claude Code 2.1.281 · 4/7 cases on all three models
+- Models: H Haiku 4.5, S Sonnet 5, O Opus 5.5; with the skill 3 runs each; trigger counts are invocations.
+- Cases: trigger-1 H 2/3 S 3/3 O 3/3; trigger-2 H 3/3 S 3/3 O 3/3; decoy-1 H 0/3 S 0/3 O 0/3; decoy-2 H 0/3 S 0/3 O 0/3; decoy-3 H 2/3 S 0/3 O 0/3; action-1 H 0/3 S 3/3 O 3/3; outcome-1 H 0/3 S 0/3 O 3/3.
+- First S6 matrix after three harness fixes (cine.py by any path, setup copies, deterministic checks); 155 runs that hit the account's session limit were run again.
+- FAIL decoy-3 · trigger · overtrigger · H 2/3 S 0/3 O 0/3
+- FAIL action-1 · action · undertrigger (skill not invoked in 3 of 3 failing runs) · H 0/3 S 3/3 O 3/3
+- FAIL outcome-1 · outcome · wrong-outcome · H 0/3 S 0/3 O 3/3
+- led to: L-003, C-20261004-2
+
 ### T-20261004-1 · 2026-10-04 · claude -p (Sonnet, headless, restricted scratch folder) · windows/claude-code · baselines only, 2 cases
 - action-1 baseline: wrote its own cut list (cutlist.md, 1C only, 3.9 s), no check run, no reasons per cut; evidence absent. Not contaminated.
 - outcome-1 baseline: trims right; scar fix by flipping the shot (breaks screen direction) or paint; no cutaway. Partly discriminates.

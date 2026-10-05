@@ -62,7 +62,7 @@
         "tool": "Bash",
         "input_match": "cine\\.py\\s+continuity\\s+diff"
       },
-      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder holding only a copy of examples/three-shot, no cinewright installed: searched the whole disk, found this repository and ran its cine.py continuity diff on the scratch copy; stopped at the 20-turn limit with no answer. CONTAMINATED: not a valid without-skill baseline (L-001).",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     },
     {
@@ -76,7 +76,7 @@
         "the dialogue line has at most 12 words",
         "judge: the script names one scene turn the camera can see (2 of 3 votes)"
       ],
-      "baseline": "not run separately; S6 runs it without the skill.",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 1 of 3 passed (Haiku fail, Sonnet fail, Opus pass).",
       "runs": 3
     }
   ]

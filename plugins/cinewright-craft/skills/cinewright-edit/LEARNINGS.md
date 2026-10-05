@@ -21,3 +21,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: C-20261004-1 (references/cutting-around-bad-frames.md Notes; the glow lasted the whole of 1A), confirmed 2026-10-04
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-04
+
+### L-003 · 2026-10-04 · Exclude vlogs and live footage in the description
+- Trigger: 2026-10-04, S6 matrix T-20261004-2: decoy-3 (cut the ums out of a talking-head vlog in Premiere) invoked the skill Haiku 2 of 3
+- Hypothesis: "cutting ... into a film or fixing its pace" reads as any video edit to a small model
+- Rule: The Use clause ends "not vlogs or live footage"
+- Evidence: C-20261004-2 (description); rerun pending
+- Scope: skill
+- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-04

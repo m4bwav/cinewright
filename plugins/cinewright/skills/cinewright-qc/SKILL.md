@@ -1,6 +1,6 @@
 ---
 name: cinewright-qc
-description: "Checks rendered AI video takes against their shot cards: contact sheets, a per-shot rubric, spec and loudness checks with ffmpeg, failure codes routed to the cheapest fix, take logs, last frames for the next shot. Use when reviewing a generated clip, deciding reroll or keep, or asking why a take failed. Also 'refresh cinewright-qc'."
+description: "Checks rendered AI video takes against their shot cards: contact sheets, a per-shot rubric, spec and loudness checks with ffmpeg, failure codes routed to the cheapest fix. Use when reviewing a generated clip, deciding reroll or keep, or asking why a take failed. Also 'refresh cinewright-qc'."
 license: MIT
 ---
 

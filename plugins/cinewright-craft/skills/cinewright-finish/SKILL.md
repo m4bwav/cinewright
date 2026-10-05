@@ -1,6 +1,6 @@
 ---
 name: cinewright-finish
-description: "Colorist and VFX finisher for AI video: grade order, color spaces, delivery, crop to the film's frame, day for night, crowd multiplication, cleanup, upscale and interpolation. Use when grading or finishing generated clips. Also 'refresh cinewright-finish'."
+description: "Colorist and VFX finisher for AI video: grade order, color spaces, delivery, crop to the film's frame, day for night, crowd multiplication, cleanup, upscale and interpolation. Use when grading or finishing generated clips; not restoring home video. Also 'refresh cinewright-finish'."
 license: MIT
 ---
 

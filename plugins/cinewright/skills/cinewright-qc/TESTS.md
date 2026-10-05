@@ -8,6 +8,15 @@ Entry shape: `### T-YYYYMMDD-n · date · harness · env · passed/total`, one l
 
 ## Runs
 
+### T-20261004-1 · 2026-10-04 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Claude Code 2.1.281 · 4/7 cases on all three models
+- Models: H Haiku 4.5, S Sonnet 5, O Opus 5.5; with the skill 3 runs each; trigger counts are invocations.
+- Cases: trigger-1 H 2/3 S 3/3 O 3/3; trigger-2 H 1/3 S 3/3 O 3/3; decoy-1 H 0/3 S 0/3 O 0/3; decoy-2 H 0/3 S 0/3 O 0/3; decoy-3 H 0/3 S 0/3 O 0/3; action-1 H 1/3 S 3/3 O 3/3; outcome-1 H 0/3 S 3/3 O 3/3.
+- First S6 matrix after three harness fixes (cine.py by any path, setup copies, deterministic checks); 155 runs that hit the account's session limit were run again.
+- FAIL trigger-2 · trigger · undertrigger · H 1/3 S 3/3 O 3/3
+- FAIL action-1 · action · undertrigger (skill not invoked in 2 of 2 failing runs) · H 1/3 S 3/3 O 3/3
+- FAIL outcome-1 · outcome · undertrigger (skill not invoked in 3 of 3 failing runs) · H 0/3 S 3/3 O 3/3
+- led to: C-20261004-3
+
 ### T-20261003-2 · 2026-10-03 · first real take, local MiniMax H3 · windows/claude-code · loop closed
 - The three-shot example as one 14.4 s generation (seed 101, 864x480): sheet, spec, lastframe, loud and three rubrics ran on the real clip. Take 1 failed 1B on `eyeline-wrong`; the one change (eyelines name their target) was re-rendered with the same seed, and take 2 passed 1B's eyeline and 1C as a whole.
 - Not fixed, logged: 1A `bad-opening` (lens lit at frame 1), `prop-drift` (cardboard box, not tin), 1B `identity-drift` (scar on the wrong side, missed in take 1 at sheet size). Loudness -29.6 LUFS: a mix-stage fix.

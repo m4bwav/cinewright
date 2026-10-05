@@ -38,18 +38,26 @@
     "learnings": 2,
     "changes": 1,
     "research": 1,
-    "tests": 1
+    "tests": 2
   },
   "consolidate_every": 25,
   "tests": {
-    "last_run": "2026-10-04",
-    "harness": "claude -p (baselines only)",
+    "last_run": "2026-10-04T19:59",
+    "harness": "evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive)",
     "env": "windows/claude-code",
-    "cases": 6,
-    "passed": 0,
-    "failed": 0,
-    "failing": [],
-    "last_failure": null,
+    "cases": 7,
+    "passed": 3,
+    "failed": 4,
+    "failing": [
+      "decoy-1",
+      "decoy-3",
+      "action-1",
+      "outcome-1"
+    ],
+    "last_failure": {
+      "date": "2026-10-04",
+      "note": "First S6 matrix after three harness fixes (cine.py by any path, setup copies, deterministic checks); 155 runs that hit the account's session limit were run again."
+    },
     "research_after_days": null
   }
 }

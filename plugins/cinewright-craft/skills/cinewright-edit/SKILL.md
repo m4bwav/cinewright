@@ -1,6 +1,6 @@
 ---
 name: cinewright-edit
-description: "Film editor for AI video: assembling takes, Murch's rule of six, J and L cuts, match cuts, cutting on action, pacing, trimming bad frames, cutting battles. Use when cutting rendered clips into a film or fixing its pace. Also 'refresh cinewright-edit'."
+description: "Film editor for AI video: assembling takes, Murch's rule of six, J and L cuts, match cuts, cutting on action, pacing, trimming bad frames, cutting battles. Use when cutting rendered clips into a film or fixing its pace; not vlogs or live footage. Also 'refresh cinewright-edit'."
 license: MIT
 ---
 

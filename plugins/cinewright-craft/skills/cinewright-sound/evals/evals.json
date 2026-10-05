@@ -67,7 +67,7 @@
           "contains": "LUFS"
         }
       },
-      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example (bibles, cards, styles, brief, script, takes.md; no README, design notes, compiled prompts or planted card; the toolkit's name removed), skills disabled, Bash, PowerShell, web, agent, Glob, Grep and Skill tools denied: tried Bash and PowerShell through ToolSearch (both refused), then wrote a PowerShell script to its own session scratchpad (outside the folder, not the repository) with single-pass loudnorm to -16 LUFS / -1 dBTP labelled 'EBU R128', a re-measure as proof, and no layers. Not contaminated; ToolSearch should be denied too.",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     },
     {
@@ -123,7 +123,7 @@
         "check: out/mix/final.mp4 keeps its video and measures -18 +/- 2 LUFS integrated with true peak at or below -2 dBTP, metered by ffmpeg ebur128 (evals/check_mix.py exits 0)",
         "judge: the reply states the loudness target it mixed to and the measured result (2 of 3 votes)"
       ],
-      "baseline": "not yet run; replaces the S5 battle-layers case, which passed most expectations without the skill (T-20261004-1).",
+      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     }
   ]

@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261004-3 · 2026-10-04 · Description tuned (S6)
+- because: T-20261004-1, L-001
+- files: SKILL.md
+- Description tuned for triggering: the Use clause adds "plan an idea as shots"; "scene" left the film list for the budget
+
 ### C-20261004-2 · 2026-10-04 · Pipeline names the S5 skills (edit, finish, sound)
 - because: user request (S5)
 - files: SKILL.md

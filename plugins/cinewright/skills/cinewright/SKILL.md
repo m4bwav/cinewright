@@ -1,6 +1,6 @@
 ---
 name: cinewright
-description: "Film director for AI video: turns an idea into a planned film (logline, shot list, bibles, prompts, QC, edit, delivery) and routes each stage to the right cinewright skill. Use when the user wants to make a short film, scene, trailer, music video or ad with AI video models, or asks what comes next. Also 'refresh cinewright'."
+description: "Film director for AI video: turns an idea into a planned film (logline, shot list, bibles, prompts, QC, edit, delivery) and routes each stage to the right cinewright skill. Use when the user wants to make a short film, trailer, music video or ad with AI video models, plan an idea as shots, or asks what comes next. Also 'refresh cinewright'."
 license: MIT
 ---
 

@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261004-2 · 2026-10-04 · Step 4 runs the diff whenever a line changes (S6)
+- because: T-20261004-2, L-002
+- files: SKILL.md
+- Step 4.2 now runs `continuity diff` whenever a line changes and forbids counting words by hand instead
+
 ### C-20261004-1 · 2026-10-04 · Created as an evergreen unit (cinewright S3)
 - because: user request, R-20261004-1
 - files: SKILL.md, references/, needs.json, RESEARCH.md, LEARNINGS.md, TESTS.md, evals/evals.json, evergreen.json, MAINTENANCE.md

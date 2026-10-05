@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261004-2 · 2026-10-04 · Description tuned (S6)
+- because: T-20261004-2, L-001
+- files: SKILL.md
+- Description tuned for triggering: the Use clause says "asking what coverage a scene needs"
+
 ### C-20261004-1 · 2026-10-04 · Created as an evergreen unit (cinewright S3)
 - because: user request, R-20261004-1
 - files: SKILL.md, references/, needs.json, RESEARCH.md, LEARNINGS.md, TESTS.md, evals/evals.json, evergreen.json, MAINTENANCE.md

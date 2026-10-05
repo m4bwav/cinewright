@@ -56,6 +56,7 @@ BASH_ALLOW = [
     "Bash(tail:*)", "Bash(echo:*)", "Bash(wc:*)",
 ]
 LOCK = threading.Lock()
+LIMITED = threading.Event()  # set when a run hits a usage limit: queued runs are skipped, rerun them later
 
 
 def claude_exe():
@@ -176,7 +177,8 @@ def claude_args(prompt, model, arm, plugin_copy, kind, case):
          "--permission-mode", "dontAsk", "--tools", ",".join(tools), "--disallowedTools", *DENY,
          "--allowedTools", *allow, "--max-turns", str(case.get("max_turns") or MAX_TURNS[kind])]
     if arm == "with":
-        a += ["--plugin-dir", str(plugin_copy), "--add-dir", str(plugin_copy)]
+        for d in plugin_copy:  # the plugin under test, then any the case also needs (`plugins`)
+            a += ["--plugin-dir", str(d), "--add-dir", str(d)]
     else:
         a += ["--disable-slash-commands"]
     return a
@@ -292,7 +294,8 @@ def evidence_ok(ev, uses, work):
         for _, tool, inp, err in uses:
             if tool == ev.get("tool") and not err:
                 s = inp.get("command") if tool == "Bash" else json.dumps(inp)
-                if pat.search(str(s).replace("\\", "/")):
+                # slashes normalised and quotes dropped: python "C:/x/scripts/cine.py" continuity diff ...
+                if pat.search(re.sub(r"[\"']", "", str(s).replace("\\", "/"))):
                     ok, why = True, "trace: %s %s" % (tool, str(s)[:200])
                     break
         if not ok:
@@ -379,6 +382,9 @@ def judge(case, reply, files, jdir):
             votes.append([bool(x) for x in d["pass"]][:len(exps)] + [False] * max(0, len(exps) - len(d["pass"])))
             votes[-1] = {"pass": votes[-1], "why": d.get("why", [])}
         except Exception as e:  # a vote that cannot be read counts as a fail on every expectation
+            if re.search(r"(?i)(session|usage|rate) limit|hit your|\b429\b", p.stdout + p.stderr):
+                LIMITED.set()
+                raise RuntimeError("judge hit a usage limit; run again after it resets")
             votes.append({"pass": [False] * len(exps), "why": ["unreadable judge output: %s" % e]})
     per = []
     for i, e in enumerate(exps):
@@ -398,13 +404,17 @@ def env_problem(events, meta, arm, name):
     if arm == "without" and any(s.split(":")[0] == "cinewright" or s.startswith("cinewright") for s in loaded):
         return "cinewright loaded in the baseline"
     res = next((e for e in reversed(events) if e.get("type") == "result"), None)
-    if res and res.get("is_error") and re.search(r"(?i)usage limit|rate limit|overloaded|credit", str(res.get("result"))):
-        return "usage or rate limit: %s" % str(res.get("result"))[:120]
+    limited = any(e.get("error") == "rate_limit" or e.get("api_error_status") in (429, 529) for e in events)
+    if limited or (res and res.get("is_error") and re.search(r"(?i)(usage|session|rate) limit|hit your|overloaded|credit",
+                                                            str(res.get("result")))):
+        return "usage or rate limit: %s" % str((res or {}).get("result"))[:120]
     return None
 
 
 def one(job, out, keep):
     name, case, model, arm, n = job
+    if LIMITED.is_set():
+        raise RuntimeError("skipped: a usage limit was hit; run again after it resets")
     plugin, sk = skills()[name]
     k = kind_of(case)
     rk = key(name, case["id"], model, arm, n)
@@ -415,10 +425,13 @@ def one(job, out, keep):
     work.mkdir(parents=True)
     make_fixture(work)
     run_setup(case, work)
-    plugin_copy = None
+    plugin_copy = []
     if arm == "with":
-        plugin_copy = rdir / "plugin" / plugin.name
-        shutil.copytree(plugin, plugin_copy, ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "results"))
+        # a case's `plugins` names other plugins a real install would have beside it (craft compiles need core's
+        # model cards); the skill under test is still the only one graded
+        for pdir in [plugin] + [REPO / "plugins" / x for x in case.get("plugins", [])]:
+            plugin_copy.append(rdir / "plugin" / pdir.name)
+            shutil.copytree(pdir, plugin_copy[-1], ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "results"))
     trace = out / "traces" / (rk.replace("/", "__") + ".jsonl")
     trace.parent.mkdir(parents=True, exist_ok=True)
     stop = None
@@ -430,7 +443,7 @@ def one(job, out, keep):
     uses = tool_uses(events)
     init = next((e for e in events if e.get("type") == "system" and e.get("subtype") == "init"), {})
     res = next((e for e in reversed(events) if e.get("type") == "result"), {})
-    outside, touched = scan_paths(uses, [work.resolve()] + ([plugin_copy.resolve()] if plugin_copy else []))
+    outside, touched = scan_paths(uses, [work.resolve()] + [d.resolve() for d in plugin_copy])
     r = {"key": rk, "skill": name, "plugin": plugin.name, "case": case["id"], "kind": k, "decoy": bool(case.get("decoy")),
          "model": model, "model_id": init.get("model"), "arm": arm, "n": n, "when": time.strftime("%Y-%m-%d %H:%M"),
          "cost_usd": res.get("total_cost_usd"), "turns": res.get("num_turns"), "seconds": meta["seconds"],
@@ -438,6 +451,8 @@ def one(job, out, keep):
          "tools": [u[1] for u in uses], "outside": outside[:20], "contaminated": touched, "trace": str(trace),
          "workdir": str(work)}
     r["environment"] = env_problem(events, meta, arm, name)
+    if r["environment"] and "limit" in r["environment"]:
+        LIMITED.set()
     called = skill_called(uses, name)
     if k == "trigger":
         r["pass"] = (not called) if case.get("decoy") else called
@@ -464,7 +479,7 @@ def one(job, out, keep):
     if not keep and r["pass"] and not r["contaminated"]:
         shutil.rmtree(work, ignore_errors=True)
         if plugin_copy:
-            shutil.rmtree(plugin_copy.parent, ignore_errors=True)
+            shutil.rmtree(plugin_copy[0].parent, ignore_errors=True)
     return r
 
 
@@ -599,11 +614,34 @@ def cmd_export_worth(a):
         print("%-22s %s" % (name, d))
 
 
+def cmd_regrade(a):
+    """Grade recorded action runs again from their traces (after an evidence-matching fix); no model calls."""
+    out = Path(a.out)
+    cases = {(n, c["id"]): c for n, (_, sk) in skills().items() for c in load_cases(sk)}
+    changed = 0
+    for k, r in done_keys(out).items():
+        c = cases.get((r["skill"], r["case"]))
+        if not c or r["kind"] != "action" or r.get("environment") or not Path(r["trace"]).is_file():
+            continue
+        if r["pass"] and not Path(r["workdir"]).is_dir():
+            continue  # a passed run's folder is deleted; its file evidence cannot be read again
+        events = [json.loads(x) for x in open(r["trace"], encoding="utf-8") if x.strip().startswith("{")]
+        ok, why = evidence_ok(c.get("evidence"), tool_uses(events), Path(r["workdir"]))
+        if ok != r["pass"]:
+            r = dict(r, prev_pass=r["pass"], prev_evidence=r["evidence"])
+            r["pass"], r["evidence"] = ok, why + " (regraded)"
+            with open(out / "results.jsonl", "a", encoding="utf-8") as f:
+                f.write(json.dumps(r) + "\n")
+            changed += 1
+            print("%s %s: %s" % ("PASS" if ok else "FAIL", k, why[:120]))
+    print("regraded %d runs" % changed)
+
+
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for nm in ("plan", "run", "report", "export-worth"):
+    for nm in ("plan", "run", "report", "export-worth", "regrade"):
         s = sub.add_parser(nm)
         s.add_argument("--out", default=str(out_default()))
         if nm in ("plan", "run"):
@@ -619,7 +657,7 @@ def main():
         if nm == "report":
             s.add_argument("--md", help="also write the matrix to this file")
     a = ap.parse_args()
-    {"plan": cmd_plan, "run": cmd_run, "report": cmd_report, "export-worth": cmd_export_worth}[a.cmd](a)
+    {"plan": cmd_plan, "run": cmd_run, "report": cmd_report, "export-worth": cmd_export_worth, "regrade": cmd_regrade}[a.cmd](a)
 
 
 if __name__ == "__main__":

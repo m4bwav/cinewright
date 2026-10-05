@@ -21,3 +21,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: C-20261004-1 (references/grade-order.md; blacks landed at 20.0, 19.5 and 19.7), confirmed 2026-10-04
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-04
+
+### L-003 · 2026-10-04 · Exclude home-video restoration in the description
+- Trigger: 2026-10-04, S6 matrix T-20261004-2: decoy-3 (upscale old family VHS tapes to 4K) invoked the skill Sonnet 2 of 3
+- Hypothesis: "upscale and interpolation" and "cleanup" match restoration work
+- Rule: The Use clause ends "not restoring home video"
+- Evidence: C-20261004-2 (description); rerun pending
+- Scope: skill
+- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-04

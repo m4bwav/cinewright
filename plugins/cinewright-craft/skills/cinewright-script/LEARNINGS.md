@@ -13,3 +13,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: T-20261004-1 in this unit, cinewright-design and the S3 log, confirmed 2026-10-04
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-04
+
+### L-002 · 2026-10-04 · Check a changed line with the diff, not by counting
+- Trigger: 2026-10-04, S6 matrix T-20261004-2: action-1 (would a longer line fit card 1B; check it properly) invoked the skill but ran no `continuity diff` in Sonnet 1 of 3 and Opus 1 of 3 runs; those runs counted the words by hand (17 words in 4 s) and answered
+- Hypothesis: Step 4 said to run the diff "once cards exist", which reads as part of a first pass, and the arithmetic looks easy enough to skip the tool
+- Rule: Whenever a line changes, put it in its card and run `CINE continuity diff`; quote the DIALOGUE warning; never count words by hand instead
+- Evidence: C-20261004-2 (SKILL.md Step 4); rerun pending
+- Scope: skill
+- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-04
