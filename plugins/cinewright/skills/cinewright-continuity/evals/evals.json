@@ -62,6 +62,10 @@
       "files": [],
       "setup": [
         [
+          "delete",
+          "examples/three-shot/planted/1C.json"
+        ],
+        [
           "replace",
           "examples/three-shot/cards/1B.json",
           "scar through her left eyebrow",
