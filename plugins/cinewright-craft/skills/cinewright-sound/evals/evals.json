@@ -60,14 +60,14 @@
       "evidence": {
         "type": "trace",
         "tool": "Bash",
-        "input_match": "cine\\.py\\s+qc\\s+loud\\s+\\S*out/mix",
+        "input_match": "(?s)cine\\.py\\s+qc\\s+loud\\s+\\S*out/mix|out/mix.*cine\\.py\\s+qc\\s+loud",
         "or": {
           "type": "file",
           "path": "out/mix/sound/plan.md",
           "contains": "LUFS"
         }
       },
-      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     },
     {
@@ -123,7 +123,7 @@
         "check: out/mix/final.mp4 keeps its video and measures -18 +/- 2 LUFS integrated with true peak at or below -2 dBTP, metered by ffmpeg ebur128 (evals/check_mix.py exits 0)",
         "judge: the reply states the loudness target it mixed to and the measured result (2 of 3 votes)"
       ],
-      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 1 of 3 passed (Haiku fail, Sonnet pass, Opus fail).",
       "runs": 3
     }
   ]

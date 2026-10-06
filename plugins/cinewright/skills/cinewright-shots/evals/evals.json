@@ -62,7 +62,7 @@
         "tool": "Bash",
         "input_match": "cine\\.py\\s+cards\\s+list"
       },
-      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     },
     {
@@ -76,7 +76,7 @@
         "a wide or master shot comes before the first single, and there is at least one insert or reaction",
         "judge: singles in the shot-reverse pair share size and lens (2 of 3 votes)"
       ],
-      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3,
       "checks": [
         [

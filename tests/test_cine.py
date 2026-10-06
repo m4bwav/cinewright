@@ -225,6 +225,15 @@ class TestContinuity(Base):
         self.assertIn("ERROR 1C AXIS", out)
         self.assertIn("ERROR 1C EYELINE", out)
 
+    def test_malformed_bible_says_what_to_fix(self):
+        p = self.tmp / "p"
+        shutil.copytree(EXAMPLE, p)
+        lib.write_text(p / "bibles" / "characters.json", json.dumps({"characters": {"maren": {"name": "Maren"}}}))
+        code, out = run("continuity", "diff", p)
+        self.assertEqual(code, 1, out)
+        self.assertIn("bibles/characters.json: want", out)
+        self.assertNotIn("Traceback", out)
+
     def project(self):
         return lib.Project(EXAMPLE)
 

@@ -390,3 +390,132 @@ qc spec: 4 checks, 0 failed
 - Harness lessons from the pilot (sound and design on Haiku): `claude` on Windows is a `.CMD` wrapper that re-parses arguments, so a multi-line judge prompt arrived empty; the harness now calls the wrapped `claude.exe` and sends every prompt on stdin. `is_error` is set on a nonzero exit too, so a refusal is told apart by its message. The path scan reads only path fields (a Write's content held `d:\n`). A `mkdir -p out/:*` rule missed quoted and absolute paths.
 - Cases: outcome-1 replaced for camera (`check_cabin.py`: 2.39 as `frame_aspect`, a `lighting` rule, both verbatim in every compiled prompt), history (`check_kubrick.py`: the kubrick card in `history`, no MOVE or LENS warning, no director's name in any prompt) and sound (`check_mix.py`: a generated cut with a hit near full scale mixed to the web preset, metered by ffmpeg ebur128). Each checker exits 1 on the untouched copy and on a wrong variant (render aspect 2.39; the name in the look; -14 LUFS / -1 dBTP) and 0 on a hand-made correct answer. Neighbour decoys (decoy-3) added to ten skills: three.js renders, cameras and fly-throughs (threewright), price and box-office charts (chartwright), vlog editing, VHS restoration, phone-video checks, podcast loudness and a vlog description. The design action now starts from a setup copy without props.json (no `rm` needed).
 - Pilot results worth keeping: Haiku invoked cinewright-sound on "generate a lo-fi hip hop track" and on the podcast decoy; did not invoke it on the sound action case (mixed by hand to -23 LUFS); answered the design advice case without the skill.
+
+## 2026-10-05: session S6 continued, matrix, two tuning rounds, worth
+
+- Full matrix run on Mark's go (2026-10-04): 870 headless runs plus judge calls; then reruns after each fix. All runs including reruns: 2,368 headless runs, $300.46 reported by the CLI at list price (judge calls not counted; the runs now on record, one per matrix cell, report $88). Results, traces and run folders stay outside the repository (location in the vault sidecar note).
+- Most first-matrix "failures" were the harness: twelve faults, each written up with its fix in [solutions/2026-10-05-headless-evals-on-windows-dead-ends.md](solutions/2026-10-05-headless-evals-on-windows-dead-ends.md). The biggest: `dontAsk` refuses `cp -r` whatever the rule, `Bash(python scripts/cine.py:*)` missed absolute paths, craft compile cases lacked the core plugin, the account's session limit (HTTP 429) read as 155 failures, a 30-turn cap cut Sonnet off, and the judge graded only the last message. Design: [decisions/2026-10-05-eval-harness-and-model-matrix.md](decisions/2026-10-05-eval-harness-and-model-matrix.md).
+- Cases changed: camera, history and sound outcome-1 replaced (checkers `check_cabin.py`, `check_kubrick.py`, `check_mix.py`); continuity outcome-1 replaced by two one-word plants (scar side, sweater colour) the diff catches; genvideo outcome-1 graded by `check_veo.py`; router and shots outcomes run their `cine.py` checks; edit outcome-1 asks about a mid-shot fault too; decoy-3 against neighbours in ten skills; action evidence is the trace only where a baseline passed on a file.
+- Tuning round 1 (descriptions, C-20261004-2/-3): sound, edit and finish exclude podcasts and music, vlogs and live footage, home-video restoration; genvideo, history, camera, shots and the router match the phrasings that undertriggered; qc trimmed for room; script runs the diff whenever a line changes (cinewright-script L-002). Round 2 (C-20261005-1): continuity reports the diff's errors before by-eye doubts (cinewright-continuity L-005), edit states the mid-shot rule (cinewright-edit L-004), qc builds the rubric with no clip and never by hand (cinewright-qc L-003), camera says "lighting a shot" after "a scene" drew the three.js decoy (cinewright-camera L-002).
+- Runtime fix: `cine.py` crashed (TypeError, KeyError) on a characters.json in another shape that Opus wrote; `bible_entries()` now stops with the file, key and schema to fix. Test `test_malformed_bible_says_what_to_fix` (64 tests).
+- Merge question (PLAN section 2, shots and continuity): no overlap. Neither skill fired on the other's triggers in any run; shots' triggers went to the router, qc's to continuity. No merge proposed.
+- Worth (with versus without, pooled over three models, 18 with and 6 without runs per skill): no CUT. KEEP: design +78 points at 1.34x cost, sound +56 at 1.36x, genvideo +78 at 0.97x. TRIM (gain beyond noise at 1.5x the cost or more): camera +67 at 1.89x, edit +44 at 2.11x, finish +50 at 2.3x, history +67 at 1.67x, movement +61 at 2.9x, script +72 at 2.15x, router +78 at 2.39x, continuity +61 at 1.5x, qc +61 at 2.22x, shots +56 at 2.06x. Part of the cost ratio is that baselines give up early. Recorded in each evergreen.json `worth`.
+- Where it stands (T-20261005-1 in every TESTS.md): Sonnet passes every case except four at 2 of 3 (design outcome, finish action, movement outcome, qc outcome). Opus fails seven cases at 1 or 2 of 3 (camera, continuity, movement, qc, script actions; shots outcome, whose crash is fixed but not rerun; continuity outcome after its fix not rerun). Haiku fails most action and outcome cases and several triggers: it answers in one turn without loading the skill; recorded, not tuned further (decision item 5). The S6 exit check does not pass yet, so no PR was opened; the next session finishes it.
+- Budget: descriptions 3,888 of 4,000 (green; about 110 left for curate, which needs about 200: S7 will read yellow unless something is trimmed). genvideo's folder reads 166 KB (yellow, the unanswered runtime budget row; this session added `check_veo.py` and cases).
+
+Check output (2026-10-05, Windows 11, Python 3.14.6 and 3.9.25):
+
+```
+$ python -m unittest discover -s tests
+Ran 64 tests in 12.521s
+OK
+$ py -V:Astral/CPython3.9.25 -m unittest discover -s tests
+Ran 64 tests in 12.140s
+OK
+$ python scripts/cine.py kb lint
+kb lint: 13 skills, 0 errors
+$ python scripts/cine.py budget
+one description, characters                 344      350      500  green  cinewright-camera
+all descriptions, characters               3888     4000     5500  green  13 skills
+core descriptions, characters              1565     1800     2500  green  plugins/cinewright
+skill folder KB                             166      150      300  yellow cinewright-genvideo
+budget: YELLOW (tokens are bytes / 4, an estimate)
+$ claude plugin validate . (and plugins/cinewright, plugins/cinewright-craft, plugins/cinewright-dev)
+✔ Validation passed (four times)
+$ evergreen.py lint <each skill>
+13 skills: lint OK
+```
+
+Matrix after round 2 (with the skill: invocations for triggers, passes otherwise; baseline per model):
+
+| skill | case | kind | haiku | sonnet | opus | baseline (h/s/o) |
+|---|---|---|---|---|---|---|
+| cinewright | action-1 | action | **FAIL** 1/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright | decoy-3 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright | outcome-1 | outcome | **FAIL** 1/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright | trigger-1 | trigger | **FAIL** 0/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright | trigger-2 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-camera | action-1 | action | **FAIL** 2/3 | 3/3 | **FAIL** 1/3 | fail/fail/fail |
+| cinewright-camera | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-camera | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-camera | decoy-3 | trigger decoy | **FAIL** 3/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-camera | outcome-1 | outcome | **FAIL** 0/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-camera | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-camera | trigger-2 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-continuity | action-1 | action | 3/3 | 3/3 | **FAIL** 2/3 | fail/fail/fail |
+| cinewright-continuity | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-continuity | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-continuity | outcome-1 | outcome | **FAIL** 0/3 | 3/3 | 3/3 | fail/pass/fail |
+| cinewright-continuity | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-continuity | trigger-2 | trigger | 2/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-design | action-1 | action | **FAIL** 2/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-design | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-design | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-design | outcome-1 | outcome | **FAIL** 1/3 | **FAIL** 2/3 | 3/3 | fail/fail/fail |
+| cinewright-design | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-design | trigger-2 | trigger | 2/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-edit | action-1 | action | **FAIL** 0/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-edit | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-edit | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-edit | decoy-3 | trigger decoy | **FAIL** 2/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-edit | outcome-1 | outcome | **FAIL** 2/3 | 3/3 | 3/3 | fail/pass/pass |
+| cinewright-edit | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-edit | trigger-2 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-finish | action-1 | action | **FAIL** 0/3 | **FAIL** 2/3 | 3/3 | fail/fail/pass |
+| cinewright-finish | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-finish | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-finish | decoy-3 | trigger decoy | **FAIL** 1/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-finish | outcome-1 | outcome | **FAIL** 1/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-finish | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-finish | trigger-2 | trigger | 2/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-genvideo | action-1 | action | **FAIL** 2/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-genvideo | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-genvideo | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-genvideo | decoy-3 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-genvideo | outcome-1 | outcome | **FAIL** 0/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-genvideo | trigger-1 | trigger | **FAIL** 0/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-genvideo | trigger-2 | trigger | **FAIL** 0/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-history | action-1 | action | **FAIL** 0/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-history | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-history | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-history | decoy-3 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-history | outcome-1 | outcome | **FAIL** 0/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-history | trigger-1 | trigger | **FAIL** 0/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-history | trigger-2 | trigger | 2/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-movement | action-1 | action | **FAIL** 1/3 | 3/3 | **FAIL** 2/3 | fail/fail/fail |
+| cinewright-movement | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-movement | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-movement | outcome-1 | outcome | **FAIL** 0/3 | **FAIL** 2/3 | 3/3 | fail/fail/fail |
+| cinewright-movement | trigger-1 | trigger | 2/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-movement | trigger-2 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-qc | action-1 | action | **FAIL** 1/3 | 3/3 | **FAIL** 2/3 | fail/fail/fail |
+| cinewright-qc | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-qc | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-qc | decoy-3 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-qc | outcome-1 | outcome | **FAIL** 0/3 | **FAIL** 2/3 | 3/3 | fail/fail/fail |
+| cinewright-qc | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-qc | trigger-2 | trigger | **FAIL** 1/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-script | action-1 | action | 3/3 | 3/3 | **FAIL** 2/3 | fail/fail/fail |
+| cinewright-script | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-script | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-script | decoy-3 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-script | outcome-1 | outcome | **FAIL** 2/3 | 3/3 | 3/3 | fail/fail/pass |
+| cinewright-script | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-script | trigger-2 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-shots | action-1 | action | **FAIL** 0/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-shots | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-shots | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-shots | decoy-3 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-shots | outcome-1 | outcome | **FAIL** 0/3 | 3/3 | **FAIL** 1/3 | fail/fail/fail |
+| cinewright-shots | trigger-1 | trigger | **FAIL** 1/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-shots | trigger-2 | trigger | **FAIL** 0/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-sound | action-1 | action | **FAIL** 0/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-sound | decoy-1 | trigger decoy | **FAIL** 1/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-sound | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-sound | decoy-3 | trigger decoy | **FAIL** 1/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-sound | outcome-1 | outcome | **FAIL** 1/3 | 3/3 | 3/3 | fail/pass/fail |
+| cinewright-sound | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-sound | trigger-2 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+## [2026-10-05] index | rebuilt (15 entries)

@@ -1,20 +1,20 @@
 # Handoff
 
 ## Current state
-- S5 (post: edit, finish, sound) was done on 2026-10-04 on branch `s5/post`, off `s4/camera-history` because the S4 PR #5 (https://github.com/m4bwav/cinewright/pull/5) was still open with no comments. The S5 PR waits for Mark's review: PR #6, https://github.com/m4bwav/cinewright/pull/6 (based on `s4/camera-history`; merge #5 first or retarget). The repo is private: https://github.com/m4bwav/cinewright.
-- Built: `cinewright-edit` (8 entries), `cinewright-finish` (8) and `cinewright-sound` (6 plus the shared `loudness-targets`) in craft, each a full evergreen unit with evals and baselines; shared vocab `cut-terms` and `loudness-targets`. Runtime: `qc loud --preset web|ebu-r128|atsc-a85|netflix|music-streaming`, default web (-18 ± 2 LUFS, -2 dBTP) ([decision](decisions/2026-10-04-loudness-presets-with-a-web-default.md)). 63 tests. Layout: [../CODEMAP.md](../CODEMAP.md).
-- Exit check passed: the S2 render cut to 336 frames (14.000 s), balanced and graded with bt709 tags, mixed to -17.6 LUFS and -6.3 dBTP; `qc loud --preset web` and `qc spec` pass. Numbers in [examples/three-shot/README.md §8](../examples/three-shot/README.md); outputs quoted in [log.md](log.md); media and the text records stay in the local render folder (private note in the vault sidecar).
-- Loudness targets were re-verified from primary pages; the research brief's R128 ±0.5 LU tolerance was wrong and A/85 was revised in July 2026.
+- S6 (evals and tuning) is in progress on branch `s6/evals`, pushed, no PR yet (the exit check does not pass). It branched off `origin/s4/camera-history`: PR #6 (S5) was merged into that branch, not into `main`, so `main` lacks S5 and the S6 PR to `main` will carry it. Mark's S4 and S5 reviews had no comments. The repo is private: https://github.com/m4bwav/cinewright.
+- Built: the eval harness `evals/run_evals.py` (plan, run, report, regrade, rejudge, export-worth), `evals/inspect_run.py`, `evals/record_tests.py`; outcome checkers `check_cabin.py` (camera), `check_kubrick.py` (history), `check_mix.py` (sound), `check_veo.py` (genvideo). Design: [decisions/2026-10-05-eval-harness-and-model-matrix.md](decisions/2026-10-05-eval-harness-and-model-matrix.md); twelve harness faults and fixes: [solutions/2026-10-05-headless-evals-on-windows-dead-ends.md](solutions/2026-10-05-headless-evals-on-windows-dead-ends.md).
+- Ran the three-model matrix (Haiku 4.5, Sonnet 5, Opus 5.5) on Mark's go, then two tuning rounds: ten descriptions, script, continuity, edit and qc bodies, and a `cine.py` fix (malformed bibles stop with what to fix, 64 tests). T-20261005-1 in every TESTS.md; the matrix and worth table are in [log.md](log.md).
+- Worth: no CUT; 3 KEEP, 10 TRIM (real gain at 1.5x the cost or more). Shots and continuity do not overlap: no merge.
 
 ## In progress
-- Mark's review of the S4 and S5 PRs, and the open runtime budget row question ([decision](decisions/2026-10-04-proposed-runtime-budget-row.md)). The budget reads YELLOW on that one row: genvideo's folder at 157 of 150 KB.
+- Exit check. Sonnet: four cases at 2 of 3 (design outcome, finish action, movement outcome, qc outcome). Opus: camera, continuity, movement, qc and script actions at 1 or 2 of 3; shots outcome (crash fixed, not rerun); continuity outcome (output rule fixed, not rerun). Haiku: most value cases and several triggers fail because Haiku answers without loading the skill; recorded with that reason after one description rewrite (decision item 5).
+- The runtime budget row question is still unanswered: genvideo's folder reads 166 KB (yellow).
 
 ## Watch
-- Outcome cases that do not discriminate: camera, history, sound (replace in S6). Finish and sound action cases need ffmpeg, which Bash-denied baselines cannot reach.
-- Description budget: 13 skills use 3,799 of 4,000 characters; curate has about 200 left.
-- Unverified: YouTube -14 LUFS, Apple Music -16, AES TD1008; DCI 14 fL in the main spec; ATSC and Netflix presets are approximate (no dialogue gate in ebur128).
-- Veo Gemini API preview IDs shut down 2026-10-22; re-check before any hosted render.
-- History timestamps marked `~` and per-model claims (mm numbers, depth words, the 2.39 sentence) stay unverified.
+- Opus's failing action runs share a pattern: its first compound shell command is refused by the harness (`dontAsk`), and it carries on without the check. Decide whether that is harness friction (allow more read-only compounds) or a skill rule ("run the check as its own command").
+- Every run that changes a skill must rerun that skill's suite on all three models; runs at 5-6 in parallel hit the account's session limit in about two hours (the harness stops itself and reruns resume).
+- Description budget: 3,888 of 4,000; curate needs about 200, so S7 reads yellow unless something is trimmed.
+- Round-1 lessons say "rerun pending" in their Evidence lines; confirm or retire each against T-20261005-1.
 
 ## Next single action
-- After Mark reviews the S4 and S5 PRs, run [next-session-prompt.md](next-session-prompt.md) (S6: evals and tuning).
+- Run [next-session-prompt.md](next-session-prompt.md) (S6 continued: finish the exit check, open the PR).

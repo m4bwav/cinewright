@@ -67,7 +67,7 @@
           "contains": "534"
         }
       },
-      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 1 of 3 passed (Haiku fail, Sonnet fail, Opus pass).",
       "runs": 3,
       "setup": [
         [
@@ -88,7 +88,7 @@
         "the reply says practical lights stay warm and bright and the sky goes darkest",
         "judge: the steps are ordered after correction and balance, with the look on top (2 of 3 votes)"
       ],
-      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     }
   ]

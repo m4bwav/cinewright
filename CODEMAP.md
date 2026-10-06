@@ -19,6 +19,8 @@ Where things live in cinewright. Rules are in [AGENTS.md](AGENTS.md); the plan i
 | `plugins/cinewright/skills/cinewright-qc/SETUP.md` | ffmpeg and ffprobe needs, read by `evergreen.py setup` | yes |
 | `scripts/cine.py` | maintainer CLI: imports the runtime and adds `kb lint`, `budget`, `zip`, `build`, `--root` | yes |
 | `tests/test_cine.py` | unittest suite, one or more tests per command | yes |
+| `evals/run_evals.py` | headless eval harness for every skill's `evals/evals.json` (plan, run, report, regrade, rejudge, export-worth); `evals/inspect_run.py` prints one run; `evals/record_tests.py` writes the T- entries. Results stay outside the repo (default `<temp>/cinewright-evals`) | yes |
+| `plugins/*/skills/*/evals/check_*.py` | stdlib outcome checkers a case names in `checks` (exit 0 only on a right result) | yes |
 | `examples/three-shot/` | worked example: brief, script, design notes, bibles, cards, `takes.md` (the rendered parts, media outside the repo), `styles/` (a look tried with `--style`); `compiled/` must match a fresh compile (a test checks) | yes, then recompile |
 | `.github/workflows/ci.yml` | manual-dispatch checks on a self-hosted runner while private | yes |
 | `ai-docs/` | everlast doc set: log, HANDOFF, plans, research, decisions | yes (INDEX.md is generated) |

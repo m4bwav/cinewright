@@ -60,14 +60,14 @@
       "evidence": {
         "type": "trace",
         "tool": "Bash",
-        "input_match": "cine\\.py\\s+cards\\s+list\\s+\\S*out/cut",
+        "input_match": "(?s)cine\\.py\\s+cards\\s+list\\s+\\S*out/cut|out/cut.*cine\\.py\\s+cards\\s+list",
         "or": {
           "type": "file",
           "path": "out/cut/edit/cut.md",
           "contains": "1C"
         }
       },
-      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3,
       "setup": [
         [
@@ -88,7 +88,7 @@
         "the reply says short mid-shot faults can be covered by a cutaway, reaction or cutting on action",
         "judge: the answer separates edit fixes from re-render fixes as a rule, not case by case (2 of 3 votes)"
       ],
-      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 2 of 3 passed (Haiku fail, Sonnet pass, Opus pass).",
       "runs": 3
     }
   ]

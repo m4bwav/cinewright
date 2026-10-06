@@ -48,11 +48,11 @@
     "learnings": 5,
     "changes": 3,
     "research": 2,
-    "tests": 1
+    "tests": 2
   },
   "consolidate_every": 25,
   "tests": {
-    "last_run": "2026-10-04T19:59",
+    "last_run": "2026-10-05T21:00",
     "harness": "evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive)",
     "env": "windows/claude-code",
     "cases": 7,
@@ -65,9 +65,32 @@
       "outcome-1"
     ],
     "last_failure": {
-      "date": "2026-10-04",
-      "note": "First S6 matrix after three harness fixes (cine.py by any path, setup copies, deterministic checks); 155 runs that hit the account's session limit were run again."
+      "date": "2026-10-05",
+      "note": "Tuning rounds 1 and 2: value cases rerun on all models with a 60-turn cap and full-reply judging; triggers of the ten skills whose descriptions changed rerun. Haiku 4.5 failures are mostly the skill n"
     },
     "research_after_days": null
+  },
+  "worth": {
+    "checked": "2026-10-05",
+    "skills": {
+      "cinewright-genvideo": {
+        "verdict": "KEEP",
+        "why": "a real gain: +78 points (noise margin 20) at 0.97x the cost",
+        "body_tokens": 845,
+        "listing_tokens": 84,
+        "specific_share": 0.64,
+        "delta": 0.78,
+        "cost_ratio": 0.97,
+        "modes": [],
+        "gaps": 0,
+        "checked": "2026-10-05",
+        "uses": {
+          "days": 60,
+          "interactive": 0,
+          "subagent": 0,
+          "headless": 0
+        }
+      }
+    }
   }
 }

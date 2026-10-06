@@ -344,10 +344,19 @@ class Project:
             new = json.loads(read_text(f))
             self.cards = [c for c in self.cards if c.get("id") != new.get("id")] + [new]
         self.cards.sort(key=lambda c: c.get("order", 0))
-        self.chars = {c["id"]: c for c in self.characters.get("characters", [])}
-        self.locs = {x["id"]: x for x in self.locations.get("locations", [])}
-        self.scene_map = {s["id"]: s for s in self.scenes.get("scenes", [])}
-        self.props = {x["name"]: x for x in (self.props_bible or {}).get("props", [])}
+        self.chars = bible_entries(self.characters, "characters", "id", "characters.json", "character-bible")
+        self.locs = bible_entries(self.locations, "locations", "id", "locations.json", "location-bible")
+        self.scene_map = bible_entries(self.scenes, "scenes", "id", "scenes.json", "scene-axis-bible")
+        self.props = bible_entries(self.props_bible or {}, "props", "name", "props.json", "prop-bible")
+
+
+def bible_entries(doc, key, idkey, fname, schema):
+    """{entry[idkey]: entry} from a bible; a bible in another shape stops with what to fix, not a traceback."""
+    items = doc.get(key) if isinstance(doc, dict) else None
+    if not isinstance(items, list) or not all(isinstance(x, dict) and idkey in x for x in items):
+        raise SystemExit("bibles/%s: want {\"%s\": [{\"%s\": ...}, ...]}; see scripts/schemas/%s.schema.json"
+                         % (fname, key, idkey, schema))
+    return {x[idkey]: x for x in items}
 
 
 MM_RANGE = re.compile(r"(\d+)\s*-\s*(\d+)\s*mm")

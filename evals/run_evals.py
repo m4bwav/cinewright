@@ -333,14 +333,17 @@ def run_checks(case, skill_dir, work, reply_file):
 
 
 def final_text(events):
-    for ev in reversed(events):
-        if ev.get("type") == "result":
-            return str(ev.get("result") or "")
+    """Everything the assistant said, in order: the user reads every message, and a closing note (a skill's Step 0
+    report, say) must not hide the answer given before it."""
     texts = []
     for ev in events:
-        if ev.get("type") == "assistant":
-            texts += [c.get("text", "") for c in ev["message"].get("content", []) if c.get("type") == "text"]
-    return "\n".join(texts)
+        msg = ev.get("message") if isinstance(ev.get("message"), dict) else {}
+        if ev.get("type") == "assistant" and isinstance(msg.get("content"), list):
+            texts += [c.get("text", "") for c in msg["content"] if c.get("type") == "text" and c.get("text", "").strip()]
+    if texts:
+        return "\n\n".join(texts)
+    res = next((e for e in reversed(events) if e.get("type") == "result"), {})
+    return str(res.get("result") or "")
 
 
 def written_files(work, limit=24000):
@@ -646,11 +649,43 @@ def cmd_regrade(a):
     print("regraded %d runs" % changed)
 
 
+def cmd_rejudge(a):
+    """Grade recorded outcome runs that failed again, from their traces and kept folders (after a grading fix):
+    checks and judge only, no new runs."""
+    out = Path(a.out)
+    allsk = skills()
+    cases = {(n, c["id"]): c for n, (_, sk) in allsk.items() for c in load_cases(sk)}
+    todo = [r for r in done_keys(out).values() if r["kind"] == "outcome" and not r["pass"] and not r.get("environment")
+            and Path(r["workdir"]).is_dir() and Path(r["trace"]).is_file() and (r["skill"], r["case"]) in cases
+            and (not a.skill or r["skill"] in a.skill.split(","))]
+    print("rejudging %d failed outcome runs" % len(todo), flush=True)
+
+    def one_r(r):
+        c = cases[(r["skill"], r["case"])]
+        events = [json.loads(x) for x in open(r["trace"], encoding="utf-8") if x.strip().startswith("{")]
+        work, rdir = Path(r["workdir"]), Path(r["workdir"]).parent
+        reply = final_text(events)
+        (rdir / "reply.txt").write_text(reply, encoding="utf-8")
+        checks = run_checks(c, allsk[r["skill"]][1], work, rdir / "reply.txt")
+        ok_j, per = judge(c, reply, written_files(work), rdir / "judge")
+        n = dict(r, reply=reply[:4000], checks=checks, judged=per, prev_pass=r["pass"])
+        n["pass"] = all(x["exit"] == 0 for x in checks) and ok_j
+        n["evidence"] = "checks %d/%d, judged %d/%d (rejudged)" % (sum(x["exit"] == 0 for x in checks), len(checks),
+                                                                   sum(x["pass"] for x in per), len(per))
+        with LOCK:
+            with open(out / "results.jsonl", "a", encoding="utf-8") as f:
+                f.write(json.dumps(n) + "\n")
+        return n
+    with cf.ThreadPoolExecutor(max_workers=a.jobs) as ex:
+        for n in ex.map(one_r, todo):
+            print("%s %s %s" % ("PASS" if n["pass"] else "FAIL", n["key"], n["evidence"]), flush=True)
+
+
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for nm in ("plan", "run", "report", "export-worth", "regrade"):
+    for nm in ("plan", "run", "report", "export-worth", "regrade", "rejudge"):
         s = sub.add_parser(nm)
         s.add_argument("--out", default=str(out_default()))
         if nm in ("plan", "run"):
@@ -659,6 +694,9 @@ def main():
             s.add_argument("--model", default=",".join(MODELS))
             s.add_argument("--runs", type=int, help="with-skill runs per case (default the case's runs, 3)")
             s.add_argument("--arm", choices=["with", "without", "both"], default="both")
+        if nm == "rejudge":
+            s.add_argument("--skill")
+            s.add_argument("--jobs", type=int, default=4)
         if nm == "run":
             s.add_argument("--jobs", type=int, default=4)
             s.add_argument("--rerun", action="store_true", help="run again even when a result is recorded")
@@ -666,7 +704,7 @@ def main():
         if nm == "report":
             s.add_argument("--md", help="also write the matrix to this file")
     a = ap.parse_args()
-    {"plan": cmd_plan, "run": cmd_run, "report": cmd_report, "export-worth": cmd_export_worth, "regrade": cmd_regrade}[a.cmd](a)
+    {"plan": cmd_plan, "run": cmd_run, "report": cmd_report, "export-worth": cmd_export_worth, "regrade": cmd_regrade, "rejudge": cmd_rejudge}[a.cmd](a)
 
 
 if __name__ == "__main__":

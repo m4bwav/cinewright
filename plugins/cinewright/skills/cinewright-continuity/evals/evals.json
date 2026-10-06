@@ -52,7 +52,7 @@
         "tool": "Bash",
         "input_match": "cine\\.py\\s+continuity\\s+diff"
       },
-      "baseline": "2026-10-04, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     },
     {
@@ -84,7 +84,7 @@
         "the fix offered is to copy the bible's identity and wardrobe strings into the cards word for word",
         "judge: no invented errors on the axis, eyelines or any other card (2 of 3 votes)"
       ],
-      "baseline": "not yet run; replaces the S1 axis case, which a careful reader found without the skill (T-20261003-1 note, S6 matrix T-20261004-1).",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 1 of 3 passed (Haiku fail, Sonnet pass, Opus fail).",
       "runs": 3
     }
   ]
