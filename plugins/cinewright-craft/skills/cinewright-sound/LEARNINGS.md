@@ -26,6 +26,6 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Trigger: 2026-10-04, S6 matrix T-20261004-2: decoy-3 (normalise a podcast to -16 LUFS) invoked the skill Haiku 3 of 3 and Sonnet 3 of 3; decoy-1 (a lo-fi track) Haiku 1 of 3
 - Hypothesis: "mixing to a loudness target" matches any loudness request, and the description named no exclusion
 - Rule: The description says a film's clips and ends the Use clause with "not podcasts or making music"
-- Evidence: C-20261004-2 (description); rerun pending
+- Evidence: C-20261004-2 (description); confirmed T-20261005-1: decoy-3 Sonnet 0 of 3 (was 3 of 3), Haiku 1 of 3 (was 3 of 3)
 - Scope: skill
-- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-04
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-05

@@ -22,18 +22,10 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-04
 
-### L-003 · 2026-10-04 · Exclude vlogs and live footage in the description
-- Trigger: 2026-10-04, S6 matrix T-20261004-2: decoy-3 (cut the ums out of a talking-head vlog in Premiere) invoked the skill Haiku 2 of 3
-- Hypothesis: "cutting ... into a film or fixing its pace" reads as any video edit to a small model
-- Rule: The Use clause ends "not vlogs or live footage"
-- Evidence: C-20261004-2 (description); rerun pending
-- Scope: skill
-- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-04
-
 ### L-004 · 2026-10-05 · State the edit-or-re-render rule, with the mid-shot case in the body
 - Trigger: 2026-10-05, S6 T-20261004-2: outcome-1 (settle frames, a half-second hand melt mid-shot, a whole-shot scar on the wrong side) failed on Sonnet 2 of 3: the melt was treated as a judgment call, and the answer was judged case by case, not a rule
 - Hypothesis: Step 2 named head and tail trims and whole-shot faults; the mid-shot cover lived only in the cutting-around-bad-frames reference, which the runs did not read
 - Rule: Step 2 covers a fault under 1 s with a cutaway, reaction or cut on action, and states the rule: clean frames to cut to means the edit fixes it
-- Evidence: C-20261005-1 (SKILL.md); rerun pending
+- Evidence: C-20261005-1 (SKILL.md); confirmed T-20261005-1: outcome-1 Sonnet 3 of 3 (was 2 of 3), Opus 3 of 3
 - Scope: skill
-- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-05
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-05

@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+Entry shape: `### C-20261005-1 · 2026-10-05 · L-001 retired: the rerun did not move its case (S6)
+- because: T-20261005-1, L-001
+- files: LEARNINGS.md, LEARNINGS-ARCHIVE.md
+- L-001 moved to the archive; the description is unchanged
+
+### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261004-2 · 2026-10-04 · Description tuned (S6)
 - because: T-20261004-2, L-001

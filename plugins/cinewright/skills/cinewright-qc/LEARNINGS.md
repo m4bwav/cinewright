@@ -26,6 +26,6 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Trigger: 2026-10-05, S6 T-20261004-1: action-1 (write the QC checklist for card 1B before its first take) failed on Opus 2 of 3: it wrote 1B.checklist.md by hand after a compound shell command was refused, with no qc rubric call
 - Hypothesis: Step 1 showed `--clip` as if required, so with no take the model judged the command unusable and fell back to writing the list itself
 - Rule: Step 1 says `--clip` is left out before the first take and forbids a hand-written checklist
-- Evidence: C-20261005-1 (SKILL.md); rerun pending
+- Evidence: C-20261005-1 (SKILL.md); confirmed T-20261005-1: no run wrote the checklist by hand; Opus's failing run refused to and asked for the shell (a refused command, harness rev 1)
 - Scope: skill
-- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-05
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-05

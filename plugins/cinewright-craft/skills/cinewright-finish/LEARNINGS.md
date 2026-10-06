@@ -26,6 +26,6 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Trigger: 2026-10-04, S6 matrix T-20261004-2: decoy-3 (upscale old family VHS tapes to 4K) invoked the skill Sonnet 2 of 3
 - Hypothesis: "upscale and interpolation" and "cleanup" match restoration work
 - Rule: The Use clause ends "not restoring home video"
-- Evidence: C-20261004-2 (description); rerun pending
+- Evidence: C-20261004-2 (description); confirmed T-20261005-1: decoy-3 Sonnet 0 of 3 (was 2 of 3)
 - Scope: skill
-- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-04
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-05

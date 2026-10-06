@@ -26,6 +26,6 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Trigger: 2026-10-04, S6 matrix T-20261004-2: trigger-2 (what would a Wong Kar-wai look be, in prompt terms) invoked the skill Haiku 0 of 3, answered in one turn; trigger-1 (1970s New Hollywood, 2.39) went to cinewright-camera Haiku 2 of 3
 - Hypothesis: The examples named periods and genres but no question about a filmmaker's look, and camera's description owns aspect ratio
 - Rule: The description gives "what would a director's look be" as an example; camera's description points period looks here
-- Evidence: C-20261004-2 (description); rerun pending
+- Evidence: C-20261004-2 (description); confirmed T-20261005-1: trigger-2 Haiku 2 of 3 (was 0 of 3); trigger-1 still Haiku 0 of 3 (decision item 5)
 - Scope: skill
-- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-04
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-05
