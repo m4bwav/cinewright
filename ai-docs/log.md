@@ -1,309 +1,176 @@
 # cinewright log
 
-## 2026-10-03: research and kickoff prompt
+Older entries (S1 to S5): [log-ARCHIVE.md](log-ARCHIVE.md).
 
-- Mark asked for a researched prompt that plans an evergreen cinematography plugin set (all film roles + AI video coherence; public; Claude Code, Claude Desktop, Copilot; token-lean). His request: `../../prompts/Cinematography Plugin Prompt.md`.
-- Four research passes (local prior art, film craft, AI video 2026, cross-host packaging) condensed into [research/2026-10-03-research-brief.md](research/2026-10-03-research-brief.md).
-- Name `cinewright` proposed (fits the *wright family; no GitHub repo or search hit on 2026-10-03). Folder holds only ai-docs; no git repo yet. Session 1 creates it.
-- Kickoff prompt: [next-session-prompt.md](next-session-prompt.md). It plans and writes the chain; it does not build.
-- Findings that shaped the prompt: Sora 2 API closed 2026-09-24; claude.ai ZIPs hold one skill folder, so knowledge sits in each skill's references/; claude.ai rejects Claude Code-only frontmatter keys; the script supervisor (continuity) is the role that matters most for AI video; DirectorSKILL (MIT) and smixs/visual-skills (CC BY 4.0) are the ideas to beat.
-- Added brief §12: official listings. Claude directory takes plugin bundles (not bare skills) from paid accounts at claude.ai/directory/manage; awesome-copilot (a default Copilot CLI marketplace) takes skills by PR and external plugins by issue form.
+## 2026-10-04: session S6, evals and tuning
 
-## 2026-10-03: session 1, plan and chain
+- Branch: S4 PR #5 merged into `main`, but S5 PR #6 was based on `s4/camera-history` and merged there 15 minutes later, so `main` lacks S5. Neither PR had review comments. `s6/evals` branched off `origin/s4/camera-history` (main plus S5); the S6 PR to `main` carries S5 with it. The runtime budget row question is still unanswered: genvideo's folder stays yellow and is reported, not cut.
+- Harness: `evals/run_evals.py` (plan, run, report) and `evals/inspect_run.py`. Each run: a fresh folder under the system temp directory (refused on the repository's drive), a copy of the example without README, design notes or compiled prompts, a per-run copy of the plugin under test, `claude -p --restricted --strict-mcp-config --permission-mode dontAsk`, tools Read, Write, Edit, Bash (plus Skill in the with arm), Bash allowed only for cine.py, ffmpeg, ffprobe, cp, mkdir, ls and dir. Baselines add `--disable-slash-commands`. Graded on the Skill call (triggers stop as soon as it fires), the trace or a file (actions), checker scripts plus a three-vote Sonnet judge (outcomes). Results, traces and run folders stay outside the repository.
+- Isolation probed on Claude Code 2.1.281: `--restricted` loads no user skills or plugins (only the plugin dir and the built-in skills), refuses a Read of the repository ("outside ... confines the file tools"), and `dontAsk` refused `ls D:/`. `cd <skill dir> && python scripts/cine.py ...` is allowed by the `Bash(python scripts/cine.py:*)` rule.
+- Harness lessons from the pilot (sound and design on Haiku): `claude` on Windows is a `.CMD` wrapper that re-parses arguments, so a multi-line judge prompt arrived empty; the harness now calls the wrapped `claude.exe` and sends every prompt on stdin. `is_error` is set on a nonzero exit too, so a refusal is told apart by its message. The path scan reads only path fields (a Write's content held `d:\n`). A `mkdir -p out/:*` rule missed quoted and absolute paths.
+- Cases: outcome-1 replaced for camera (`check_cabin.py`: 2.39 as `frame_aspect`, a `lighting` rule, both verbatim in every compiled prompt), history (`check_kubrick.py`: the kubrick card in `history`, no MOVE or LENS warning, no director's name in any prompt) and sound (`check_mix.py`: a generated cut with a hit near full scale mixed to the web preset, metered by ffmpeg ebur128). Each checker exits 1 on the untouched copy and on a wrong variant (render aspect 2.39; the name in the look; -14 LUFS / -1 dBTP) and 0 on a hand-made correct answer. Neighbour decoys (decoy-3) added to ten skills: three.js renders, cameras and fly-throughs (threewright), price and box-office charts (chartwright), vlog editing, VHS restoration, phone-video checks, podcast loudness and a vlog description. The design action now starts from a setup copy without props.json (no `rm` needed).
+- Pilot results worth keeping: Haiku invoked cinewright-sound on "generate a lo-fi hip hop track" and on the podcast decoy; did not invoke it on the sound action case (mixed by hand to -23 LUFS); answered the design advice case without the skill.
 
-- Repo set up: git on `main`, everlast doc set (mode repo, sync pr), AGENTS.md, CLAUDE.md importing it, Copilot pointer, private GitHub repo m4bwav/cinewright.
-- Four subagent passes: evergreen spec, threewright template and local-render lessons, packaging re-check, competitor study. Notes: [research/2026-10-03-packaging-verification.md](research/2026-10-03-packaging-verification.md), [research/2026-10-03-competitor-study.md](research/2026-10-03-competitor-study.md).
-- Plan written: [plans/PLAN.md](plans/PLAN.md). 13 skills (color and VFX merged into finish), physical plugin folders (core, craft, dev) because strict-false slicing cannot go to the Claude directory, CLI `cine.py`, budgets with thresholds, stages S1-S8, decisions D1-D7 for Mark.
-- S1 prompt written to [next-session-prompt.md](next-session-prompt.md).
+## 2026-10-05: session S6 continued, matrix, two tuning rounds, worth
 
-## [2026-10-03] add | solution: strict false slicing cannot go to the Claude directory
-## [2026-10-03] index | rebuilt (3 entries)
-## [2026-10-03] add | decision: S1 built on the plan's recommendations for D1-D7
-## [2026-10-03] add | decision: Shared sources copied into skills with a hash header
-## [2026-10-03] add | decision: Field lessons cited without the private source's name
+- Full matrix run on Mark's go (2026-10-04): 870 headless runs plus judge calls; then reruns after each fix. All runs including reruns: 2,368 headless runs, $300.46 reported by the CLI at list price (judge calls not counted; the runs now on record, one per matrix cell, report $88). Results, traces and run folders stay outside the repository (location in the vault sidecar note).
+- Most first-matrix "failures" were the harness: twelve faults, each written up with its fix in [solutions/2026-10-05-headless-evals-on-windows-dead-ends.md](solutions/2026-10-05-headless-evals-on-windows-dead-ends.md). The biggest: `dontAsk` refuses `cp -r` whatever the rule, `Bash(python scripts/cine.py:*)` missed absolute paths, craft compile cases lacked the core plugin, the account's session limit (HTTP 429) read as 155 failures, a 30-turn cap cut Sonnet off, and the judge graded only the last message. Design: [decisions/2026-10-05-eval-harness-and-model-matrix.md](decisions/2026-10-05-eval-harness-and-model-matrix.md).
+- Cases changed: camera, history and sound outcome-1 replaced (checkers `check_cabin.py`, `check_kubrick.py`, `check_mix.py`); continuity outcome-1 replaced by two one-word plants (scar side, sweater colour) the diff catches; genvideo outcome-1 graded by `check_veo.py`; router and shots outcomes run their `cine.py` checks; edit outcome-1 asks about a mid-shot fault too; decoy-3 against neighbours in ten skills; action evidence is the trace only where a baseline passed on a file.
+- Tuning round 1 (descriptions, C-20261004-2/-3): sound, edit and finish exclude podcasts and music, vlogs and live footage, home-video restoration; genvideo, history, camera, shots and the router match the phrasings that undertriggered; qc trimmed for room; script runs the diff whenever a line changes (cinewright-script L-002). Round 2 (C-20261005-1): continuity reports the diff's errors before by-eye doubts (cinewright-continuity L-005), edit states the mid-shot rule (cinewright-edit L-004), qc builds the rubric with no clip and never by hand (cinewright-qc L-003), camera says "lighting a shot" after "a scene" drew the three.js decoy (cinewright-camera L-002).
+- Runtime fix: `cine.py` crashed (TypeError, KeyError) on a characters.json in another shape that Opus wrote; `bible_entries()` now stops with the file, key and schema to fix. Test `test_malformed_bible_says_what_to_fix` (64 tests).
+- Merge question (PLAN section 2, shots and continuity): no overlap. Neither skill fired on the other's triggers in any run; shots' triggers went to the router, qc's to continuity. No merge proposed.
+- Worth (with versus without, pooled over three models, 18 with and 6 without runs per skill): no CUT. KEEP: design +78 points at 1.34x cost, sound +56 at 1.36x, genvideo +78 at 0.97x. TRIM (gain beyond noise at 1.5x the cost or more): camera +67 at 1.89x, edit +44 at 2.11x, finish +50 at 2.3x, history +67 at 1.67x, movement +61 at 2.9x, script +72 at 2.15x, router +78 at 2.39x, continuity +61 at 1.5x, qc +61 at 2.22x, shots +56 at 2.06x. Part of the cost ratio is that baselines give up early. Recorded in each evergreen.json `worth`.
+- Where it stands (T-20261005-1 in every TESTS.md): Sonnet passes every case except four at 2 of 3 (design outcome, finish action, movement outcome, qc outcome). Opus fails seven cases at 1 or 2 of 3 (camera, continuity, movement, qc, script actions; shots outcome, whose crash is fixed but not rerun; continuity outcome after its fix not rerun). Haiku fails most action and outcome cases and several triggers: it answers in one turn without loading the skill; recorded, not tuned further (decision item 5). The S6 exit check does not pass yet, so no PR was opened; the next session finishes it.
+- Budget: descriptions 3,888 of 4,000 (green; about 110 left for curate, which needs about 200: S7 will read yellow unless something is trimmed). genvideo's folder reads 166 KB (yellow, the unanswered runtime budget row; this session added `check_veo.py` and cases).
 
-## 2026-10-03: session S1, scaffold and one vertical slice
-
-- PR #1 was merged with no comments; D1-D7 unanswered, so S1 used the PLAN recommendations ([decision](decisions/2026-10-03-s1-built-on-the-plan-s-recommendations-for-d1-d7.md)). Branch `s1/scaffold` off `main`.
-- Three subagent passes: evergreen unit rules (scaffold with `evergreen.py init --pointer`, then `unregister`; there is no `new` command and no flag to skip registration), threewright shape and the private render lessons, a Veo 3.1 re-check from Google pages.
-- Veo finding that matters: Gemini API `veo-3.1-*-preview` IDs shut down 2026-10-22 (replacement `gemini-omni-1.1-flash`, GA 2026-08-27); Vertex GA `veo-3.1-generate-001` retires 2026-11-17 or later; no Veo 4. Google gives no word count, only a 1,024-token cap; the dialogue form differs across its three pages (card uses the prompt guide's colon form). Card: `plugins/cinewright/skills/cinewright-genvideo/references/veo-3-1.md`.
-- Built: layout per PLAN §3, `shared/` (4 vocab entries, 8 schemas, runtime `cine.py`), maintainer `scripts/cine.py`, 29 tests, three skills as evergreen units, worked example, CI. Copies carry sha256 headers and lint compares them byte for byte ([decision](decisions/2026-10-03-shared-sources-copied-into-skills-with-a-hash-header.md)). Private lessons cited as "field lesson NNN" ([decision](decisions/2026-10-03-field-lessons-cited-without-the-private-source-s-name.md)).
-- Bugs the first runs caught and fixed: `compile --sequence` described only the first card's cast (the identity-verbatim guard stopped it: genvideo L-001); frontmatter lists kept quotes on items after a comma; `kb search` listed one vocab copy per skill.
-- Budget went yellow once (Veo card 906 est. tokens against 700); the card was cut to 695 instead of moving the line. Model cards will sit near that line in S2.
-- CI (D6): no self-hosted runner is registered for this repo (`gh api repos/m4bwav/cinewright/actions/runners` returned 0), so `.github/workflows/ci.yml` is `workflow_dispatch` only on `runs-on: [self-hosted]`, and every check below ran locally.
-- Baselines (action prompts, Sonnet, headless, bare folders without cinewright): the film-planning prompt went to a local-render skill and wrote a film.json and three prompt files, no bibles, cards or check; the continuity prompt read every file and found the axis error, helped by a note in the planted card that announced it (note removed); the compile prompt searched the disk for a compiler and ran out of 20 turns with no prompt written. Recorded in each skill's evals.json and TESTS.md.
-
-Exit check output (2026-10-03, Windows 11, Python 3.14.6 and 3.9.25, Claude Code 2.1.281):
+Check output (2026-10-05, Windows 11, Python 3.14.6 and 3.9.25):
 
 ```
 $ python -m unittest discover -s tests
-Ran 29 tests in 3.578s
+Ran 64 tests in 12.521s
 OK
 $ py -V:Astral/CPython3.9.25 -m unittest discover -s tests
-Ran 29 tests in 3.854s
-OK
-$ python scripts/cine.py cards validate examples/three-shot
-cards validate: 3 cards, 0 errors
-$ python scripts/cine.py continuity diff examples/three-shot
-continuity diff: 3 cards, 0 errors, 0 warnings
-$ python scripts/cine.py continuity diff examples/three-shot --with examples/three-shot/planted/1C.json
-ERROR 1C AXIS: camera is on side B of the 1 axis (between Maren and Tomas, across the lens): it crosses the line, so every left and right flips. Move it to side A, or set crosses_axis with a cross_reason (a neutral shot or a move seen on screen).
-ERROR 1C EYELINE: Tomas looks frame-left at Maren; from side B the eyeline must be frame-right
-continuity diff: 3 cards, 2 errors, 0 warnings
-$ python scripts/cine.py compile examples/three-shot --model veo --out examples/three-shot/compiled/veo
-== 1A  veo-3.1-generate-001  6s 16:9 720p  185 words
-== 1B  veo-3.1-generate-001  4s 16:9 720p  142 words
-== 1C  veo-3.1-generate-001  4s 16:9 720p  131 words
-wrote 3 prompts to examples/three-shot/compiled/veo (model card veo-3-1.md, last_checked 2026-10-03)
-$ python scripts/cine.py kb lint
-kb lint: 3 skills, 0 errors
-$ python scripts/cine.py budget
-budget: GREEN (tokens are bytes / 4, an estimate)   [every row green; worst: Veo card 695/700 est. tokens]
-$ claude plugin validate .            -> Validating marketplace manifest ... ✔ Validation passed
-$ claude plugin validate plugins/cinewright        -> ✔ Validation passed
-$ claude plugin validate plugins/cinewright-craft  -> ✔ Validation passed
-$ claude plugin validate plugins/cinewright-dev    -> ✔ Validation passed
-$ python scripts/cine.py zip cinewright-continuity
-wrote ...\dist\cinewright-continuity.zip: 25 files, 38 KB, top folder cinewright-continuity/
-$ evergreen.py lint <each skill>
-cinewright: lint OK / cinewright-continuity: lint OK / cinewright-genvideo: lint OK
-```
-
-## 2026-10-03: session S2, genvideo and qc
-
-- PR #2 (S1) was merged with no comments, so there were no changes to make. Branch `s2/genvideo-qc` comes off `main`.
-- Four subagents re-verified the nine models from vendor pages ([research](research/2026-10-03-s2-model-verification.md)). These corrections come from the vendors:
-  - Luma's API model is `ray-3.2`; Ray3 and 3.14 have no API ID.
-  - LTX-2.5 is current.
-  - Wan 2.2 has no first/last-frame or VACE (those are 2.1).
-  - Seedance 2.5 is live, and its tags have a space (`@Image 1`).
-  - H3's official prompt uses labelled fields, `[Shot N]` cuts, `with small amplitude at slow speed` and `<d>[English] ...</d>` dialogue. The guide never mentions the old bracket camera syntax.
-  - Runway Gen-4.5 has no audio, refs or negative prompt.
-  - Gemini Omni Flash is real (stable on the Gemini API since 2026-08-27) and documents no dialogue syntax.
-- Built:
-  - Eight new model cards and the Veo re-check.
-  - The Compile block grew vendor parameter names, ref tags, sentence moves, frame and size grids, layouts, multi-shot markers and cost per second, plus `compile --resolution`.
-  - 24 failure codes in two shared vocab entries, parsed by `qc rubric` ([decision](decisions/2026-10-03-failure-codes-live-in-shared-vocab-and-drive-the-rubric.md)).
-  - The `cinewright-qc` skill (full evergreen unit, SETUP.md for ffmpeg).
-  - `qc sheet|spec|loud|rubric` and `takes log|lastframe`.
-  - Tests went from 29 to 47: one per model, each with a regex that must match the vendor's own example too, and the identity guard on every model.
-- Compiler gaps found and fixed:
-  - Sequence blocks dropped each shot's frame positions and props in hand (genvideo L-004, new `staging` part).
-  - Eyelines named no target (genvideo L-005, proven by the re-render below).
-  - `qc spec` judged a multi-shot generation against one card (qc L-001).
-- First real render ([render media decision](decisions/2026-10-03-render-media-stays-in-the-local-render-folder.md); private note in the vault sidecar):
-  - The three-shot example went through as one 14.4 s local H3 generation, seed 101, 864x480, 21.6 min per take.
-  - Take 1: 1B failed `eyeline-wrong` (Maren looks into the lens), 1A `bad-opening` and `prop-drift`, 1C `end-state-wrong`.
-  - The routed fix (rung 1, eyeline names its target) was the only change. Take 2 with the same seed fixed 1B's eyeline, and 1C passed.
-  - The full frames showed Maren's scar on the wrong side in both takes; it had been missed at sheet size (qc L-002).
-  - Loudness came out at -29.6 LUFS, which is for the mix.
-- Budget: model cards went yellow during the build (H3 843, Veo 802, the failure tables up to 805). All were brought under 700 by cutting repetition, not facts. Every card now sits at 646-700. A separate model-card row (green at 900 or less) is proposed for Mark, not applied ([decision](decisions/2026-10-03-proposed-model-card-budget-row.md)). The genvideo skill folder is at 147 of 150 KB, mostly the runtime `cine.py` copy (67 KB).
-- Bash heredocs mangled `\\n` and apostrophes again. Patches were written as files with the Write tool.
-
-Exit check output (2026-10-03, Windows 11, Python 3.14.6 and 3.9.25):
-
-```
-$ python -m unittest discover -s tests
-Ran 47 tests in 15.824s
-
-OK
-$ py -V:Astral/CPython3.9.25 -m unittest discover -s tests
-Ran 47 tests in 10.755s
-
+Ran 64 tests in 12.140s
 OK
 $ python scripts/cine.py kb lint
-kb lint: 4 skills, 0 errors
+kb lint: 13 skills, 0 errors
 $ python scripts/cine.py budget
-reference entry tokens (est.)               699      700     1200  green  plugins/cinewright/skills/cinewright-genvideo/references/minimax-h3.md
-skill folder KB                             147      150      300  green  cinewright-genvideo
-budget: GREEN (tokens are bytes / 4, an estimate)
-$ claude plugin validate .
-✔ Validation passed
-$ claude plugin validate plugins/cinewright
-✔ Validation passed
-$ claude plugin validate plugins/cinewright-craft
-✔ Validation passed
-$ claude plugin validate plugins/cinewright-dev
-✔ Validation passed
-== 1A  veo-3.1-generate-001  6s 16:9 720p  191 words  est. $2.40
-== 1A+1B  gemini-omni-1.1-flash  10s 16:9 720p  255 words  est. $1.00
-== 1A+1B+1C  kling-v3  14s 16:9 720p  300 words
-== 1A+1B+1C  dreamina-seedance-2-5-260628  15s 16:9 720p  308 words
-== 1A+1B  gen4.5  10s 16:9 720p  228 words  est. $1.20
-== 1A  Wan2.2-T2V-A14B  5.062s 16:9 720p  179 words
-== 1A+1B+1C  LTX-2.5  14.042s 16:9 720p  305 words
-== 1A+1B+1C  H3-Base-FL2VA  14.375s 16:9 480p  336 words
-$ python -m unittest tests.test_cine.TestModelCards -v
-test_every_model_compiles_and_keeps_identity (tests.test_cine.TestModelCards.test_every_model_compiles_and_keeps_identity) ... ok
-test_identity_guard_fires_on_every_model (tests.test_cine.TestModelCards.test_identity_guard_fires_on_every_model) ... ok
-test_kling (tests.test_cine.TestModelCards.test_kling) ... ok
-test_ltx2 (tests.test_cine.TestModelCards.test_ltx2) ... ok
-test_luma (tests.test_cine.TestModelCards.test_luma) ... ok
-test_minimax_h3 (tests.test_cine.TestModelCards.test_minimax_h3) ... ok
-test_omni (tests.test_cine.TestModelCards.test_omni) ... ok
-test_runway (tests.test_cine.TestModelCards.test_runway) ... ok
-test_seedance (tests.test_cine.TestModelCards.test_seedance) ... ok
-test_status_and_claims_on_every_card (tests.test_cine.TestModelCards.test_status_and_claims_on_every_card) ... ok
-test_veo (tests.test_cine.TestModelCards.test_veo) ... ok
-test_wan (tests.test_cine.TestModelCards.test_wan) ... ok
-$ cine.py qc spec take2_s101_00001_.mp4 --project <render project> --card 1A+1B+1C --params compiled/minimax-h3/1A+1B+1C.params.json
-PASS length 14.38s for a 14s card
-PASS fps 24, planned 24
-PASS aspect 864x480 (1.800), planned 16:9
-PASS size 864x480, settings 864x480
-qc spec: 4 checks, 0 failed
-$ cine.py qc rubric --read qc/1B.take1.rubric.json
-rung 1  eyeline:maren      eyeline-wrong      `looking toward frame left/right`
-qc rubric 1B: FAIL, 1 failed. Next take changes one thing: `looking toward frame left/right` (eyeline-wrong). Then: takes log ... --verdict fail --fix eyeline-wrong
-$ cine.py qc rubric --read qc/1C.take2.rubric.json
-qc rubric 1C: PASS (15 items)
-$ cine.py qc loud take1_s101_00001_.mp4
-integrated -29.6 LUFS (target -16.0 +/- 1.0): FAIL
-true peak -12.3 dBTP (max -1.0): PASS
-$ evergreen.py lint <each skill>
-cinewright-continuity: lint OK / cinewright-genvideo: lint OK / cinewright-qc: lint OK / cinewright: lint OK
-```
-## [2026-10-03] index | rebuilt (9 entries)
-
-## 2026-10-04: session S3, pre-production craft
-
-- S2 PR #3 was merged with no comments, so `s3/preproduction` branched off `main`. Mark answered the model-card budget question ("apply your budget thing if you think its cool"): applied, cards green at 900 est. tokens ([decision](decisions/2026-10-03-proposed-model-card-budget-row.md)).
-- Built: `cinewright-shots` (core) and `cinewright-script`, `cinewright-design`, `cinewright-movement` (craft), 17 knowledge entries, each skill a full evergreen unit. Runtime: optional `bibles/props.json` through schema, validate, compile (verbatim guard), diff and qc rubric; `cards list`; DIALOGUE and HARD-SUBJECT warnings; the thirty-degree rule moved to shared vocab ([decision](decisions/2026-10-04-prop-bible-and-pre-production-checks.md)). Field lessons 017, 019, 020 and 021 became design L-001, L-002 and movement L-001, L-002; the S2 render's prop drift became design L-003.
-- Example: brief with the scene turn, `script.md`, `design.md`, `bibles/props.json`, movement pass on the actions, and a MiniMax H3 sequence compile beside the Veo ones. The H3 prompt is 377 words against a 300-word guide (S2's 336 rendered well).
-- Budget: one row yellow, the genvideo folder (151, then 152 KB of 150), because the shared 70 KB runtime copy grew. Not cut; proposed a separate runtime row ([decision](decisions/2026-10-04-proposed-runtime-budget-row.md)). `test_budget_green` became `test_budget_not_red`, matching PLAN §6. `coverage` went to 728 tokens once and was trimmed.
-- Baselines (Sonnet, headless, scratch folders with a copy of the example): shots wrote the shot list by hand; movement wrote a 1D card by hand and hit the turn limit; script and design searched the disk, found this repository and used its cine.py: contaminated (cinewright-script L-001). The design action prompt was first trivially satisfied (props.json already in the example) and was rewritten to copy the example without it. The repository was checked clean after every run.
-- Windows: `subprocess` cannot start `claude` by bare name (it is `claude.CMD`); use `shutil.which("claude")`.
-
-Exit check output (2026-10-04, Windows 11, Python 3.14 and 3.9.25):
-
-```
-$ python -m unittest discover -s tests
-Ran 57 tests in 10.038s
-
-OK
-$ py -V:Astral/CPython3.9.25 -m unittest discover -s tests
-Ran 57 tests in 9.575s
-
-OK
-$ python scripts/cine.py kb lint
-kb lint: 8 skills, 0 errors
-$ python scripts/cine.py budget
-measure                                   value  green<= yellow<=  status worst
-SKILL.md lines                               55       80      120  green  plugins/cinewright/skills/cinewright/SKILL.md
-SKILL.md body tokens (est.)                 948     1200     2000  green  plugins/cinewright/skills/cinewright-qc/SKILL.md
-one description, characters                 334      350      500  green  cinewright-qc
-all descriptions, characters               2403     4000     5500  green  8 skills
-core descriptions, characters              1580     1800     2500  green  plugins/cinewright
-reference entry lines                        50       60      100  green  plugins/cinewright/skills/cinewright/references/pipeline.md
-reference entry tokens (est.)               700      700     1200  green  plugins/cinewright/skills/cinewright-shots/references/coverage.md
-model card tokens (est.)                    699      900     1200  green  plugins/cinewright/skills/cinewright-genvideo/references/minimax-h3.md
-references/INDEX.md tokens (est.)           739     1500     3000  green  plugins/cinewright/skills/cinewright-genvideo/references/INDEX.md
-skill folder KB                             152      150      300  yellow cinewright-genvideo
-files per plugin                            134      350      450  green  cinewright
-repo ZIP KB                                 527     2048     5120  green  tracked files
-duplicate paragraphs across skills            0        0     1000  green  
+one description, characters                 344      350      500  green  cinewright-camera
+all descriptions, characters               3888     4000     5500  green  13 skills
+core descriptions, characters              1565     1800     2500  green  plugins/cinewright
+skill folder KB                             166      150      300  yellow cinewright-genvideo
 budget: YELLOW (tokens are bytes / 4, an estimate)
-$ claude plugin validate .
-✔ Validation passed
-$ claude plugin validate plugins/cinewright
-✔ Validation passed
-$ claude plugin validate plugins/cinewright-craft
-✔ Validation passed
-$ claude plugin validate plugins/cinewright-dev
-✔ Validation passed
+$ claude plugin validate . (and plugins/cinewright, plugins/cinewright-craft, plugins/cinewright-dev)
+✔ Validation passed (four times)
 $ evergreen.py lint <each skill>
-cinewright-design: lint OK
-/cinewright-movement: lint OK
-/cinewright-script: lint OK
-/cinewright-continuity: lint OK
-/cinewright-genvideo: lint OK
-/cinewright-qc: lint OK
-/cinewright-shots: lint OK
-/cinewright: lint OK
-$ python scripts/cine.py cards validate examples/three-shot
-cards validate: 3 cards, 0 errors
-$ python scripts/cine.py continuity diff examples/three-shot
-continuity diff: 3 cards, 0 errors, 0 warnings
-$ python scripts/cine.py cards list examples/three-shot | tail -1
-shot list: 3 shots, 1 scene(s), 14s
-$ python scripts/cine.py compile examples/three-shot --model minimax-h3 --sequence --resolution 480p
-== 1A+1B+1C  H3-Base-FL2VA  14.375s 16:9 480p  377 words
-  warning: planned 14.0s, rendered at 14.375s: trim in the edit
-  warning: 377 words, over the 300-word guide: shorten action or context, never the identity string
+13 skills: lint OK
 ```
-## [2026-10-04] index | rebuilt (11 entries)
 
-## 2026-10-04: session S4, camera, lighting and history
+Matrix after round 2 (with the skill: invocations for triggers, passes otherwise; baseline per model):
 
-- S3 PR #4 was merged with no comments, so `s4/camera-history` branched off `main`. No answer yet on the runtime budget row: genvideo's folder reads yellow (156 of 150 KB; the runtime copy grew again) and is reported, not cut.
-- Built: `cinewright-camera` (lens choice, depth of field, exposure, frame rate and shutter, aspect and framing, anamorphic, lighting ratios, lighting setups, color temperature) and `cinewright-history` (two movement entries, eras by format, two genre entries, four director entries, cinematographers, applying-styles; about 70 cards), each a full evergreen unit. Shared vocab: `aspect-ratios`, `lens-terms`, `lighting-terms` (camera and history; camera also takes `camera-moves`).
-- Runtime ([decision](decisions/2026-10-04-style-fields-carry-camera-and-history.md)): style-bible `lighting`, `frame_aspect`, `allowed_moves`, `history`; the style part compiles look + lighting + a composition sentence for a frame other than the render, under a verbatim guard; LENS and MOVE diff warnings; `--style FILE` on `cards validate`, `continuity diff` and `compile`; `uniqueItems` in the validator. The render aspect never changes: no model renders 2.39 (cinewright-camera L-001).
-- Example: `styles/new-hollywood-239.json` compiled to `compiled/veo-new-hollywood/` (README §7). The S2-rendered prompts are untouched. The variant's strings were trimmed by two words so 1A lands at Veo's 250-word guide.
-- Mark asked mid-session for a component for large battle scenes and fight scenes. Fights were covered (movement `fights-and-stunts`); added movement `battle-scenes` (map, two sides with fixed screen direction, phases as scenes, scale from few large figures, haze and compositing) and named the post half in PLAN §2 and §10 S5 (cutting a battle, crowd multiplication, battle sound).
-- Sources checked this session: RED shutter tutorial, Wikipedia aspect ratio, color temperature, anamorphic format and film stock list, Film and Digital Times on the 25-250mm zoom, the ASC magazine page. The Vertex and Gemini Veo prompt-guide pages rendered only navigation, so camera entries cite no Veo URL; model behaviour claims are marked unverified. History timestamps marked `~` are approximate and unchecked.
-- Baselines (Sonnet, headless, scratch folder on another drive with a stripped copy of the example, Bash, web and agent tools denied): camera action wrote a noir plan with an invented `frame` field and an over-long lighting string, no check; history action set the render aspect to 2.39:1 (unrenderable) and hand-made a compile; both outcome cases passed without the skill and are flagged for replacement in S6. The history run globbed the home folder (timed out, nothing found): not contaminated, but Glob and Grep are not refused outside the folder (cinewright-history L-002).
-- Companion generation bug: splitting the design templates on `### C-` and `### T-` cut the header's "Entry shape" line; evergreen lint caught it, fixed.
+| skill | case | kind | haiku | sonnet | opus | baseline (h/s/o) |
+|---|---|---|---|---|---|---|
+| cinewright | action-1 | action | **FAIL** 1/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright | decoy-3 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright | outcome-1 | outcome | **FAIL** 1/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright | trigger-1 | trigger | **FAIL** 0/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright | trigger-2 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-camera | action-1 | action | **FAIL** 2/3 | 3/3 | **FAIL** 1/3 | fail/fail/fail |
+| cinewright-camera | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-camera | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-camera | decoy-3 | trigger decoy | **FAIL** 3/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-camera | outcome-1 | outcome | **FAIL** 0/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-camera | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-camera | trigger-2 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-continuity | action-1 | action | 3/3 | 3/3 | **FAIL** 2/3 | fail/fail/fail |
+| cinewright-continuity | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-continuity | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-continuity | outcome-1 | outcome | **FAIL** 0/3 | 3/3 | 3/3 | fail/pass/fail |
+| cinewright-continuity | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-continuity | trigger-2 | trigger | 2/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-design | action-1 | action | **FAIL** 2/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-design | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-design | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-design | outcome-1 | outcome | **FAIL** 1/3 | **FAIL** 2/3 | 3/3 | fail/fail/fail |
+| cinewright-design | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-design | trigger-2 | trigger | 2/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-edit | action-1 | action | **FAIL** 0/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-edit | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-edit | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-edit | decoy-3 | trigger decoy | **FAIL** 2/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-edit | outcome-1 | outcome | **FAIL** 2/3 | 3/3 | 3/3 | fail/pass/pass |
+| cinewright-edit | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-edit | trigger-2 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-finish | action-1 | action | **FAIL** 0/3 | **FAIL** 2/3 | 3/3 | fail/fail/pass |
+| cinewright-finish | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-finish | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-finish | decoy-3 | trigger decoy | **FAIL** 1/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-finish | outcome-1 | outcome | **FAIL** 1/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-finish | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-finish | trigger-2 | trigger | 2/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-genvideo | action-1 | action | **FAIL** 2/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-genvideo | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-genvideo | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-genvideo | decoy-3 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-genvideo | outcome-1 | outcome | **FAIL** 0/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-genvideo | trigger-1 | trigger | **FAIL** 0/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-genvideo | trigger-2 | trigger | **FAIL** 0/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-history | action-1 | action | **FAIL** 0/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-history | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-history | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-history | decoy-3 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-history | outcome-1 | outcome | **FAIL** 0/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-history | trigger-1 | trigger | **FAIL** 0/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-history | trigger-2 | trigger | 2/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-movement | action-1 | action | **FAIL** 1/3 | 3/3 | **FAIL** 2/3 | fail/fail/fail |
+| cinewright-movement | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-movement | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-movement | outcome-1 | outcome | **FAIL** 0/3 | **FAIL** 2/3 | 3/3 | fail/fail/fail |
+| cinewright-movement | trigger-1 | trigger | 2/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-movement | trigger-2 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-qc | action-1 | action | **FAIL** 1/3 | 3/3 | **FAIL** 2/3 | fail/fail/fail |
+| cinewright-qc | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-qc | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-qc | decoy-3 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-qc | outcome-1 | outcome | **FAIL** 0/3 | **FAIL** 2/3 | 3/3 | fail/fail/fail |
+| cinewright-qc | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-qc | trigger-2 | trigger | **FAIL** 1/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-script | action-1 | action | 3/3 | 3/3 | **FAIL** 2/3 | fail/fail/fail |
+| cinewright-script | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-script | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-script | decoy-3 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-script | outcome-1 | outcome | **FAIL** 2/3 | 3/3 | 3/3 | fail/fail/pass |
+| cinewright-script | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-script | trigger-2 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-shots | action-1 | action | **FAIL** 0/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-shots | decoy-1 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-shots | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-shots | decoy-3 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-shots | outcome-1 | outcome | **FAIL** 0/3 | 3/3 | **FAIL** 1/3 | fail/fail/fail |
+| cinewright-shots | trigger-1 | trigger | **FAIL** 1/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-shots | trigger-2 | trigger | **FAIL** 0/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-sound | action-1 | action | **FAIL** 0/3 | 3/3 | 3/3 | fail/fail/fail |
+| cinewright-sound | decoy-1 | trigger decoy | **FAIL** 1/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-sound | decoy-2 | trigger decoy | 0/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-sound | decoy-3 | trigger decoy | **FAIL** 1/3 invoked | 0/3 invoked | 0/3 invoked |  |
+| cinewright-sound | outcome-1 | outcome | **FAIL** 1/3 | 3/3 | 3/3 | fail/pass/fail |
+| cinewright-sound | trigger-1 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+| cinewright-sound | trigger-2 | trigger | 3/3 invoked | 3/3 invoked | 3/3 invoked |  |
+## [2026-10-05] index | rebuilt (15 entries)
 
-Exit check output (2026-10-04, Windows 11, Python 3.14 and 3.9.25):
+## 2026-10-05: session S6 finished, harness rev 2, exit check, PR
+
+- No comments from Mark since 2026-10-05; the runtime budget row question is still unanswered (genvideo's folder 167 KB, yellow, reported).
+- Pending reruns on the old harness (24 runs): continuity outcome-1 and shots outcome-1, both arms, three models. Sonnet 3 of 3 on both; Opus 1 of 3 and 2 of 3.
+- The Opus pattern (HANDOFF "Watch") is harness friction, decided on the traces: every Opus failure, 10 of 10 across two batches, began with one refused command (a `for` loop, `find`, a chained `cat` from Step 0), after which Opus said "Bash is blocked in this session" and never ran `cine.py`. The refusal text is Claude Code's generic "Permission to use Bash has been denied because Claude Code is running in don't ask mode"; interactively the same command prompts the user. 59 of 67 Opus runs with a refusal recovered. A skill rule would cost every user tokens for a test-only condition. Fix, harness rev 2: `--append-system-prompt` tells both arms a refusal covers that command only (names no tool, so the baseline learns nothing); every result records `harness`. Row added to [solutions/2026-10-05-headless-evals-on-windows-dead-ends.md](solutions/2026-10-05-headless-evals-on-windows-dead-ends.md).
+- Rev-2 reproduction (40 runs): Opus camera, continuity, movement, qc and script actions 3 of 3 (were 1-2 of 3); shots outcome 3 of 3; continuity outcome 2 of 3; Sonnet finish action, movement and qc outcomes 3 of 3 (were 2 of 3; recorded as flaky, no skill edit). Baselines still fail on every action case.
+- Design outcome-1: Sonnet's failing reply was right ("keep the negative prompt too, but know it's secondary"); the judge read that as relying on it. Expectation reworded (the fix offered is cleaning the reference) and rejudged: Sonnet 3 of 3. Side effect: the Opus baseline now passes, so on Opus this case shows no gain.
+- Continuity outcome-1 Opus, the one Sonnet/Opus miss left: the run ran the diff, named both plants and said to copy the bible string exactly, but showed a one-word fix; the judge gave the word-for-word expectation 1 of 3. Recorded as a judge split, not tuned.
+- Budget: Mark is near the weekly limit until Wednesday 2026-10-08 and chose the cheaper options: no full rev-2 rerun of the value cases (312 runs; the record is mixed and says so in each T- entry), no skill edits for 1-in-3 slips (each costs a three-model suite rerun). This session: 64 headless runs, $20.36 at list price, judge calls not counted.
+- Lessons marked "rerun pending", judged against T-20261005-1 (all runs post-date their edits): confirmed camera L-002 `lighting-a-shot`, edit L-004 `mid-shot-rule`, finish L-003 `not-home-video`, history L-003 `director-look-question`, script L-002 `diff-not-counting`, sound L-003 `not-podcasts-or-music`, continuity L-005 `diff-errors-first`, qc L-003 `rubric-never-by-hand`, cinewright L-001 `idea-as-shots`. Retired to new LEARNINGS-ARCHIVE.md files (the edit did not move Haiku; Sonnet and Opus passed before and after; descriptions unchanged): edit L-003, genvideo L-006, shots L-001.
+- Records: T-20261005-2 in every TESTS.md with the tests block and dated baselines (`record_tests.py`); worth recorded from `export-worth`: no CUT; KEEP design, sound, continuity (moved up from TRIM, +67 at 1.29x), genvideo; TRIM camera, edit, finish, history, movement, script, qc, shots, cinewright (recommendation only).
+- Final matrix (88 cases): Sonnet 88 of 88, Opus 87 of 88 (continuity outcome-1, judge split), Haiku 52 of 88 (36 failures, each recorded under decision item 5: Haiku answers without loading the skill, or takes a neighbour's decoy). Full table: matrix-final-s6.md in the results folder (vault sidecar note).
+
+Check output (2026-10-05, Windows 11, Python 3.14.6 and 3.9.25):
 
 ```
 $ python -m unittest discover -s tests
-Ran 62 tests in 17.090s
-
+Ran 64 tests in 12.792s
 OK
 $ py -V:Astral/CPython3.9.25 -m unittest discover -s tests
-Ran 62 tests in 20.543s
-
+Ran 64 tests in 12.490s
 OK
 $ python scripts/cine.py kb lint
-kb lint: 10 skills, 0 errors
+kb lint: 13 skills, 0 errors
 $ python scripts/cine.py budget
-measure                                   value  green<= yellow<=  status worst
-SKILL.md lines                               55       80      120  green  plugins/cinewright/skills/cinewright/SKILL.md
-SKILL.md body tokens (est.)                 948     1200     2000  green  plugins/cinewright/skills/cinewright-qc/SKILL.md
-one description, characters                 334      350      500  green  cinewright-qc
-all descriptions, characters               3044     4000     5500  green  10 skills
-core descriptions, characters              1580     1800     2500  green  plugins/cinewright
-reference entry lines                        50       60      100  green  plugins/cinewright/skills/cinewright/references/pipeline.md
-reference entry tokens (est.)               700      700     1200  green  plugins/cinewright/skills/cinewright-shots/references/coverage.md
-model card tokens (est.)                    699      900     1200  green  plugins/cinewright/skills/cinewright-genvideo/references/minimax-h3.md
-references/INDEX.md tokens (est.)           739     1500     3000  green  plugins/cinewright/skills/cinewright-genvideo/references/INDEX.md
-skill folder KB                             156      150      300  yellow cinewright-genvideo
-files per plugin                            134      350      450  green  cinewright
-repo ZIP KB                                 543     2048     5120  green  tracked files
-duplicate paragraphs across skills            0        0     1000  green  
-budget: YELLOW (tokens are bytes / 4, an estimate)
-$ claude plugin validate .
-✔ Validation passed
-$ claude plugin validate plugins/cinewright
-✔ Validation passed
-$ claude plugin validate plugins/cinewright-craft
-✔ Validation passed
-$ claude plugin validate plugins/cinewright-dev
-✔ Validation passed
+all descriptions 3888 of 4000 green; skill folder KB 167 yellow cinewright-genvideo (the unanswered runtime row); everything else green
+budget: YELLOW
+$ claude plugin validate . (and plugins/cinewright, plugins/cinewright-craft, plugins/cinewright-dev)
+✔ Validation passed (four times)
 $ evergreen.py lint <each skill>
-cinewright-camera: lint OK
-cinewright-design: lint OK
-cinewright-history: lint OK
-cinewright-movement: lint OK
-cinewright-script: lint OK
-cinewright-continuity: lint OK
-cinewright-genvideo: lint OK
-cinewright-qc: lint OK
-cinewright-shots: lint OK
-cinewright: lint OK
-$ python scripts/cine.py cards validate examples/three-shot --style examples/three-shot/styles/new-hollywood-239.json
-cards validate: 3 cards, 0 errors
-$ python scripts/cine.py continuity diff examples/three-shot --style examples/three-shot/styles/new-hollywood-239.json
-continuity diff: 3 cards, 0 errors, 0 warnings
-$ python scripts/cine.py continuity diff examples/three-shot
-continuity diff: 3 cards, 0 errors, 0 warnings
-$ python -m unittest tests.test_cine.TestStyle -v
-test_frame_words (tests.test_cine.TestStyle.test_frame_words) ... ok
-test_lens_and_move_warnings (tests.test_cine.TestStyle.test_lens_and_move_warnings) ... ok
-test_new_hollywood_changes_compiled_prompts (tests.test_cine.TestStyle.test_new_hollywood_changes_compiled_prompts) ... ok
-test_style_guard (tests.test_cine.TestStyle.test_style_guard) ... ok
-test_style_option_and_schema (tests.test_cine.TestStyle.test_style_option_and_schema) ... ok
-Ran 5 tests in 0.373s
+13 skills: lint OK
 ```
-## [2026-10-04] index | rebuilt (12 entries)
+## [2026-10-05] index | rebuilt (15 entries)
+## [2026-10-05] index | rebuilt (16 entries)

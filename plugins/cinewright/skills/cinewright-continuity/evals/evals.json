@@ -52,21 +52,39 @@
         "tool": "Bash",
         "input_match": "cine\\.py\\s+continuity\\s+diff"
       },
-      "baseline": "2026-10-03, one run, Sonnet, claude -p in a bare folder without cinewright: read all 9 project files and found the side-B axis cross, but the planted card then held a note announcing the error (removed after this run). No cine.py call, so the action evidence is absent.",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     },
     {
       "id": "outcome-1",
       "kind": "outcome",
-      "prompt": "Check examples/three-shot for continuity problems if planted/1C.json replaced its 1C card. What breaks, and how do I fix it?",
+      "prompt": "Before I render, check examples/three-shot for anything that will not match between its shots. What breaks, and how do I fix it?",
       "files": [],
-      "expectations": [
-        "the reply names card 1C and the axis (side B, crossing the line or the 180-degree rule)",
-        "the reply names Tomas's eyeline as a consequence",
-        "the fix offered is camera back to side A, or crosses_axis with an on-screen reason",
-        "judge: no invented errors on 1A or 1B (2 of 3 votes)"
+      "setup": [
+        [
+          "delete",
+          "examples/three-shot/planted/1C.json"
+        ],
+        [
+          "replace",
+          "examples/three-shot/cards/1B.json",
+          "scar through her left eyebrow",
+          "scar through her right eyebrow"
+        ],
+        [
+          "replace",
+          "examples/three-shot/cards/1A.json",
+          "a navy wool fisherman",
+          "a grey wool fisherman"
+        ]
       ],
-      "baseline": "not run separately; the action baseline suggests a careful reader finds a single axis error, so this case may be redundant: sharpen it in S6 (a subtler plant, such as a one-word wardrobe change or a 30-degree jump).",
+      "expectations": [
+        "the reply names card 1B's description of Maren as differing from the character bible (the scar on the right eyebrow instead of the left)",
+        "the reply names card 1A's sweater as grey where the bible says navy",
+        "the fix offered is to copy the bible's identity and wardrobe strings into the cards word for word",
+        "judge: no invented errors on the axis, eyelines or any other card (2 of 3 votes)"
+      ],
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 1 of 3 passed (Haiku fail, Sonnet pass, Opus fail).",
       "runs": 3
     }
   ]

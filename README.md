@@ -9,7 +9,7 @@ Status: early development (0.0.1), private. Not ready to install.
 | Plugin | Skills | For |
 |---|---|---|
 | `cinewright` | `cinewright` (director and router), `cinewright-shots` (shot list and coverage), `cinewright-continuity` (script supervisor), `cinewright-genvideo` (prompt compiler for nine models), `cinewright-qc` (take review with ffmpeg) | everyone |
-| `cinewright-craft` | `cinewright-script` (logline, beats, dialogue), `cinewright-design` (turnarounds, props, costume, color), `cinewright-movement` (weight, fights, battles, hard subjects), `cinewright-camera` (lens, light, format), `cinewright-history` (style cards); edit, finish, sound come later | deeper craft |
+| `cinewright-craft` | `cinewright-script` (logline, beats, dialogue), `cinewright-design` (turnarounds, props, costume, color), `cinewright-movement` (weight, fights, battles, hard subjects), `cinewright-camera` (lens, light, format), `cinewright-history` (style cards), `cinewright-edit` (cutting, pacing), `cinewright-finish` (grade, crop, VFX, delivery), `cinewright-sound` (layers, mix, loudness) | deeper craft |
 | `cinewright-dev` | none yet (knowledge-base upkeep) | maintainers |
 
 A worked example lives in [examples/three-shot/](examples/three-shot/): a one-line idea taken through brief, script, shot list, bibles, design notes, a continuity diff that catches a planted error, and compiled Veo and MiniMax H3 prompts.

@@ -225,6 +225,15 @@ class TestContinuity(Base):
         self.assertIn("ERROR 1C AXIS", out)
         self.assertIn("ERROR 1C EYELINE", out)
 
+    def test_malformed_bible_says_what_to_fix(self):
+        p = self.tmp / "p"
+        shutil.copytree(EXAMPLE, p)
+        lib.write_text(p / "bibles" / "characters.json", json.dumps({"characters": {"maren": {"name": "Maren"}}}))
+        code, out = run("continuity", "diff", p)
+        self.assertEqual(code, 1, out)
+        self.assertIn("bibles/characters.json: want", out)
+        self.assertNotIn("Traceback", out)
+
     def project(self):
         return lib.Project(EXAMPLE)
 
@@ -541,6 +550,22 @@ class TestQc(Base):
         self.assertRegex(text, r"integrated -\d+\.\d LUFS")
         code, text = run("qc", "loud", self.clip, "--target", "-22", "--tolerance", "2")
         self.assertEqual(code, 0, text)
+
+    def test_loud_preset(self):
+        code, text = run("qc", "loud", self.clip, "--preset", "ebu-r128")
+        self.assertEqual(code, 1, text)
+        self.assertIn("preset ebu-r128", text)
+        self.assertIn("target -23.0 +/- 0.2", text)
+        self.assertIn("(max -1.0)", text)
+        code, text = run("qc", "loud", self.clip, "--preset", "netflix")
+        self.assertIn("approximate", text)
+        self.assertIn("(max -2.0)", text)
+        code, text = run("qc", "loud", self.clip)
+        self.assertIn("target -18.0 +/- 2.0", text)
+        self.assertIn("(max -2.0)", text)
+        code, text = run("qc", "loud", self.clip, "--preset", "ebu-r128", "--target", "-22", "--tolerance", "2")
+        self.assertEqual(code, 0, text)
+        self.assertIn("target -22.0 +/- 2.0", text)
 
     def test_rubric_round_trip(self):
         code, text = run("qc", "rubric", self.proj, "--card", "1B", "--clip", self.clip)

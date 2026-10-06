@@ -41,22 +41,28 @@
       "runs": 3
     },
     {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Plot the price per second of these five video models as a bar chart: Veo 0.40, Kling 0.10, Runway 0.25, Luma 0.32, Wan 0.05.",
+      "expectations": [
+        "the cinewright-genvideo skill is not invoked (a chart, chartwright's job)"
+      ],
+      "runs": 3
+    },
+    {
       "id": "action-1",
       "kind": "action",
       "prompt": "Compile Veo prompts for every card in examples/three-shot into examples/three-shot/compiled/veo.",
       "expectations": [
-        "the action happened, proven by the evidence below (a tool call in the trace or a written file), not by the reply saying so"
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
       ],
       "evidence": {
         "type": "trace",
         "tool": "Bash",
-        "input_match": "cine\\.py\\s+compile",
-        "or": {
-          "type": "file",
-          "path": "examples/three-shot/compiled/veo/1A.txt"
-        }
+        "input_match": "cine\\.py\\s+compile"
       },
-      "baseline": "2026-10-03, one run, Sonnet, claude -p in a bare folder without cinewright: read every bible and card, searched the disk for a compiler or a Veo guide, made the output folder and ran out of 20 turns before writing any prompt. Evidence absent.",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     },
     {
@@ -65,13 +71,22 @@
       "prompt": "Compile Veo prompts for the cards in examples/three-shot and give me the settings for each.",
       "files": [],
       "expectations": [
-        "each prompt holds every cast member's identity string from bibles/characters.json word for word",
-        "every durationSeconds is 4, 6 or 8; 1A is 6",
+        "check: each prompt holds every cast member's identity string from bibles/characters.json word for word",
+        "check: every durationSeconds is 4, 6 or 8 (evals/check_veo.py)",
+        "1A's durationSeconds is 6",
         "no prompt says 'no' or 'avoid' for an exclusion",
         "judge: camera size, angle and move come first in each prompt (2 of 3 votes)"
       ],
-      "baseline": "not yet run",
-      "runs": 3
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "runs": 3,
+      "checks": [
+        [
+          "python",
+          "evals/check_veo.py",
+          "{work}",
+          "{reply}"
+        ]
+      ]
     }
   ]
 }

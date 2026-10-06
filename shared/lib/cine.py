@@ -344,10 +344,19 @@ class Project:
             new = json.loads(read_text(f))
             self.cards = [c for c in self.cards if c.get("id") != new.get("id")] + [new]
         self.cards.sort(key=lambda c: c.get("order", 0))
-        self.chars = {c["id"]: c for c in self.characters.get("characters", [])}
-        self.locs = {x["id"]: x for x in self.locations.get("locations", [])}
-        self.scene_map = {s["id"]: s for s in self.scenes.get("scenes", [])}
-        self.props = {x["name"]: x for x in (self.props_bible or {}).get("props", [])}
+        self.chars = bible_entries(self.characters, "characters", "id", "characters.json", "character-bible")
+        self.locs = bible_entries(self.locations, "locations", "id", "locations.json", "location-bible")
+        self.scene_map = bible_entries(self.scenes, "scenes", "id", "scenes.json", "scene-axis-bible")
+        self.props = bible_entries(self.props_bible or {}, "props", "name", "props.json", "prop-bible")
+
+
+def bible_entries(doc, key, idkey, fname, schema):
+    """{entry[idkey]: entry} from a bible; a bible in another shape stops with what to fix, not a traceback."""
+    items = doc.get(key) if isinstance(doc, dict) else None
+    if not isinstance(items, list) or not all(isinstance(x, dict) and idkey in x for x in items):
+        raise SystemExit("bibles/%s: want {\"%s\": [{\"%s\": ...}, ...]}; see scripts/schemas/%s.schema.json"
+                         % (fname, key, idkey, schema))
+    return {x[idkey]: x for x in items}
 
 
 MM_RANGE = re.compile(r"(\d+)\s*-\s*(\d+)\s*mm")
@@ -1110,6 +1119,24 @@ def last_frame(clip, out):
     return out
 
 
+# Delivery loudness targets: integrated LUFS, tolerance in LU, max true peak dBTP, note.
+# Sources and dates: shared vocab loudness-targets (cinewright-sound).
+LOUD_PRESETS = {
+    "web": (-18.0, 2.0, -2.0, "web video (EBU R128 s2 distribution range -20 to -16 LUFS; -2 dBTP before a lossy encoder)"),
+    "ebu-r128": (-23.0, 0.2, -1.0, "EBU R128 v4 broadcast: on target within the meter's 0.2 LU; +/-1 LU only where the target is not practical (live)"),
+    "atsc-a85": (-24.0, 2.0, -2.0, "ATSC A/85 US broadcast; it measures dialogue (the anchor) and this meter the whole programme, so the result is approximate"),
+    "netflix": (-27.0, 2.0, -2.0, "Netflix measures dialogue-gated (BS.1770-1) and this meter the whole programme, so the result is approximate"),
+    "music-streaming": (-14.0, 1.0, -1.0, "Spotify's normalisation level; its advice is -2 dBTP when louder than -14"),
+}
+
+
+def loud_target(a):
+    """--preset fills target, tolerance and true peak; explicit flags win. No preset means web."""
+    base = LOUD_PRESETS[a.preset or "web"][:3]
+    pick = [a.target, a.tolerance, a.true_peak]
+    return tuple(base[i] if pick[i] is None else pick[i] for i in range(3))
+
+
 def loudness(path):
     r = subprocess.run([need_tool("ffmpeg"), "-nostats", "-hide_banner", "-i", str(path), "-filter_complex",
                         "ebur128=peak=true", "-f", "null", "-"], capture_output=True, text=True, encoding="utf-8", errors="replace")
@@ -1243,10 +1270,13 @@ def cmd_qc(ctx, a):
         return 1 if fails else 0
     if a.cmd == "loud":
         m = loudness(a.file)
-        ok_i = abs(m["integrated_lufs"] - a.target) <= a.tolerance
-        ok_tp = m["true_peak_dbtp"] is not None and m["true_peak_dbtp"] <= a.true_peak
-        print("integrated %.1f LUFS (target %.1f +/- %.1f): %s" % (m["integrated_lufs"], a.target, a.tolerance, "PASS" if ok_i else "FAIL"))
-        print("true peak %s dBTP (max %.1f): %s" % (m["true_peak_dbtp"], a.true_peak, "PASS" if ok_tp else "FAIL"))
+        target, tol, peak = loud_target(a)
+        if a.preset:
+            print("preset %s: %s" % (a.preset, LOUD_PRESETS[a.preset][3]))
+        ok_i = abs(m["integrated_lufs"] - target) <= tol
+        ok_tp = m["true_peak_dbtp"] is not None and m["true_peak_dbtp"] <= peak
+        print("integrated %.1f LUFS (target %.1f +/- %.1f): %s" % (m["integrated_lufs"], target, tol, "PASS" if ok_i else "FAIL"))
+        print("true peak %s dBTP (max %.1f): %s" % (m["true_peak_dbtp"], peak, "PASS" if ok_tp else "FAIL"))
         if m["lra_lu"] is not None:
             print("loudness range %.1f LU" % m["lra_lu"])
         print("qc loud: %s" % ("PASS" if ok_i and ok_tp else "FAIL (code loudness-off): normalise in the mix"))
@@ -1411,9 +1441,10 @@ def build_parser(prog="cine.py"):
     s.add_argument("--json", action="store_true")
     s = q.add_parser("loud", help="integrated loudness and true peak (EBU R128 meter)")
     s.add_argument("file")
-    s.add_argument("--target", type=float, default=-16.0, help="integrated LUFS")
-    s.add_argument("--tolerance", type=float, default=1.0, help="LU either side")
-    s.add_argument("--true-peak", type=float, default=-1.0, help="maximum dBTP")
+    s.add_argument("--preset", choices=sorted(LOUD_PRESETS), help="delivery target (default web: -18 +/- 2 LUFS, -2 dBTP); the flags below override it")
+    s.add_argument("--target", type=float, help="integrated LUFS")
+    s.add_argument("--tolerance", type=float, help="LU either side")
+    s.add_argument("--true-peak", type=float, help="maximum dBTP")
     s = q.add_parser("rubric", help="write a take's checklist, or read its verdicts back as fixes")
     s.add_argument("project", nargs="?")
     s.add_argument("--card")

@@ -1,6 +1,6 @@
 ---
 name: cinewright-qc
-description: "Checks rendered AI video takes against their shot cards: contact sheets, a per-shot rubric, spec and loudness checks with ffmpeg, failure codes routed to the cheapest fix, take logs, last frames for the next shot. Use when reviewing a generated clip, deciding reroll or keep, or asking why a take failed. Also 'refresh cinewright-qc'."
+description: "Checks rendered AI video takes against their shot cards: contact sheets, a per-shot rubric, spec and loudness checks with ffmpeg, failure codes routed to the cheapest fix. Use when reviewing a generated clip, deciding reroll or keep, or asking why a take failed. Also 'refresh cinewright-qc'."
 license: MIT
 ---
 
@@ -22,7 +22,7 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 
 ## Step 2: judge
 
-1. `CINE qc rubric <p> --card <id> --clip <clip>` writes `<p>/qc/<id>.rubric.json`: one item per check the card makes possible (identity, wardrobe, props, positions, eyelines, light, camera, action, start and end state, text, sound, seam).
+1. `CINE qc rubric <p> --card <id> --clip <clip>` (no `--clip` before the first take) writes `<p>/qc/<id>.rubric.json`; never write a checklist by hand: one item per check the card makes possible (identity, wardrobe, props, positions, eyelines, light, camera, action, start and end state, text, sound, seam).
 2. Fill each `verdict` with `pass`, `fail` or `na` from the sheet, the last frame and the audio. On a fail, set `code` from the item's `codes` and a `note` saying what you saw. Judge rules: `kb show qc-loop --section Rules`.
 3. `CINE qc rubric --read <rubric>` prints the fails ordered by repair rung and the one change for the next take. Evidence: its last line.
 
@@ -37,7 +37,7 @@ A hosted re-render costs money: show the prompt, settings and cost, and ask firs
 
 ## Step 4: loudness at the mix
 
-`CINE qc loud <mixed file>`: integrated loudness within 1 LU of -16 LUFS and true peak at or below -1 dBTP by default; pass `--target` for another delivery spec.
+`CINE qc loud <mixed file> --preset <target>`: integrated loudness and true peak against a delivery preset (`web`, the default: -18 ± 2 LUFS, -2 dBTP; also `ebu-r128`, `atsc-a85`, `netflix`, `music-streaming`; `kb show loudness-targets`).
 
 ## Output
 

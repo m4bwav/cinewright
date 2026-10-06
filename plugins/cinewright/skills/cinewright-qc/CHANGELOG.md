@@ -4,6 +4,21 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261005-1 · 2026-10-05 · Step 1: rubric without a clip, never by hand (S6)
+- because: T-20261004-1, L-003
+- files: SKILL.md
+- Step 1 says `--clip` is left out before the first take and that the checklist is never written by hand
+
+### C-20261004-3 · 2026-10-04 · Description tuned (S6)
+- because: T-20261004-1
+- files: SKILL.md
+- Description trimmed by 42 characters (take logs and last frames left the list) to make room for the S6 trigger fixes in other skills; the body still covers both
+
+### C-20261004-2 · 2026-10-04 · Loudness presets and the loudness-targets vocab
+- because: user request (S5) and the S5 loudness re-check recorded in cinewright-sound RESEARCH.md
+- files: SKILL.md, references/qc-loop.md, needs.json, references/loudness-targets.md (copy), shared/lib/cine.py
+- `qc loud --preset web|ebu-r128|atsc-a85|netflix|music-streaming`; the default moved from -16 ± 1 LUFS, -1 dBTP to the web preset (-18 ± 2, -2 dBTP) after the S5 re-check found the brief's R128 tolerance wrong and EBU's streaming range in R128 s2.
+
 ### C-20261004-1 · 2026-10-04 · Prop rubric item shows the prop's description
 - because: first local render: 1A failed prop-drift (a cardboard box for a tin one) with nothing on the rubric to say what tin looks like
 - files: scripts/cine.py (copy), scripts/schemas/prop-bible.schema.json (copy), needs.json

@@ -4,6 +4,16 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261005-1 · 2026-10-05 · L-006 retired: the rerun did not move its case (S6)
+- because: T-20261005-1, L-006
+- files: LEARNINGS.md, LEARNINGS-ARCHIVE.md
+- L-006 moved to the archive; the description is unchanged
+
+### C-20261004-2 · 2026-10-04 · Description tuned (S6)
+- because: T-20261004-1, L-006
+- files: SKILL.md
+- Description tuned for triggering: open with "Writes AI video prompts" and say "Use when asked for a prompt for one of these models or to turn shots into video-model prompts"
+
 ### C-20261004-1 · 2026-10-04 · Held props compile as the prop bible's description, with a verbatim guard
 - because: first local render's prop drift (cinewright-design L-003)
 - files: references/compile-rule.md, scripts/cine.py (copy), scripts/schemas/prop-bible.schema.json (copy), needs.json

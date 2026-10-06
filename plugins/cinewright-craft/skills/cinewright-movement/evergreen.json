@@ -36,20 +36,49 @@
   ],
   "counts": {
     "learnings": 2,
-    "changes": 2,
+    "changes": 3,
     "research": 1,
-    "tests": 1
+    "tests": 4
   },
   "consolidate_every": 25,
   "tests": {
-    "last_run": null,
-    "harness": null,
-    "env": null,
+    "last_run": "2026-10-05T22:57",
+    "harness": "evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive)",
+    "env": "windows/claude-code",
     "cases": 6,
-    "passed": 0,
-    "failed": 0,
-    "failing": [],
-    "last_failure": null,
+    "passed": 4,
+    "failed": 2,
+    "failing": [
+      "action-1",
+      "outcome-1"
+    ],
+    "last_failure": {
+      "date": "2026-10-05",
+      "note": "Mixed harness: rev 2 (a refused command covers that command only) for the 2026-10-05 reruns of the Sonnet and Opus failures, rev 1 for the rest; a full rev-2 rerun is deferred for budget. Haiku-only f"
+    },
     "research_after_days": null
+  },
+  "worth": {
+    "checked": "2026-10-05",
+    "skills": {
+      "cinewright-movement": {
+        "verdict": "TRIM",
+        "why": "a real gain (+72 points (noise margin 21)) at 2.72x the cost; cut the general advice and re-run to keep the gain for less",
+        "body_tokens": 772,
+        "listing_tokens": 73,
+        "specific_share": 0.81,
+        "delta": 0.72,
+        "cost_ratio": 2.72,
+        "modes": [],
+        "gaps": 0,
+        "checked": "2026-10-05",
+        "uses": {
+          "days": 60,
+          "interactive": 0,
+          "subagent": 0,
+          "headless": 0
+        }
+      }
+    }
   }
 }

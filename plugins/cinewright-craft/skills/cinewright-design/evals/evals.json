@@ -43,21 +43,28 @@
     {
       "id": "action-1",
       "kind": "action",
-      "prompt": "Copy examples/three-shot to out/lighthouse and delete out/lighthouse/bibles/props.json. Then make the tin matchbox look the same in every shot of out/lighthouse, and check the project afterwards.",
+      "prompt": "out/lighthouse is my film project. Make the tin matchbox look the same in every shot of it, and check the project afterwards.",
       "expectations": [
         "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
       ],
       "evidence": {
         "type": "trace",
         "tool": "Bash",
-        "input_match": "cine\\.py\\s+(cards\\s+validate|continuity\\s+diff)\\s+\\S*out/lighthouse",
-        "or": {
-          "type": "file",
-          "path": "out/lighthouse/bibles/props.json"
-        }
+        "input_match": "(?s)cine\\.py\\s+(cards\\s+validate|continuity\\s+diff)\\s+\\S*out/lighthouse|out/lighthouse.*cine\\.py\\s+(cards\\s+validate|continuity\\s+diff)"
       },
-      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder holding only a copy of examples/three-shot, no cinewright installed: first run (old prompt) found props.json already present and said so, which led to the self-contained prompt; second run (this prompt) searched the disk, found this repository, read the design skill and ran its cine.py. CONTAMINATED: not a valid without-skill baseline (cinewright-script L-001).",
-      "runs": 3
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/lighthouse"
+        ],
+        [
+          "delete",
+          "out/lighthouse/bibles/props.json"
+        ]
+      ]
     },
     {
       "id": "outcome-1",
@@ -68,9 +75,9 @@
         "the reply says the reference image outranks the prompt text",
         "the reply says to paint the marks out of the reference before using it, keeping the original",
         "the reply says to check the cleaned reference at full size",
-        "judge: no advice to rely on a stronger negative prompt as the fix (2 of 3 votes)"
+        "judge: the fix offered is cleaning the reference, not a stronger or longer negative prompt; leaving the existing negative prompt in place as secondary is fine (2 of 3 votes)"
       ],
-      "baseline": "not run separately; S6 runs it without the skill.",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 1 of 3 passed (Haiku fail, Sonnet fail, Opus pass).",
       "runs": 3
     }
   ]
