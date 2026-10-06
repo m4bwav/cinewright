@@ -1,6 +1,6 @@
 ---
 name: cinewright
-description: "Film director for AI video: turns an idea into a planned film (logline, shot list, bibles, prompts, QC, edit, delivery) and routes each stage to the right cinewright skill. Use when the user wants to make a short film, scene, trailer, music video or ad with AI video models, or asks what comes next. Also 'refresh cinewright'."
+description: "Film director for AI video: turns an idea into a planned film (logline, shot list, bibles, prompts, QC, edit, delivery) and routes each stage to the right cinewright skill. Use when the user wants to make a short film, trailer, music video or ad with AI video models, plan an idea as shots, or asks what comes next. Also 'refresh cinewright'."
 license: MIT
 ---
 
@@ -31,7 +31,10 @@ One default path (`kb show pipeline` for gates and the repair ladder). Each row 
 | Check | `continuity diff` with 0 errors | cinewright-continuity |
 | Prompts | `compiled/<model>/` | cinewright-genvideo |
 | Render | takes in `takes/` | the user's renderer, after their go if it costs money |
-| QC, edit, grade, mix | later stages | cinewright-qc and the cinewright-craft plugin |
+| QC | `qc/`, `takes/` | cinewright-qc |
+| Edit | `edit/cut.md`, the locked cut | cinewright-edit (craft) |
+| Grade, VFX, deliver | `finish/grade.md`, the delivery file | cinewright-finish (craft) |
+| Sound and mix | `sound/plan.md`, the mix, `CINE qc loud --preset` | cinewright-sound (craft) |
 
 1. Bibles come before cards, so `cards new` can copy identity strings.
 2. After the cards, run `CINE cards validate <project>` and quote its last line.

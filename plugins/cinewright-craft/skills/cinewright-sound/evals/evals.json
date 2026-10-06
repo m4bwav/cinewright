@@ -1,0 +1,130 @@
+{
+  "skill": "cinewright-sound",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root.",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "prompt": "My AI-generated video has thin audio that changes at every cut. How should I build and mix the soundtrack for YouTube?",
+      "expectations": [
+        "the cinewright-sound skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "prompt": "What loudness should I mix my AI short film to for broadcast versus Netflix, and how do I check it?",
+      "expectations": [
+        "the cinewright-sound skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Generate a lo-fi hip hop track for studying.",
+      "expectations": [
+        "the cinewright-sound skill is not invoked (music generation, a music skill's job)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "My laptop speakers crackle when I play YouTube. How do I fix the audio driver?",
+      "expectations": [
+        "the cinewright-sound skill is not invoked (computer audio repair)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Normalize my podcast episode to -16 LUFS and remove the background hum.",
+      "expectations": [
+        "the cinewright-sound skill is not invoked (podcast audio, not a film mix)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "prompt": "Make out/mix/cut.mp4 with ffmpeg: 4 s of testsrc2 video with a 440 Hz sine at volume 0.05 as its audio. Mix the audio to a web delivery target, mux it back as out/mix/final.mp4, and prove the loudness.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace, or the file), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "(?s)cine\\.py\\s+qc\\s+loud\\s+\\S*out/mix|out/mix.*cine\\.py\\s+qc\\s+loud",
+        "or": {
+          "type": "file",
+          "path": "out/mix/sound/plan.md",
+          "contains": "LUFS"
+        }
+      },
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "runs": 3
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "prompt": "out/mix/cut.mp4 is the locked cut of my AI short: a steady tone bed with one loud hit at 3 s. Mix its audio for web video delivery and save it as out/mix/final.mp4, video untouched.",
+      "files": [],
+      "setup": [
+        [
+          "ffmpeg",
+          "-y",
+          "-v",
+          "error",
+          "-f",
+          "lavfi",
+          "-i",
+          "testsrc2=size=640x360:rate=24:duration=6",
+          "-f",
+          "lavfi",
+          "-i",
+          "sine=frequency=220:duration=6,volume=0.4",
+          "-f",
+          "lavfi",
+          "-i",
+          "sine=frequency=1000:duration=0.2,volume=7,adelay=3000",
+          "-filter_complex",
+          "[1:a][2:a]amix=inputs=2:normalize=0[a]",
+          "-map",
+          "0:v",
+          "-map",
+          "[a]",
+          "-c:v",
+          "libx264",
+          "-pix_fmt",
+          "yuv420p",
+          "-c:a",
+          "aac",
+          "-b:a",
+          "192k",
+          "-ar",
+          "48000",
+          "out/mix/cut.mp4"
+        ]
+      ],
+      "checks": [
+        [
+          "python",
+          "evals/check_mix.py",
+          "{work}"
+        ]
+      ],
+      "expectations": [
+        "check: out/mix/final.mp4 keeps its video and measures -18 +/- 2 LUFS integrated with true peak at or below -2 dBTP, metered by ffmpeg ebur128 (evals/check_mix.py exits 0)",
+        "judge: the reply states the loudness target it mixed to and the measured result (2 of 3 votes)"
+      ],
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 1 of 3 passed (Haiku fail, Sonnet pass, Opus fail).",
+      "runs": 3
+    }
+  ]
+}

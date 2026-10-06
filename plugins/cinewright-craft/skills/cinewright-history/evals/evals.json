@@ -41,38 +41,68 @@
       "runs": 3
     },
     {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Make a chart of 1970s New Hollywood box office by year.",
+      "expectations": [
+        "the cinewright-history skill is not invoked (a chart, chartwright's job)"
+      ],
+      "runs": 3
+    },
+    {
       "id": "action-1",
       "kind": "action",
-      "prompt": "Copy examples/three-shot to out/nh. Make out/nh look like 1970s New Hollywood in a 2.39 frame, and show me how the compiled Veo prompt for shot 1B changes.",
+      "prompt": "out/nh is a copy of examples/three-shot. Make out/nh look like 1970s New Hollywood in a 2.39 frame, and show me how the compiled Veo prompt for shot 1B changes.",
       "expectations": [
-        "the action happened, proven by the evidence below (a tool call in the trace, or the file), not by the reply saying so"
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
       ],
       "evidence": {
         "type": "trace",
         "tool": "Bash",
-        "input_match": "cine\\.py\\s+compile\\s+\\S*out/nh.*--style",
-        "or": {
-          "type": "file",
-          "path_glob": "out/nh/**/*.json",
-          "contains": "\"frame_aspect\""
-        }
+        "input_match": "(?s)cine\\.py\\s+compile\\s+\\S*out/nh.*--style|out/nh.*cine\\.py\\s+compile.*--style"
       },
-      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder on another drive holding a stripped copy of the example, Bash, web and agent tools denied: set aspect_ratio to 2.39:1 (no model renders it; compile would refuse), put a brand name and stock number in the look, invented its own compile format and wrote before and after 1B prompts by hand. It globbed the home folder for SKILL.md; the search timed out with no result, so not contaminated (L-002).",
-      "runs": 3
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/nh"
+        ]
+      ],
+      "plugins": [
+        "cinewright"
+      ]
     },
     {
       "id": "outcome-1",
       "kind": "outcome",
-      "prompt": "I want my AI film to look like a Kubrick movie. Should I just write 'in the style of Stanley Kubrick' in every prompt?",
+      "prompt": "out/kubrick is a copy of examples/three-shot. Make it look like a Stanley Kubrick film while keeping it renderable, change any card that breaks that look, then compile the Veo prompts into out/kubrick/compiled/veo.",
       "files": [],
-      "expectations": [
-        "the reply advises against relying on the director's name in the prompt",
-        "the reply translates the style into concrete devices (for example one-point perspective, symmetry, wide lens close, Steadicam following)",
-        "the reply says to state the look once and keep it identical in every shot's prompt",
-        "judge: the devices named are recognisably Kubrick's, not generic 'cinematic' words (2 of 3 votes)"
+      "checks": [
+        [
+          "python",
+          "evals/check_kubrick.py",
+          "{work}"
+        ]
       ],
-      "baseline": "2026-10-04, one run, same setup: passed without the skill (advised against the name, listed Kubrick devices, said to keep them consistent). Does not discriminate; replace in S6 with a case that needs a translated style or the diff.",
-      "runs": 3
+      "expectations": [
+        "check: the style bible stays 16:9, names the kubrick card in history and sets allowed_moves and lens_family; continuity diff has no errors and no MOVE or LENS warnings; no compiled Veo prompt or style field names Kubrick (evals/check_kubrick.py exits 0)",
+        "judge: the look is carried by concrete devices (for example one-point perspective, symmetry, a wide lens close, slow dolly or Steadicam), not by the director's name (2 of 3 votes)"
+      ],
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/kubrick"
+        ]
+      ],
+      "plugins": [
+        "cinewright"
+      ]
     }
   ]
 }

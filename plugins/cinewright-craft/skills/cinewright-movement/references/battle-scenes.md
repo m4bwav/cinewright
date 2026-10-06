@@ -16,7 +16,7 @@ sources: ["Steven D. Katz, Film Directing Shot by Shot, 1991", "Daniel Arijon, G
 - Make the sides readable in one glance: one color and one silhouette each (banner color, helmet shape), in the wardrobe strings and the color script (cinewright-design).
 - Split the battle into 3-5 phases (approach, clash, turn, rout, aftermath). Each phase is a scene in `scenes.json` with its own light, weather and smoke state; damage and dirt move forward as wardrobe stages.
 - Cover each phase as geography plus small fights: an establishing wide, then the hero's fight as single exchanges (entry fights-and-stunts), reactions, and a re-establishing wide every four cards.
-- Scale without a rendered crowd (entry hard-subjects): 1-5 large figures in the foreground, the mass as silhouettes in dust or smoke behind, long lenses to stack depth. The wide army shot is built in compositing by tiling separate generations of small groups (cinewright-finish, planned in S5), or left implied by sound.
+- Scale without a rendered crowd (entry hard-subjects): 1-5 large figures in the foreground, the mass as silhouettes in dust or smoke behind, long lenses to stack depth. The wide army shot is built in compositing by tiling separate generations of small groups (cinewright-finish, entry crowd-multiplication), or left implied by sound (cinewright-sound, entry battle-sound). Cutting it: cinewright-edit, entry cutting-a-battle.
 - Charges and cavalry: one or two riders side-on and large; the line is background dust.
 - Keep the camera simple in combat cards: static, one slow move, or handheld only if the style allows it.
 - Check the model card and the brief's rating before writing blood, wounds or death.

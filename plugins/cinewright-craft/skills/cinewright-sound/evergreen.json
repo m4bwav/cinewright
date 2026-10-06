@@ -1,0 +1,86 @@
+{
+  "evergreen": "1.0",
+  "name": "cinewright-sound",
+  "kind": "skill",
+  "main": "SKILL.md",
+  "files": {
+    "research": "RESEARCH.md",
+    "changelog": "CHANGELOG.md",
+    "learnings": "LEARNINGS.md",
+    "tests": "TESTS.md"
+  },
+  "protocol": "plugin",
+  "source": null,
+  "topic": "Sound design and mixing for AI video: layers and stems, foley, ambience, music spotting, Chion's terms, generated audio, battle sound, mixing to loudness targets (EBU R128, ATSC A/85, Netflix, web)",
+  "tier": "moderate",
+  "interval_days": 30,
+  "last_checked": "2026-10-04",
+  "next_due": "2026-11-03",
+  "verify_at_use": false,
+  "volatile_claims": [],
+  "contradiction": null,
+  "events": [],
+  "streak": {
+    "quiet": 0,
+    "pinned_min": 0,
+    "pinned_max": 0,
+    "vau_quiet": 0
+  },
+  "history": [
+    {
+      "date": "2026-10-04",
+      "m": null,
+      "interval_after": 30,
+      "note": "created"
+    }
+  ],
+  "counts": {
+    "learnings": 2,
+    "changes": 1,
+    "research": 1,
+    "tests": 4
+  },
+  "consolidate_every": 25,
+  "tests": {
+    "last_run": "2026-10-05T22:57",
+    "harness": "evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive)",
+    "env": "windows/claude-code",
+    "cases": 7,
+    "passed": 3,
+    "failed": 4,
+    "failing": [
+      "decoy-1",
+      "decoy-3",
+      "action-1",
+      "outcome-1"
+    ],
+    "last_failure": {
+      "date": "2026-10-05",
+      "note": "Mixed harness: rev 2 (a refused command covers that command only) for the 2026-10-05 reruns of the Sonnet and Opus failures, rev 1 for the rest; a full rev-2 rerun is deferred for budget. Haiku-only f"
+    },
+    "research_after_days": null
+  },
+  "worth": {
+    "checked": "2026-10-05",
+    "skills": {
+      "cinewright-sound": {
+        "verdict": "KEEP",
+        "why": "a real gain: +56 points (noise margin 37) at 1.36x the cost",
+        "body_tokens": 806,
+        "listing_tokens": 68,
+        "specific_share": 0.77,
+        "delta": 0.56,
+        "cost_ratio": 1.36,
+        "modes": [],
+        "gaps": 0,
+        "checked": "2026-10-05",
+        "uses": {
+          "days": 60,
+          "interactive": 0,
+          "subagent": 0,
+          "headless": 0
+        }
+      }
+    }
+  }
+}

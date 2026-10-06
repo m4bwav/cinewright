@@ -41,6 +41,16 @@
       "runs": 3
     },
     {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Animate a smooth camera fly-through of my three.js city scene.",
+      "expectations": [
+        "the cinewright-shots skill is not invoked (a three.js camera path, threewright's job)"
+      ],
+      "runs": 3
+    },
+    {
       "id": "action-1",
       "kind": "action",
       "prompt": "Print the shot list for the project in examples/three-shot in cut order, then tell me which shots could share one generation on Kling 3.0.",
@@ -52,7 +62,7 @@
         "tool": "Bash",
         "input_match": "cine\\.py\\s+cards\\s+list"
       },
-      "baseline": "2026-10-04, one run, Sonnet, claude -p in a scratch folder holding only a copy of examples/three-shot, no cinewright installed: read every card and wrote the shot list table by hand, then answered the Kling grouping from the cards; 13 turns, no cine.py call, so the action evidence is absent. The answer was usable, so S6 should judge the outcome case, where blocking and coverage choices matter.",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     },
     {
@@ -61,13 +71,29 @@
       "prompt": "Plan the shots for this scene in out/sisters: two sisters argue in a kitchen at night; the younger one leaves. Use the bibles you write there.",
       "files": [],
       "expectations": [
-        "`python scripts/cine.py cards validate out/sisters` ends with 0 errors",
-        "`python scripts/cine.py continuity diff out/sisters` ends with 0 errors",
+        "check: `python scripts/cine.py cards validate out/sisters` ends with 0 errors",
+        "check: `python scripts/cine.py continuity diff out/sisters` ends with 0 errors",
         "a wide or master shot comes before the first single, and there is at least one insert or reaction",
         "judge: singles in the shot-reverse pair share size and lens (2 of 3 votes)"
       ],
-      "baseline": "not run separately; S6 runs it without the skill.",
-      "runs": 3
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "runs": 3,
+      "checks": [
+        [
+          "python",
+          "scripts/cine.py",
+          "cards",
+          "validate",
+          "{work}/out/sisters"
+        ],
+        [
+          "python",
+          "scripts/cine.py",
+          "continuity",
+          "diff",
+          "{work}/out/sisters"
+        ]
+      ]
     }
   ]
 }

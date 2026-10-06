@@ -41,6 +41,16 @@
       "runs": 3
     },
     {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Check my phone video for dropped frames and audio sync before I upload it to YouTube.",
+      "expectations": [
+        "the cinewright-qc skill is not invoked (generic video checking of live footage)"
+      ],
+      "runs": 3
+    },
+    {
       "id": "action-1",
       "kind": "action",
       "prompt": "Write the QC checklist for card 1B of the project in examples/three-shot, so I can judge its first take.",
@@ -52,7 +62,7 @@
         "tool": "Bash",
         "input_match": "cine\\.py\\s+qc\\s+rubric"
       },
-      "baseline": "2026-10-03, not run yet; S6 runs it without the skill.",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     },
     {
@@ -66,7 +76,7 @@
         "the identity fix keeps the bible's identity string verbatim (braid included) rather than rewording it",
         "judge: the seed advice is right for an end-of-clip or whole-clip problem, never 'change everything' (2 of 3 votes)"
       ],
-      "baseline": "2026-10-03, not run yet; S6 runs it without the skill.",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     }
   ]

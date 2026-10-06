@@ -45,3 +45,4 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: C-20261003-2 (shared/lib/cine.py card_parts, failures-picture eyeline-wrong row), confirmed 2026-10-03 by a same-seed re-render
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-03
+

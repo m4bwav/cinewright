@@ -37,3 +37,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: C-20261003-1 (references/identity-strings.md, references/ai-continuity.md), confirmed 2026-10-03
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-03
+
+### L-005 · 2026-10-05 · Report the diff's errors, not every doubt
+- Trigger: 2026-10-05, S6 continuity outcome-1 (two one-word plants: the scar side in 1B, a grey sweater in 1A): Opus ran the diff and named both, then listed a correct key-light flip on 1C, take faults from takes.md and optional fields as further errors; judged "no invented errors" 0 of 3 in 2 of 3 runs
+- Hypothesis: The Output section asked for "any call the rules could not make" with no rank, so a thorough model adds every by-eye doubt beside the diff's real errors
+- Rule: Report as errors only what the diff or a named rule finds; put one by-eye doubt last as a question
+- Evidence: C-20261005-1 (SKILL.md Output); confirmed T-20261005-1: outcome-1 Sonnet and Opus 3 of 3 after the edit
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-05

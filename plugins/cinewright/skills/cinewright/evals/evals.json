@@ -41,22 +41,28 @@
       "runs": 3
     },
     {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Make a 10-second looping video of a spinning cube in three.js and export it as an mp4.",
+      "expectations": [
+        "the cinewright skill is not invoked (a three.js render, threewright's job)"
+      ],
+      "runs": 3
+    },
+    {
       "id": "action-1",
       "kind": "action",
       "prompt": "Plan a three-shot AI film from this idea: a girl finds a lost robot in the rain. Put the project in out/robot.",
       "expectations": [
-        "the action happened, proven by the evidence below (a tool call in the trace or a written file), not by the reply saying so"
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
       ],
       "evidence": {
         "type": "trace",
         "tool": "Bash",
-        "input_match": "cine\\.py\\s+cards\\s+(new|validate)",
-        "or": {
-          "type": "file",
-          "path": "out/robot/bibles/characters.json"
-        }
+        "input_match": "cine\\.py\\s+cards\\s+(new|validate)"
       },
-      "baseline": "2026-10-03, one run, Sonnet, claude -p in a bare folder without cinewright: invoked a local-render image and video skill, wrote a film.json, three per-shot prompt files and a plan.md; no bibles, no shot cards, no continuity check. Evidence absent (no cine.py call, no bibles/characters.json).",
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
     },
     {
@@ -65,13 +71,29 @@
       "prompt": "Plan a three-shot AI film from this idea: a girl finds a lost robot in the rain. Put the project in out/robot, then check it.",
       "files": [],
       "expectations": [
-        "`python scripts/cine.py cards validate out/robot` ends with 0 errors",
-        "`python scripts/cine.py continuity diff out/robot` ends with 0 errors",
+        "check: `python scripts/cine.py cards validate out/robot` ends with 0 errors",
+        "check: `python scripts/cine.py continuity diff out/robot` ends with 0 errors",
         "every card has duration_s between 3 and 8 and exactly one camera.move",
         "judge: the three cards tell the idea in order (2 of 3 votes)"
       ],
-      "baseline": "not yet run",
-      "runs": 3
+      "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
+      "runs": 3,
+      "checks": [
+        [
+          "python",
+          "scripts/cine.py",
+          "cards",
+          "validate",
+          "{work}/out/robot"
+        ],
+        [
+          "python",
+          "scripts/cine.py",
+          "continuity",
+          "diff",
+          "{work}/out/robot"
+        ]
+      ]
     }
   ]
 }

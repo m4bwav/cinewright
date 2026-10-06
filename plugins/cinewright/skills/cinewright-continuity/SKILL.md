@@ -42,7 +42,7 @@ Rules the diff cannot see (read once per film): `kb show ai-continuity`, `kb sho
 
 ## Output
 
-The diff summary line, each fix as `card field: old -> new`, and any call the rules could not make, for the user to decide.
+The diff summary line, each of its errors and warnings with its fix as `card field: old -> new`, and any call the rules could not make, for the user to decide. Report as errors only what the diff or a named rule finds; a doubt from reading by eye goes last, as one question, never as an error.
 
 ## While working: capture learnings
 
