@@ -75,7 +75,7 @@
         "the reply says the reference image outranks the prompt text",
         "the reply says to paint the marks out of the reference before using it, keeping the original",
         "the reply says to check the cleaned reference at full size",
-        "judge: no advice to rely on a stronger negative prompt as the fix (2 of 3 votes)"
+        "judge: the fix offered is cleaning the reference, not a stronger or longer negative prompt; leaving the existing negative prompt in place as secondary is fine (2 of 3 votes)"
       ],
       "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3

@@ -55,6 +55,12 @@ BASH_ALLOW = [
     "Bash(cp:*)", "Bash(mkdir:*)", "Bash(ls:*)", "Bash(dir:*)", "Bash(cd:*)", "Bash(cat:*)", "Bash(head:*)",
     "Bash(tail:*)", "Bash(echo:*)", "Bash(wc:*)",
 ]
+# Said to both arms. Interactively a command outside the allow list prompts the user; under dontAsk it is refused with
+# "Permission to use Bash has been denied", which Opus read as the whole shell being off and stopped before cine.py
+# (8 of 67 Opus runs with a refusal, every Opus action failure in round 2). Names no tool, so the baseline learns nothing.
+UNATTENDED = ("This is an unattended run with no one to approve commands. A shell command that would need approval is "
+              "refused instead of asked; the refusal covers that command only, and other commands may still run.")
+HARNESS_REV = 2  # recorded on every result; 1 (no field) ran without UNATTENDED
 LOCK = threading.Lock()
 LIMITED = threading.Event()  # set when a run hits a usage limit: queued runs are skipped, rerun them later
 
@@ -182,7 +188,8 @@ def claude_args(prompt, model, arm, plugin_copy, kind, case):
     a = [claude_exe(), "-p", "--output-format", "stream-json", "--verbose",
          "--no-session-persistence", "--model", model, "--restricted", "--strict-mcp-config",
          "--permission-mode", "dontAsk", "--tools", ",".join(tools), "--disallowedTools", *DENY,
-         "--allowedTools", *allow, "--max-turns", str(case.get("max_turns") or MAX_TURNS[kind])]
+         "--allowedTools", *allow, "--max-turns", str(case.get("max_turns") or MAX_TURNS[kind]),
+         "--append-system-prompt", UNATTENDED]
     if arm == "with":
         for d in plugin_copy:  # the plugin under test, then any the case also needs (`plugins`)
             a += ["--plugin-dir", str(d), "--add-dir", str(d)]
@@ -461,7 +468,7 @@ def one(job, out, keep):
          "cost_usd": res.get("total_cost_usd"), "turns": res.get("num_turns"), "seconds": meta["seconds"],
          "exit": meta["exit"], "stopped_early": meta["stopped_early"], "skills_called": skills_called(uses),
          "tools": [u[1] for u in uses], "outside": outside[:20], "contaminated": touched, "trace": str(trace),
-         "workdir": str(work)}
+         "workdir": str(work), "harness": HARNESS_REV}
     r["environment"] = env_problem(events, meta, arm, name)
     if r["environment"] and "limit" in r["environment"]:
         LIMITED.set()
