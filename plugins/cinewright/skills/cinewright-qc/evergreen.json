@@ -42,11 +42,11 @@
     "learnings": 2,
     "changes": 4,
     "research": 1,
-    "tests": 4
+    "tests": 5
   },
   "consolidate_every": 25,
   "tests": {
-    "last_run": "2026-10-05T21:00",
+    "last_run": "2026-10-05T22:57",
     "harness": "evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive)",
     "env": "windows/claude-code",
     "cases": 7,
@@ -59,7 +59,7 @@
     ],
     "last_failure": {
       "date": "2026-10-05",
-      "note": "Tuning rounds 1 and 2: value cases rerun on all models with a 60-turn cap and full-reply judging; triggers of the ten skills whose descriptions changed rerun. Haiku 4.5 failures are mostly the skill n"
+      "note": "Mixed harness: rev 2 (a refused command covers that command only) for the 2026-10-05 reruns of the Sonnet and Opus failures, rev 1 for the rest; a full rev-2 rerun is deferred for budget. Haiku-only f"
     },
     "research_after_days": null
   },
@@ -74,12 +74,12 @@
     "skills": {
       "cinewright-qc": {
         "verdict": "TRIM",
-        "why": "a real gain (+61 points (noise margin 23)) at 2.22x the cost; cut the general advice and re-run to keep the gain for less",
+        "why": "a real gain (+72 points (noise margin 21)) at 1.82x the cost; cut the general advice and re-run to keep the gain for less",
         "body_tokens": 985,
         "listing_tokens": 73,
         "specific_share": 0.71,
-        "delta": 0.61,
-        "cost_ratio": 2.22,
+        "delta": 0.72,
+        "cost_ratio": 1.82,
         "modes": [],
         "gaps": 0,
         "checked": "2026-10-05",

@@ -38,11 +38,11 @@
     "learnings": 2,
     "changes": 1,
     "research": 1,
-    "tests": 3
+    "tests": 4
   },
   "consolidate_every": 25,
   "tests": {
-    "last_run": "2026-10-05T21:00",
+    "last_run": "2026-10-05T22:57",
     "harness": "evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive)",
     "env": "windows/claude-code",
     "cases": 7,
@@ -55,7 +55,7 @@
     ],
     "last_failure": {
       "date": "2026-10-05",
-      "note": "Tuning rounds 1 and 2: value cases rerun on all models with a 60-turn cap and full-reply judging; triggers of the ten skills whose descriptions changed rerun. Haiku 4.5 failures are mostly the skill n"
+      "note": "Mixed harness: rev 2 (a refused command covers that command only) for the 2026-10-05 reruns of the Sonnet and Opus failures, rev 1 for the rest; a full rev-2 rerun is deferred for budget. Haiku-only f"
     },
     "research_after_days": null
   },
