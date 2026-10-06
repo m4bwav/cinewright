@@ -23,7 +23,8 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 ## Step 2: assemble and trim
 
 1. Every card in order, then set in and out points: after the head's settle frames, before the tail's drift (`kb show cutting-around-bad-frames`).
-2. Faults the edit cannot fix (identity, a changed prop, a held wrong eyeline) go back to cinewright-qc with a failure code. Say so; do not hide them.
+2. A fault under 1 s mid-shot: cover it with a cutaway or reaction of at least 1 s, or cut on action across it. The rule: a fault with clean frames to cut to is the edit's.
+3. Faults through the whole shot (identity, a changed prop, a held wrong eyeline) go back to cinewright-qc with a failure code. Say so; do not hide them.
 
 ## Step 3: cut
 

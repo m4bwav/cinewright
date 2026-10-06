@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261005-1 · 2026-10-05 · Step 1: rubric without a clip, never by hand (S6)
+- because: T-20261004-1, L-003
+- files: SKILL.md
+- Step 1 says `--clip` is left out before the first take and that the checklist is never written by hand
+
 ### C-20261004-3 · 2026-10-04 · Description tuned (S6)
 - because: T-20261004-1
 - files: SKILL.md

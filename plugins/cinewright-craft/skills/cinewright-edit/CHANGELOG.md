@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261005-1 · 2026-10-05 · Step 2 covers a mid-shot fault and states the rule (S6)
+- because: T-20261004-2, L-004
+- files: SKILL.md
+- Step 2 gains the mid-shot cover (a cutaway or reaction of at least 1 s, or a cut on action) and the edit-or-re-render rule
+
 ### C-20261004-2 · 2026-10-04 · Description tuned (S6)
 - because: T-20261004-2, L-003
 - files: SKILL.md

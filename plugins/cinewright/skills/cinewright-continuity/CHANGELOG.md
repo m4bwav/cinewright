@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261005-1 · 2026-10-05 · Output ranks the diff's errors above by-eye doubts (S6)
+- because: T-20261004-1, L-005
+- files: SKILL.md
+- The Output section reports as errors only what the diff or a named rule finds, and puts one by-eye doubt last as a question
+
 ### C-20261004-1 · 2026-10-04 · Thirty-degree rule shared with cinewright-shots; prop bible and two new diff codes
 - because: user request (cinewright S3); first local render's prop drift (cinewright-design L-003)
 - files: references/thirty-degree-rule.md (now a copy of shared/vocab), references/shot-checklist.md, SKILL.md, needs.json

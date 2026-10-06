@@ -41,7 +41,7 @@ STRIP = {"README.md", "design.md", "compiled"}  # files that hold the answers or
 MODELS = ["haiku", "sonnet", "opus"]
 JUDGE_MODEL = "sonnet"
 JUDGE_VOTES = 3
-MAX_TURNS = {"trigger": 5, "action": 30, "outcome": 30}
+MAX_TURNS = {"trigger": 5, "action": 60, "outcome": 60}  # 30 cut Sonnet off mid-task
 TIMEOUT = {"trigger": 300, "action": 1200, "outcome": 1200}
 TOOLS = ["Read", "Write", "Edit", "Bash"]
 DENY = ["WebFetch", "WebSearch", "Agent", "Task", "Glob", "Grep", "ToolSearch", "PowerShell", "NotebookEdit"]
@@ -351,6 +351,8 @@ def written_files(work, limit=24000):
             continue
         rel = f.relative_to(work).as_posix()
         orig = EXAMPLE / Path(rel).relative_to("examples/three-shot") if rel.startswith("examples/three-shot/") else None
+        if orig and Path(rel).relative_to("examples/three-shot").parts[0] in STRIP:
+            orig = None  # stripped from the fixture, so the run wrote it, even when it matches the repository's copy
         if orig and orig.is_file() and orig.read_bytes() == f.read_bytes():
             continue
         t = f.read_text(encoding="utf-8", errors="replace")[:6000]
