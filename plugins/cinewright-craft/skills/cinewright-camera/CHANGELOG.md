@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261005-1 · 2026-10-05 · "lighting a shot", not "a scene" (S6)
+- because: T-20261004-2, L-002
+- files: SKILL.md
+- After C-20261004-2, "lighting a scene" drew the three.js lights decoy (decoy-3, Sonnet 1 of 3); "a shot" keeps the film sense
+
 ### C-20261004-2 · 2026-10-04 · Description tuned (S6)
 - because: T-20261004-2, L-002
 - files: SKILL.md
