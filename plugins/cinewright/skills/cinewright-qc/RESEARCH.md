@@ -1,6 +1,6 @@
 # Research: cinewright-qc
 
-Findings that back [SKILL.md](SKILL.md). Changes they caused are logged in [CHANGELOG.md](CHANGELOG.md); procedural lessons live in [LEARNINGS.md](LEARNINGS.md); test runs and their evidence in [TESTS.md](TESTS.md); schedule and state in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
+Findings that back [SKILL.md](SKILL.md). What it needs installed (ffmpeg): [SETUP.md](SETUP.md). Changes they caused are logged in [CHANGELOG.md](CHANGELOG.md); procedural lessons live in [LEARNINGS.md](LEARNINGS.md); test runs and their evidence in [TESTS.md](TESTS.md); schedule and state in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
 Topic: Quality control of AI-generated video takes against shot cards. Tier `moderate`. Last refresh 2026-10-03; next due 2026-11-02.
 
