@@ -603,9 +603,12 @@ def kb_parser():
 
 # ---------- scrub ----------
 
-SCRUB_PATTERNS = PRIVATE_PATTERNS + [
+SCRUB_PATTERNS = [
+    # a drive path, but not a string escape such as "s:\n" or "d:\t"
+    (re.compile(r"(?<![A-Za-z])[A-Za-z]:(?:/[A-Za-z]|\\(?![ntr]\b)[A-Za-z])"), "local drive path"),
+] + PRIVATE_PATTERNS[1:] + [
     (re.compile(r"\bDESKTOP-[A-Z0-9]{5,}\b"), "hostname"),
-    (re.compile(r"\b[\w-]+\.(?:local|lan|home\.arpa)\b"), "hostname"),
+    (re.compile(r"\b[\w-]+\.(?:local|lan|home\.arpa)\b(?!\.\w)"), "hostname"),  # not CLAUDE.local.md
     (re.compile(r"\b172\.(?:1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3}\b"), "LAN address"),
     (re.compile(r"(?i)\b(?:GTX|RX) ?\d{3,4}\b|\bGeForce\b"), "GPU model"),
     (re.compile(r"/(?:Users|home)/[a-z][\w.-]+", re.I), "home path"),

@@ -6,11 +6,11 @@ Contents: 1 Request · 2 Local prior art · 3 Film roles and checkable rules · 
 
 ## 1. Request
 
-Mark's words: `D:/m4bwa/Claude/Projects/Ai/prompts/Cinematography Plugin Prompt.md`. In short: an evergreen plugin set with a knowledge base and skills for every film role (writer, choreographer, set designer, film historian, camera, sound, VFX, ...) plus AI video generation and editing. Used mostly with generated video. The problem to solve is generated clips that are random and incoherent; the goal is video that is both artistically and technically correct. Public repo, installable on Claude Desktop, Claude Code and GitHub Copilot. Ultimate, but never wasteful with tokens: small docs with pointers.
+The maintainer's request (kept in the private notes): an evergreen plugin set with a knowledge base and skills for every film role (writer, choreographer, set designer, film historian, camera, sound, VFX, ...) plus AI video generation and editing. Used mostly with generated video. The problem to solve is generated clips that are random and incoherent; the goal is video that is both artistically and technically correct. Public repo, installable on Claude Desktop, Claude Code and GitHub Copilot. Ultimate, but never wasteful with tokens: small docs with pointers.
 
-## 2. Local prior art (read before designing; do not copy private details into the public repo)
+## 2. Local prior art (paths and project names are in the maintainer's private notes)
 
-- `D:/m4bwa/Claude/Projects/Ai/comfyui-gen/skills/comfyui-gen/LEARNINGS.md`: MiniMax H3 lessons. The ones that generalise:
+- Field lessons from the maintainer's local MiniMax H3 renders. The ones that generalise:
   - L-005: chained clips lose identity and prop continuity; the splice reads as a pause.
   - L-010: reference images keep characters on-model (name them in the prompt).
   - L-011: independent shots cut together read as the scene restarting; write cuts inside one long render, seams only at real changes of place, carry sound across cuts.
@@ -21,12 +21,11 @@ Mark's words: `D:/m4bwa/Claude/Projects/Ai/prompts/Cinematography Plugin Prompt.
   - L-017: turnaround sheets hold identity across views; crop views into separate references.
   - L-019: the model copies small emblems from references; clean references first.
   - L-020/021: hard subjects (horse teams, wagons): side view, few, large in frame.
-- `comfyui-gen/skills/comfyui-gen/h3_film.py` + `h3_tools.py`: a multi-shot `film.json` (shots, seeds, refs, guide frames, audio crossfades) and review helpers (contact sheet, frame grab, rewrite named shots, new pass with new seeds). cinewright's shot-list format should export to this.
-- `comfyui-gen/ai-docs/notes/2026-09-29-*` (battle film research, visual bible, reference sets) and `ai-docs/plans/2026-09-29-*-prompt.md` (day-iteration prompts); review logs `D:/ComfyUI/output/video/NIGHT_2026-09-28.md`, `DAY_2026-09-29.md`.
-- `D:/m4bwa/Claude/Projects/Ai/video-pipeline/README.md`: idea → local LLM writes structured shot prompts (style line, scene, timeline with sound, avoid list) → ComfyUI. Sections "Multi-shot films", "Keeping a character consistent", "Who is in which shot".
-- `austin-shootout-video/` and `campfire-video/`: deterministic three.js films (threewright). One cue timeline drives picture and sound; 2.39:1; mixed to -16.7 LUFS.
-- Template repo: `D:/m4bwa/Claude/Projects/Ai/threewright/` (`.claude-plugin/plugin.json` + `marketplace.json`, `AGENTS.md`, `CLAUDE.md` = `@AGENTS.md`, `.github/copilot-instructions.md` one line, `skills/<name>/{SKILL.md 42-59 lines, RESEARCH.md, CHANGELOG.md, LEARNINGS.md, TESTS.md, evergreen.json, evals/}`, `kb/{SCHEMA.md, INDEX.md + index.json generated, topics/ scenarios/ recipes/ rules/}`, `scripts/tw.mjs`, `evals/headless/`). Its SKILL.md: "read kb/INDEX.md once per session, then kb search / kb show <slug> --section; never read the whole kb/". chartwright (`Ai/chartwright`, `scripts/cw.py`) does the same.
-- Evergreen spec: `D:/m4bwa/Claude/Projects/Ai/evergreen-protocol/protocol/PROTOCOL.md` (§2 unit anatomy, §10 indexes), `INTERVALS.md` (tiers: live, fast 3-21d, moderate 14-90d, slow 60-365d, glacial 270-900d), `PORTABILITY.md` (harness matrix), `TESTING.md`, `LEARNINGS-FORMAT.md`, `templates/`. Budgets: main file ideally < 200 lines (cap 500); RESEARCH current understanding < 60 lines; TESTS < 150; index ≈ 200 lines / 3k tokens, one line per entry `[title](path): when to read it`.
+- A local ComfyUI film runner: a multi-shot `film.json` (shots, seeds, refs, guide frames, audio crossfades) and review helpers (contact sheet, frame grab, rewrite named shots, new pass with new seeds). cinewright's shot-list format should export to this.
+- A local shot-prompt pipeline: idea, then a local LLM writes structured shot prompts (style line, scene, timeline with sound, avoid list), then ComfyUI.
+- Deterministic three.js films (threewright): one cue timeline drives picture and sound; 2.39:1; mixed to -16.7 LUFS.
+- Template repo: threewright (`.claude-plugin/plugin.json` + `marketplace.json`, `AGENTS.md`, `CLAUDE.md` = `@AGENTS.md`, `.github/copilot-instructions.md` one line, `skills/<name>/{SKILL.md 42-59 lines, RESEARCH.md, CHANGELOG.md, LEARNINGS.md, TESTS.md, evergreen.json, evals/}`, `kb/{SCHEMA.md, INDEX.md + index.json generated, topics/ scenarios/ recipes/ rules/}`, `scripts/tw.mjs`, `evals/headless/`). Its SKILL.md: "read kb/INDEX.md once per session, then kb search / kb show <slug> --section; never read the whole kb/". chartwright (`scripts/cw.py`) does the same.
+- Evergreen spec: the evergreen protocol's `PROTOCOL.md` (§2 unit anatomy, §10 indexes), `INTERVALS.md` (tiers: live, fast 3-21d, moderate 14-90d, slow 60-365d, glacial 270-900d), `PORTABILITY.md` (harness matrix), `TESTING.md`, `LEARNINGS-FORMAT.md`, `templates/`. Budgets: main file ideally < 200 lines (cap 500); RESEARCH current understanding < 60 lines; TESTS < 150; index ≈ 200 lines / 3k tokens, one line per entry `[title](path): when to read it`.
 
 ## 3. Film roles and checkable rules
 

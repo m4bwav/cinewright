@@ -318,7 +318,7 @@ def evidence_ok(ev, uses, work):
         for _, tool, inp, err in uses:
             if tool == ev.get("tool") and not err:
                 s = inp.get("command") if tool == "Bash" else json.dumps(inp)
-                # slashes normalised and quotes dropped: python "C:/x/scripts/cine.py" continuity diff ...
+                # slashes normalised and quotes dropped: python "/abs/path/scripts/cine.py" continuity diff ...
                 if pat.search(re.sub(r"[\"']", "", str(s).replace("\\", "/"))):
                     ok, why = True, "trace: %s %s" % (tool, str(s)[:200])
                     break

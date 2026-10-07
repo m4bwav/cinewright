@@ -2,7 +2,7 @@
 
 Film craft for AI video. cinewright makes an agent plan a film like a crew and check it like a script supervisor, so separately generated shots keep the same people, wardrobe, props, eyelines, screen direction and light. Each shot is a generator-neutral shot card; a compiler turns a card plus the project's bibles into a given model's prompt.
 
-Status: early development (0.0.1), private. Not ready to install.
+Status: 0.0.1, private while the install routes are proved; the repository opens at the first release.
 
 ## What is here
 
@@ -10,9 +10,20 @@ Status: early development (0.0.1), private. Not ready to install.
 |---|---|---|
 | `cinewright` | `cinewright` (director and router), `cinewright-shots` (shot list and coverage), `cinewright-continuity` (script supervisor), `cinewright-genvideo` (prompt compiler for nine models), `cinewright-qc` (take review with ffmpeg) | everyone |
 | `cinewright-craft` | `cinewright-script` (logline, beats, dialogue), `cinewright-design` (turnarounds, props, costume, color), `cinewright-movement` (weight, fights, battles, hard subjects), `cinewright-camera` (lens, light, format), `cinewright-history` (style cards), `cinewright-edit` (cutting, pacing), `cinewright-finish` (grade, crop, VFX, delivery), `cinewright-sound` (layers, mix, loudness) | deeper craft |
-| `cinewright-dev` | none yet (knowledge-base upkeep) | maintainers |
+| `cinewright-dev` | `cinewright-curate` (add, verify and retire knowledge-base entries; refresh model cards; works in a clone of this repository) | maintainers |
 
 A worked example lives in [examples/three-shot/](examples/three-shot/): a one-line idea taken through brief, script, shot list, bibles, design notes, a continuity diff that catches a planted error, and compiled Veo and MiniMax H3 prompts.
+
+## Install
+
+| Host | How |
+|---|---|
+| Claude Code | `/plugin marketplace add m4bwav/cinewright`, then `/plugin install cinewright@cinewright` (and `cinewright-craft@cinewright` for the craft skills) |
+| GitHub Copilot CLI | `copilot plugin marketplace add m4bwav/cinewright`, then `copilot plugin install cinewright@cinewright` |
+| Any agent with the GitHub CLI | `gh skill install m4bwav/cinewright cinewright-continuity --agent claude-code` (plain skill names; `--agent` picks the host folder) |
+| claude.ai | Customize > Skills > Upload skill, one ZIP per skill from the release assets |
+
+Install the core plugin first: the craft skills compile through `cinewright-genvideo`'s model cards. Installing copies the skill folders; nothing runs until a skill is used.
 
 ## What it runs and fetches
 
@@ -26,6 +37,8 @@ python scripts/cine.py kb lint           # schemas, links, copies, manifests
 python scripts/cine.py budget            # size budgets (green, yellow, red)
 python scripts/cine.py build             # copy shared/ into skills, rebuild indexes
 python scripts/cine.py zip cinewright-continuity   # claude.ai upload ZIP in dist/
+python scripts/cine.py kb due                      # entries past their re-check interval (cinewright-curate)
+python scripts/cine.py scrub --names FILE          # private details in tracked files, before going public
 ```
 
 Edit shared vocabulary, schemas and the library in `shared/`, never the copies inside skills; `build` copies them and `kb lint` fails on drift. The plan is [ai-docs/plans/PLAN.md](ai-docs/plans/PLAN.md).
