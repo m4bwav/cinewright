@@ -6,6 +6,8 @@
   "required": ["characters"],
   "additionalProperties": false,
   "properties": {
+    "pronounce": {"type": "object", "additionalProperties": {"type": "string"},
+      "description": "How names and invented words are said: the word as written -> the spelling the voice model reads. Used inside spoken lines only; the name stays as written everywhere else."},
     "characters": {
       "type": "array",
       "minItems": 1,

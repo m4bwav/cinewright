@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:4695778fe0039a94b309d71cb2168c39f1c939563b43d804786e1ad2f615725f; edit the source
+# copied from shared/lib/cine.py sha256:c08de2a7b4b20c07f134a8930923d3a3900c18d405fc47df8cca4ff17a457ccd; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -346,6 +346,8 @@ class Project:
             self.cards = [c for c in self.cards if c.get("id") != new.get("id")] + [new]
         self.cards.sort(key=lambda c: c.get("order", 0))
         self.chars = bible_entries(self.characters, "characters", "id", "characters.json", "character-bible")
+        # how names and invented words are said: respelled inside spoken lines only (library test, 2026-10-07)
+        self.pronounce = self.characters.get("pronounce", {})
         self.locs = bible_entries(self.locations, "locations", "id", "locations.json", "location-bible")
         self.scene_map = bible_entries(self.scenes, "scenes", "id", "scenes.json", "scene-axis-bible")
         self.props = bible_entries(self.props_bible or {}, "props", "name", "props.json", "prop-bible")
@@ -636,6 +638,25 @@ def continuity_diff(p):
         if words > room:
             add("warning", card, "DIALOGUE", "%d words of dialogue in %ss; at %.1f words a second the shot holds %d: cut the line or lengthen the shot" % (
                 words, card.get("duration_s"), SPEECH_WPS, int(room)))
+        in_shot = [m.get("id") for m in card.get("cast", [])]
+        talkers = []
+        for d in card.get("dialogue", []):
+            who = d.get("character")
+            if who not in talkers:
+                talkers.append(who)
+            if who not in in_shot:
+                add("warning", card, "OFFSCREEN", "%s speaks but is not in the shot; video models give a line to a face they can see. Put %s in the shot "
+                    "or cut to them for the line; kept off screen, compile writes a voiceover where the model has one, else lay the line in the mix" % (who, who))
+            tone = d.get("tone", "").strip()
+            if SPEECH_VERBS.match(tone):
+                add("warning", card, "TONE", "tone '%s' starts with a verb and is pasted after 'says'; write it as an adverb or phrase ('quietly', 'under his breath')" % tone)
+            for name in sorted({w for c in p.chars.values() for w in re.findall(r"[A-Z][\w'-]+", c.get("name", ""))}):
+                if len(name) > 2 and re.search(r"(?<!\w)%s(?!\w)" % re.escape(name), d.get("line", "")) and name not in p.pronounce:
+                    add("warning", card, "PRONOUNCE", "'%s' is spoken and the voice model guesses how to say a name; add it to characters.json pronounce "
+                        "(a respelling, or the name itself when any reading is fine)" % name)
+        if len(talkers) > 1:
+            add("warning", card, "SPEAKERS", "%d speakers in one shot (%s); lines from two people in one clip come out in the wrong mouth: "
+                "one speaker per card, cut to the listener for the answer" % (len(talkers), ", ".join(talkers)))
         hard = HARD_SUBJECT.search("%s %s" % (action, card.get("subject", "")))
         if hard and cam.get("size") in ("EWS", "WS"):
             add("warning", card, "HARD-SUBJECT", "'%s' in a %s: many small figures come out with broken legs and clones; frame 1-5 of them large and side-on, "
@@ -700,6 +721,23 @@ def _cap(s):
 
 def _low(s):
     return s[:1].lower() + s[1:]
+
+
+def _and(names):
+    return names[0] if len(names) == 1 else "%s and %s" % (", ".join(names[:-1]), names[-1])
+
+
+def spoken(p, line):
+    """The line as the voice should say it: each word in characters.json `pronounce` swapped for its respelling."""
+    if not p.pronounce:
+        return line
+    pat = r"(?<!\w)(%s)(?!\w)" % "|".join(re.escape(w) for w in sorted(p.pronounce, key=len, reverse=True))
+    return re.sub(pat, lambda m: p.pronounce[m.group(1)], line)
+
+
+# Delivery notes are pasted after "says", so a tone that starts with a speech verb doubles it ("says mutters").
+SPEECH_VERBS = re.compile(r"^(says|said|mutters|murmurs|whispers|shouts|yells|screams|cries|calls|snaps|growls|hisses|roars|sighs|laughs|sobs|"
+                          r"barks|snarls|asks|replies|answers|tells|bellows|groans|moans|grumbles|stammers)\b", re.I)
 
 
 # Moves written as a sentence of type + amplitude + speed (Compile "move_style": "sentence").
@@ -817,13 +855,22 @@ def card_parts(p, card, prof, tags=None, speakers=None):
     parts["style"] = " ".join(_sentence(x) for x in (p.style["look"], p.style.get("lighting", ""), frame_words(p.style)) if x)
     lines = []
     if prof["dialogue"]:
+        in_shot = [m["id"] for m in card.get("cast", [])]
         for d in card.get("dialogue", []):
             ch = p.chars[d["character"]]
             tone = d.get("tone")
-            lines.append(_sentence(prof["dialogue"].format(
-                name=ch["name"], line=d["line"], tone=tone or "", tone_clause=(" " + tone) if tone else "",
+            # a speaker who is not in the shot: models lip-sync a face they can see, so a line written as plain
+            # "says" came out of the only visible mouth (library test, 2026-10-07). compile_cards warns either way.
+            off = d["character"] not in in_shot
+            tpl = prof.get("dialogue_offscreen") if off else prof["dialogue"]
+            if not tpl:
+                continue
+            quiet = [p.chars[i]["name"] for i in in_shot if i != d["character"]]
+            lines.append(_sentence(tpl.format(
+                name=ch["name"], line=spoken(p, d["line"]), tone=tone or "", tone_clause=(" " + tone) if tone else "",
                 tone_paren=(" (%s)" % tone) if tone else "", speaker=speakers.get(d["character"], "S1"),
-                voice_clause=(" with a %s voice" % ch["voice"]) if ch.get("voice") else "")))
+                voice_clause=(" with a %s voice" % ch["voice"]) if ch.get("voice") else "",
+                silent_clause=prof["dialogue_silent"].format(names=_and(quiet)) if quiet and prof.get("dialogue_silent") else "")))
     parts["dialogue"] = " ".join(lines)
     parts["sound"] = _sentence(_cap(prof["audio"].format(sound=card["sound"].rstrip(".")))) if card.get("sound") and prof["audio"] else ""
     parts["audio"] = " ".join(x for x in (parts["dialogue"], parts["sound"]) if x)
@@ -965,6 +1012,18 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None):
             warnings.append("%d reference images, %s takes %d" % (len(refs), prof["model_id"], prof.get("max_reference_images", 0)))
         if not prof["dialogue"] and any(c.get("dialogue") for c in g):
             warnings.append("%s makes no speech: record the dialogue and lay it in the mix" % prof["model_id"])
+        elif prof["dialogue"]:
+            for c in g:
+                for d in c.get("dialogue", []):
+                    if d["character"] in [m["id"] for m in c.get("cast", [])]:
+                        continue
+                    who = p.chars[d["character"]]["name"]
+                    if prof.get("dialogue_offscreen"):
+                        warnings.append("%s: %s speaks off screen, compiled as an off-screen voiceover; in QC check that no visible mouth says it, "
+                                        "else lay the line in the mix" % (c["id"], who))
+                    else:
+                        warnings.append("%s: %s speaks off screen and %s has no voiceover syntax, so the line is left out of the prompt "
+                                        "(the model would give it to a visible face): record it and lay it in the mix" % (c["id"], who, prof["model_id"]))
         if not prof["audio"] and any(c.get("sound") for c in g):
             warnings.append("%s makes no sound: the sound goes in the mix" % prof["model_id"])
         words = len(text.split())
@@ -1219,7 +1278,9 @@ def rubric_items(p, card):
     lt = [sc["sun"]] if sc.get("sun") else []
     if light.get("key_side"):
         lt.append("%s key from %s" % (light.get("quality", "soft"), light["key_side"].replace("-", " ")))
-    audio = ["%s says: %s" % (p.chars[d["character"]]["name"], d["line"]) for d in card.get("dialogue", [])]
+    in_shot = [m["id"] for m in card.get("cast", [])]
+    audio = ["%s%s says: %s" % (p.chars[d["character"]]["name"], "" if d["character"] in in_shot else " (off screen, no visible mouth)", d["line"])
+             for d in card.get("dialogue", [])]
     if card.get("sound"):
         audio.append(card["sound"])
     base = {"look": p.style["look"], "light": "; ".join(lt) or "as the scene bible", "size": SIZE_WORDS[cam["size"]],

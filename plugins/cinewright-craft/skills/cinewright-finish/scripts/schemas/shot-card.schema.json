@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:af88c457787a6b2e6288fc2a352c73897adcd21eb4cd70841eef4d06bdb3f539; edit the source",
+  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:7d4ff9c7657cfd8dc623cd00048ab0b4f345fdbc319e2cec97c65ec434c95ba6; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Shot card",
   "description": "One shot, generator-neutral. Fields follow the shot list (slate, size, angle, move, lens, action, dialogue, duration) and the script supervisor's notes (camera side, screen direction, eyelines, wardrobe, props in hand, start and end state).",
@@ -222,7 +222,8 @@
             "maxLength": 200
           },
           "tone": {
-            "type": "string"
+            "type": "string",
+            "description": "Delivery, pasted after 'says': an adverb or phrase ('quietly', 'under his breath'), never a verb ('mutters')."
           }
         }
       }
