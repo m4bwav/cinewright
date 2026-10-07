@@ -1,5 +1,7 @@
 # cinewright
 
+![A cinema camera on a tripod aimed at a storyboard wall, with a strip of film across the desk](assets/banner.jpg)
+
 Film craft for AI video. cinewright makes an agent plan a film like a crew and check it like a script supervisor, so separately generated shots keep the same people, wardrobe, props, eyelines, screen direction and light. Each shot is a generator-neutral shot card; a compiler turns a card plus the project's bibles into a given model's prompt.
 
 Status: 0.1.0, the first release. Install routes proved on Windows 11: Claude Code, GitHub Copilot CLI and `gh skill`.
@@ -46,6 +48,8 @@ Edit shared vocabulary, schemas and the library in `shared/`, never the copies i
 ## Credits
 
 Ideas (not text) from MIT-licensed skill repositories, including DirectorSKILL: response-size ceilings, the repair cost ladder, one owning reference per dimension, continuing from the previous take's observed end state, one change per reroll. Film craft from Arijon, Block, Bordwell and Thompson, Brown, Cousins, Field, Katz, Landis, LoBrutto, Mascelli, McKee, Miller, Murch, Riley, Rowlands, Snyder, Thomas and Johnston, and Weston, cited in each entry.
+
+Banner image generated locally with Z-Image Turbo in ComfyUI, seed 18210612; prompt and workflow in [assets/banner-workflow.api.json](assets/banner-workflow.api.json).
 
 ## License
 
