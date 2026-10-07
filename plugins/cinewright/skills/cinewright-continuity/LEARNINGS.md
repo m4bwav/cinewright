@@ -45,3 +45,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: C-20261005-1 (SKILL.md Output); confirmed T-20261005-1: outcome-1 Sonnet and Opus 3 of 3 after the edit
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-05
+
+### L-006 · 2026-10-07 · claude.ai plugin skills cannot find their own folder from "the folder holding this file"
+- Trigger: 2026-10-07, S7c account routes: claude.ai Add marketplace m4bwav/cinewright, Opus 5.5 loaded `cinewright-continuity (cinewright)` and ran `cd /mnt/skills/plugins/cinewright:cinewright-continuity`, which does not exist; every `cine.py` call failed and it answered from general knowledge. The uploaded ZIP of the same skill ran Step 0 fine
+- Hypothesis: On the claude.ai plugin route the skill name is namespaced with the plugin and the folder path is not shown to the model, so it builds a path from the name
+- Rule: Open. A skill that runs its own script must say how to find its folder when the path is unknown (search for its `scripts/cine.py` next to this SKILL.md) instead of assuming the working folder; retest the claude.ai plugin route after the change
+- Evidence: notes/2026-10-06-s7-install-proof.md, "Account routes"
+- Scope: all 13 public skills (same CINE line)
+- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-07

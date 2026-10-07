@@ -316,3 +316,13 @@ Validation passed (four times)
 $ evergreen.py lint <each skill>
 14 skills: lint OK
 ```
+
+## [2026-10-07] release | S7c: v0.1.0 released, three account routes run
+
+- PR #14 merged by Mark. Before the tag: `scrub --names <sidecar scrub-names.txt>` 0 hits, `kb lint` 0 errors, budget GREEN, 80 tests OK; the 13 ZIPs rebuilt from main (46-73 KB) and their unzipped contents scanned for private strings: clean.
+- README still said "Status: 0.0.1, private": fixed in docs-only PR #15 (merged; the CI workflow is manual-dispatch only, so no checks ran; local checks above).
+- Tag `v0.1.0` on main fad9ec6, pushed. Release: https://github.com/m4bwav/cinewright/releases/tag/v0.1.0, 13 assets (one ZIP per public skill).
+- Account routes, Mark's yes in the session: claude.ai skill Upload PASS; claude.ai Add marketplace: trigger PASS, but the skill's scripts failed because the model guessed the plugin skill folder as `/mnt/skills/plugins/cinewright:cinewright-continuity`; VS Code Copilot Chat PASS through the Copilot CLI agent host (CLI install, settings change, `code chat`). Details and cleanup: [notes/2026-10-06-s7-install-proof.md](notes/2026-10-06-s7-install-proof.md). Lesson L-006 `claude-ai-plugin-skill-folder-unknown` in cinewright-continuity.
+- Blocked: a follow-up chat message asking claude.ai's sandbox to list `/mnt/skills` (to learn the real plugin folder) was refused by the auto-mode classifier; nothing was sent. The next session finds the folder another way.
+- Left for Mark: delete the uploaded test skill on claude.ai (permanent delete, switched off for now), remove the cinewright marketplace source there if the UI allows, close the VS Code window opened by `code chat -n`.
+- Follow-ups: CI still has only `workflow_dispatch` (written for the private period); the repo is public, so push and pull_request triggers on GitHub-hosted runners are now free.
