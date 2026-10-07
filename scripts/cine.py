@@ -604,7 +604,7 @@ def kb_parser():
 # ---------- scrub ----------
 
 SCRUB_PATTERNS = [
-    # a drive path, but not a string escape such as "s:\n" or "d:\t"
+    # a drive path, but not a letter, a colon and a string escape (backslash n, t or r)
     (re.compile(r"(?<![A-Za-z])[A-Za-z]:(?:/[A-Za-z]|\\(?![ntr]\b)[A-Za-z])"), "local drive path"),
 ] + PRIVATE_PATTERNS[1:] + [
     (re.compile(r"\bDESKTOP-[A-Z0-9]{5,}\b"), "hostname"),
