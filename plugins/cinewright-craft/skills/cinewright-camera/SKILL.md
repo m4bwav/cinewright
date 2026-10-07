@@ -1,6 +1,6 @@
 ---
 name: cinewright-camera
-description: "Cinematographer and gaffer for AI video: lens choice, depth of field, exposure, frame rate and shutter, aspect ratio and widescreen framing, lighting ratios and setups, color temperature. Use when lighting a shot, choosing lenses or format, or when light drifts between clips; period looks: cinewright-history. Also 'refresh cinewright-camera'."
+description: "Cinematographer and gaffer for AI video: lens choice, depth of field, exposure, frame rate and shutter, aspect ratio, lighting ratios and setups, color temperature. Use when lighting a shot, choosing lenses or format, or when light drifts between clips; period looks: cinewright-history. Also 'refresh cinewright-camera'."
 license: MIT
 ---
 
