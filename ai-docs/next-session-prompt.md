@@ -4,11 +4,11 @@ You are running the second half of stage S7 of cinewright, a plugin set for AI v
 
 ## Read first (only these, in order)
 
-1. `gh pr list -R m4bwav/cinewright --state all`. If the S7 PR (`s7/package` to `main`) is still open, or Mark commented on it, do what he asked first and stop there if he has not reviewed it. Once it is merged, branch `s7b/release` off `origin/main`.
-2. `ai-docs/HANDOFF.md` ("Waiting on Mark" lists his open answers), then the newest section of `ai-docs/log.md` (2026-10-06, "session S7").
+1. `gh pr list -R m4bwav/cinewright --state all`. If PR #11 (`s7b/release`, the dialogue fix from Mark's review of the library film) is still open, or Mark commented on it, do what he asked first and stop there if he has not reviewed it. Once it is merged, branch `s7b/routes` off `origin/main` (0.1.0 must carry that fix).
+2. `ai-docs/HANDOFF.md` ("Waiting on Mark" lists his open answers), then the newest sections of `ai-docs/log.md` (2026-10-07: the film test and the dialogue fix; 2026-10-06: session S7).
 3. `ai-docs/notes/2026-10-06-s7-install-proof.md` (routes, exact commands, quirks, cleanup).
 4. `ai-docs/plans/PLAN.md` section 9 (install routes), the S7 paragraph in section 10 and decision D5.
-5. If Mark has answered the runtime budget row question (`ai-docs/decisions/2026-10-04-proposed-runtime-budget-row.md`) or the description budget (4,082 of 4,000, yellow), apply his answer.
+5. If Mark has said how his audiobook pronounces the hero's name, or approved a short H3 test of the voiceover phrase and a respelling, do that first and record the result in the film-test note and genvideo L-012 / script L-003.
 
 ## The step
 
@@ -34,7 +34,7 @@ You are running the second half of stage S7 of cinewright, a plugin set for AI v
 
 - Before any run batch over about 150 headless runs, or any batch at all before 2026-10-08: state the count and expected agent time in one line and wait for his go.
 - Before any action on his claude.ai account or VS Code settings, before making the repo public (D5), before tagging a release, before changing another repo (the evergreen registry and the mark-local marketplace), before any directory or awesome-copilot submission, before any hosted render, and before merging or cutting any skill.
-- When the step's work passes its checks: open a PR from `s7b/release` to `main`, assign m4bwav, add the needs-review label, give him the link and a short summary, and stop. A PR holding code waits for his review; do not merge it.
+- When the step's work passes its checks: open a PR from `s7b/routes` to `main`, assign m4bwav, add the needs-review label, give him the link and a short summary, and stop. A PR holding code waits for his review; do not merge it.
 
 ## Chain rule
 

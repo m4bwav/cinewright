@@ -25,6 +25,12 @@ The H3 prompt guide has an exact phrase for this case: `says in an off-screen vo
 - `pronounce` in characters.json maps a word to a respelling. It is applied inside spoken lines only, as whole words. Identity strings, captions and the QC rubric keep the real spelling.
 - The QC rubric marks off-screen lines "no visible mouth". The new failure code is `name-misread`.
 
+## Reasons
+
+- The vendor's own phrase beats an invented one (genvideo L-003: take a model's syntax from the vendor's guide).
+- Leaving a line out is safer than letting a model guess its mouth: a missing line is cheap to fix in the mix, and a wrong mouth means a re-render.
+- The rule existed only in prose, and an agent writing 25 cards missed it. A check catches it on every card.
+
 ## Rejected
 
 - Moving off-screen lines into `sound` automatically. That loses the speaker's voice string and S-ID, and H3 has a documented form for the case.
