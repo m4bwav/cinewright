@@ -276,3 +276,12 @@ lint OK (both)
 ```
 ## [2026-10-07] index | rebuilt (20 entries)
 ## [2026-10-07] index | rebuilt (20 entries)
+
+## [2026-10-07] release | S7b: history scrub before going public (blocked at the force-push)
+
+- PR #11 merged; branch s7b/routes off main b588d23. All 13 ZIPs rebuilt from main (`cine.py zip`, 46-73 KB each; the old ones predated #11).
+- Working tree clean: `scrub --names <sidecar scrub-names.txt>` 0 hits, `kb lint` 0 errors, budget GREEN.
+- New check: going public publishes every old commit, and `scrub` only reads the working tree. The same patterns run over every blob reachable from any ref, every commit message and every PR title, body, comment and review found 10 distinct hits (36 lines): drive paths and private project names in old copies of the research brief, PLAN, the log, two next-session prompts and one solution, plus a sample `C:/x` path in an old eval-harness comment. Commit messages and PR text were clean.
+- Mark chose (2026-10-07): rewrite history and force-push. `git filter-repo --replace-text` (pip `git-filter-repo`) on a fresh single-branch clone of main: 19 commits rewritten, HEAD tree unchanged (a371d77 before and after, so no current file changed), rescan of the rewritten history 0 lines. Backup of the old history: bundle `cinewright-pre-public-history-2026-10-07.bundle` next to the repo folder (outside it). Replacement list and the two scan scripts: vault sidecar (`history-rewrite-replacements.txt`, `history-scrub-scan.py`, `history-scrub-summary.py`).
+- Blocked: Claude Code's auto-mode classifier refused the force-push of main and the deletion of the eight merged branches (they still point at old commits), and then a browser call for the claude.ai route. Nothing was pushed; the remote is unchanged. Limit to keep in mind: GitHub keeps each PR's head under `refs/pull/N/head`, which a force-push cannot move, so the old commits stay reachable from PR #1-#11 pages once public; only GitHub Support can purge those (or a fresh repository avoids them).
+- Not yet done: claude.ai skill Upload, claude.ai Add marketplace, VS Code Copilot route, public, public retests, 0.1.0. A 0.1.0 tag must sit on main after this branch merges (the repo squash-merges).
