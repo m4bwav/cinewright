@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:767b08910593a9b70cef648e6a952e2085adbd14bf1bcaa622334593984ef742; edit the source
+# copied from shared/lib/cine.py sha256:4695778fe0039a94b309d71cb2168c39f1c939563b43d804786e1ad2f615725f; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -457,21 +457,37 @@ def resolution_size(resolution, aspect):
     return (long_side, short) if a >= b else (short, long_side)
 
 
-def film_json(p, xfade=0.16):
+def film_json(p, xfade=0.16, prof=None):
+    """One shot per card, or with prof one shot per --sequence generation (name = the compile label, so
+    `compile --sequence --out <film dir>` writes the <name>.txt prompts the pipeline reads)."""
     st = p.style
     w, h = resolution_size(st["resolution"], st["aspect_ratio"])
     fps = st["fps"]
+    if prof:
+        w, h = model_size(prof, st["resolution"], st["aspect_ratio"])
     refs = list(st.get("refs", []))
     for ch in p.characters.get("characters", []):
         for r in ch.get("refs", []):
             if r not in refs:
                 refs.append(r)
     shots = []
-    for c in p.cards:
-        shot = {"name": "shot_%s" % c["id"], "seed": c.get("seed", c["order"]), "length": int(round(c["duration_s"] * fps))}
-        if c.get("refs"):
-            shot["refs"] = c["refs"]
-        shots.append(shot)
+    if prof:
+        names = dict(DEFAULT_PARAMS, **prof.get("param_names", {}))
+        by_id = {c["id"]: c for c in p.cards}
+        for label, _text, params, _warn, info in compile_cards(p, p.cards, prof, sequence=True):
+            first = by_id[label.split("+")[0]]
+            frames = params.get(names.get("frames") or "", int(round(info["seconds"] * fps)))
+            shot = {"name": label, "seed": first.get("seed", first["order"]), "length": frames}
+            if params.get(names.get("refs") or ""):
+                shot["refs"] = params[names["refs"]]
+            shots.append(shot)
+        refs = []
+    else:
+        for c in p.cards:
+            shot = {"name": "shot_%s" % c["id"], "seed": c.get("seed", c["order"]), "length": int(round(c["duration_s"] * fps))}
+            if c.get("refs"):
+                shot["refs"] = c["refs"]
+            shots.append(shot)
     name = re.sub(r"[^a-z0-9]+", "_", st["title"].lower()).strip("_")
     out = {"name": name, "target_seconds": st.get("target_seconds", sum(c["duration_s"] for c in p.cards)),
            "width": w, "height": h}
@@ -513,7 +529,14 @@ def cmd_cards(ctx, a):
     if a.cmd == "export":
         if not a.film_json:
             raise SystemExit("choose an export format: --film-json")
-        text = json.dumps(film_json(p, a.xfade), indent=2, ensure_ascii=False) + "\n"
+        prof = None
+        if a.sequence:
+            if not a.model:
+                raise SystemExit("--sequence needs --model (the frame grid and the shot grouping come from the model card)")
+            _path, _meta, prof = find_model_card(ctx, a.model)
+            if not prof:
+                raise SystemExit("no model card for '%s'" % a.model)
+        text = json.dumps(film_json(p, a.xfade, prof), indent=2, ensure_ascii=False) + "\n"
         if a.out:
             write_text(a.out, text)
             print("wrote %s" % a.out)
@@ -761,13 +784,18 @@ def card_parts(p, card, prof, tags=None, speakers=None):
     act = [_sentence(card["action"])]
     for m in card.get("cast", []):
         name = p.chars[m["id"]]["name"]
-        t = m.get("travel") or sc.get("axis", {}).get("travel", {}).get(m["id"])
+        # only the card's own travel: the scene's travel is what continuity checks against, and stating it
+        # on every card put a close-up of a seated man "walking away from the camera" (library test, 2026-10-06)
+        t = m.get("travel")
         if t in TRAVEL_WORDS:
-            t = t if m.get("travel") or not flipped else FLIP.get(t, t)
             act.append(_sentence("%s is %s" % (name, TRAVEL_WORDS[t])))
         if m.get("eyeline") in EYELINE_WORDS:
             target = m.get("looks_at")
-            target = p.chars[target]["name"] if target in p.chars else ("the %s" % target if target else "")
+            if target in p.chars:
+                target = p.chars[target]["name"]
+            elif target and not re.match(r"(the|a|an|his|her|their) ", target, re.I):
+                target = "the %s" % target
+            target = target or ""
             on = ", at %s" % target if target and m["eyeline"] != "camera" else ""
             act.append(_sentence("%s is %s%s" % (name, EYELINE_WORDS[m["eyeline"]], on)))
     parts["action"] = " ".join(act)
@@ -1409,6 +1437,8 @@ def build_parser(prog="cine.py"):
     s.add_argument("project")
     s.add_argument("--film-json", action="store_true", help="film.json shape for a local long-render pipeline")
     s.add_argument("--xfade", type=float, default=0.16, help="seam_audio_xfade seconds")
+    s.add_argument("--sequence", action="store_true", help="one shot per compile --sequence generation (needs --model)")
+    s.add_argument("--model", help="model card for --sequence")
     s.add_argument("--out")
 
     s = g.add_parser("compile", help="card plus bibles to one model's prompt")

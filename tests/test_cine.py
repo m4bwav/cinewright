@@ -239,6 +239,19 @@ class TestCards(Base):
         self.assertEqual([s["seed"] for s in film["shots"]], [101, 102, 103])
         self.assertEqual(list(film), ["name", "target_seconds", "width", "height", "seam_audio_xfade", "shots"])
 
+    def test_export_film_json_sequence(self):
+        proj = model_project(self.tmp)
+        edit(proj / "bibles/style.json", '"resolution": "720p"', '"resolution": "480p"')
+        out_file = self.tmp / "film.json"
+        code, out = run("cards", "export", proj, "--film-json", "--sequence", "--model", "minimax-h3", "--out", out_file)
+        self.assertEqual(code, 0, out)
+        film = json.loads(out_file.read_text(encoding="utf-8"))
+        self.assertEqual([s["name"] for s in film["shots"]], ["1A+1B+1C"], "one shot per generation, named like the compiled prompt")
+        self.assertEqual((film["width"], film["height"]), (864, 480))
+        self.assertEqual((film["shots"][0]["length"] - 5) % 17, 0, "frames on the model's grid")
+        code, out = run("cards", "export", proj, "--film-json", "--sequence")
+        self.assertNotEqual(code, 0, "--sequence without --model")
+
 
 class TestCompile(Base):
     def test_compile_veo(self):
@@ -545,6 +558,25 @@ class TestModelCards(Base):
         self.assertFalse(re.match(r"^(Medium|Wide|Close)", text))
         self.both(r"camera (tracking|dolly|pan)|dolly in|tracking", "luma", text)
         self.assertEqual(params["duration"], "5s")
+
+    def test_minimax_h3_fifteen_seconds(self):
+        card = (SKILLS / "cinewright-genvideo" / "references" / "minimax-h3.md").read_text(encoding="utf-8")
+        prof = json.loads(next(x for x in card.splitlines() if x.startswith('{"model_id": "H3')))
+        self.assertEqual(lib.plan_length(15, prof), (15.083, 362), "15 s plans the 362-frame maximum, not 345")
+
+    def test_travel_only_from_the_card_and_no_double_article(self):
+        proj = model_project(self.tmp)
+        scenes = json.loads((proj / "bibles/scenes.json").read_text(encoding="utf-8"))
+        scenes["scenes"][0]["axis"]["travel"] = {"maren": "left-to-right"}
+        (proj / "bibles/scenes.json").write_text(json.dumps(scenes), encoding="utf-8")
+        c = json.loads((proj / "cards/1A.json").read_text(encoding="utf-8"))
+        c["cast"][0]["looks_at"] = "the tin matchbox"
+        (proj / "cards/1A.json").write_text(json.dumps(c), encoding="utf-8")
+        _, _, res = compile_one(proj, "veo", "1A")
+        text = res[0][1]
+        self.assertNotIn("Maren is moving", text, "a scene's travel is not stated on a card that does not travel")
+        self.assertNotIn("the the", text)
+        self.assertIn("at the tin matchbox", text)
 
     def test_minimax_h3(self):
         proj = model_project(self.tmp, refs=True)
