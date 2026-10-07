@@ -26,7 +26,7 @@ Mark asked (2026-10-07) for an evergreen skill that makes reference material so 
 
 ## Consequences
 
-- The all-descriptions budget goes yellow: 4,336 characters against a 4,000 green line (5,500 red). Mark was told in the session; trimming other descriptions would need their trigger evals re-run.
+- The all-descriptions budget goes yellow: 4,336 characters against a 4,000 green line (5,500 red); 4,680 once cinewright-sets (PR #17) is merged too. Mark was told in the session; trimming other descriptions would need their trigger evals re-run.
 - Runtime shared/lib grows from 78 to 90 KB (green under 100).
 - Rejected: speaker-embedding similarity inside cine.py (needs numpy or torch, breaks stdlib-only); it stays an optional step in the skill.
 

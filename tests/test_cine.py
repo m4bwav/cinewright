@@ -300,6 +300,36 @@ class TestCompile(Base):
         self.assertNotEqual(code, 0)
         self.assertIn("aspect 4:3 not offered", out)
 
+    def test_compile_adds_the_faced_wall(self):
+        proj = self.tmp / "p"
+        shutil.copytree(EXAMPLE, proj)
+        edit(proj / "bibles/locations.json", '"props": ["brass lens", "workbench"]',
+             '"props": ["brass lens", "workbench"], "walls": {"stairs": "an iron spiral staircase going down through a hatch in the floor"}')
+        edit(proj / "cards/1B.json", '"side": "A"', '"side": "A", "faces": "stairs"')
+        code, out = run("cards", "validate", proj)
+        self.assertEqual(code, 0, out)
+        code, out = run("compile", proj, "--model", "veo", "--out", self.tmp / "out")
+        self.assertEqual(code, 0, out)
+        self.assertIn("An iron spiral staircase going down", (self.tmp / "out/1B.txt").read_text(encoding="utf-8"))
+        self.assertNotIn("spiral staircase", (self.tmp / "out/1A.txt").read_text(encoding="utf-8"))
+
+    def test_unknown_wall_is_an_error(self):
+        proj = self.tmp / "p"
+        shutil.copytree(EXAMPLE, proj)
+        edit(proj / "cards/1B.json", '"side": "A"', '"side": "A", "faces": "north"')
+        code, out = run("continuity", "diff", proj)
+        self.assertNotEqual(code, 0)
+        self.assertIn("WALL", out)
+
+    def test_wall_names_are_checked(self):
+        proj = self.tmp / "p"
+        shutil.copytree(EXAMPLE, proj)
+        edit(proj / "bibles/locations.json", '"props": ["brass lens", "workbench"]',
+             '"props": ["brass lens", "workbench"], "walls": {"North Wall": "rain-streaked windows over the dark sea"}')
+        code, out = run("cards", "validate", proj)
+        self.assertNotEqual(code, 0)
+        self.assertIn("North Wall", out)
+
     def test_unknown_model(self):
         code, out = run("compile", EXAMPLE, "--model", "nosuchmodel")
         self.assertEqual(code, 1)

@@ -1,6 +1,6 @@
 ---
 name: cinewright-design
-description: "Production and costume designer for AI video: turnaround sheets, clean reference images, prop descriptions, costume arc and color script. Use when designing characters, costumes, props, sets or palette, or when a prop or outfit drifts between clips. Also 'refresh cinewright-design'."
+description: "Production and costume designer for AI video: turnaround sheets, clean reference images, prop descriptions, costume arc and color script. Use when designing characters, costumes, props or palette (sets and locations: cinewright-sets), or when a prop or outfit drifts between clips. Also 'refresh cinewright-design'."
 license: MIT
 ---
 

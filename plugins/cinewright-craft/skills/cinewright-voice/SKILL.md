@@ -27,7 +27,7 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 
 1. Fill `sheet` per character: age, gender, pitch, pace, timbre, then accent, energy, attitude, quirks (`kb show voice-sheet`).
 2. Condense it to the short `voice` string in characters.json ("low, dry, unhurried"); compile copies that string into every prompt, so it never changes after the first render.
-3. A local model can draft sheets and design prompts from the character bible (local-delegate skill or Ollama, `kb show ollama-voice`); you check them.
+3. A local model can draft sheets and design prompts from the character bible (a local Ollama model, `kb show ollama-voice`); you check them.
 
 ## Step 3a: a new voice
 

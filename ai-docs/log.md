@@ -327,13 +327,35 @@ $ evergreen.py lint <each skill>
 - Left for Mark: delete the uploaded test skill on claude.ai (permanent delete, switched off for now), remove the cinewright marketplace source there if the UI allows, close the VS Code window opened by `code chat -n`.
 - Follow-ups: CI still has only `workflow_dispatch` (written for the private period); the repo is public, so push and pull_request triggers on GitHub-hosted runners are now free.
 
+## [2026-10-07] build | cinewright-sets: set and location skill, wall strings in the compiler
+
+- New craft skill `cinewright-sets` (evergreen, tier moderate, 30 days): set plan, per-wall strings, master plates, coverage and reverse angles, set light, plate check. Six entries: set-plan, wall-strings, master-plates, coverage-angles, set-light, set-check. Research: [RESEARCH.md](../plugins/cinewright-craft/skills/cinewright-sets/RESEARCH.md) R-20261007-1 (no dedicated set or location bible skill exists; DirectorSKILL and Storyboarder.ai's location editor are closest).
+- Field test that shaped it: a real public building as 11 sets on a local image model. A reverse and an east-door shot written as framing words after the full room description both came back as the establishing view (2 of 2). L-001 `whole-room-string-pulls-to-hero-wall`.
+- Runtime: location bible `walls` (key to a 20-300 character string), shot card `camera.faces`, compile adds the faced wall after the description, `cards validate` and `continuity diff` give WALL for an unknown key, the validator learned `propertyNames`. Three unit tests.
+- Registered in both craft manifests, the craft and root READMEs, the router's pipeline table, PLAN §2 and CODEMAP. cinewright-design's trigger line no longer says sets.
+- Worktree `cinewright-set` on branch `set-skill`, because the main clone was on another session's `voice-skill` branch with uncommitted work.
+
+```
+$ python -m unittest discover -s tests
+Ran 83 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 15 skills, 0 errors
+$ python scripts/cine.py budget
+budget: YELLOW (all descriptions 4338 characters, green up to 4000; the new skill's 342 tips it over)
+$ python scripts/cine.py scrub --names <sidecar scrub-names.txt>
+scrub: 0 hits in 0 files
+$ claude plugin validate . (and the three plugins)
+Validation passed (four times)
+```
+- Not yet run: the seven eval cases (evals/run_evals.py) for the new skill.
+
 ## [2026-10-07] build | cinewright-voice: consistent character voices (14th skill)
 
 - Mark asked for an evergreen skill that makes voice references so each character sounds the same in every generated video, from a new voice or from voice samples already generated, researched across manual practice, AI, with and without plugins, using Ollama or ComfyUI as needed.
 - Research (two passes plus local tests): [research/2026-10-07-voice-consistency.md](research/2026-10-07-voice-consistency.md). Decision: [decisions/2026-10-07-voice-skill-and-voice-bible.md](decisions/2026-10-07-voice-skill-and-voice-bible.md).
 - Built: plugins/cinewright-craft/skills/cinewright-voice (SKILL.md, 10 references, SETUP.md, evergreen companions, 7 eval cases, check_voices.py); shared/schemas/voice-bible.schema.json (optional `bibles/voices.json`, validated by `cards validate`); `cine.py voice measure|ref|check` in shared/lib (stdlib YIN pitch through ffmpeg; 78 to 90 KB); voice-bible schema added to every skill that ships the bibles; router table row; craft manifests and READMEs; one cross-link from cinewright-script.
 - Local findings: ComfyUI core 0.38.2 has no TTS node (TTS Audio Suite is the pack to use; not installed here, waits for Mark's go). Ollama 0.40.0 on Windows accepted audio for gemma4:12b although the release notes say MLX only; it misjudged a male voice as female and invented a second speaker, so it drafts and never judges (L-001 `llm-ear-misjudges-voices`). Music under a line corrupts pitch (L-002 `music-corrupts-pitch`); YIN threshold 0.3 and span-based pace (L-003 `yin-threshold-0-3`).
-- Budget: all descriptions 4,336 of 4,000 characters, YELLOW (15 skills); everything else green.
+- Budget: all descriptions 4,336 of 4,000 characters, YELLOW (15 skills); everything else green. After merging main (cinewright-sets, PR #17): 4,680 with 16 skills, still yellow under the 5,500 red line; 87 tests OK, kb lint 16 skills 0 errors, scrub 0 hits (the private skill name local-delegate taken out of SKILL.md), sets ships the voice-bible schema too.
 
 Exit check (2026-10-07, Windows 11, branch voice-skill):
 
@@ -353,6 +375,5 @@ cinewright-voice: lint OK
 $ python evals/run_evals.py run --skill cinewright-voice --model sonnet --runs 3
 21 of 21 PASS (triggers 6/6, decoys 0 invoked in 9, action 3/3, outcome 3/3); baseline without the skill: action and outcome fail
 ```
-## [2026-10-07] index | rebuilt (21 entries)
-
 PR: https://github.com/m4bwav/cinewright/pull/18 (assigned to Mark, needs-review).
+## [2026-10-07] index | rebuilt (21 entries)

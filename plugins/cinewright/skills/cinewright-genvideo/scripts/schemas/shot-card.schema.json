@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:7d4ff9c7657cfd8dc623cd00048ab0b4f345fdbc319e2cec97c65ec434c95ba6; edit the source",
+  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:3071617959946e756f56b4c8e7b5add44a0de37f0ee1353cb8089cdc8398a3fb; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Shot card",
   "description": "One shot, generator-neutral. Fields follow the shot list (slate, size, angle, move, lens, action, dialogue, duration) and the script supervisor's notes (camera side, screen direction, eyelines, wardrobe, props in hand, start and end state).",
@@ -100,6 +100,11 @@
           "type": "number",
           "minimum": 8,
           "maximum": 600
+        },
+        "faces": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$",
+          "description": "Which wall or view of the location the camera looks at: a key of the location's walls."
         },
         "side": {
           "enum": [

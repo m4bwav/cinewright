@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/location-bible.schema.json sha256:602d58f28d9b9c6c0315ce95a7edc19522f8a27a1cf13799872265f05eeb41d8; edit the source",
+  "$comment": "copied from shared/schemas/location-bible.schema.json sha256:a15dc1d259fe2cf3d89bce0f412fa29dbf82d0a833b1e40481c8fc511a97b2f0; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Location bible",
   "description": "bibles/locations.json: one description string per location, copied verbatim into prompts.",
@@ -52,6 +52,18 @@
             "items": {
               "type": "string"
             }
+          },
+          "walls": {
+            "type": "object",
+            "propertyNames": {
+              "pattern": "^[a-z0-9-]+$"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "minLength": 20,
+              "maxLength": 300
+            },
+            "description": "Optional: what each wall or view shows, keyed by a name such as north or toward-desk. A card's camera.faces picks one and compile adds it after the description, which then holds only what every angle shares."
           }
         }
       }

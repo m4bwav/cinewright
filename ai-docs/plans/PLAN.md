@@ -38,7 +38,8 @@ Merged from the 15-skill draft by trigger overlap and listing cost (every descri
 | `cinewright-qc` | frame sampling, contact sheets, rubric, VLM judging, spec checks, routing failures to fixes, three-strikes re-plan | core |
 | `cinewright-script` | logline, beats, structure, scene turns, screenplay format, dialogue for generated voices | craft |
 | `cinewright-camera` | DP and gaffer: lens, depth of field, exposure, frame rate and shutter, aspect, lighting ratios and setups, color temperature | craft |
-| `cinewright-design` | production design, sets, props, locations, period, costume, hair and makeup, character and turnaround sheets | craft |
+| `cinewright-design` | production design, props, period, costume, hair and makeup, character and turnaround sheets | craft |
+| `cinewright-sets` | sets and locations: research, plan, per-wall strings, master plates, coverage and reverse angles, set light, plate checks (added 2026-10-07) | craft |
 | `cinewright-movement` | choreography, stunts, fights, large battles (map, sides, phases, scale), crowds, animals, physics that models get wrong | craft |
 | `cinewright-edit` | cutting: Murch's six, J and L cuts, match cuts, pacing, cutting around bad frames, assembly to delivery | craft |
 | `cinewright-finish` | color (correct, balance, match, look; color spaces) and VFX (compositing, cleanup, upscale, interpolation, crowd multiplication for battle wides, the crop to `frame_aspect`) | craft |

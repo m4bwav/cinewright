@@ -27,6 +27,7 @@ One default path (`kb show pipeline` for gates and the repair ladder). Each row 
 | Script | `brief.md`, `script.md` | cinewright-script (craft) |
 | Bibles | `bibles/*.json` | cinewright-continuity |
 | Design | `bibles/props.json`, wardrobe, palette, `refs/`, `design.md` | cinewright-design (craft) |
+| Sets | `sets/<id>.md`, location `walls`, plates in `refs/sets/` | cinewright-sets (craft) |
 | Voices | `bibles/voices.json`, `voices/<character>/`, `CINE voice check` | cinewright-voice (craft) |
 | Shot list | `cards/*.json`, 3-8 s, one subject, one action, one move; `CINE cards list` | cinewright-shots; actions by cinewright-movement (craft) |
 | Check | `continuity diff` with 0 errors | cinewright-continuity |

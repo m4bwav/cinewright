@@ -19,7 +19,8 @@
           "int_ext": {"enum": ["INT", "EXT", "INT/EXT"]},
           "description": {"type": "string", "minLength": 20, "maxLength": 300},
           "props": {"type": "array", "items": {"type": "string"}},
-          "refs": {"type": "array", "items": {"type": "string"}}
+          "refs": {"type": "array", "items": {"type": "string"}},
+          "walls": {"type": "object", "propertyNames": {"pattern": "^[a-z0-9-]+$"}, "additionalProperties": {"type": "string", "minLength": 20, "maxLength": 300}, "description": "Optional: what each wall or view shows, keyed by a name such as north or toward-desk. A card's camera.faces picks one and compile adds it after the description, which then holds only what every angle shares."}
         }
       }
     }
