@@ -177,7 +177,7 @@ $ evergreen.py lint <each skill>
 
 ## 2026-10-06: cinewright-sound learns to conform sound to a tempo
 
-- Source: field notes from recorded game sound effects fitted to a 90 BPM grid (2026-10-04 to 2026-10-06; the source and its mapping are in the vault sidecar, not here). What transfers to film: conforming effects and foley to a cue's tempo.
+- Source: field notes from recorded game sound effects fitted to a 90 BPM grid (2026-10-04 to 2026-10-06; a private project, unnamed per [decisions/2026-10-03-field-lessons-cited-without-the-private-source-s-name.md](decisions/2026-10-03-field-lessons-cited-without-the-private-source-s-name.md)). What transfers to film: conforming effects and foley to a cue's tempo.
 - Added: entry `conform-to-tempo` in cinewright-sound (tempo match, then warp, then cut; Rubber Band `rubberband=tempo=R:transients=crisp:detector=percussive:pitchq=quality`, ratios 0.75-1.35; beats, eighths and triplets, grace notes ride the main hit; quiet edit points; stereo correlation before a mono mixdown; active RMS; report unheard until a person has auditioned it). One pointer line in SKILL.md Step 2. Records: C-20261006-1, R-20261006-1, evergreen.json counts. Description unchanged, so the trigger evals stand.
 - Skipped: clip length following a game's production cycle (game-only); Unity import notes (not sound craft); the source's script names and paths (private, game-specific). The first draft of the entry was 1,001 estimated tokens (yellow); trimmed to green.
 - Branch `sound/beat-grid-conform` off `origin/main` in a separate worktree; the main clone stays on `s6/evals`.
