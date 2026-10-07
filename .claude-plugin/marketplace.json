@@ -5,26 +5,26 @@
   },
   "metadata": {
     "description": "Film craft and AI video coherence: plan, continuity-check and compile shots for video models",
-    "version": "0.0.1"
+    "version": "0.1.0"
   },
   "plugins": [
     {
       "name": "cinewright",
       "source": "./plugins/cinewright",
       "description": "Core: plan shots, continuity-check and compile AI video prompts, review takes",
-      "version": "0.0.1"
+      "version": "0.1.0"
     },
     {
       "name": "cinewright-craft",
       "source": "./plugins/cinewright-craft",
       "description": "Craft: script, design, movement, camera and lighting, film history styles, editing, color and VFX finishing, sound and mix",
-      "version": "0.0.1"
+      "version": "0.1.0"
     },
     {
       "name": "cinewright-dev",
       "source": "./plugins/cinewright-dev",
       "description": "Dev: knowledge-base upkeep for cinewright maintainers",
-      "version": "0.0.1"
+      "version": "0.1.0"
     }
   ]
 }
