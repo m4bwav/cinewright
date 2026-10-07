@@ -38,18 +38,25 @@
     "learnings": 0,
     "changes": 0,
     "research": 0,
-    "tests": 0
+    "tests": 1
   },
   "consolidate_every": 25,
   "tests": {
-    "last_run": null,
-    "harness": null,
-    "env": null,
-    "cases": 0,
-    "passed": 0,
-    "failed": 0,
-    "failing": [],
-    "last_failure": null,
+    "last_run": "2026-10-06T20:53",
+    "harness": "evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive)",
+    "env": "windows/claude-code",
+    "cases": 6,
+    "passed": 3,
+    "failed": 3,
+    "failing": [
+      "trigger-2",
+      "decoy-2",
+      "action-1"
+    ],
+    "last_failure": {
+      "date": "2026-10-06",
+      "note": "S7 first suite, budget week: Sonnet 3 runs per case, Haiku and Opus 1 run per case, one baseline per model; harness rev 2 with fixture repo"
+    },
     "research_after_days": null
   }
 }

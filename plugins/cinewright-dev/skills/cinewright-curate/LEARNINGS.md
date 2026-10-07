@@ -20,6 +20,6 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Trigger: T-20261006-1, outcome-1 on Sonnet 0 of 3: every run retired a model that was "shut down for good" with `--status deprecated`, copied from the table row `kb retire <slug> --reason R [--status deprecated]`.
 - Hypothesis: the model reads the bracketed option as part of the command to run, and the row named both cases at once.
 - Rule: one table row per case, each with the exact command it needs; name the default in words, never as a bracketed flag.
-- Evidence: C-20261006-2; rerun pending
+- Evidence: C-20261006-2; T-20261006-2 rerun after the edit: Sonnet outcome-1 3 of 3, confirmed 2026-10-06
 - Scope: skill
 - Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-06
