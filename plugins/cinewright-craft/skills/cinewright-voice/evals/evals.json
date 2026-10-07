@@ -1,0 +1,161 @@
+{
+  "skill": "cinewright-voice",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root.",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "prompt": "The two characters in my AI short film sound like different people in every shot I generate. How do I keep each character's voice the same across the whole film?",
+      "expectations": [
+        "the cinewright-voice skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "prompt": "A few of my generated video clips have my villain's voice exactly right. Can I turn those into a reference so all his other lines in the film match?",
+      "expectations": [
+        "the cinewright-voice skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Add text-to-speech to my React app so it reads news articles aloud.",
+      "expectations": [
+        "the cinewright-voice skill is not invoked (app TTS, not a film)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Clone my own voice so I can record my podcast intros with TTS.",
+      "expectations": [
+        "the cinewright-voice skill is not invoked (podcast, not a film's characters)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Mix the soundtrack of my AI short film to -18 LUFS for YouTube.",
+      "expectations": [
+        "the cinewright-voice skill is not invoked (mixing, cinewright-sound's job)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "prompt": "out/voice/take.mp4 is a generated shot. My character Maren says 'Hold the match steady.' from 1.0 s to 4.0 s. Cut a clean reference clip of her voice from it for a voice-cloning engine, save it as out/voice/maren-neutral.wav, and tell me if it is usable.",
+      "setup": [
+        [
+          "ffmpeg",
+          "-y",
+          "-v",
+          "error",
+          "-f",
+          "lavfi",
+          "-i",
+          "testsrc2=size=320x180:rate=24:duration=6",
+          "-f",
+          "lavfi",
+          "-i",
+          "sine=frequency=180:duration=3,volume=0.3,adelay=1000,apad=whole_dur=6",
+          "-map",
+          "0:v",
+          "-map",
+          "1:a",
+          "-c:v",
+          "mpeg4",
+          "-c:a",
+          "aac",
+          "-ar",
+          "32000",
+          "-shortest",
+          "out/voice/take.mp4"
+        ]
+      ],
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py\\s+voice\\s+(ref|measure)"
+      },
+      "runs": 3,
+      "baseline": "2026-10-07, evals/run_evals.py, skills disabled, Sonnet 1 run: fail (no cine.py voice call; the evidence needs the skill's script)."
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "prompt": "out/film is my AI short. In out/film/takes/2A-1.wav Maren sounds right; she says 'Last one. Your hands are steadier than mine.' Lock her voice from that take for the rest of the film, then tell me which of out/film/lines/line-2.wav and out/film/lines/line-3.wav still sound like her. Write the verdicts in out/film/voice-report.md.",
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/film"
+        ],
+        [
+          "ffmpeg",
+          "-y",
+          "-v",
+          "error",
+          "-f",
+          "lavfi",
+          "-i",
+          "sine=frequency=180:duration=4,volume=0.3,adelay=500,apad=whole_dur=5",
+          "-ar",
+          "24000",
+          "out/film/takes/2A-1.wav"
+        ],
+        [
+          "ffmpeg",
+          "-y",
+          "-v",
+          "error",
+          "-f",
+          "lavfi",
+          "-i",
+          "sine=frequency=186:duration=3,volume=0.3,adelay=300,apad=whole_dur=4",
+          "-ar",
+          "24000",
+          "out/film/lines/line-2.wav"
+        ],
+        [
+          "ffmpeg",
+          "-y",
+          "-v",
+          "error",
+          "-f",
+          "lavfi",
+          "-i",
+          "sine=frequency=104:duration=3,volume=0.3,adelay=300,apad=whole_dur=4",
+          "-ar",
+          "24000",
+          "out/film/lines/line-3.wav"
+        ]
+      ],
+      "checks": [
+        [
+          "python",
+          "evals/check_voices.py",
+          "{work}"
+        ]
+      ],
+      "expectations": [
+        "check: out/film/bibles/voices.json locks maren with a reference clip that exists and the take's words, and voice-report.md passes line-2 and fails line-3 (evals/check_voices.py exits 0)",
+        "judge: the reply says line-3 is a different voice (about 9-10 semitones lower) and does not claim identity from pitch alone (2 of 3 votes)"
+      ],
+      "runs": 3,
+      "baseline": "2026-10-07, evals/run_evals.py, skills disabled, Sonnet 1 run: fail (checks 0/1, judged 0/1)."
+    }
+  ]
+}

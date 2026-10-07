@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261007-2 · 2026-10-07 · Point locked voices to cinewright-voice
+- because: user request (cinewright-voice created, its C-20261007-1)
+- files: references/dialogue-for-generated-voices.md
+- The voice-string rule now says a voice that must match across shots gets a locked reference in cinewright-voice.
+
 ### C-20261007-1 · 2026-10-07 · Speaker in the shot, pronounce respellings, tone as an adverb
 - because: L-003 (owner's review of the library film), the cinewright-genvideo lesson on off-screen speakers
 - files: SKILL.md, references/dialogue-for-generated-voices.md, LEARNINGS.md

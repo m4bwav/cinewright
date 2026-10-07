@@ -348,3 +348,32 @@ $ claude plugin validate . (and the three plugins)
 Validation passed (four times)
 ```
 - Not yet run: the seven eval cases (evals/run_evals.py) for the new skill.
+
+## [2026-10-07] build | cinewright-voice: consistent character voices (14th skill)
+
+- Mark asked for an evergreen skill that makes voice references so each character sounds the same in every generated video, from a new voice or from voice samples already generated, researched across manual practice, AI, with and without plugins, using Ollama or ComfyUI as needed.
+- Research (two passes plus local tests): [research/2026-10-07-voice-consistency.md](research/2026-10-07-voice-consistency.md). Decision: [decisions/2026-10-07-voice-skill-and-voice-bible.md](decisions/2026-10-07-voice-skill-and-voice-bible.md).
+- Built: plugins/cinewright-craft/skills/cinewright-voice (SKILL.md, 10 references, SETUP.md, evergreen companions, 7 eval cases, check_voices.py); shared/schemas/voice-bible.schema.json (optional `bibles/voices.json`, validated by `cards validate`); `cine.py voice measure|ref|check` in shared/lib (stdlib YIN pitch through ffmpeg; 78 to 90 KB); voice-bible schema added to every skill that ships the bibles; router table row; craft manifests and READMEs; one cross-link from cinewright-script.
+- Local findings: ComfyUI core 0.38.2 has no TTS node (TTS Audio Suite is the pack to use; not installed here, waits for Mark's go). Ollama 0.40.0 on Windows accepted audio for gemma4:12b although the release notes say MLX only; it misjudged a male voice as female and invented a second speaker, so it drafts and never judges (L-001 `llm-ear-misjudges-voices`). Music under a line corrupts pitch (L-002 `music-corrupts-pitch`); YIN threshold 0.3 and span-based pace (L-003 `yin-threshold-0-3`).
+- Budget: all descriptions 4,336 of 4,000 characters, YELLOW (15 skills); everything else green. After merging main (cinewright-sets, PR #17): 4,680 with 16 skills, still yellow under the 5,500 red line; 87 tests OK, kb lint 16 skills 0 errors, scrub 0 hits (the private skill name local-delegate taken out of SKILL.md), sets ships the voice-bible schema too.
+
+Exit check (2026-10-07, Windows 11, branch voice-skill):
+
+```
+$ python -m unittest discover -s tests
+Ran 84 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 15 skills, 0 errors
+$ python scripts/cine.py budget
+budget: YELLOW (all descriptions 4336 > 4000)
+$ python scripts/cine.py scrub --names <sidecar scrub-names.txt>
+scrub: 0 hits in 0 files
+$ claude plugin validate . (and the three plugins)
+Validation passed (four times)
+$ evergreen.py lint plugins/cinewright-craft/skills/cinewright-voice
+cinewright-voice: lint OK
+$ python evals/run_evals.py run --skill cinewright-voice --model sonnet --runs 3
+21 of 21 PASS (triggers 6/6, decoys 0 invoked in 9, action 3/3, outcome 3/3); baseline without the skill: action and outcome fail
+```
+PR: https://github.com/m4bwav/cinewright/pull/18 (assigned to Mark, needs-review).
+## [2026-10-07] index | rebuilt (21 entries)

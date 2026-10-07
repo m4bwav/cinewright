@@ -1,0 +1,71 @@
+{
+  "evergreen": "1.0",
+  "name": "cinewright-voice",
+  "kind": "skill",
+  "main": "SKILL.md",
+  "files": {
+    "research": "RESEARCH.md",
+    "changelog": "CHANGELOG.md",
+    "learnings": "LEARNINGS.md",
+    "tests": "TESTS.md",
+    "setup": "SETUP.md"
+  },
+  "protocol": "plugin",
+  "source": null,
+  "topic": "Consistent character voices for AI video: voice sheets, voice design and cloning (open and hosted TTS), reference clips from generated takes, voice conversion, video-model voices and lip-sync, measuring drift, rights and consent; local routes through ComfyUI and Ollama",
+  "tier": "fast",
+  "interval_days": 14,
+  "last_checked": "2026-10-07",
+  "next_due": "2026-10-21",
+  "verify_at_use": true,
+  "volatile_claims": [
+    "each reference entry's volatile_claims (frontmatter); re-check the entry in use",
+    "ElevenLabs Eleven v4 launch discount ends 2026-10-12",
+    "EU AI Act Art. 50(2) marking deadline 2026-12-02 for systems already on the market"
+  ],
+  "contradiction": null,
+  "events": [
+    {
+      "date": "2026-12-02",
+      "label": "EU AI Act Art. 50(2) marking deadline for existing systems",
+      "settle_days": 2
+    }
+  ],
+  "streak": {
+    "quiet": 0,
+    "pinned_min": 0,
+    "pinned_max": 0,
+    "vau_quiet": 0
+  },
+  "history": [
+    {
+      "date": "2026-10-07",
+      "m": null,
+      "interval_after": 14,
+      "note": "created"
+    }
+  ],
+  "counts": {
+    "learnings": 3,
+    "changes": 1,
+    "research": 1,
+    "tests": 1
+  },
+  "consolidate_every": 25,
+  "tests": {
+    "last_run": "2026-10-07T18:30",
+    "harness": "evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive)",
+    "env": "windows/claude-code",
+    "cases": 7,
+    "passed": 7,
+    "failed": 0,
+    "failing": [],
+    "last_failure": null,
+    "research_after_days": null
+  },
+  "setup": {
+    "envs": [
+      "windows/claude-code"
+    ]
+  }
+}

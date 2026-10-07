@@ -27,7 +27,7 @@ Lessons this design exists to prevent (field lessons from the maintainer's local
 
 ## 2. Skill set
 
-Merged from the 15-skill draft by trigger overlap and listing cost (every description is paid on every session, §6). 13 skills:
+Merged from the 15-skill draft by trigger overlap and listing cost (every description is paid on every session, §6). 13 skills (14 since cinewright-voice, 2026-10-07):
 
 | Skill | Covers | Slice |
 |---|---|---|
@@ -44,6 +44,7 @@ Merged from the 15-skill draft by trigger overlap and listing cost (every descri
 | `cinewright-edit` | cutting: Murch's six, J and L cuts, match cuts, pacing, cutting around bad frames, assembly to delivery | craft |
 | `cinewright-finish` | color (correct, balance, match, look; color spaces) and VFX (compositing, cleanup, upscale, interpolation, crowd multiplication for battle wides, the crop to `frame_aspect`) | craft |
 | `cinewright-sound` | sound design, foley, ambience, music, dialogue, stems, mix, loudness targets, battle layers (implied mass, distance, weapons) | craft |
+| `cinewright-voice` | voice sheets, designed or cloned character voices locked by reference clips, video-model voices and lip-sync, voice conversion, drift checks, rights (added 2026-10-07, after S7) | craft |
 | `cinewright-history` | movements, eras, genres, director and DP style cards | craft |
 | `cinewright-curate` | knowledge base upkeep: add, verify, retire entries; refresh model cards | dev |
 
@@ -111,7 +112,7 @@ Measured by `cine.py budget`; CI fails at red; at yellow the session tells Mark 
 | SKILL.md lines | ≤ 80 | 81-120 | > 120 |
 | SKILL.md body tokens (est.) | ≤ 1,200 | 1,201-2,000 | > 2,000 |
 | One description, characters (trigger words first) | ≤ 350 | 351-500 | > 500 |
-| All descriptions, characters (13 skills) | ≤ 4,000 | 4,001-5,500 | > 5,500 |
+| All descriptions, characters (all skills) | ≤ 4,000 | 4,001-5,500 | > 5,500 |
 | Core descriptions only (5 skills) | ≤ 1,800 | 1,801-2,500 | > 2,500 |
 | Reference entry lines | ≤ 60 | 61-100 | > 100 |
 | Reference entry tokens (est.) | ≤ 700 | 701-1,200 | > 1,200 |

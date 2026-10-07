@@ -1,7 +1,7 @@
 {
   "name": "cinewright-craft",
   "version": "0.1.0",
-  "description": "Film craft skills for AI video: cinewright-script (logline, beats, scene turns, dialogue for generated voices), cinewright-design (turnaround sheets, clean references, prop descriptions, costume arc, color script), cinewright-sets (set plans, per-wall location strings, master plates, coverage and reverse angles, set light, plate checks), cinewright-movement (weight, one phrase per shot, fights, battles, hard subjects), cinewright-camera (lens, depth of field, exposure, shutter, aspect and framing, lighting, color temperature), cinewright-history (movement, era, genre, director and cinematographer style cards), cinewright-edit (assembly, rule of six, J and L cuts, pacing, trimming generations, cutting battles), cinewright-finish (grade order, color spaces and delivery, crop to the film's frame, day for night, crowd multiplication, upscale last) and cinewright-sound (layers and stems, generated audio, battle sound, mixing to a loudness target). Needs the cinewright plugin.",
+  "description": "Film craft skills for AI video: cinewright-script (logline, beats, scene turns, dialogue for generated voices), cinewright-design (turnaround sheets, clean references, prop descriptions, costume arc, color script), cinewright-sets (set plans, per-wall location strings, master plates, coverage and reverse angles, set light, plate checks), cinewright-movement (weight, one phrase per shot, fights, battles, hard subjects), cinewright-camera (lens, depth of field, exposure, shutter, aspect and framing, lighting, color temperature), cinewright-history (movement, era, genre, director and cinematographer style cards), cinewright-edit (assembly, rule of six, J and L cuts, pacing, trimming generations, cutting battles), cinewright-finish (grade order, color spaces and delivery, crop to the film's frame, day for night, crowd multiplication, upscale last) cinewright-sound (layers and stems, generated audio, battle sound, mixing to a loudness target) and cinewright-voice (voice sheets, designed or cloned voices locked by reference clips, drift checks). Needs the cinewright plugin.",
   "author": {
     "name": "Mark Rogers"
   },
@@ -23,7 +23,9 @@
     "color-grading",
     "vfx",
     "sound-design",
-    "loudness"
+    "loudness",
+    "voice",
+    "tts"
   ],
   "repository": "https://github.com/m4bwav/cinewright"
 }
