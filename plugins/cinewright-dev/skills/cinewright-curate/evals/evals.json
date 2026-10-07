@@ -1,0 +1,99 @@
+{
+  "skill": "cinewright-curate",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root; fixture repo gives the run folder scripts/, shared/ and plugins/ (without cinewright-dev).",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "fixture": "repo",
+      "prompt": "Some of the video model cards in this cinewright checkout haven't been re-checked in a while. Which knowledge-base entries are overdue?",
+      "expectations": [
+        "the cinewright-curate skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "fixture": "repo",
+      "prompt": "add a cinewright knowledge base entry on anamorphic lens flares to the camera skill",
+      "expectations": [
+        "the cinewright-curate skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "fixture": "repo",
+      "prompt": "Compile shot 1A of examples/three-shot into a Kling prompt I can paste.",
+      "expectations": [
+        "the cinewright-curate skill is not invoked (compiling a shot is cinewright-genvideo's job, a neighbour)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Add a note to the chartwright knowledge base's pie chart entry: never suggest a pie with more than five slices.",
+      "expectations": [
+        "the cinewright-curate skill is not invoked (another plugin's knowledge base, chartwright-curate's job)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "fixture": "repo",
+      "prompt": "I re-read Wan 2.2's official repository page today (https://github.com/Wan-Video/Wan2.2) and nothing in our Wan model card has changed. Record that check in this cinewright checkout's knowledge base.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py.*\\bkb\\s+verify\\s+wan-2-2"
+      },
+      "runs": 3,
+      "baseline": "2026-10-06, S7 curate suite (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 1 of 3 passed (Haiku fail, Sonnet fail, Opus pass)."
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "fixture": "repo",
+      "prompt": "Suppose Luma announced today that Ray3.2 is shut down for good. Update this cinewright checkout's knowledge base so the change is on record and nobody plans shots for that model without a warning.",
+      "files": [],
+      "checks": [
+        [
+          "python",
+          "-c",
+          "import re,sys; t=open(sys.argv[1],encoding='utf-8').read(); sys.exit(0 if re.search(r'(?m)^status: shut-down$', t) else 1)",
+          "{work}/plugins/cinewright/skills/cinewright-genvideo/references/luma-ray-3-2.md"
+        ],
+        [
+          "python",
+          "-c",
+          "import re,sys; t=open(sys.argv[1],encoding='utf-8').read(); sys.exit(0 if re.search(r'(?m)^- \\d{4}-\\d\\d-\\d\\d: .*shut', t) else 1)",
+          "{work}/plugins/cinewright/skills/cinewright-genvideo/references/luma-ray-3-2.md"
+        ],
+        [
+          "python",
+          "{work}/scripts/cine.py",
+          "kb",
+          "lint"
+        ]
+      ],
+      "expectations": [
+        "check: the Luma Ray3.2 card still exists with status shut-down",
+        "check: the card carries a dated note saying it was shut down",
+        "check: kb lint passes",
+        "the reply says the card was kept (not deleted) and marked shut down, so compiling for it warns",
+        "judge: the reply does not claim to have changed any other model card (2 of 3 votes)"
+      ],
+      "runs": 3,
+      "baseline": "2026-10-06, S7 curate suite (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 1 of 3 passed (Haiku fail, Sonnet fail, Opus pass)."
+    }
+  ]
+}

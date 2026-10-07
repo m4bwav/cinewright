@@ -23,7 +23,7 @@ The core artifact is the **shot card**: one generator-neutral JSON record per sh
 
 What no competitor has ([study](../research/2026-10-03-competitor-study.md)): an executable compiler from one card to each model's syntax, a continuity diff script, scripted QC, summary indexes, budgets in CI, per-card freshness, scored evals on three model sizes, and installs on all three hosts. Their minimum load per prompt is 2k-22k tokens; cinewright's target is under 5k for a typical task (§6). Borrowed ideas (MIT sources, credited in README): response-size ceilings and the repair cost ladder (prompt → parameter → regenerate → keyframe → v2v → re-plan → fix in edit → cut), one owning reference per dimension, a continuation needs the previous take's observed end state, one change per reroll, writing a prompt never authorises a paid render. The shot card is designed from film practice, so nothing from visual-skills (CC BY 4.0) needs adapting.
 
-Lessons this design exists to prevent (from local-render's LEARNINGS, which has no code names, so cited by title): L-005 chained clips lose identity; L-010 reference images keep characters on-model; L-011 independent shots read as the scene restarting; L-012 fixed screen direction string; L-013 describe what is in the shot, not what to avoid; L-014 same seed keeps the opening; L-015 guide frame at frame 0; L-017 turnaround sheets hold identity; L-019 clean references of emblems; L-020 and L-021 hard subjects side-on, few and large. Each becomes a rule in continuity, genvideo or qc, written without the private project context.
+Lessons this design exists to prevent (field lessons from the maintainer's local renders, which have no code names, so cited by title): L-005 chained clips lose identity; L-010 reference images keep characters on-model; L-011 independent shots read as the scene restarting; L-012 fixed screen direction string; L-013 describe what is in the shot, not what to avoid; L-014 same seed keeps the opening; L-015 guide frame at frame 0; L-017 turnaround sheets hold identity; L-019 clean references of emblems; L-020 and L-021 hard subjects side-on, few and large. Each becomes a rule in continuity, genvideo or qc, written without the private project context.
 
 ## 2. Skill set
 
@@ -91,7 +91,7 @@ Python 3.9+, stdlib only, `encoding="utf-8"`, pathlib, argv lists, LF endings (e
 | Group | Commands | Stage |
 |---|---|---|
 | `kb` | `index`, `search <words>`, `show <slug> [--section]`, `lint` | S1 |
-| `cards` | `new`, `validate` (shot list and bibles against `shared/schemas/`), `export --film-json` (local-render `film.json` shape: name, target_seconds, width, height, refs, seam_audio_xfade, shots with name, seed, length, refs, guides; written from the documented shape, no import of local-render) | S1 |
+| `cards` | `new`, `validate` (shot list and bibles against `shared/schemas/`), `export --film-json` (a local ComfyUI film runner's `film.json` shape: name, target_seconds, width, height, refs, seam_audio_xfade, shots with name, seed, length, refs, guides; written from the documented shape, no import of the runner) | S1 |
 | `compile` | `<card> --model veo|kling|seedance|runway|luma|minimax-h3|wan|ltx2`: card + bibles → that model's prompt text, using the model card's template, word limit and syntax (Veo timestamps, Kling `Name (tone):` dialogue, Seedance `@Image1`, H3 in-sentence moves) | S1 one model, S2 all |
 | `continuity` | `diff`: every card against the bibles (identity string verbatim, wardrobe and props, axis side and screen direction, 30-degree and size step against the previous card, time of day and sun direction) | S1 |
 | `qc` | `sheet` (ffmpeg frames at 1-2 fps → contact sheet), `spec` (ffprobe fps, size, aspect, duration vs card), `loud` (ffmpeg `ebur128` integrated LUFS and true peak vs target), `rubric` (writes the VLM checklist for a clip, reads verdicts back, maps fails to fix codes) | S2 |
@@ -140,20 +140,20 @@ Every skill gets RESEARCH (four tracks: subject, tooling, practice, testing), CH
 
 - **Evals per TESTING.md**, every skill: 2 triggers, 2 decoys, 1 action case with evidence outside the transcript (a written shot list, a `cine.py` call in the trace, a contact sheet file), 1 outcome case, baseline without the skill. Three runs each; trigger ≥ 2/3, decoy 0/3. Run on Haiku, Sonnet and Opus (TESTING has no model matrix; cinewright adds one and records the model per T- entry). Harness: `claude plugin eval` plus `claude -p --plugin-dir` headless cases, as threewright does.
 - **Outcome rubric** for a planned film (no render needed): every card validates, continuity diff clean, one action and one move per card, identity string verbatim in every compiled prompt, screen direction stated, durations 3-8 s. Scored with and without cinewright on the same one-line idea.
-- **Real A/B (S8, private):** one one-line film idea, rendered through the maintainer's local renderer (local-render, MiniMax H3) twice: a plain prompt-per-shot run, and the cinewright pipeline. Same seeds where possible, same shot count. Scored blind by the qc rubric plus Mark's own ranking. Data, renders and the report live in the vault sidecar, never in this repo; the public README may state the result in one sentence.
+- **Real A/B (S8, private):** one one-line film idea, rendered through the maintainer's local renderer (ComfyUI, MiniMax H3) twice: a plain prompt-per-shot run, and the cinewright pipeline. Same seeds where possible, same shot count. Scored blind by the qc rubric plus Mark's own ranking. Data, renders and the report live in the vault sidecar, never in this repo; the public README may state the result in one sentence.
 
 ## 9. Install proof (S7)
 
 | Host | Route | Status |
 |---|---|---|
-| Claude Code | `/plugin marketplace add m4bwav/cinewright`, `/plugin install cinewright@cinewright` | documented |
-| claude.ai / Desktop | Customize > Plugins > Add marketplace | documented; nested plugin folder untested |
-| claude.ai | Customize > Skills > upload one ZIP per skill | documented |
-| Copilot CLI | `copilot plugin marketplace add m4bwav/cinewright` (reads `.claude-plugin/`) | documented, untested |
-| VS Code Copilot | `chat.plugins.marketplaces` or "Chat: Install Plugin From Source" | which marketplace path: unverified |
-| any agent | `gh skill install m4bwav/cinewright cinewright-continuity` | preview; nested `plugins/*/skills/` discovery unverified |
+| Claude Code | `/plugin marketplace add m4bwav/cinewright`, `/plugin install cinewright@cinewright` | installed and triggered, private repo, Windows, 2026-10-06 |
+| claude.ai / Desktop | Customize > Plugins > Add marketplace | not run: adds to Mark's account; waits for his go or the public repo |
+| claude.ai | Customize > Skills > upload one ZIP per skill | ZIP accepted and previewed; Upload waits for Mark's go |
+| Copilot CLI | `copilot plugin marketplace add m4bwav/cinewright` (reads `.claude-plugin/`) | installed and triggered, private repo, Windows, 2026-10-06 |
+| VS Code Copilot | `chat.plugins.marketplaces` or "Chat: Install Plugin From Source" | not run: changes VS Code user settings; waits for Mark's go |
+| any agent | `gh skill install m4bwav/cinewright cinewright-continuity` | nested discovery works (13 skills); installed and triggered in Claude Code, 2026-10-06 |
 
-Each route is run once on Windows; one route on a second OS or `untested elsewhere` in TESTS. The repo is private until S7, so public-route tests run right after the scrub, before announcing. Claude directory and awesome-copilot submissions come after release (brief §12).
+Each route is run once on Windows; one route on a second OS or `untested elsewhere` in TESTS. Results: [../notes/2026-10-06-s7-install-proof.md](../notes/2026-10-06-s7-install-proof.md). The repo is private until S7, so public-route tests run right after the scrub, before announcing. Claude directory and awesome-copilot submissions come after release (brief §12).
 
 ## 10. Stages
 
@@ -169,7 +169,7 @@ Estimates are agent time and output size. Each stage writes the next stage's ful
 
 **S5. Post.** edit, finish, sound: Murch, J and L cuts, cutting around bad frames, cutting a battle (geography wides between fights), crowd multiplication in compositing and battle sound layers (asked for on 2026-10-04; movement's battle-scenes entry plans the shoot), the crop to `frame_aspect`, grade order and color spaces, upscale and interpolation last, loudness targets re-verified (EBU R128 v4, ATSC A/85, Netflix in a browser, web). Exit: the S2 render cut, graded and mixed to a stated target, `qc loud` within tolerance. About 45 files, 3 agent hours.
 
-**S6. Evals and tuning.** Full suite on Haiku, Sonnet, Opus; decoys against neighbours (chartwright, threewright, local-render, generic video editing); tune failures with evergreen-tune; worth check per skill (`evergreen.py worth`); merge or cut skills that test redundant. Exit: all cases pass, no skill marked CUT, results in each TESTS.md. 4-6 agent hours (run time dominates).
+**S6. Evals and tuning.** Full suite on Haiku, Sonnet, Opus; decoys against neighbours (chartwright, threewright, a ComfyUI image skill, generic video editing); tune failures with evergreen-tune; worth check per skill (`evergreen.py worth`); merge or cut skills that test redundant. Exit: all cases pass, no skill marked CUT, results in each TESTS.md. 4-6 agent hours (run time dominates).
 
 **S7. Packaging, install, release.** Install routes in §9 on every host; per-skill ZIPs; README (40+ words, what it runs and fetches); public scrub (`cine.py scrub`: LAN addresses, hostnames, GPU names, drive paths, private project names, emails) over every file including `ai-docs/` (the brief and session prompts name local paths and private projects today; move those lines to the vault sidecar); make the repo public (Mark's go, D5); tag 0.1.0 with a GitHub Release; register in evergreen and the mark-local marketplace; submit core to the Claude directory and awesome-copilot (Mark's go). Exit: every route installs and triggers once. 3-4 agent hours.
 

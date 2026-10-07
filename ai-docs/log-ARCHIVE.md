@@ -14,7 +14,7 @@ Older entries from [log.md](log.md), sessions S1 to S5 (2026-10-03 to 2026-10-04
 ## 2026-10-03: session 1, plan and chain
 
 - Repo set up: git on `main`, everlast doc set (mode repo, sync pr), AGENTS.md, CLAUDE.md importing it, Copilot pointer, private GitHub repo m4bwav/cinewright.
-- Four subagent passes: evergreen spec, threewright template and local-render lessons, packaging re-check, competitor study. Notes: [research/2026-10-03-packaging-verification.md](research/2026-10-03-packaging-verification.md), [research/2026-10-03-competitor-study.md](research/2026-10-03-competitor-study.md).
+- Four subagent passes: evergreen spec, threewright template and the local-render field lessons, packaging re-check, competitor study. Notes: [research/2026-10-03-packaging-verification.md](research/2026-10-03-packaging-verification.md), [research/2026-10-03-competitor-study.md](research/2026-10-03-competitor-study.md).
 - Plan written: [plans/PLAN.md](plans/PLAN.md). 13 skills (color and VFX merged into finish), physical plugin folders (core, craft, dev) because strict-false slicing cannot go to the Claude directory, CLI `cine.py`, budgets with thresholds, stages S1-S8, decisions D1-D7 for Mark.
 - S1 prompt written to [next-session-prompt.md](next-session-prompt.md).
 

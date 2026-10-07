@@ -197,3 +197,39 @@ Validation passed (four times)
 $ evergreen.py lint plugins/cinewright-craft/skills/cinewright-sound
 cinewright-sound: lint OK
 ```
+
+## 2026-10-06: session S7, curate, packaging, install proof, scrub
+
+- S6 PR #7 merged with no comments; PR #8 (cinewright-sound beat-grid conform, another session) merged into main mid-session; `s7/package` rebased onto it. No answer yet on the runtime budget row: genvideo stays yellow, reported.
+- cinewright-curate built in `plugins/cinewright-dev/` (evergreen unit via `evergreen.py init --pointer`, then `unregister`, the registry being another repo). Commands in the maintainer CLI, not the runtime: `kb due|new|verify|retire`; plus `cine.py scrub`. Decision: [decisions/2026-10-06-curate-commands-in-the-maintainer-cli-and-scrub-names-outside-the-repo.md](decisions/2026-10-06-curate-commands-in-the-maintainer-cli-and-scrub-names-outside-the-repo.md). Six new tests.
+- Harness: `fixture: "repo"` (scripts, shared, plugins without cinewright-dev, filtered marketplace.json) for maintainer skills.
+- Curate suite (budget week, Mark's cheaper-option rule): Sonnet 3 runs per case, Haiku and Opus 1, one baseline per model; 36 runs plus a 3-run Sonnet rerun. Sonnet outcome-1 failed 0 of 3: the table row `kb retire <slug> --reason R [--status deprecated]` was copied verbatim (curate L-001 `optional-flag-copied`); row split (C-20261006-2), rerun 3 of 3. Final T-20261006-2: Sonnet 6 of 6 cases, Opus 6 of 6 (its baseline also passed action and outcome by reading the CLI help: little gain on Opus), Haiku 3 of 6 (trigger-2, decoy-2, action-1; decision item 5 pattern, recorded not tuned). Deferred: 3 runs per case on Haiku and Opus.
+- Description budget 4,082 of 4,000: YELLOW (curate adds 194 characters). Nothing trimmed; Mark's call.
+- Install proof on the private repo (Windows): Claude Code marketplace, Copilot CLI marketplace and `gh skill install` each installed and triggered cinewright-continuity once; `gh skill` finds all 13 skills under `plugins/*/skills/`. claude.ai skill upload stopped at the preview (ZIP accepted); claude.ai marketplace and VS Code Copilot not run (they change Mark's account or settings). Second OS: untested elsewhere. Record: [notes/2026-10-06-s7-install-proof.md](notes/2026-10-06-s7-install-proof.md). Every test install removed.
+- ZIPs: 13 built in `dist/` (gitignored, 44-70 KB each), release assets.
+- Public scrub: 33 hits first. Research brief sections 1 and 2 (request path, local prior art with paths and private project names) moved verbatim to the vault sidecar note "Research brief sections 1 and 2, request and local prior art (private)"; the repo keeps a neutral version with the generalised field lessons. The private local-render skill's name replaced in PLAN, the log archive and one solution; one code comment's sample path neutralised. False positives fixed in scrub (string escapes, CLAUDE.local.md). Names list: vault sidecar `scrub-names.txt`. Now 0 hits. The repo is still private (D5 waits for Mark).
+- evergreen 0.13.0 lint wants SETUP.md double-linked with every companion: qc's SETUP.md, RESEARCH, LEARNINGS and TESTS now link both ways.
+
+Check output (2026-10-06, Windows 11, Python 3.14.6 and 3.9.25):
+
+```
+$ python -m unittest discover -s tests
+Ran 70 tests in 18.792s
+OK
+$ py -V:Astral/CPython3.9.25 -m unittest discover -s tests
+Ran 70 tests in 18.697s
+OK
+$ python scripts/cine.py kb lint
+kb lint: 14 skills, 0 errors
+$ python scripts/cine.py budget
+all descriptions 4082 of 4000 yellow (curate); skill folder KB 167 yellow cinewright-genvideo (the unanswered runtime row); everything else green
+budget: YELLOW
+$ python scripts/cine.py scrub --names <vault sidecar scrub-names.txt>
+scrub: 0 hits in 0 files
+$ claude plugin validate . (and plugins/cinewright, plugins/cinewright-craft, plugins/cinewright-dev)
+Validation passed (four times)
+$ evergreen.py lint <each skill>   (evergreen 0.13.0)
+14 skills: lint OK
+```
+## [2026-10-06] index | rebuilt (18 entries)
+## [2026-10-06] index | rebuilt (18 entries)
