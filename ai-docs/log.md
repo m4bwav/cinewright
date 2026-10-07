@@ -355,7 +355,7 @@ Validation passed (four times)
 - Research (two passes plus local tests): [research/2026-10-07-voice-consistency.md](research/2026-10-07-voice-consistency.md). Decision: [decisions/2026-10-07-voice-skill-and-voice-bible.md](decisions/2026-10-07-voice-skill-and-voice-bible.md).
 - Built: plugins/cinewright-craft/skills/cinewright-voice (SKILL.md, 10 references, SETUP.md, evergreen companions, 7 eval cases, check_voices.py); shared/schemas/voice-bible.schema.json (optional `bibles/voices.json`, validated by `cards validate`); `cine.py voice measure|ref|check` in shared/lib (stdlib YIN pitch through ffmpeg; 78 to 90 KB); voice-bible schema added to every skill that ships the bibles; router table row; craft manifests and READMEs; one cross-link from cinewright-script.
 - Local findings: ComfyUI core 0.38.2 has no TTS node (TTS Audio Suite is the pack to use; not installed here, waits for Mark's go). Ollama 0.40.0 on Windows accepted audio for gemma4:12b although the release notes say MLX only; it misjudged a male voice as female and invented a second speaker, so it drafts and never judges (L-001 `llm-ear-misjudges-voices`). Music under a line corrupts pitch (L-002 `music-corrupts-pitch`); YIN threshold 0.3 and span-based pace (L-003 `yin-threshold-0-3`).
-- Budget: all descriptions 4,336 of 4,000 characters, YELLOW (15 skills); everything else green. After merging main (cinewright-sets, PR #17): 4,680 with 16 skills, still yellow under the 5,500 red line; 87 tests OK, kb lint 16 skills 0 errors, scrub 0 hits (the private skill name local-delegate taken out of SKILL.md), sets ships the voice-bible schema too.
+- Budget: all descriptions 4,336 of 4,000 characters, YELLOW (15 skills); everything else green. After merging main (cinewright-sets, PR #17): 4,680 with 16 skills, still yellow under the 5,500 red line; 87 tests OK, kb lint 16 skills 0 errors, scrub 0 hits (a private skill name taken out of SKILL.md), sets ships the voice-bible schema too.
 
 Exit check (2026-10-07, Windows 11, branch voice-skill):
 
@@ -378,3 +378,10 @@ $ python evals/run_evals.py run --skill cinewright-voice --model sonnet --runs 3
 PR: https://github.com/m4bwav/cinewright/pull/18 (assigned to Mark, needs-review).
 ## [2026-10-07] index | rebuilt (21 entries)
 - 2026-10-07: main (cinewright-sets, #17) merged into the branch, conflicts resolved, checks re-run (87 tests OK, kb lint 0 errors, scrub 0 hits, validate passed); squash-merged as #18 on Mark's request.
+## [2026-10-07] asset | README banner
+- Banner `assets/banner.jpg` (1536x640, 100 KB JPEG, metadata stripped) rendered on the image host with Z-Image Turbo (9 steps, cfg 1, res_multistep/simple), seed 18210612; workflow and prompt in `assets/banner-workflow.api.json`, credited in the README. Eight seeds over two prompts: the first prompt asked for a clapperboard and the model filled it with garbled fake text, so the second prompt drops it ("no clapperboard, no writing"); seed 6 of 8 was picked.
+- Scrub found a private skill name in an earlier log line (line 358); reworded.
+```
+$ python scripts/cine.py scrub --names <sidecar scrub-names.txt>
+scrub: 0 hits in 0 files
+```
