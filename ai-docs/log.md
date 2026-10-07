@@ -377,3 +377,4 @@ $ python evals/run_evals.py run --skill cinewright-voice --model sonnet --runs 3
 ```
 PR: https://github.com/m4bwav/cinewright/pull/18 (assigned to Mark, needs-review).
 ## [2026-10-07] index | rebuilt (21 entries)
+- 2026-10-07: main (cinewright-sets, #17) merged into the branch, conflicts resolved, checks re-run (87 tests OK, kb lint 0 errors, scrub 0 hits, validate passed); squash-merged as #18 on Mark's request.
