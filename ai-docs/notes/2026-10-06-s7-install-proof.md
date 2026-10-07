@@ -11,6 +11,12 @@ summary: "Read before the release or a public-route retest: which install routes
 
 # S7 install proof (private repo, Windows 11, 2026-10-06)
 
+## Summary
+
+Three routes installed and triggered on the private repo (Claude Code, Copilot CLI, `gh skill`); three wait for Mark's go because they change his claude.ai account or VS Code settings; no second OS.
+
+## Routes
+
 Every route used `main` at f83076f (13 skills; curate is on `s7/package`). Each test install was removed afterwards. Trigger prompt in each: "My AI video clips keep flipping which side the two characters are on between shots. How do I keep them consistent?"
 
 | Host | Route and command | Result |
