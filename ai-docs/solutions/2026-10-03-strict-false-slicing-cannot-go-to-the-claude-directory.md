@@ -28,7 +28,7 @@ Physical plugin folders under `plugins/`, each with its own Claude manifest and 
 ## Other surprises this session
 
 - Evergreen's index rules are in PROTOCOL.md §9 (Tone and hygiene), not §10; §10 is the trunk-and-clones publishing model.
-- comfyui-gen's LEARNINGS entries have no kebab-case code names, so they are cited by ID and title.
+- The local-render field lessons have no kebab-case code names, so they are cited by ID and title.
 - chartwright already ships `scripts/cw.py`; cinewright's CLI is `cine.py` to avoid the clash.
 
 ## Verified by

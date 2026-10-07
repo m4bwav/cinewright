@@ -8,6 +8,12 @@ Entry shape: `### T-YYYYMMDD-n · date · harness · env · passed/total`, one l
 
 ## Runs
 
+### T-20261006-1 · 2026-10-06 · install routes, one headless trigger each · windows/claude-code, copilot-cli, gh-skill · 3/3 routes run
+- Plugin install proof (PLAN section 9), private repo at f83076f: Claude Code marketplace (local scope), Copilot CLI marketplace, `gh skill install` into Claude Code. Each installed, and one Sonnet run per route called the Skill tool with cinewright-continuity (trace evidence).
+- Not run: claude.ai skill upload (ZIP accepted by the form; Upload left for Mark), claude.ai plugin marketplace and VS Code Copilot (change Mark's account or settings; wait for his go).
+- Second OS: untested elsewhere.
+- led to: none (record: ai-docs/notes/2026-10-06-s7-install-proof.md in the repository)
+
 ### T-20261005-2 · 2026-10-05 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Claude Code 2.1.281 · 4/7 cases on all three models
 - Models: H Haiku 4.5, S Sonnet 5, O Opus 5.5; with the skill 3 runs each; trigger counts are invocations.
 - Cases: trigger-1 H 0/3 S 3/3 O 3/3; trigger-2 H 3/3 S 3/3 O 3/3; decoy-1 H 0/3 S 0/3 O 0/3; decoy-2 H 0/3 S 0/3 O 0/3; decoy-3 H 0/3 S 0/3 O 0/3; action-1 H 1/3 S 3/3 O 3/3; outcome-1 H 1/3 S 3/3 O 3/3.

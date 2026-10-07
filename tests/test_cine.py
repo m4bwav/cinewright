@@ -106,6 +106,86 @@ class TestKb(Base):
         self.assertIn("local drive path", out)
 
 
+class TestCurate(Base):
+    CARD = "plugins/cinewright/skills/cinewright-genvideo/references/wan-2-2.md"
+
+    def test_due_lists_cards_with_claims(self):
+        code, out = run("kb", "due", "--days", "0")
+        self.assertEqual(code, 0, out)
+        self.assertIn("wan-2-2.md  [model card]", out)
+        self.assertIn("claim:", out)
+        self.assertIn("shared/vocab/shot-sizes.md", out)
+        self.assertNotIn("cinewright-continuity/references/shot-sizes.md", out, "copies are listed by their source")
+
+    def test_new_verify_retire_entry(self):
+        root = copy_repo(self.tmp)
+        code, out = run("--root", root, "kb", "new", "cinewright-camera", "anamorphic-flare", "--title", "Anamorphic flare",
+                        "--summary", "Horizontal blue streak flares from anamorphic lenses and how to prompt them.",
+                        "--tags", "camera,lens", "--source", "https://example.com/flare")
+        self.assertEqual(code, 0, out)
+        p = root / "plugins/cinewright-craft/skills/cinewright-camera/references/anamorphic-flare.md"
+        self.assertIn("## Rules", lib.read_text(p))
+        self.assertIn("`anamorphic-flare`", lib.read_text(p.parent / "INDEX.md"))
+        code, out = run("--root", root, "kb", "new", "cinewright-camera", "anamorphic-flare", "--title", "Again",
+                        "--summary", "x" * 30, "--tags", "camera", "--source", "https://example.com/a")
+        self.assertNotEqual(code, 0, "a slug that exists must be refused")
+        code, out = run("--root", root, "kb", "verify", "anamorphic-flare", "--source", "https://example.com/second",
+                        "--note", "no change")
+        self.assertEqual(code, 0, out)
+        meta, body = lib.parse_frontmatter(lib.read_text(p))
+        self.assertEqual(meta["sources"], ["https://example.com/flare", "https://example.com/second"])
+        self.assertRegex(body, r"## Notes\n\n- \d{4}-\d\d-\d\d: verified against https://example.com/second; no change")
+        code, out = run("--root", root, "kb", "retire", "anamorphic-flare", "--reason", "merged into lens-choice")
+        self.assertEqual(code, 0, out)
+        self.assertFalse(p.exists())
+        self.assertNotIn("anamorphic-flare", lib.read_text(p.parent / "INDEX.md"))
+        self.assertRegex(lib.read_text(p.parent.parent / "CHANGELOG.md"), r"### C-\d{8}-\d+ · [\d-]+ · Retired entry anamorphic-flare")
+        code, out = run("--root", root, "kb", "lint")
+        self.assertEqual(code, 0, out)
+
+    def test_retire_refuses_referenced_entry_and_vocab(self):
+        root = copy_repo(self.tmp)
+        code, out = run("--root", root, "kb", "retire", "eyelines", "--reason", "test")
+        self.assertNotEqual(code, 0)
+        self.assertIn("still names eyelines", out)
+        code, out = run("--root", root, "kb", "retire", "shot-sizes", "--reason", "test")
+        self.assertNotEqual(code, 0)
+        self.assertIn("shared vocab used by", out)
+
+    def test_retire_model_card_keeps_file(self):
+        root = copy_repo(self.tmp)
+        code, out = run("--root", root, "kb", "retire", "wan-2-2", "--reason", "vendor shut it down")
+        self.assertEqual(code, 0, out)
+        text = lib.read_text(root / self.CARD)
+        self.assertIn("status: shut-down", text)
+        self.assertRegex(text, r"- \d{4}-\d\d-\d\d: shut-down; vendor shut it down\n\n## Compile")
+        code, out = run("--root", root, "kb", "lint")
+        self.assertEqual(code, 0, out)
+
+    def test_verify_vocab_source_rebuilds_copies(self):
+        root = copy_repo(self.tmp)
+        code, out = run("--root", root, "kb", "verify", "shot-sizes", "--source", "https://example.com/sizes")
+        self.assertEqual(code, 0, out)
+        copy = lib.read_text(root / "plugins/cinewright/skills/cinewright-continuity/references/shot-sizes.md")
+        self.assertIn("verified against https://example.com/sizes", copy)
+        code, out = run("--root", root, "kb", "lint")
+        self.assertEqual(code, 0, out)
+
+    def test_scrub(self):
+        root = copy_repo(self.tmp)
+        names = self.tmp / "names.txt"
+        names.write_text("# private\nsecretproject\n", encoding="utf-8")
+        # split so kb lint and scrub do not flag this file
+        lan, host, mail = "192.168." + "1.5", "DESKTOP-" + "ABC1234", "a@" + "b.org"
+        (root / "ai-docs" / "x.md").write_text("host %s at %s, mail %s, ok@example.com, see SecretProject\n"
+                                               % (host, lan, mail), encoding="utf-8")
+        code, out = run("--root", root, "scrub", "--names", names)
+        self.assertEqual(code, 1, out)
+        for what in ("hostname (%s)" % host, "LAN address (%s)" % lan, "email (%s)" % mail, "private name (SecretProject)"):
+            self.assertIn("ai-docs/x.md:1: " + what, out)
+        self.assertNotIn("ok@example.com", out)
+
+
 class TestBuild(Base):
     def test_build_propagates_source_change(self):
         root = copy_repo(self.tmp)

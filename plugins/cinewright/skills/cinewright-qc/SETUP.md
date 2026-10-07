@@ -1,6 +1,6 @@
 # Setup: cinewright-qc
 
-What [SKILL.md](SKILL.md) needs outside itself, what each piece is for, how to check it, and how to install it on each environment met so far. Format and rules: the protocol's `SETUP.md` spec. Check here with `evergreen.py setup <this folder>`; it reads the tables below, so keep their shape.
+What [SKILL.md](SKILL.md) needs outside itself, what each piece is for, how to check it, and how to install it on each environment met so far. Format and rules: the protocol's `SETUP.md` spec. Check here with `evergreen.py setup <this folder>`; it reads the tables below, so keep their shape. Test runs that needed these pieces: [TESTS.md](TESTS.md); install lessons: [LEARNINGS.md](LEARNINGS.md); changes: [CHANGELOG.md](CHANGELOG.md); sources: [RESEARCH.md](RESEARCH.md).
 
 When a step fails for a missing piece (command not found, a module that will not import, a refused connection, an unknown model), or this environment is not in Environments met: run the check, tell the user what is missing and what it is for, install what you can after saying so, hand the rest to the user with the exact steps, re-check, then record what worked (`--record ... --verified`) and the environment (`--log`).
 

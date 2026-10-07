@@ -148,7 +148,17 @@ def done_keys(out):
     return keys
 
 
-def make_fixture(work):
+def make_fixture(work, kind=None):
+    """The stripped example project; `fixture: "repo"` adds a repository checkout (scripts, shared, plugins) for
+    maintainer skills, without cinewright-dev so the baseline cannot read the skill under test."""
+    if kind == "repo":
+        for top in ("scripts", "shared", "plugins"):
+            shutil.copytree(REPO / top, work / top, ignore=lambda d, names: [x for x in names if x in (
+                "__pycache__", "cinewright-dev")])
+        mp = json.loads((REPO / ".claude-plugin" / "marketplace.json").read_text(encoding="utf-8"))
+        mp["plugins"] = [p for p in mp["plugins"] if p["name"] != "cinewright-dev"]
+        (work / ".claude-plugin").mkdir()
+        (work / ".claude-plugin" / "marketplace.json").write_text(json.dumps(mp, indent=2), encoding="utf-8")
     dst = work / "examples" / "three-shot"
     shutil.copytree(EXAMPLE, dst, ignore=lambda d, names: [x for x in names if x in STRIP])
     for f in dst.rglob("*"):
@@ -308,7 +318,7 @@ def evidence_ok(ev, uses, work):
         for _, tool, inp, err in uses:
             if tool == ev.get("tool") and not err:
                 s = inp.get("command") if tool == "Bash" else json.dumps(inp)
-                # slashes normalised and quotes dropped: python "C:/x/scripts/cine.py" continuity diff ...
+                # slashes normalised and quotes dropped: python "/abs/path/scripts/cine.py" continuity diff ...
                 if pat.search(re.sub(r"[\"']", "", str(s).replace("\\", "/"))):
                     ok, why = True, "trace: %s %s" % (tool, str(s)[:200])
                     break
@@ -442,7 +452,7 @@ def one(job, out, keep):
         shutil.rmtree(rdir, ignore_errors=True)
     work = rdir / "work"
     work.mkdir(parents=True)
-    make_fixture(work)
+    make_fixture(work, case.get("fixture"))
     run_setup(case, work)
     plugin_copy = []
     if arm == "with":
