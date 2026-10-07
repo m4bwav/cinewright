@@ -33,14 +33,20 @@ Tests: 73 on Python 3.14 and 3.9 (3 new: export sequence, 362 frames, card-only 
 
 - **The sequence header introduces every cast member at the top, so everyone appears in every shot.** A 3 s wake-up close-up of the sleeper at the end of his own dream put him in the dream beside the dreamer; a dreamer standing in shot 1 and kneeling in shot 2 became two people. Workaround: keep a scene's cast to people physically present for its whole length, and name the same person in each action. Fix idea: per-shot cast lines in the sequence block, or warn when a cast member is in fewer than all shots of a sequence.
 - **No per-scene constants.** The style bible's `lighting` is the only verbatim film-wide slot; a film-wide line about a magic shield invited an unscripted shield into a calm reading scene, and "exactly one <hero>" named him in a dream he is not in. Workaround: one style bible per scene group and `compile --style` per group. Fix idea: a `constants` field on scenes.json, compiled into the sequence head.
-- **Dialogue `tone` is pasted after "says"**, so it must be an adverbial ("with a smirk"); "mutters under his breath" gave "says mutters...". Fix idea: document in the schema description, or lint tones that start with a verb.
+- ~~**Dialogue `tone` is pasted after "says"**~~ Fixed on s7b/release: schema description and `continuity diff` TONE.
 - **Word count**: every sequence was 344-623 words against the 300-word guide (three identity strings repeated). H3 followed all of them; the guide may be too low for multi-shot H3, or identities should be shortened for crowd scenes.
 - `compile` without `--out` prints and writes nothing; fine, but the first run looked like a failure.
 
 ## Lessons recorded
 
 - cinewright-design L-004 `effect-substance`: name what an invented effect is made of and what it lacks ("dragon heads of fire" drew winged lizards; the source's spell is a bodiless head and neck of fire and light).
-- cinewright-genvideo L-006 to L-008 (this note): simile taken literally, numbers in identity strings rendered literally, reference stills carry composition.
+- cinewright-genvideo L-009 to L-011 (this note): simile taken literally, numbers in identity strings rendered literally, reference stills carry composition.
+
+## Owner's review of the best-of film (2026-10-07, fixed on s7b/release, no re-render)
+
+- **A line in the wrong mouth.** Card 6D had only the hero in shot, with a rival sorcerer shouting from the dark. The compiled line was a plain `<rival> says: <d>...</d>`, and H3 gave it to the hero, the only face in frame. Mark has seen this swap in other generated videos too. The script skill's reference already said "models lip-sync whoever is on screen", but no check enforced it. Fix: an off-screen speaker compiles to H3's documented `says in an off-screen voiceover ... while the lips of <hero> remain completely closed`, models with no voiceover form leave the line out for the mix, and `continuity diff` warns OFFSCREEN and SPEAKERS. Decision: [../decisions/2026-10-07-off-screen-lines-compile-as-voiceovers-or-leave-the-prompt.md](../decisions/2026-10-07-off-screen-lines-compile-as-voiceovers-or-leave-the-prompt.md); lesson cinewright-genvideo L-012.
+- **The hero's name was said less well than in Mark's audiobook.** H3's guide says nothing on pronunciation. Fix: `pronounce` in characters.json respells a word inside spoken lines only, and `continuity diff` warns PRONOUNCE. Lesson cinewright-script L-003. Not tested on H3 yet. The film's own bible has no entry, because the respelling should come from Mark's audiobook.
+- Rerun on the film folder after the fix: `continuity diff` flags 6D OFFSCREEN and PRONOUNCE for the two spoken names; `compile` writes the voiceover form for 6D.
 
 ## What the owner corrected during the night (all applied)
 

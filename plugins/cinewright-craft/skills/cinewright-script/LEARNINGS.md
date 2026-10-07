@@ -21,3 +21,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: C-20261004-2 (SKILL.md Step 4); confirmed T-20261005-1: action-1 Sonnet 3 of 3 (was 2 of 3); Opus's one failing run never reached the step (a refused command, harness rev 1)
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-05
+
+### L-003 · 2026-10-07 · An invented name is said however the voice model guesses; write down how it sounds
+- Trigger: library film test, owner's review on 2026-10-07: the hero's name was said less well than in the owner's audiobook of the novel
+- Hypothesis: A voice model reads a rare name from its spelling with no ear for the source; the H3 guide says nothing on pronunciation, so the prompt has to carry it
+- Rule: For an adaptation, list every spoken rare name with a respelling in characters.json `pronounce`, taken from the source the owner trusts (audiobook, author, film), and test it with one short render before a long one. `continuity diff` PRONOUNCE flags character names in lines without an entry
+- Evidence: library_120s_best_c (owner's ear); compiler and tests on the same day. Whether H3 follows a respelling is not yet tested
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-07

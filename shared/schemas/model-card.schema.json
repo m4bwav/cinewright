@@ -115,7 +115,15 @@
         },
         "dialogue": {
           "type": "string",
-          "description": "Template with {name}, {line}, {tone}, {tone_clause} (' quietly'), {tone_paren} (' (quietly)'), {voice_clause} (' with a low voice'), {speaker} (S1, S2 per generation). Empty: the model makes no speech."
+          "description": "Template with {name}, {line}, {tone}, {tone_clause} (' quietly'), {tone_paren} (' (quietly)'), {voice_clause} (' with a low voice'), {speaker} (S1, S2 per generation), {silent_clause} (dialogue_silent filled in, or empty). Empty: the model makes no speech."
+        },
+        "dialogue_offscreen": {
+          "type": "string",
+          "description": "Template for a line whose speaker is not in the card's cast, same fields as dialogue. Absent: the line is left out of the prompt with a warning to lay it in the mix, since models lip-sync a visible face."
+        },
+        "dialogue_silent": {
+          "type": "string",
+          "description": "Clause with {names}: everyone else in the shot, said to stay silent (' while the lips of {names} remain completely closed')."
         },
         "audio": {
           "type": "string",

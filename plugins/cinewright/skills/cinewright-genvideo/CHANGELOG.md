@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261007-1 · 2026-10-07 · Off-screen lines as H3 voiceovers, listeners silent, names respelled; lessons renumbered
+- because: L-012 (owner's review of the library film), L-009 to L-011
+- files: references/minimax-h3.md, LEARNINGS.md
+- The H3 card gains `dialogue_offscreen` (the guide's "says in an off-screen voiceover") and `dialogue_silent`; models without a voiceover template leave an off-screen line out of the prompt with a warning. The library-test lessons were filed from number 6, which the archive already holds; they are now L-009 to L-011
+
 ### C-20261005-1 · 2026-10-05 · L-006 retired: the rerun did not move its case (S6)
 - because: T-20261005-1, L-006
 - files: LEARNINGS.md, LEARNINGS-ARCHIVE.md

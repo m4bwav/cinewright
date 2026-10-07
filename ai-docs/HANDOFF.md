@@ -2,7 +2,7 @@
 
 ## Current state
 - S7 is merged (PR #9). The repo is still private: https://github.com/m4bwav/cinewright.
-- 2026-10-06/07 night: first end-to-end film test (a 120 s novel-chapter adaptation, 25 cards, 8 H3 sequences, five render passes). Record: [notes/2026-10-07-library-film-test.md](notes/2026-10-07-library-film-test.md). Branch `test/library-film` holds the compiler fixes it found (H3 15 s = 362 frames, card-only travel, no double article, `cards export --film-json --sequence --model`), the budget answers, design L-004 and genvideo L-006 to L-008; its PR waits for Mark.
+- 2026-10-06/07 night: first end-to-end film test (a 120 s novel-chapter adaptation, 25 cards, 8 H3 sequences, five render passes). Record: [notes/2026-10-07-library-film-test.md](notes/2026-10-07-library-film-test.md). Branch `test/library-film` holds the compiler fixes it found (H3 15 s = 362 frames, card-only travel, no double article, `cards export --film-json --sequence --model`), the budget answers, design L-004 and genvideo L-009 to L-011; its PR waits for Mark.
 - Checks on that branch: tests 73 (3.14 and 3.9), kb lint 0 errors, budget GREEN, scrub 0 hits.
 
 ## Mark's answers (2026-10-06 21:00: "yes or as you recommend", but test before submitting anywhere)
