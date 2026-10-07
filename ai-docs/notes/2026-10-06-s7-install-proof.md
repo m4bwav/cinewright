@@ -3,7 +3,7 @@ title: S7 install proof, route by route
 kind: note
 status: active
 date: 2026-10-06
-verified: 2026-10-06
+verified: 2026-10-07
 stale_after: 2027-01-06
 tags: [install, packaging, s7, claude-code, copilot, gh-skill, claude-ai]
 summary: "Read before the release or a public-route retest: which install routes were run on the private repo (Windows, 2026-10-06), the exact commands, what triggered, and which routes wait for Mark"
@@ -47,3 +47,23 @@ Related: [../plans/PLAN.md](../plans/PLAN.md) §9 (statuses updated from this no
 | claude.ai Upload, claude.ai Add marketplace, VS Code Copilot | as above | not run: the agent's browser was refused for claude.ai, and VS Code needs a settings change and the chat UI. WAIT for Mark |
 
 All three test installs removed, including the plugin cache folder.
+
+## Account routes (2026-10-07, S7c, release v0.1.0)
+
+Mark approved all three in the session. Same trigger prompt; tag v0.1.0 (main fad9ec6).
+
+| Host | Route | Result |
+|---|---|---|
+| claude.ai (Opus 5.5) | Customize > Skills > Add > Upload skill, `dist/cinewright-continuity.zip` from the release | uploaded (26 files, enabled). New chat: activity shows "Loaded skill cinewright-continuity", then its Step 0 ran ("Check skill freshness and load axis rules", no failure); footer "Used in this session: Skills: cinewright-continuity". PASS |
+| claude.ai (Opus 5.5) | Customize > Plugins > Add > Add marketplace > Add from a repository, `m4bwav/cinewright`, Sync | marketplace listed all three plugins (Cinewright, Cinewright craft, Cinewright dev); Add on Cinewright: "0.1.0, 5 skills". New chat: "Loaded skill cinewright-continuity (cinewright)". Trigger PASS. Script FAIL: the model ran `cd /mnt/skills/plugins/cinewright:cinewright-continuity`, which does not exist, so every `cine.py` call failed (exit 2) and it answered from general knowledge |
+| VS Code 1.141 Copilot Chat | `chat.plugins.enabled: true` and `chat.plugins.marketplaces: ["m4bwav/cinewright"]` in user settings; install with `copilot plugin install cinewright@cinewright` into `~/.copilot/installed-plugins/` (the folder VS Code reads); trigger with `code chat -n -m agent "<prompt>"` | VS Code ran the chat through its Copilot CLI agent host; the session's `events.jsonl` shows `skill` called with `cinewright-continuity`, then `view` of its `evergreen.json` and `references/axis-and-screen-direction.md` under the installed folder. PASS, with a caveat: installed by the CLI, not VS Code's Install button (the agent cannot click in the VS Code window) |
+
+Quirks:
+
+- claude.ai plugin route: plugin skills are namespaced `cinewright:cinewright-continuity`, and the model guessed that as a folder name. "Run from the folder holding this file" is not enough there; the skills need a way to find their own folder. Open, see LEARNINGS L-006 `claude-ai-plugin-skill-folder-unknown` in cinewright-continuity. An uploaded skill (the ZIP route) did not hit it.
+- claude.ai Add marketplace shows a toast, "Auto-sync requires the Claude GitHub App to have access to this repository" with Grant access. Not granted; the manual sync worked without it.
+- claude.ai has no visible control to remove an added marketplace source (only a Source filter entry "cinewright"). Removing an uploaded skill is a permanent delete ("This skill and its version history will be permanently deleted"), which the agent leaves to Mark.
+- Both claude.ai chats were connected to the PC through Claude Desktop and said "your evergreen plugin is overdue for its research refresh": that came from the PC's session hook, not from the skill (continuity's `next_due` is 2027-01-31).
+- The release ZIPs were unzipped and scanned for drive paths, LAN addresses, hostnames, GPU names and the sidecar's private names: clean (one substring false positive inside the public `github.com/m4bwav/...` URL).
+
+Cleanup: VS Code: plugin uninstalled, marketplace removed, `~/.copilot/config.json` and `settings.json` hold no cinewright entry, VS Code user settings restored byte-identical to the backup. claude.ai: plugin removed ("You can add it back later"); uploaded skill switched off. Left for Mark: delete the uploaded skill (permanent), remove the cinewright marketplace source if the UI offers it, close the VS Code window `code chat -n` opened.
