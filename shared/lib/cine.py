@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""cinewright runtime CLI: kb, cards, compile, continuity, qc, takes.
+"""cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
 
@@ -12,6 +12,8 @@ Run it; do not read it. Python 3.9+, standard library only.
   python scripts/cine.py qc sheet CLIP | qc spec CLIP --project P --card ID | qc loud FILE
   python scripts/cine.py qc rubric PROJECT --card ID | qc rubric --read RUBRIC.json
   python scripts/cine.py takes log PROJECT --card ID --model M --verdict V | takes lastframe CLIP --out PNG
+  python scripts/cine.py voice measure FILE [--start S --end S] [--text LINE] | voice ref FILE --out WAV
+  python scripts/cine.py voice check PROJECT [--character ID --clip FILE [--start S --end S]]
 
 A PROJECT folder holds bibles/style.json, characters.json, locations.json,
 scenes.json and cards/*.json (one shot card per file).
@@ -337,6 +339,8 @@ class Project:
         self.scenes = json.loads(read_text(b / "scenes.json"))
         pf = b / "props.json"
         self.props_bible = json.loads(read_text(pf)) if pf.is_file() else None
+        vf = b / "voices.json"
+        self.voices_bible = json.loads(read_text(vf)) if vf.is_file() else None
         self.card_files = sorted((self.root / "cards").glob("*.json"))
         self.cards = [json.loads(read_text(p)) for p in self.card_files]
         for f in overrides or []:
@@ -350,6 +354,7 @@ class Project:
         self.locs = bible_entries(self.locations, "locations", "id", "locations.json", "location-bible")
         self.scene_map = bible_entries(self.scenes, "scenes", "id", "scenes.json", "scene-axis-bible")
         self.props = bible_entries(self.props_bible or {}, "props", "name", "props.json", "prop-bible")
+        self.voices = bible_entries(self.voices_bible or {"voices": []}, "voices", "character", "voices.json", "voice-bible")
 
 
 def bible_entries(doc, key, idkey, fname, schema):
@@ -400,6 +405,9 @@ def validate_project(ctx, p):
         errs += ["bibles/%s: %s" % (name, e) for e in validate(data, load_schema(ctx, name))]
     if p.props_bible is not None:
         errs += ["bibles/prop-bible: %s" % e for e in validate(p.props_bible, load_schema(ctx, "prop-bible"))]
+    if p.voices_bible is not None:
+        errs += ["bibles/voice-bible: %s" % e for e in validate(p.voices_bible, load_schema(ctx, "voice-bible"))]
+        errs += voice_bible_errors(p)
     card_schema = load_schema(ctx, "shot-card")
     seen_ids, seen_orders = set(), set()
     for path, card in zip(p.card_files, [json.loads(read_text(f)) for f in p.card_files]):
@@ -1468,6 +1476,216 @@ def cmd_takes(ctx, a):
 
 # ---------- argument parsing ----------
 
+# ---------- voice ----------
+
+VOICE_RATE = 8000  # pitch is tracked at 8 kHz: enough for 60-400 Hz, fast in pure Python
+F0_LO, F0_HI = 60.0, 400.0
+REF_SECONDS = (3.0, 30.0)  # most cloning engines want a clip in this range (cinewright-voice, entry reference-clips)
+
+
+def voice_pcm(path, start=None, end=None):
+    """Mono float samples at VOICE_RATE from any audio or video file (ffmpeg decodes it)."""
+    args = [need_tool("ffmpeg"), "-v", "error"]
+    if start is not None:
+        args += ["-ss", "%.3f" % start]
+    if end is not None:
+        args += ["-to", "%.3f" % end]
+    args += ["-i", str(path), "-vn", "-ac", "1", "-ar", str(VOICE_RATE), "-af", "highpass=f=60", "-f", "s16le", "-"]
+    r = subprocess.run(args, capture_output=True)
+    if r.returncode != 0:
+        raise SystemExit("ffmpeg could not read audio from %s: %s" % (path, r.stderr.decode("utf-8", "replace").strip()[-300:]))
+    import array
+    a = array.array("h")
+    a.frombytes(r.stdout[:len(r.stdout) // 2 * 2])
+    if sys.byteorder == "big":
+        a.byteswap()
+    return [x / 32768.0 for x in a]
+
+
+def f0_track(x, frame=0.04, hop=0.02, thresh=0.3, gate_db=35.0):
+    """YIN pitch per frame (0.0 = unvoiced or silent), seconds above the energy gate, and first-to-last speech span.
+
+    thresh 0.3: steadier than 0.2 on low creaky voices and on lines with music under them (tested 2026-10-07)."""
+    from operator import mul
+    n, h = int(frame * VOICE_RATE), int(hop * VOICE_RATE)
+    tmin, tmax = int(VOICE_RATE / F0_HI), int(VOICE_RATE / F0_LO)
+    starts = range(0, max(0, len(x) - n - tmax), h)
+    energy = [sum(map(mul, x[i:i + n], x[i:i + n])) / n for i in starts]
+    if not energy or max(energy) <= 0:
+        return [], 0.0, 0.0
+    gate = max(energy) * 10 ** (-gate_db / 10)
+    loud = [k for k, e in enumerate(energy) if e >= gate]
+    span = (loud[-1] - loud[0]) * hop + frame
+    out, active = [], 0
+    for i, e in zip(starts, energy):
+        if e < gate:
+            out.append(0.0)
+            continue
+        active += 1
+        w = x[i:i + n]
+        r0 = sum(map(mul, w, w))
+        cmnd, cum = [1.0] * (tmax + 2), 0.0
+        for tau in range(1, tmax + 2):
+            seg = x[i + tau:i + tau + n]
+            d = r0 + sum(map(mul, seg, seg)) - 2 * sum(map(mul, w, seg))
+            cum += d
+            cmnd[tau] = d * tau / cum if cum else 1.0
+        tau = tmin
+        while tau < tmax and cmnd[tau] >= thresh:
+            tau += 1
+        if tau >= tmax:
+            out.append(0.0)
+            continue
+        while tau + 1 < tmax and cmnd[tau + 1] < cmnd[tau]:
+            tau += 1
+        a, b, c = cmnd[tau - 1], cmnd[tau], cmnd[tau + 1]
+        den = a - 2 * b + c
+        out.append(VOICE_RATE / (tau + (0.5 * (a - c) / den if den else 0.0)))
+    return out, active * hop, span
+
+
+def voice_measure(path, start=None, end=None, text=None):
+    x = voice_pcm(path, start, end)
+    track, active, span = f0_track(x)
+    v = sorted(f for f in track if f)
+    m = {"file": str(path), "seconds": round(len(x) / float(VOICE_RATE), 2), "speech_span_s": round(span, 2),
+         "active_s": round(active, 2), "voiced_s": round(len(v) * 0.02, 2)}
+    if start is not None or end is not None:
+        m["span"] = [start, end]
+    if v:
+        q = lambda k: v[min(len(v) - 1, int(k * len(v)))]
+        m.update(f0_median_hz=round(v[len(v) // 2], 1), f0_p10_hz=round(q(0.1), 1), f0_p90_hz=round(q(0.9), 1),
+                 range_st=round(12 * math.log2(q(0.9) / q(0.1)), 1))
+    if text:
+        words = len(re.findall(r"[\w']+", text))
+        m["words"] = words
+        if span:
+            m["wpm"] = round(words * 60.0 / span)
+    warn = []
+    if not v:
+        warn.append("no voiced speech found")
+    else:
+        if m["voiced_s"] < 0.3 * max(active, 0.01):
+            warn.append("little of the sound is voiced: music, effects or noise under the voice; cut to the line or isolate the voice first")
+        if m["range_st"] > 18:
+            warn.append("pitch range over 18 semitones: another source is mixed in, or the tracker jumped an octave")
+        if m["voiced_s"] < 1.0:
+            warn.append("under 1 s of voiced speech: the numbers are rough")
+    m["warnings"] = warn
+    return m
+
+
+def voice_lines(m):
+    out = ["%s%s: %.2fs, speech from first to last word %.2fs (%.2fs above the gate), voiced %.2fs" % (
+        m["file"], (" [%s-%s]" % tuple(m["span"])) if "span" in m else "", m["seconds"], m["speech_span_s"], m["active_s"], m["voiced_s"])]
+    if "f0_median_hz" in m:
+        out.append("  pitch median %.0f Hz (p10 %.0f, p90 %.0f), range %.1f semitones"
+                   % (m["f0_median_hz"], m["f0_p10_hz"], m["f0_p90_hz"], m["range_st"]))
+    if "wpm" in m:
+        out.append("  pace %d words a minute, pauses included (%d words)" % (m["wpm"], m["words"]))
+    out += ["  WARNING: %s" % w for w in m["warnings"]]
+    return out
+
+
+def voice_bible_errors(p):
+    errs = []
+    for cid, v in p.voices.items():
+        if cid not in p.chars:
+            errs.append("bibles/voices.json: character '%s' is not in characters.json" % cid)
+        elif not p.chars[cid].get("voice"):
+            errs.append("bibles/voices.json: %s has no short `voice` string in characters.json; prompts copy that string" % cid)
+        for r in v.get("refs", []):
+            f = p.root / r.get("file", "")
+            if not f.is_file():
+                errs.append("bibles/voices.json: %s reference %s is missing" % (cid, r.get("file")))
+        if v.get("refs") and not any(r.get("emotion") == "neutral" for r in v["refs"]):
+            errs.append("bibles/voices.json: %s has no neutral reference; record or cut one first" % cid)
+    return errs
+
+
+def voice_baseline(p, cid):
+    """Pitch median across the character's reference clips (the neutral ones when there are any)."""
+    v = p.voices.get(cid)
+    if not v:
+        raise SystemExit("%s has no entry in bibles/voices.json" % cid)
+    refs = [r for r in v.get("refs", []) if r.get("emotion") == "neutral"] or v.get("refs", [])
+    if not refs:
+        raise SystemExit("%s has no reference clips in bibles/voices.json" % cid)
+    ms = [voice_measure(p.root / r["file"], r.get("start_s"), r.get("end_s"), r.get("text")) for r in refs]
+    meds = sorted(m["f0_median_hz"] for m in ms if "f0_median_hz" in m)
+    if not meds:
+        raise SystemExit("no voiced speech in %s's references" % cid)
+    wpms = sorted(m["wpm"] for m in ms if "wpm" in m)
+    return {"f0_median_hz": meds[len(meds) // 2], "wpm": wpms[len(wpms) // 2] if wpms else None,
+            "tolerance_st": v.get("tolerance_st", 2.0), "refs": ms}
+
+
+def cmd_voice(ctx, a):
+    if a.cmd == "measure":
+        m = voice_measure(a.file, a.start, a.end, a.text)
+        print(json.dumps(m, indent=2) if a.json else "\n".join(voice_lines(m)))
+        return 1 if "f0_median_hz" not in m else 0
+    if a.cmd == "ref":
+        out = Path(a.out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        args = [need_tool("ffmpeg"), "-v", "error", "-y"]
+        if a.start is not None:
+            args += ["-ss", "%.3f" % a.start]
+        if a.end is not None:
+            args += ["-to", "%.3f" % a.end]
+        # dry mono clip: rumble cut, edges trimmed of silence, levelled for a cloning engine
+        flt = ("highpass=f=70,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.15,"
+               "areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.25,areverse,"
+               "loudnorm=I=-20:TP=-3:LRA=11")
+        run_tool(args + ["-i", str(a.file), "-vn", "-ac", "1", "-af", flt, "-ar", str(a.rate), "-c:a", "pcm_s16le", str(out)])
+        m = voice_measure(out, text=a.text)
+        print("wrote %s (mono, %d Hz, 16-bit)" % (out, a.rate))
+        print("\n".join(voice_lines(m)))
+        lo, hi = REF_SECONDS
+        if not lo <= m["seconds"] <= hi:
+            print("  WARNING: %.1fs; most engines want %d-%d s (ElevenLabs instant clones 60-120 s)" % (m["seconds"], lo, hi))
+        if not a.text:
+            print("  Next: write the exact words of this clip into the ref's `text` (many engines need the transcript).")
+        return 0 if "f0_median_hz" in m and not m["warnings"] else 1
+    p = Project(a.project)
+    errs = validate_project(ctx, p) if p.voices_bible is not None else ["bibles/voices.json is missing; write it first (cinewright-voice)"]
+    speakers = sorted({d["character"] for c in p.cards for d in c.get("dialogue", [])})
+    for cid in speakers:
+        if p.voices_bible is not None and cid not in p.voices:
+            errs.append("%s speaks in the cards but has no voice in bibles/voices.json" % cid)
+    if not a.clip:
+        for e in errs:
+            print("ERROR " + e)
+        for cid, v in sorted(p.voices.items()):
+            print("%s: %d reference(s), emotions %s, engine %s" % (cid, len(v.get("refs", [])),
+                  ", ".join(sorted({r["emotion"] for r in v.get("refs", [])})) or "none", v.get("engine", {}).get("name", "not set")))
+        print("voice check: %d error(s)" % len(errs))
+        return 1 if errs else 0
+    if not a.character:
+        raise SystemExit("--clip needs --character")
+    base = voice_baseline(p, a.character)
+    m = voice_measure(a.clip, a.start, a.end, a.text)
+    print("\n".join(voice_lines(m)))
+    print("  reference: median %.0f Hz over %d clip(s)%s" % (base["f0_median_hz"], len(base["refs"]),
+          (", pace %d wpm" % base["wpm"]) if base["wpm"] else ""))
+    if "f0_median_hz" not in m:
+        print("voice check: UNMEASURED (no voiced speech)")
+        return 1
+    st = 12 * math.log2(m["f0_median_hz"] / base["f0_median_hz"])
+    fails = []
+    if abs(st) > base["tolerance_st"]:
+        fails.append("pitch %+.1f semitones from the reference (limit %.1f)%s" % (
+            st, base["tolerance_st"], ": a different voice, likely the wrong gender or age" if abs(st) >= 5 else ""))
+    if base["wpm"] and m.get("wpm") and abs(m["wpm"] - base["wpm"]) > 0.25 * base["wpm"]:
+        fails.append("pace %d wpm against %d (more than 25%% off)" % (m["wpm"], base["wpm"]))
+    for f in fails:
+        print("  DRIFT " + f)
+    verdict = "DRIFT" if fails else ("UNSURE" if m["warnings"] else "PASS")
+    print("voice check %s: %s (pitch %+.1f semitones). Pitch and pace only: listen, or run a speaker-embedding check, before calling it the same voice."
+          % (a.character, verdict, st))
+    return 0 if verdict == "PASS" else 1
+
+
 def build_parser(prog="cine.py"):
     ap = argparse.ArgumentParser(prog=prog, description="cinewright: plan, check and compile shots.")
     g = ap.add_subparsers(dest="group", required=True)
@@ -1561,10 +1779,32 @@ def build_parser(prog="cine.py"):
     s.add_argument("--out", required=True)
     s.add_argument("--take", help="take record to update")
     s.add_argument("--observed", help="what the frame shows; written to the take record")
+    v = g.add_parser("voice", help="character voices: measure, reference clips, drift checks (needs ffmpeg)").add_subparsers(dest="cmd", required=True)
+    s = v.add_parser("measure", help="pitch, range, pace and speech time of a clip or a span of it")
+    s.add_argument("file")
+    s.add_argument("--start", type=float)
+    s.add_argument("--end", type=float)
+    s.add_argument("--text", help="the words said, for pace")
+    s.add_argument("--json", action="store_true")
+    s = v.add_parser("ref", help="cut a clean mono reference clip for a cloning engine")
+    s.add_argument("file")
+    s.add_argument("--out", required=True)
+    s.add_argument("--start", type=float)
+    s.add_argument("--end", type=float)
+    s.add_argument("--rate", type=int, default=24000, help="sample rate the engine wants (default 24000)")
+    s.add_argument("--text", help="the words said in the clip")
+    s = v.add_parser("check", help="check bibles/voices.json, or one line against a character's references")
+    s.add_argument("project")
+    s.add_argument("--character")
+    s.add_argument("--clip")
+    s.add_argument("--start", type=float)
+    s.add_argument("--end", type=float)
+    s.add_argument("--text", help="the words said, for pace")
     return ap
 
 
-HANDLERS = {"kb": cmd_kb, "cards": cmd_cards, "compile": cmd_compile, "continuity": cmd_continuity, "qc": cmd_qc, "takes": cmd_takes}
+HANDLERS = {"kb": cmd_kb, "cards": cmd_cards, "compile": cmd_compile, "continuity": cmd_continuity, "qc": cmd_qc, "takes": cmd_takes,
+            "voice": cmd_voice}
 
 
 def main(argv=None, ctx=None):

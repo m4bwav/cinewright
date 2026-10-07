@@ -17,6 +17,7 @@
     "prop-bible.schema.json",
     "location-bible.schema.json",
     "scene-axis-bible.schema.json",
-    "take.schema.json"
+    "take.schema.json",
+    "voice-bible.schema.json"
   ]
 }

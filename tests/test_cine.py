@@ -979,3 +979,70 @@ class TestStyle(Base):
         code, out = run("compile", EXAMPLE, "--model", "veo", "--card", "1B", "--style", NH)
         self.assertIn("Composed for a 2.39:1 widescreen crop", out)
         self.assertIn('"aspectRatio": "16:9"', out)
+
+
+def tone(path, hz, seconds=3.0, lead=0.3):
+    """A clip whose only sound is a steady tone: a stand-in voice with a known pitch."""
+    r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i",
+                        "sine=frequency=%s:duration=%s,volume=0.3,adelay=%d,apad=whole_dur=%s" % (hz, seconds, lead * 1000, seconds + 2 * lead),
+                        "-ar", "24000", str(path)], capture_output=True)
+    assert r.returncode == 0, r.stderr
+    return path
+
+
+@unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"), "ffmpeg not installed")
+class TestVoice(Base):
+    def setUp(self):
+        super().setUp()
+        self.proj = model_project(self.tmp)
+        (self.proj / "voices" / "maren").mkdir(parents=True)
+        tone(self.proj / "voices" / "maren" / "neutral.wav", 180)
+        self.bible = {"voices": [{"character": "maren",
+                                  "sheet": {"age": "sixties", "gender": "female", "pitch": "low", "pace": "unhurried", "timbre": "dry"},
+                                  "refs": [{"file": "voices/maren/neutral.wav", "text": "Last one. Your hands are steadier than mine.",
+                                            "emotion": "neutral", "source": "take", "from": "takes/2A-1.mp4"}],
+                                  "rights": "original designed voice"}]}
+        lib.write_text(self.proj / "bibles" / "voices.json", json.dumps(self.bible))
+
+    def test_measure_reads_pitch_and_pace(self):
+        code, text = run("voice", "measure", self.proj / "voices" / "maren" / "neutral.wav", "--text", "one two three four five six", "--json")
+        self.assertEqual(code, 0, text)
+        m = json.loads(text)
+        self.assertAlmostEqual(m["f0_median_hz"], 180, delta=3)
+        self.assertLess(m["range_st"], 1)
+        self.assertAlmostEqual(m["wpm"], 120, delta=12)
+        self.assertEqual(m["warnings"], [])
+
+    def test_ref_cuts_a_span(self):
+        src = tone(self.tmp / "take.wav", 220, seconds=6)
+        out = self.tmp / "ref.wav"
+        code, text = run("voice", "ref", src, "--start", "1", "--end", "4", "--out", out, "--text", "Hold the match steady.")
+        self.assertEqual(code, 0, text)
+        self.assertIn("24000 Hz", text)
+        self.assertRegex(text, r"pitch median 2[12]\d Hz")
+        self.assertLess(lib.voice_measure(out)["seconds"], 3.2)
+
+    def test_check_bible_and_lines(self):
+        code, text = run("voice", "check", self.proj)
+        self.assertEqual(code, 0, text)
+        self.assertIn("maren: 1 reference(s), emotions neutral", text)
+        code, text = run("voice", "check", self.proj, "--character", "maren", "--clip", tone(self.tmp / "same.wav", 186))
+        self.assertEqual(code, 0, text)
+        self.assertIn("PASS", text)
+        code, text = run("voice", "check", self.proj, "--character", "maren", "--clip", tone(self.tmp / "low.wav", 104))
+        self.assertEqual(code, 1, text)
+        self.assertIn("DRIFT pitch -9.5 semitones", text)
+        self.assertIn("wrong gender or age", text)
+
+    def test_check_catches_bible_errors(self):
+        self.bible["voices"][0]["refs"][0]["file"] = "voices/maren/missing.wav"
+        self.bible["voices"].append({"character": "nobody", "sheet": self.bible["voices"][0]["sheet"], "refs": [], "rights": "x"})
+        lib.write_text(self.proj / "bibles" / "voices.json", json.dumps(self.bible))
+        code, text = run("voice", "check", self.proj)
+        self.assertEqual(code, 1, text)
+        self.assertIn("reference voices/maren/missing.wav is missing", text)
+        self.assertIn("'nobody' is not in characters.json", text)
+        self.assertIn("shorter than 10 characters", text)
+        code, text = run("cards", "validate", self.proj)
+        self.assertEqual(code, 1, text)
+        self.assertIn("bibles/voice-bible", text)

@@ -17,7 +17,7 @@ sources: ["Christopher Riley, The Hollywood Standard, 3rd ed., 2021", "https://h
 - Short lines: one sentence, 12 words or fewer, subtext over explanation.
 - Words a voice says cleanly: numbers and abbreviations spelled as spoken, no stage directions inside the quotes.
 - A rare name that must be said: a respelling in characters.json `pronounce`, taken from the source the owner trusts (audiobook, author), never guessed. It replaces the name inside spoken lines only (PRONOUNCE).
-- Each speaker gets a `voice` string in the bible ("low, dry, unhurried").
+- Each speaker gets a `voice` string in the bible ("low, dry, unhurried"); a voice that must match across shots gets a locked reference (cinewright-voice, entry voice-sheet).
 - `tone` follows "says": an adverb or phrase ("under his breath"), never a verb (TONE).
 - Silence is a line.
 
