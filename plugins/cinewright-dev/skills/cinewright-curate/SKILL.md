@@ -1,6 +1,6 @@
 ---
 name: cinewright-curate
-description: "Upkeep of cinewright's knowledge base in a repo checkout: add, verify or retire reference entries, refresh model cards when a video model changes or shuts down. Also 'refresh cinewright-curate'."
+description: "Upkeep of cinewright's knowledge base in a repo checkout: add, verify or retire entries, refresh model cards when a video model changes. Also 'refresh cinewright-curate'."
 license: MIT
 ---
 

@@ -1,22 +1,16 @@
 # Handoff
 
 ## Current state
-- S7 up to the public step is done on branch `s7/package` (rebased on main after PR #8), with a PR to `main` waiting for Mark's review (assigned, label needs-review). The repo is still private: https://github.com/m4bwav/cinewright.
-- New: cinewright-curate (dev plugin) and `cine.py kb due|new|verify|retire` plus `cine.py scrub` in the maintainer CLI ([decisions/2026-10-06-curate-commands-in-the-maintainer-cli-and-scrub-names-outside-the-repo.md](decisions/2026-10-06-curate-commands-in-the-maintainer-cli-and-scrub-names-outside-the-repo.md)). Harness `fixture: "repo"` for maintainer skills.
-- Curate suite T-20261006-2: Sonnet 6/6, Opus 6/6 (1 run each), Haiku 3/6 (recorded). L-001 `optional-flag-copied` confirmed by the rerun.
-- Install proof ([notes/2026-10-06-s7-install-proof.md](notes/2026-10-06-s7-install-proof.md)): Claude Code, Copilot CLI and `gh skill` installed and triggered on the private repo; 13 ZIPs in `dist/` (gitignored).
-- Scrub: 0 hits with the vault sidecar's `scrub-names.txt`; private research-brief sections moved to the sidecar.
-- Checks quoted in [log.md](log.md) (2026-10-06): tests 3.14 and 3.9, kb lint, validate x4, evergreen lint x14 pass; budget YELLOW on two rows.
+- S7 is merged (PR #9). The repo is still private: https://github.com/m4bwav/cinewright.
+- 2026-10-06/07 night: first end-to-end film test (a 120 s novel-chapter adaptation, 25 cards, 8 H3 sequences, five render passes). Record: [notes/2026-10-07-library-film-test.md](notes/2026-10-07-library-film-test.md). Branch `test/library-film` holds the compiler fixes it found (H3 15 s = 362 frames, card-only travel, no double article, `cards export --film-json --sequence --model`), the budget answers, design L-004 and genvideo L-006 to L-008; its PR waits for Mark.
+- Checks on that branch: tests 73 (3.14 and 3.9), kb lint 0 errors, budget GREEN, scrub 0 hits.
 
-## Waiting on Mark
-- Review of the S7 PR.
-- Go for the three routes that touch his account or settings: claude.ai skill Upload (one ZIP, removed after), claude.ai Add marketplace, VS Code Copilot marketplace setting.
-- D5: make the repo public; then public-route retests, tag 0.1.0 with the 13 ZIPs as release assets, register in evergreen and the mark-local marketplace (other repos), directory and awesome-copilot submissions: each needs his go.
-- Description budget 4,082 of 4,000 (yellow, from curate's 194 characters): trim only if he asks.
-- Runtime budget row question (decisions/2026-10-04-proposed-runtime-budget-row.md): genvideo's folder 167 KB, yellow.
+## Mark's answers (2026-10-06 21:00: "yes or as you recommend", but test before submitting anywhere)
+- Applied: runtime budget row counted once (decision accepted), description budget trimmed to 3,994 of 4,000.
+- Yes, after he has seen the test film: claude.ai skill Upload, claude.ai Add marketplace, VS Code Copilot route; D5 public; 0.1.0 tag and release. Registrations and directory or awesome-copilot submissions still need their own go.
 
-## Deferred (budget week until 2026-10-08)
-- Curate on Haiku and Opus at 3 runs per case (ran 1); the S6 full rev-2 rerun (312 runs). Ask before either.
+## Open from the test (see the note)
+- Sequence header puts every cast member in every shot; no per-scene constants; dialogue tone wording; the 300-word guide for multi-shot H3.
 
 ## Next single action
-- Run [next-session-prompt.md](next-session-prompt.md) (S7 public step) once Mark has reviewed the S7 PR and answered the waiting items.
+- Mark watches the best-of film and reviews the test/library-film PR; then run [next-session-prompt.md](next-session-prompt.md) (S7b: remaining routes, public, release).

@@ -233,3 +233,22 @@ $ evergreen.py lint <each skill>   (evergreen 0.13.0)
 ```
 ## [2026-10-06] index | rebuilt (18 entries)
 ## [2026-10-06] index | rebuilt (18 entries)
+
+## [2026-10-07] test | first end-to-end film (library adaptation, overnight)
+
+- Mark's go 2026-10-06 21:00: "yes or as you recommend" to the four waiting items, but a test film before anything is submitted. Applied tonight: the runtime budget row and the description trim (budget GREEN). Waiting: claude.ai and VS Code routes, D5 public, release, registrations, submissions.
+- The test: a 120 s adaptation of one novel chapter, planned with cinewright (25 cards, 8 sequences) and rendered in five passes on local H3. Findings, fixes and open items: [notes/2026-10-07-library-film-test.md](notes/2026-10-07-library-film-test.md).
+- Compiler fixes on test/library-film: 362 frames for 15 s on H3, card-only travel, no double article, `cards export --film-json --sequence --model`. Lessons: design L-004, genvideo L-006 to L-008.
+
+Check output (2026-10-07, Windows 11):
+
+```
+$ python -m unittest discover -s tests
+Ran 73 tests ... OK
+$ py -V:Astral/CPython3.9.25 -m unittest discover -s tests
+Ran 73 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 14 skills, 0 errors
+$ python scripts/cine.py budget
+budget: GREEN
+```
