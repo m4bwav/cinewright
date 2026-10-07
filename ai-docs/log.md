@@ -281,7 +281,38 @@ lint OK (both)
 
 - PR #11 merged; branch s7b/routes off main b588d23. All 13 ZIPs rebuilt from main (`cine.py zip`, 46-73 KB each; the old ones predated #11).
 - Working tree clean: `scrub --names <sidecar scrub-names.txt>` 0 hits, `kb lint` 0 errors, budget GREEN.
-- New check: going public publishes every old commit, and `scrub` only reads the working tree. The same patterns run over every blob reachable from any ref, every commit message and every PR title, body, comment and review found 10 distinct hits (36 lines): drive paths and private project names in old copies of the research brief, PLAN, the log, two next-session prompts and one solution, plus a sample `C:/x` path in an old eval-harness comment. Commit messages and PR text were clean.
+- New check: going public publishes every old commit, and `scrub` only reads the working tree. The same patterns run over every blob reachable from any ref, every commit message and every PR title, body, comment and review found 10 distinct hits (36 lines): drive paths and private project names in old copies of the research brief, PLAN, the log, two next-session prompts and one solution, plus a sample drive path in an old eval-harness comment. Commit messages and PR text were clean.
 - Mark chose (2026-10-07): rewrite history and force-push. `git filter-repo --replace-text` (pip `git-filter-repo`) on a fresh single-branch clone of main: 19 commits rewritten, HEAD tree unchanged (a371d77 before and after, so no current file changed), rescan of the rewritten history 0 lines. Backup of the old history: bundle `cinewright-pre-public-history-2026-10-07.bundle` next to the repo folder (outside it). Replacement list and the two scan scripts: vault sidecar (`history-rewrite-replacements.txt`, `history-scrub-scan.py`, `history-scrub-summary.py`).
 - Blocked: Claude Code's auto-mode classifier refused the force-push of main and the deletion of the eight merged branches (they still point at old commits), and then a browser call for the claude.ai route. Nothing was pushed; the remote is unchanged. Limit to keep in mind: GitHub keeps each PR's head under `refs/pull/N/head`, which a force-push cannot move, so the old commits stay reachable from PR #1-#11 pages once public; only GitHub Support can purge those (or a fresh repository avoids them).
 - Not yet done: claude.ai skill Upload, claude.ai Add marketplace, VS Code Copilot route, public, public retests, 0.1.0. A 0.1.0 tag must sit on main after this branch merges (the repo squash-merges).
+
+## [2026-10-07] release | S7b: history rewritten, repo public, public routes retested, 0.1.0 PR
+
+- Mark switched to manual mode and said "do all the things". The rewrite went out: `git push --force origin main` (b588d23 to 01df838, same tree a371d77), and the eight merged PR branches deleted. Two everlast docs-sync PRs (#12, #13) had opened from branches named after the machine's hostname, holding this session's first log entry; closed as superseded with their branches deleted, titles and bodies made neutral. Their head branch names still show on the closed PR pages; GitHub has no rename for a closed PR's head.
+- Pre-public check on a fresh clone: history scan 0 lines; every PR title, body, comment and review 0 hits. `gh repo edit --visibility public` at 2026-10-07: PUBLIC.
+- Public-route retests, nothing cached, one install and one trigger each, removed afterwards (`~/.claude/plugins/cache/cinewright/` deleted by hand):
+  - Claude Code 2.1.x: `claude plugin marketplace add m4bwav/cinewright --scope local` + `claude plugin install cinewright@cinewright --scope local`: 5 skills. Haiku answered from its own knowledge without the skill (1 turn, $0.04); Sonnet called `Skill cinewright:cinewright-continuity`, then its `cine.py` (6 turns, $0.33). PASS on Sonnet; the Haiku miss is one run, not a suite result.
+  - `gh skill install m4bwav/cinewright cinewright-continuity --agent claude-code --scope project`: exit 0 this time (the private run exited 2 after writing every file); `metadata:` block points at refs/heads/main; Sonnet called `Skill cinewright-continuity` ($0.20). PASS.
+  - Copilot CLI: `copilot plugin marketplace add m4bwav/cinewright`, `copilot plugin install cinewright@cinewright`: "Installed 5 skills"; `copilot -p ... --output-format json` called `skill` with `{"skill":"cinewright-continuity"}`. PASS.
+- Not run: claude.ai skill Upload, claude.ai Add marketplace, VS Code Copilot. The auto-mode classifier refused the browser for claude.ai ("unrequested commit in a connected app") even in manual mode; VS Code needs a user-settings change and the chat UI. They wait for Mark to approve them in a session.
+- Versions 0.0.1 to 0.1.0 in marketplace.json (4) and each plugin's two manifests (6). ZIPs rebuilt from 01df838 in `dist/` (release assets, gitignored). Tag and GitHub Release wait for this PR to merge (squash merges: a tag on the branch would not be on main).
+- Lesson for everlast (outside this repo): docs-sync PR mode names branches `everlast/docs-<HOSTNAME>-<stamp>` and puts the hostname in the PR title and body, which leaks it on a public repository.
+
+Exit check (2026-10-07, Windows 11, s7b/routes):
+
+```
+$ python -m unittest discover -s tests
+Ran 80 tests ... OK
+$ py -V:Astral/CPython3.9.25 -m unittest discover -s tests
+Ran 80 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 14 skills, 0 errors
+$ python scripts/cine.py budget
+budget: GREEN
+$ python scripts/cine.py scrub --names <sidecar scrub-names.txt>
+scrub: 0 hits in 0 files
+$ claude plugin validate . (and plugins/cinewright, plugins/cinewright-craft, plugins/cinewright-dev)
+Validation passed (four times)
+$ evergreen.py lint <each skill>
+14 skills: lint OK
+```

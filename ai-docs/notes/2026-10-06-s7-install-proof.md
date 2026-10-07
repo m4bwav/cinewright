@@ -36,3 +36,14 @@ Quirks:
 - ZIPs: `python scripts/cine.py zip <skill>` for each of the 13 public skills, 44-70 KB each, written to `dist/` (gitignored; they are release assets). Curate gets no ZIP: it needs a repository checkout.
 
 Related: [../plans/PLAN.md](../plans/PLAN.md) §9 (statuses updated from this note)
+
+## Public repo retest (2026-10-07, after the history rewrite)
+
+| Host | Route | Result |
+|---|---|---|
+| Claude Code | `claude plugin marketplace add m4bwav/cinewright --scope local`, `claude plugin install cinewright@cinewright --scope local`, clean cache | 5 skills; Sonnet called `Skill cinewright:cinewright-continuity` and its `cine.py`. PASS. Haiku answered without the skill in its one run |
+| GitHub Copilot CLI | `copilot plugin marketplace add m4bwav/cinewright`, `copilot plugin install cinewright@cinewright` | "Installed 5 skills"; `skill` called with `cinewright-continuity`. PASS |
+| any agent (`gh skill`) | `gh skill install m4bwav/cinewright cinewright-continuity --agent claude-code --scope project` | exit 0, files and `metadata:` block written; Sonnet called `Skill cinewright-continuity`. PASS |
+| claude.ai Upload, claude.ai Add marketplace, VS Code Copilot | as above | not run: the agent's browser was refused for claude.ai, and VS Code needs a settings change and the chat UI. WAIT for Mark |
+
+All three test installs removed, including the plugin cache folder.

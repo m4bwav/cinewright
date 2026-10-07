@@ -147,12 +147,12 @@ Every skill gets RESEARCH (four tracks: subject, tooling, practice, testing), CH
 
 | Host | Route | Status |
 |---|---|---|
-| Claude Code | `/plugin marketplace add m4bwav/cinewright`, `/plugin install cinewright@cinewright` | installed and triggered, private repo, Windows, 2026-10-06 |
-| claude.ai / Desktop | Customize > Plugins > Add marketplace | not run: adds to Mark's account; waits for his go or the public repo |
+| Claude Code | `/plugin marketplace add m4bwav/cinewright`, `/plugin install cinewright@cinewright` | installed and triggered, private repo, Windows, 2026-10-06; public repo 2026-10-07 |
+| claude.ai / Desktop | Customize > Plugins > Add marketplace | not run: adds to Mark's account; repo public since 2026-10-07; waits for Mark to approve it in a session |
 | claude.ai | Customize > Skills > upload one ZIP per skill | ZIP accepted and previewed; Upload waits for Mark's go |
-| Copilot CLI | `copilot plugin marketplace add m4bwav/cinewright` (reads `.claude-plugin/`) | installed and triggered, private repo, Windows, 2026-10-06 |
+| Copilot CLI | `copilot plugin marketplace add m4bwav/cinewright` (reads `.claude-plugin/`) | installed and triggered, private repo, Windows, 2026-10-06; public repo 2026-10-07 |
 | VS Code Copilot | `chat.plugins.marketplaces` or "Chat: Install Plugin From Source" | not run: changes VS Code user settings; waits for Mark's go |
-| any agent | `gh skill install m4bwav/cinewright cinewright-continuity` | nested discovery works (13 skills); installed and triggered in Claude Code, 2026-10-06 |
+| any agent | `gh skill install m4bwav/cinewright cinewright-continuity` | nested discovery works (13 skills); installed and triggered in Claude Code, 2026-10-06; public repo 2026-10-07 |
 
 Each route is run once on Windows; one route on a second OS or `untested elsewhere` in TESTS. Results: [../notes/2026-10-06-s7-install-proof.md](../notes/2026-10-06-s7-install-proof.md). The repo is private until S7, so public-route tests run right after the scrub, before announcing. Claude directory and awesome-copilot submissions come after release (brief §12).
 
