@@ -10,7 +10,7 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Trigger: set field test, 2026-10-07: a reverse to the fireplace wall and an east-door shot, both written as framing words after the room's full description, came back as the establishing desk-and-windows view (2 of 2)
 - Hypothesis: the image model composes from the nouns in the prompt; framing words like "reverse shot looking north" carry little weight against named hero objects
 - Rule: keep one-wall features out of the location description; give each wall its own string in `walls` and point the card at it with `camera.faces`; say what is not in view on a reverse
-- Evidence: C-20261007-1 (references/wall-strings.md, compile and WALL check); re-render pending at creation
+- Evidence: C-20261007-1 (references/wall-strings.md, compile and WALL check); re-render with the north wall's own string, same seed: fireplace, portrait over the mantel and sofas, no desk or windows (confirmed 2026-10-07)
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-07
 
