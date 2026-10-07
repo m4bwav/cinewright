@@ -2,14 +2,17 @@
 """cinewright maintainer CLI. Not shipped; the skills ship shared/lib/cine.py.
 
   python scripts/cine.py [--root DIR] kb index|search|show|lint
+  python scripts/cine.py kb due|new|verify|retire ...   (knowledge-base upkeep; cinewright-curate)
   python scripts/cine.py cards|compile|continuity ...   (same as the skill copy)
   python scripts/cine.py budget [--json]
   python scripts/cine.py zip SKILL [--out DIR]
   python scripts/cine.py build
+  python scripts/cine.py scrub [--names FILE] [--json]
 
 Python 3.9+, standard library only.
 """
 import argparse
+import datetime
 import hashlib
 import importlib.util
 import io
@@ -405,6 +408,247 @@ def cmd_zip(root, a):
     return 0
 
 
+# ---------- kb upkeep (cinewright-curate) ----------
+
+def today():
+    return os.environ.get("CINE_TODAY") or datetime.date.today().isoformat()
+
+
+def all_entries(root):
+    """(skill folder, path, meta) for every entry a maintainer edits: skill entries that are not copies, then
+    shared/vocab sources (skill None)."""
+    out = []
+    for s in skills(root):
+        copies = {dst.resolve() for _, dst in planned_copies(root, s)}
+        for p in sorted((s / "references").glob("*.md")):
+            if p.name != "INDEX.md" and p.resolve() not in copies:
+                out.append((s, p, lib.parse_frontmatter(lib.read_text(p))[0]))
+    for p in sorted((root / "shared" / "vocab").glob("*.md")):
+        out.append((None, p, lib.parse_frontmatter(lib.read_text(p))[0]))
+    return out
+
+
+def resolve_entry(root, slug):
+    """(skill folder or None, the one file to edit) for a slug. A copied vocab entry resolves to its shared source."""
+    hits = [(s, p) for s, p, _ in all_entries(root) if p.stem == slug]
+    if not hits:
+        raise SystemExit("no entry '%s'; `cine.py kb search <words>` finds slugs" % slug)
+    if len(hits) > 1:
+        raise SystemExit("slug '%s' is in %s; give each entry its own slug" % (slug, ", ".join(rel(root, p) for _, p in hits)))
+    return hits[0]
+
+
+def interval_days(skill, default=90):
+    f = skill / "evergreen.json" if skill else None
+    if f and f.is_file():
+        return int(json.loads(lib.read_text(f)).get("interval_days") or default)
+    return default
+
+
+def set_field(text, key, value):
+    end = text.find("\n---\n", 3)
+    head, rest = text[:end], text[end:]
+    line = "%s: %s" % (key, value)
+    if re.search(r"(?m)^%s:.*$" % re.escape(key), head):
+        head = re.sub(r"(?m)^%s:.*$" % re.escape(key), lambda m: line, head, count=1)
+    else:
+        head += "\n" + line
+    return head + rest
+
+
+def add_note(text, line):
+    """Append a dated line to the Notes section, creating it before Compile (or at the end) when absent."""
+    m = re.search(r"(?m)^## Notes[ \t]*$", text)
+    if m:
+        nxt = re.search(r"(?m)^## ", text[m.end():])
+        cut = m.end() + nxt.start() if nxt else len(text)
+        return text[:cut].rstrip("\n") + "\n- " + line + "\n" + ("\n" + text[cut:] if nxt else "")
+    c = re.search(r"(?m)^## Compile[ \t]*$", text)
+    block = "## Notes\n\n- %s\n" % line
+    if c:
+        return text[:c.start()] + block + "\n" + text[c.start():]
+    return text.rstrip("\n") + "\n\n" + block
+
+
+def flow_list(items):
+    return "[%s]" % ", ".join(json.dumps(x, ensure_ascii=False) for x in items)
+
+
+def reindex(root, skill):
+    if skill is None:
+        return cmd_build(root, None)
+    lib.write_text(skill / "references" / "INDEX.md", lib.index_text(skill.name, skill / "references"))
+    return 0
+
+
+def changelog_entry(skill, summary, because, files, what):
+    f = skill / "CHANGELOG.md"
+    text = lib.read_text(f) if f.is_file() else "# Changelog: %s\n\n" % skill.name
+    day = today()
+    n = 1 + len(re.findall(r"### C-%s-\d+" % day.replace("-", ""), text))
+    entry = "### C-%s-%d · %s · %s\n- because: %s\n- files: %s\n- %s\n\n" % (day.replace("-", ""), n, day, summary, because, files, what)
+    m = re.search(r"(?m)^### ", text)
+    lib.write_text(f, text[:m.start()] + entry + text[m.start():] if m else text.rstrip("\n") + "\n\n" + entry)
+
+
+def cmd_kb_due(root, a):
+    now = datetime.date.fromisoformat(today())
+    rows = []
+    for s, p, m in all_entries(root):
+        days = a.days if a.days is not None else interval_days(s)
+        try:
+            age = (now - datetime.date.fromisoformat(str(m.get("last_checked")))).days
+        except ValueError:
+            age = 10 ** 4
+        if age >= days and m.get("status") != "shut-down":
+            rows.append((age, rel(root, p), m))
+    rows.sort(key=lambda r: -r[0])
+    for age, where, m in rows:
+        print("%-12s %4d days  %s%s" % (m.get("last_checked"), age, where, "  [model card]" if "model" in m else ""))
+        for c in m.get("volatile_claims") or []:
+            print("    claim: %s" % c)
+    print("kb due: %d of %d entries past their skill's interval%s" % (len(rows), len(all_entries(root)),
+                                                                     "" if a.days is None else " (--days %d)" % a.days))
+    return 0
+
+
+def cmd_kb_new(root, a):
+    s = find_skill(root, a.skill)
+    if any(p.stem == a.slug for _, p, _ in all_entries(root)):
+        raise SystemExit("slug '%s' exists; verify or edit that entry instead" % a.slug)
+    meta = {"title": a.title, "slug": a.slug, "summary": a.summary, "tags": [t.strip() for t in a.tags.split(",") if t.strip()],
+            "last_checked": today(), "sources": a.source}
+    errs = lib.validate(meta, lib.load_schema(repo_context(root), "entry"))
+    if errs:
+        raise SystemExit("entry not written: %s" % "; ".join(errs))
+    text = ("---\ntitle: %s\nslug: %s\nsummary: %s\ntags: [%s]\nlast_checked: %s\nsources: %s\n---\n\n# %s\n\n"
+            "## Rules\n\n## Verify\n" % (a.title, a.slug, json.dumps(a.summary, ensure_ascii=False), ", ".join(meta["tags"]),
+                                       meta["last_checked"], flow_list(a.source), a.title))
+    p = s / "references" / ("%s.md" % a.slug)
+    lib.write_text(p, text)
+    reindex(root, s)
+    print("wrote %s; fill Rules (and Numbers, Vocabulary, Pitfalls as needed) and Verify, then `cine.py kb lint`" % rel(root, p))
+    return 0
+
+
+def cmd_kb_verify(root, a):
+    s, p = resolve_entry(root, a.slug)
+    text = lib.read_text(p)
+    meta = lib.parse_frontmatter(text)[0]
+    sources = list(meta.get("sources") or [])
+    sources += [x for x in a.source if x not in sources]
+    text = set_field(text, "last_checked", today())
+    text = set_field(text, "sources", flow_list(sources))
+    note = "%s: verified against %s" % (today(), ", ".join(a.source))
+    text = add_note(text, note + ("; %s" % a.note if a.note else ""))
+    lib.write_text(p, text)
+    reindex(root, s)
+    print("verified %s (last_checked %s)%s" % (rel(root, p), today(), "; copies rebuilt" if s is None else ""))
+    return 0
+
+
+def cmd_kb_retire(root, a):
+    s, p = resolve_entry(root, a.slug)
+    if s is None:
+        users = [x.name for x in skills(root) if (x / "needs.json").is_file()
+                 and p.name in json.loads(lib.read_text(x / "needs.json")).get("vocab", [])]
+        raise SystemExit("%s is shared vocab used by %s: remove it from their needs.json, delete the source, then "
+                         "`cine.py build`" % (rel(root, p), ", ".join(users) or "no skill"))
+    text = lib.read_text(p)
+    meta = lib.parse_frontmatter(text)[0]
+    if "model" in meta:
+        # a card stays: old shot lists still name the model, and compile warns on a retired status
+        text = set_field(text, "status", a.status)
+        lib.write_text(p, add_note(text, "%s: %s; %s" % (today(), a.status, a.reason)))
+        reindex(root, s)
+        changelog_entry(s, "Model card %s marked %s" % (a.slug, a.status), a.reason, "references/%s" % p.name,
+                        "The card stays so old shot lists still resolve; compile warns when it is used.")
+        print("retired %s: status %s, file kept" % (rel(root, p), a.status))
+        return 0
+    pat = re.compile(r"\b%s\b" % re.escape(a.slug))
+    refs = [rel(root, f) for x in skills(root) for f in x.rglob("*.md")
+            if f != p and f.name not in ("INDEX.md", "CHANGELOG.md") and pat.search(lib.read_text(f))]
+    if refs:
+        raise SystemExit("not retired: %s still names %s; edit those first" % (", ".join(refs), a.slug))
+    p.unlink()
+    reindex(root, s)
+    changelog_entry(s, "Retired entry %s" % a.slug, a.reason, "references/%s (deleted), references/INDEX.md" % p.name,
+                    "The entry and its index line are gone.")
+    print("retired %s: deleted, index rebuilt, CHANGELOG entry written" % rel(root, p))
+    return 0
+
+
+def kb_parser():
+    ap = argparse.ArgumentParser(prog="cine.py kb")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    d = sub.add_parser("due", help="entries past their skill's evergreen interval, oldest first")
+    d.add_argument("--days", type=int, help="override every skill's interval")
+    n = sub.add_parser("new", help="write a new entry skeleton and index it")
+    n.add_argument("skill")
+    n.add_argument("slug")
+    n.add_argument("--title", required=True)
+    n.add_argument("--summary", required=True, help="20-200 characters; becomes the index line")
+    n.add_argument("--tags", required=True, help="comma-separated")
+    n.add_argument("--source", action="append", required=True, help="a page or book checked this session; repeat")
+    v = sub.add_parser("verify", help="stamp last_checked, add sources, add a dated Notes line")
+    v.add_argument("slug")
+    v.add_argument("--source", action="append", required=True, help="the page checked this session; repeat")
+    v.add_argument("--note", help="what changed, if anything")
+    r = sub.add_parser("retire", help="a model card gets a retired status; any other entry is deleted")
+    r.add_argument("slug")
+    r.add_argument("--reason", required=True)
+    r.add_argument("--status", choices=["shut-down", "deprecated"], default="shut-down", help="model cards only")
+    return ap
+
+
+# ---------- scrub ----------
+
+SCRUB_PATTERNS = PRIVATE_PATTERNS + [
+    (re.compile(r"\bDESKTOP-[A-Z0-9]{5,}\b"), "hostname"),
+    (re.compile(r"\b[\w-]+\.(?:local|lan|home\.arpa)\b"), "hostname"),
+    (re.compile(r"\b172\.(?:1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3}\b"), "LAN address"),
+    (re.compile(r"(?i)\b(?:GTX|RX) ?\d{3,4}\b|\bGeForce\b"), "GPU model"),
+    (re.compile(r"/(?:Users|home)/[a-z][\w.-]+", re.I), "home path"),
+    (re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+"), "email"),
+]
+SCRUB_OK = re.compile(r"@(?:example\.(?:com|org)|users\.noreply\.github\.com)\b|noreply@")
+
+
+def tracked(root):
+    try:
+        names = subprocess.run(["git", "ls-files", "-z"], cwd=str(root), capture_output=True, check=True).stdout.decode("utf-8").split("\0")
+        return [root / n for n in names if n and (root / n).is_file()]
+    except (OSError, subprocess.CalledProcessError):
+        return [f for f in root.rglob("*") if f.is_file() and ".git" not in f.parts and "__pycache__" not in f.parts]
+
+
+def cmd_scrub(root, a):
+    names = []
+    if a.names:
+        names = [x.strip() for x in Path(a.names).read_text(encoding="utf-8").splitlines() if x.strip() and not x.startswith("#")]
+    pats = SCRUB_PATTERNS + [(re.compile(r"(?i)(?<![\w-])%s(?![\w-])" % re.escape(n)), "private name") for n in names]
+    hits = []
+    for f in tracked(root):
+        try:
+            text = f.read_bytes().decode("utf-8")
+        except UnicodeDecodeError:
+            continue  # binary (zip, png)
+        for i, line in enumerate(text.split("\n"), 1):
+            for rx, what in pats:
+                for m in rx.finditer(line):
+                    if what == "email" and SCRUB_OK.search(m.group(0)):
+                        continue
+                    hits.append({"file": rel(root, f), "line": i, "what": what, "match": m.group(0)})
+    if a.json:
+        print(json.dumps(hits, indent=2, ensure_ascii=False))
+    else:
+        for h in hits:
+            print("%s:%d: %s (%s)" % (h["file"], h["line"], h["what"], h["match"]))
+        print("scrub: %d hits in %d files%s" % (len(hits), len({h["file"] for h in hits}),
+                                               "" if names else " (no --names file: private names not checked)"))
+    return 1 if hits else 0
+
+
 # ---------- main ----------
 
 def main(argv=None):
@@ -420,6 +664,15 @@ def main(argv=None):
             print("ERROR %s" % e)
         print("kb lint: %d skills, %d errors" % (len(skills(root)), len(errs)))
         return 1 if errs else 0
+    if group == "kb" and argv[1:2] and argv[1] in ("due", "new", "verify", "retire"):
+        a = kb_parser().parse_args(argv[1:])
+        return {"due": cmd_kb_due, "new": cmd_kb_new, "verify": cmd_kb_verify, "retire": cmd_kb_retire}[a.cmd](root, a)
+    if group == "scrub":
+        ap = argparse.ArgumentParser(prog="cine.py scrub", description="every tracked file: LAN addresses, hostnames, "
+                                     "GPU names, drive and home paths, emails, and the private names in --names")
+        ap.add_argument("--names", help="file of private names, one per line (keep it outside the repository)")
+        ap.add_argument("--json", action="store_true")
+        return cmd_scrub(root, ap.parse_args(argv[1:]))
     if group in ("budget", "zip", "build"):
         ap = argparse.ArgumentParser(prog="cine.py %s" % group)
         if group == "budget":
