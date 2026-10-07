@@ -46,6 +46,13 @@ Best sources (primary first): EBU R128 and its supplements (tech.ebu.ch); ATSC A
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261006-1 · 2026-10-06 · Recorded effects conformed to a music grid
+- Summary: Field notes from recorded game sound effects fitted to a 90 BPM grid (2026-10-04 to 2026-10-06): text-to-audio clips could not hold a tempo and were all rejected; the lightest edit (one section re-tempoed, often at 1.0) was preferred over per-gap warps and cuts; Rubber Band with crisp transients and the percussive detector, ratios kept within 0.75-1.35; spacing fitted against beats, eighths and triplets (one recording: 16%, 7%, 0%); grace notes ride the main hit; edit points where the recording is already quiet; a mono average of channels correlated at 0.13 dropped the ambience about 3 dB; levels matched by active RMS. The options were checked against the ffmpeg filter documentation. Applies to film when effects or foley sit on a cue's beat.
+- Track: practice
+- Sources: https://ffmpeg.org/ffmpeg-filters.html#rubberband, field notes (practice, private source)
+- Magnitude: 0.2 (new entry; no existing rule changed)
+- Applied: C-20261006-1
+
 ### R-20261004-1 · 2026-10-04 · Initial research
 - Summary: Built from the research brief §3 sound row (subject), loudness re-verified from primary pages this session by a research pass (EBU R128 v4 and s2, Tech 3344, ATSC A/85:2026-07, both Netflix pages in a browser, Spotify, ITU BS.1770) with the brief's ±0.5 LU R128 tolerance found wrong and A/85:2013 superseded, the ffmpeg loudnorm documentation (tooling: linear mode needs the four measured values and falls back to dynamic), the S5 exit check (practice: a -27.6 LUFS take mixed to -17.6 LUFS and -6.3 dBTP), and TESTING.md (testing: `qc loud` output is checkable evidence).
 - Track: subject

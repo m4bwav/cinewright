@@ -174,3 +174,26 @@ $ evergreen.py lint <each skill>
 ```
 ## [2026-10-05] index | rebuilt (15 entries)
 ## [2026-10-05] index | rebuilt (16 entries)
+
+## 2026-10-06: cinewright-sound learns to conform sound to a tempo
+
+- Source: field notes from recorded game sound effects fitted to a 90 BPM grid (2026-10-04 to 2026-10-06; the source and its mapping are in the vault sidecar, not here). What transfers to film: conforming effects and foley to a cue's tempo.
+- Added: entry `conform-to-tempo` in cinewright-sound (tempo match, then warp, then cut; Rubber Band `rubberband=tempo=R:transients=crisp:detector=percussive:pitchq=quality`, ratios 0.75-1.35; beats, eighths and triplets, grace notes ride the main hit; quiet edit points; stereo correlation before a mono mixdown; active RMS; report unheard until a person has auditioned it). One pointer line in SKILL.md Step 2. Records: C-20261006-1, R-20261006-1, evergreen.json counts. Description unchanged, so the trigger evals stand.
+- Skipped: clip length following a game's production cycle (game-only); Unity import notes (not sound craft); the source's script names and paths (private, game-specific). The first draft of the entry was 1,001 estimated tokens (yellow); trimmed to green.
+- Branch `sound/beat-grid-conform` off `origin/main` in a separate worktree; the main clone stays on `s6/evals`.
+
+Check output (2026-10-06, Windows 11):
+
+```
+$ python -m unittest discover -s tests
+Ran 64 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 13 skills, 0 errors
+$ python scripts/cine.py budget
+skill folder KB 167 yellow cinewright-genvideo (the unanswered runtime row, unchanged); everything else green
+budget: YELLOW
+$ claude plugin validate . (and plugins/cinewright, plugins/cinewright-craft, plugins/cinewright-dev)
+Validation passed (four times)
+$ evergreen.py lint plugins/cinewright-craft/skills/cinewright-sound
+cinewright-sound: lint OK
+```
