@@ -25,7 +25,8 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 2. Decide what is on screen, off screen and acousmatic, and whether the score follows the feeling (`kb show chion-terms`).
 3. Battles: near, mid and far layers, a bed per phase, silence at the turn (`kb show battle-sound`).
 4. Music cues spotted on story beats with source and license (`kb show music-spotting`).
-5. Write it all in `sound/plan.md`.
+5. Effects or foley that must sit on a cue's tempo: tempo match first, then warp, then cut; report it unheard until a person listens (`kb show conform-to-tempo`).
+6. Write it all in `sound/plan.md`.
 
 ## Step 3: generated audio
 
