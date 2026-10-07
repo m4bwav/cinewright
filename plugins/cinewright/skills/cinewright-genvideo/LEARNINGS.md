@@ -46,3 +46,26 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-03
 
+### L-006 · 2026-10-07 · A simile in the source becomes a literal object; rewrite it as what is seen
+- Trigger: library film test 2026-10-06: the novel's sorcerers hang in the sky "as though from wires"; pasted into the prompt, the image model drew wires from their backs
+- Hypothesis: Models render every concrete noun in the prompt; "as though" does not mark it as a comparison
+- Rule: Before a source line goes into a card, rewrite similes and metaphors as the visible fact ("floating free, held up by nothing"), and never keep the compared object's noun
+- Evidence: s8 ruin still (rejected) vs the rewritten still and v2-v5 renders, no wires; ai-docs/notes/2026-10-07-library-film-test.md
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-07
+
+### L-007 · 2026-10-07 · A count in an identity string is drawn literally
+- Trigger: library film test: "a beard streaked with five distinct white strands" rendered as five rigid white prongs in every text-only take
+- Hypothesis: A number plus a noun reads as countable separate objects, so the model makes them distinct and stiff
+- Rule: Describe texture, not counts, in identity strings ("shot through with thin streaks of white"), and let a face reference carry the detail
+- Evidence: v1 sections 2, 3, 5 (prongs) vs v2-v5 with the new wording and the face reference (none)
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-07
+
+### L-008 · 2026-10-07 · A location reference still carries its composition and its mistakes into the shot
+- Trigger: library film test: an H3 reference of a ruin with a coiled fire-dragon and two brown-robed figures put coiled necks and brown robes into both renders that used it; a dream still with a half-dome Ward kept the half-dome
+- Hypothesis: Reference-to-video copies objects and layout from every picture, not only the identity it was meant for
+- Rule: Pass identity references (faces, costume sheets) freely; pass a location or moment still only when everything in it is right, otherwise describe the place in text
+- Evidence: v2 and v3 section 8 (drift) vs v4 section 8 without the still (none); v2/v3 dream vs v4 dream
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-07

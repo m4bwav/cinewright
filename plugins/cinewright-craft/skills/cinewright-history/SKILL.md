@@ -1,6 +1,6 @@
 ---
 name: cinewright-history
-description: "Film history style cards for AI video: movements, eras, genres, directors and cinematographers, as style-bible fields the prompts carry. Use when asked for a period, genre or filmmaker's look ('like 1970s New Hollywood, 2.39', 'film noir look', 'what would a director's look be'). Also 'refresh cinewright-history'."
+description: "Film history style cards for AI video: movements, eras, genres, directors and cinematographers, as style-bible fields the prompts carry. Use when asked for a period, genre or filmmaker's look ('like 1970s New Hollywood', 'film noir look'). Also 'refresh cinewright-history'."
 license: MIT
 ---
 

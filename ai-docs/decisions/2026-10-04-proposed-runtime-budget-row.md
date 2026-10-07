@@ -1,7 +1,7 @@
 ---
-title: Proposed runtime budget row (awaiting Mark)
+title: Runtime budget row (accepted 2026-10-06)
 kind: decision
-status: proposed
+status: accepted
 date: 2026-10-04
 verified: 2026-10-04
 stale_after: 2026-11-04
@@ -9,13 +9,15 @@ tags: [budget, runtime, skill-folder]
 summary: "Read before adding code to shared/lib/cine.py: the 70 KB runtime copy pushes genvideo's folder past 150 KB; proposal to measure the runtime once, in its own row"
 ---
 
-# Proposed runtime budget row (awaiting Mark)
+# Runtime budget row (accepted 2026-10-06)
+
+Mark said yes on 2026-10-06 ("yes or as you recommend" to the four waiting items). Applied in `scripts/cine.py` `BUDGETS` and `measure()` and in PLAN §6: genvideo's folder now reads 94 KB (green) and the runtime 74 KB (green).
 
 ## Context
 
 PLAN §6 sets the skill folder at 150 KB green, 300 KB yellow. That line was set before the runtime existed. `shared/lib/cine.py` is copied into every skill so a one-skill ZIP works alone; it is 70 KB after S3 (prop bible, `cards list`, two new diff checks) and S4 and S5 add more code. In S3 the genvideo folder reached 151 KB (yellow): 70 KB runtime, 16 KB schemas, the rest knowledge and companions. Without the runtime it is about 85 KB. Every other skill will cross 150 KB the same way as the runtime grows, whatever its own content.
 
-## Decision (proposed, not applied)
+## Decision
 
 Split one row into two in PLAN §6 and `BUDGETS` in `scripts/cine.py`:
 

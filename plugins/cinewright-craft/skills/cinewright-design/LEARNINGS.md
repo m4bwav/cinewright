@@ -29,3 +29,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: C-20261004-1 (references/prop-constants.md, shared/lib/cine.py prop_words), confirmed 2026-10-04
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-04
+
+### L-004 · 2026-10-06 · Name what an invented effect is made of, and what it lacks; a familiar word draws the familiar thing
+- Trigger: 2026-10-06 library test (an adapted fantasy novel): the bible said 'ghostly dragon heads of fire' for a spell, and both guide stills drew winged, lizard-bodied dragons; the owner checked the source: the spell is a bodiless head and neck of fire and light
+- Hypothesis: Image and video models resolve a noun like 'dragon' to its most common picture; adjectives such as 'ghostly' do not remove the body
+- Rule: For every invented effect, write in design.md and the bibles its substance (fire, light, glass), its parts and the parts it does NOT have ('no body, no wings, no legs'), and how it ends; check the source or its lore before the references are made; keep a real creature of the same name visibly different
+- Evidence: v1 guide stills s7_magi (rejected), regenerated with the substance wording on 2026-10-06
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-06

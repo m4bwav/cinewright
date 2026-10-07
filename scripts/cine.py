@@ -49,7 +49,8 @@ BUDGETS = [  # key, label, green max, yellow max
     ("entry_tokens", "reference entry tokens (est.)", 700, 1200),
     ("card_tokens", "model card tokens (est.)", 900, 1200),
     ("index_tokens", "references/INDEX.md tokens (est.)", 1500, 3000),
-    ("skill_kb", "skill folder KB", 150, 300),
+    ("skill_kb", "skill folder KB (without shared/lib copies)", 150, 300),
+    ("runtime_kb", "runtime shared/lib KB, counted once", 100, 150),
     ("plugin_files", "files per plugin", 350, 450),
     ("repo_zip_kb", "repo ZIP KB", 2048, 5120),
 ]
@@ -326,6 +327,15 @@ def duplicates(root):
     return dups
 
 
+def lib_copy(f):
+    """True for a hash-tracked copy of a shared/lib/ file inside a skill."""
+    if f.suffix != ".py":
+        return False
+    with f.open("rb") as fh:
+        m = HEADER_RE.search(fh.read(600).decode("utf-8", "replace"))
+    return bool(m and m.group(1).startswith("shared/lib/"))
+
+
 def measure(root):
     rows = {k: (0, "") for k, *_ in BUDGETS}
 
@@ -352,8 +362,11 @@ def measure(root):
                 worst("entry_lines", len(t.rstrip("\n").split("\n")), rel(root, p))
                 # a model card also carries the compiler's Compile block, so it has its own row
                 worst("card_tokens" if "model" in lib.parse_frontmatter(t)[0] else "entry_tokens", tokens(t), rel(root, p))
-        kb = sum(f.stat().st_size for f in s.rglob("*") if f.is_file() and "__pycache__" not in f.parts) // 1024
+        # the runtime copy is measured once, in its own row (decision 2026-10-04, accepted 2026-10-06)
+        kb = sum(f.stat().st_size for f in s.rglob("*")
+                 if f.is_file() and "__pycache__" not in f.parts and not lib_copy(f)) // 1024
         worst("skill_kb", kb, s.name)
+    rows["runtime_kb"] = (sum(f.stat().st_size for f in (root / "shared" / "lib").glob("*.py")) // 1024, "shared/lib")
     rows["desc_total"] = (total, "%d skills" % len(skills(root)))
     rows["desc_core"] = (core, "plugins/cinewright")
     for pl in root.glob("plugins/*"):
