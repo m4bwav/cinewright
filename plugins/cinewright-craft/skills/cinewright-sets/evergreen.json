@@ -1,0 +1,68 @@
+{
+  "evergreen": "1.0",
+  "name": "cinewright-sets",
+  "kind": "skill",
+  "main": "SKILL.md",
+  "files": {
+    "research": "RESEARCH.md",
+    "changelog": "CHANGELOG.md",
+    "learnings": "LEARNINGS.md",
+    "tests": "TESTS.md"
+  },
+  "protocol": "plugin",
+  "source": null,
+  "topic": "Set and location design for AI video: set plans, per-wall location strings, master plates, coverage and reverse angles, set light, plate checks",
+  "tier": "moderate",
+  "interval_days": 30,
+  "last_checked": "2026-10-07",
+  "next_due": "2026-11-06",
+  "verify_at_use": false,
+  "volatile_claims": [
+    {
+      "claim": "reference slots per call: Veo 3.1 3, Runway Gen-4 1-3, Kling 3.0 4, MiniMax H3 1-5, Seedance 2.0 9 images",
+      "checked": "2026-10-07"
+    },
+    {
+      "claim": "Qwen-Image-Edit-2511 Multiple-Angles LoRA: 8 azimuths, 4 elevations, 3 distances, strength 0.8-1.0, made for subjects",
+      "checked": "2026-10-07"
+    },
+    {
+      "claim": "World Labs Marble and HY-World 2.0 are the leading 3D world sources for sets",
+      "checked": "2026-10-07"
+    }
+  ],
+  "contradiction": null,
+  "events": [],
+  "streak": {
+    "quiet": 0,
+    "pinned_min": 0,
+    "pinned_max": 0,
+    "vau_quiet": 0
+  },
+  "history": [
+    {
+      "date": "2026-10-07",
+      "m": null,
+      "interval_after": 30,
+      "note": "created"
+    }
+  ],
+  "counts": {
+    "learnings": 2,
+    "changes": 1,
+    "research": 2,
+    "tests": 0
+  },
+  "consolidate_every": 25,
+  "tests": {
+    "last_run": null,
+    "harness": "evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive)",
+    "env": null,
+    "cases": 7,
+    "passed": 0,
+    "failed": 0,
+    "failing": [],
+    "last_failure": null,
+    "research_after_days": null
+  }
+}

@@ -326,3 +326,25 @@ $ evergreen.py lint <each skill>
 - Blocked: a follow-up chat message asking claude.ai's sandbox to list `/mnt/skills` (to learn the real plugin folder) was refused by the auto-mode classifier; nothing was sent. The next session finds the folder another way.
 - Left for Mark: delete the uploaded test skill on claude.ai (permanent delete, switched off for now), remove the cinewright marketplace source there if the UI allows, close the VS Code window opened by `code chat -n`.
 - Follow-ups: CI still has only `workflow_dispatch` (written for the private period); the repo is public, so push and pull_request triggers on GitHub-hosted runners are now free.
+
+## [2026-10-07] build | cinewright-sets: set and location skill, wall strings in the compiler
+
+- New craft skill `cinewright-sets` (evergreen, tier moderate, 30 days): set plan, per-wall strings, master plates, coverage and reverse angles, set light, plate check. Six entries: set-plan, wall-strings, master-plates, coverage-angles, set-light, set-check. Research: [RESEARCH.md](../plugins/cinewright-craft/skills/cinewright-sets/RESEARCH.md) R-20261007-1 (no dedicated set or location bible skill exists; DirectorSKILL and Storyboarder.ai's location editor are closest).
+- Field test that shaped it: a real public building as 11 sets on a local image model. A reverse and an east-door shot written as framing words after the full room description both came back as the establishing view (2 of 2). L-001 `whole-room-string-pulls-to-hero-wall`.
+- Runtime: location bible `walls` (key to a 20-300 character string), shot card `camera.faces`, compile adds the faced wall after the description, `cards validate` and `continuity diff` give WALL for an unknown key, the validator learned `propertyNames`. Three unit tests.
+- Registered in both craft manifests, the craft and root READMEs, the router's pipeline table, PLAN §2 and CODEMAP. cinewright-design's trigger line no longer says sets.
+- Worktree `cinewright-set` on branch `set-skill`, because the main clone was on another session's `voice-skill` branch with uncommitted work.
+
+```
+$ python -m unittest discover -s tests
+Ran 83 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 15 skills, 0 errors
+$ python scripts/cine.py budget
+budget: YELLOW (all descriptions 4338 characters, green up to 4000; the new skill's 342 tips it over)
+$ python scripts/cine.py scrub --names <sidecar scrub-names.txt>
+scrub: 0 hits in 0 files
+$ claude plugin validate . (and the three plugins)
+Validation passed (four times)
+```
+- Not yet run: the seven eval cases (evals/run_evals.py) for the new skill.

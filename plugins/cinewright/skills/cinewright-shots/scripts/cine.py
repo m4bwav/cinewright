@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:c08de2a7b4b20c07f134a8930923d3a3900c18d405fc47df8cca4ff17a457ccd; edit the source
+# copied from shared/lib/cine.py sha256:fd0f128a347fc1bdf04319e071a32147cfd63bcb0a70bcb5683c475109569d24; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -237,6 +237,8 @@ def validate(inst, schema, path="$", root=None):
                 errs.append("%s: unknown key '%s'" % (path, k))
             elif isinstance(extra, dict):
                 errs += validate(v, extra, "%s.%s" % (path, k), root)
+            if "propertyNames" in schema:
+                errs += validate(k, schema["propertyNames"], "%s key %r" % (path, k), root)
     return errs
 
 
@@ -577,6 +579,10 @@ def continuity_diff(p):
         sun = card.get("light", {}).get("sun")
         if sun and sc.get("sun") and sun != sc["sun"]:
             add("error", card, "SUN", "sun '%s' differs from the scene's '%s'" % (sun, sc["sun"]))
+        walls = p.locs.get(sc.get("location"), {}).get("walls", {})
+        if cam.get("faces") and cam["faces"] not in walls:
+            add("error", card, "WALL", "camera faces '%s' but location %s has no such wall in locations.json walls (%s)" % (
+                cam["faces"], sc.get("location"), ", ".join(sorted(walls)) or "none"))
         if cam.get("angle") == "dutch" and not p.style.get("allow_dutch"):
             add("warning", card, "STYLE", "dutch angle but the style bible does not allow it")
         lr = lens_range(p.style.get("lens_family"))
@@ -838,7 +844,12 @@ def card_parts(p, card, prof, tags=None, speakers=None):
             act.append(_sentence("%s is %s%s" % (name, EYELINE_WORDS[m["eyeline"]], on)))
     parts["action"] = " ".join(act)
     tod = card.get("time_of_day", sc["time_of_day"]).replace("-", " ")
-    parts["context"] = _sentence(_cap("%s, %s" % (loc["description"].rstrip("."), tod)))
+    where = loc["description"].rstrip(".")
+    # the wall the camera faces: a whole-room description names the hero wall, and those words
+    # beat "looking north", so a reverse came back as the establishing view (set field test, 2026-10-07)
+    if cam.get("faces") in loc.get("walls", {}):
+        where = "%s. %s" % (where, _cap(loc["walls"][cam["faces"]].rstrip(".")))
+    parts["context"] = _sentence(_cap("%s, %s" % (where, tod)))
     light = card.get("light", {})
     lt = []
     if sc.get("sun"):

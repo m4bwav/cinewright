@@ -1,0 +1,105 @@
+{
+  "skill": "cinewright-sets",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root.",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "prompt": "Every clip of my AI short puts the kitchen window in a different place. How do I build the kitchen as a set so it stays the same across shots?",
+      "expectations": [
+        "the cinewright-sets skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "prompt": "make location reference plates for a 1920s train station for my AI film: the establishing shot, the platform, and the reverse looking back at the ticket hall",
+      "expectations": [
+        "the cinewright-sets skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "help me rearrange the furniture in my living room so it feels bigger",
+      "expectations": [
+        "the cinewright-sets skill is not invoked (interior decorating, not a film set)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "design a costume and a turnaround sheet for my AI film's knight",
+      "expectations": [
+        "the cinewright-sets skill is not invoked (character and costume design, cinewright-design's job)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "prompt": "out/lighthouse is my film project. Shot 1C should look back toward the spiral staircase side of the lamp room instead of the lens. Set the location up so that reverse holds and check the project.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "(?s)cine\\.py\\s+(cards\\s+validate|continuity\\s+diff)\\s+\\S*out/lighthouse|out/lighthouse.*cine\\.py\\s+(cards\\s+validate|continuity\\s+diff)"
+      },
+      "baseline": "not yet run",
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/lighthouse"
+        ]
+      ]
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "prompt": "out/lighthouse is a copy of examples/three-shot. Shot 1C must look back at the spiral staircase side of the lamp room, away from the lens, and the room must still read as the same room. Set up the location bible so that reverse holds, then compile the Veo prompts into out/lighthouse/compiled/veo.",
+      "files": [],
+      "checks": [
+        [
+          "python",
+          "evals/check_walls.py",
+          "{work}"
+        ]
+      ],
+      "expectations": [
+        "check: lamp-room has a walls map, card 1C sets camera.faces to one of its keys, cards validate and continuity diff pass, and the compiled 1C prompt carries that wall string while 1A does not (evals/check_walls.py exits 0)",
+        "judge: the reply keeps the lens and other one-wall features out of the shared description or says why, rather than only adding 'reverse angle' words to the card (2 of 3 votes)"
+      ],
+      "baseline": "not yet run",
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/lighthouse"
+        ]
+      ]
+    },
+    {
+      "id": "outcome-2",
+      "kind": "outcome",
+      "prompt": "I generate an Oval-Office-like room with an image model. My establishing shot is great, but when I ask for the reverse angle looking at the fireplace wall, I get the desk and the windows again. Same location text, I just added 'reverse shot looking north'. What is wrong?",
+      "files": [],
+      "expectations": [
+        "the reply says the room description names the desk and windows, and those nouns win over the framing words",
+        "the reply says to describe only the wall being faced (and what is not in view) for the reverse, with the shared materials and light kept the same",
+        "judge: the main fix offered is rewriting the location words per wall, not only a new seed, a negative prompt or an angle-edit model turned 180 degrees (2 of 3 votes)"
+      ],
+      "baseline": "not yet run",
+      "runs": 3
+    }
+  ]
+}
