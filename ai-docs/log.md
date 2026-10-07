@@ -354,3 +354,5 @@ $ python evals/run_evals.py run --skill cinewright-voice --model sonnet --runs 3
 21 of 21 PASS (triggers 6/6, decoys 0 invoked in 9, action 3/3, outcome 3/3); baseline without the skill: action and outcome fail
 ```
 ## [2026-10-07] index | rebuilt (21 entries)
+
+PR: https://github.com/m4bwav/cinewright/pull/18 (assigned to Mark, needs-review).
