@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/character-bible.schema.json sha256:067ce908938065564ba3a85180f7dd9a746d27f9f2f9b2fab3dd4e08836a35dc; edit the source",
+  "$comment": "copied from shared/schemas/character-bible.schema.json sha256:b408a8cf2325bb86b47a6a8e964139047b39efe351c1115c638f9a053313b507; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Character bible",
   "description": "bibles/characters.json: one identity string per character, copied verbatim into every card and prompt, plus wardrobe by scene.",
@@ -9,6 +9,13 @@
   ],
   "additionalProperties": false,
   "properties": {
+    "pronounce": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "How names and invented words are said: the word as written -> the spelling the voice model reads. Used inside spoken lines only; the name stays as written everywhere else."
+    },
     "characters": {
       "type": "array",
       "minItems": 1,

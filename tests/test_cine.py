@@ -827,6 +827,68 @@ class TestPreproduction(Base):
                 self.assertIn(d["line"], script)
 
 
+class TestSpeakers(Base):
+    """Library film test (2026-10-07): an off-screen rival's line came out of the hero's mouth, and an invented name was misread."""
+
+    def offscreen(self):
+        p = lib.Project(EXAMPLE)
+        c = next(c for c in p.cards if c["id"] == "1C")  # Tomas alone in the shot
+        c["dialogue"] = [{"character": "maren", "line": "Maren keeps the light.", "tone": "from the stairs"}]
+        return p, c
+
+    def compiled(self, p, model, card):
+        _, _, prof = lib.find_model_card(repo_ctx(), model)
+        return lib.compile_cards(p, [card], prof, False, DRAFT_RES.get(model))[0]
+
+    def test_h3_offscreen_line_is_a_voiceover_with_closed_lips(self):
+        p, c = self.offscreen()
+        _, text, _, warnings, _ = self.compiled(p, "minimax-h3", c)
+        self.assertIn("off screen, (S1) says in an off-screen voiceover from the stairs: <d>[English] Maren keeps the light.</d> "
+                      "while the lips of Tomas remain completely closed.", text)
+        self.assertTrue(any("1C: Maren speaks off screen" in w for w in warnings), warnings)
+
+    def test_h3_onscreen_line_keeps_the_others_silent(self):
+        p = lib.Project(EXAMPLE)
+        c = next(c for c in p.cards if c["id"] == "1A")  # Maren and Tomas in shot
+        c["dialogue"] = [{"character": "maren", "line": "Hold it steady."}]
+        _, text, _, _, _ = self.compiled(p, "minimax-h3", c)
+        self.assertIn("(S1) says: <d>[English] Hold it steady.</d> while the lips of Tomas remain completely closed.", text)
+        self.assertNotIn("voiceover", text)
+
+    def test_model_without_voiceover_leaves_the_line_for_the_mix(self):
+        p, c = self.offscreen()
+        _, text, _, warnings, _ = self.compiled(p, "veo", c)
+        self.assertNotIn("Maren keeps the light", text)
+        self.assertTrue(any("left out of the prompt" in w and "lay it in the mix" in w for w in warnings), warnings)
+
+    def test_pronounce_respells_spoken_words_only(self):
+        p, c = self.offscreen()
+        p.pronounce = {"Maren": "MAH-ren"}
+        _, text, _, _, _ = self.compiled(p, "minimax-h3", c)
+        self.assertIn("<d>[English] MAH-ren keeps the light.</d>", text)
+        self.assertIn("Maren with a low, dry, unhurried voice", text, "the name stays as written outside the line")
+        self.assertEqual(lib.spoken(p, "Marena and Maren."), "Marena and MAH-ren.", "whole words only")
+
+    def test_continuity_flags_offscreen_two_speakers_tone_and_names(self):
+        p, c = self.offscreen()
+        warn = lambda: sorted({i["code"] for i in lib.continuity_diff(p) if i["card"] == "1C"})
+        self.assertEqual(warn(), ["OFFSCREEN", "PRONOUNCE"])
+        p.pronounce = {"Maren": "Maren"}
+        self.assertEqual(warn(), ["OFFSCREEN"])
+        c["dialogue"] = [{"character": "tomas", "line": "Coming.", "tone": "mutters"}, {"character": "maren", "line": "Hurry."}]
+        self.assertEqual(warn(), ["OFFSCREEN", "SPEAKERS", "TONE"])
+
+    def test_rubric_marks_offscreen_line(self):
+        p, c = self.offscreen()
+        audio = [i["ask"] for i in lib.rubric_items(p, c) if i["check"] == "audio"]
+        self.assertIn("Maren (off screen, no visible mouth) says", audio[0])
+
+    def test_character_bible_accepts_pronounce(self):
+        bible = json.loads((EXAMPLE / "bibles/characters.json").read_text(encoding="utf-8"))
+        bible["pronounce"] = {"Maren": "MAH-ren"}
+        self.assertEqual(lib.validate(bible, json.loads((REPO / "shared/schemas/character-bible.schema.json").read_text(encoding="utf-8"))), [])
+
+
 # ---------- S4: style fields from cinewright-camera and cinewright-history ----------
 
 NH = EXAMPLE / "styles" / "new-hollywood-239.json"

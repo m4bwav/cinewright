@@ -238,7 +238,7 @@ $ evergreen.py lint <each skill>   (evergreen 0.13.0)
 
 - Mark's go 2026-10-06 21:00: "yes or as you recommend" to the four waiting items, but a test film before anything is submitted. Applied tonight: the runtime budget row and the description trim (budget GREEN). Waiting: claude.ai and VS Code routes, D5 public, release, registrations, submissions.
 - The test: a 120 s adaptation of one novel chapter, planned with cinewright (25 cards, 8 sequences) and rendered in five passes on local H3. Findings, fixes and open items: [notes/2026-10-07-library-film-test.md](notes/2026-10-07-library-film-test.md).
-- Compiler fixes on test/library-film: 362 frames for 15 s on H3, card-only travel, no double article, `cards export --film-json --sequence --model`. Lessons: design L-004, genvideo L-006 to L-008.
+- Compiler fixes on test/library-film: 362 frames for 15 s on H3, card-only travel, no double article, `cards export --film-json --sequence --model`. Lessons: design L-004, genvideo L-009 to L-011.
 
 Check output (2026-10-07, Windows 11):
 
@@ -252,3 +252,27 @@ kb lint: 14 skills, 0 errors
 $ python scripts/cine.py budget
 budget: GREEN
 ```
+
+## [2026-10-07] fix | dialogue: off-screen speakers and names (owner's review of the library film)
+
+- Mark watched the best-of film and found two problems. A rival sorcerer's off-screen line was spoken by the hero (card 6D), and the hero's name was said less well than in his audiobook. He asked for no new render, only that the learnings go into this pass.
+- Branch s7b/release (PR #10 had merged): `compile` writes off-screen lines with H3's voiceover phrase and adds a lips-closed clause for everyone else in the shot; models without a voiceover template leave the line out with a warning; `continuity diff` gains OFFSCREEN, SPEAKERS, TONE and PRONOUNCE; characters.json gains `pronounce`; the QC rubric marks off-screen lines; new failure code `name-misread`. Decision (proposed): [decisions/2026-10-07-off-screen-lines-compile-as-voiceovers-or-leave-the-prompt.md](decisions/2026-10-07-off-screen-lines-compile-as-voiceovers-or-leave-the-prompt.md).
+- Lessons: genvideo L-012, script L-003. The night's genvideo lessons had been filed as L-006 to L-008, but L-006 already sat in the archive, so they are now L-009 to L-011 (note, HANDOFF and the entry above corrected).
+- Budget: the dialogue reference went yellow (1,039 tokens) and was rewritten to fit; failures-motion trimmed back under 700.
+
+```
+$ python -m unittest discover -s tests
+Ran 80 tests ... OK
+$ py -V:Astral/CPython3.9.25 -m unittest discover -s tests
+Ran 80 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 14 skills, 0 errors
+$ python scripts/cine.py budget
+budget: GREEN
+$ python scripts/cine.py scrub --names <sidecar scrub-names.txt>
+scrub: 0 hits in 0 files
+$ evergreen.py lint cinewright-genvideo ; evergreen.py lint cinewright-script
+lint OK (both)
+```
+## [2026-10-07] index | rebuilt (20 entries)
+## [2026-10-07] index | rebuilt (20 entries)
