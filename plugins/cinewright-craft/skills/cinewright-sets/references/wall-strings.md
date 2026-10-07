@@ -18,6 +18,7 @@ sources: ["Set field test, 2026-10-07: eleven locations of a real public buildin
 - A card that faces a wall sets `camera.faces` to its key. `compile` writes the description, then that wall's string. `cards validate` and `continuity diff` give a WALL error for a key the location lacks.
 - A wall string for a reverse says what is not in view when the model would add it by habit: "no windows and no desk in view".
 - Write each wall string as if the camera stands in the room facing it: "facing the north wall: a white marble fireplace, a portrait above it, sofas facing each other".
+- A famous place's name pulls in its most photographed view. Named, a building shows its postcard facade from every side, through every window and even from its own balcony, and its best-known room shapes the others. Outside the establishing view, describe the geometry (a straight front, a square porch, a triangular pediment, a flat end wall) and leave the name out. Say "no buildings in view" when the camera looks out from the place.
 - One location id per place. Do not split a room into several locations to fake walls; scenes, axes and props hang off the location.
 
 ## Numbers
