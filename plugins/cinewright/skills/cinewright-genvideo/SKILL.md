@@ -23,7 +23,7 @@ Cards must pass `CINE continuity diff <project>` with 0 errors (cinewright-conti
 1. Pick the model the user renders with. Keys and cards: `veo` (veo-3-1), `omni` (gemini-omni), `kling` (kling-3), `seedance` (seedance-2-5), `runway` (runway-gen-4-5), `luma` (luma-ray-3-2), `minimax-h3`, `wan` (wan-2-2), `ltx2` (ltx-2). Read its Rules and Numbers: `CINE kb show <card> --section Rules`.
 2. Run `CINE compile <project> --model <key> --out <project>/compiled/<key>`. A size the model lacks stops the compile: change the bible or pass `--resolution` (a cheap local draft). Evidence: the line `wrote N prompts to ...` and the files.
 3. Read each warning. A duration warning means trim in the edit; a word warning means shorten action or context, never the identity string.
-4. Several cards of one scene in one generation, when the model has multi-shot syntax: add `--sequence`. Prefer it: every seam between generations can read as a restart.
+4. Several cards of one scene in one generation, when the model has multi-shot syntax: add `--sequence`. Prefer it: every seam between generations can read as a restart. An establishing exterior before an interior goes in the same generation with `--join` (its card in its own scene): the new place is then named at the cut, else the model furnishes the exterior from the interior's words. Score under a card goes in its `music` field.
 5. Hosted models print `est. $` per prompt: quote it when asking for the go.
 
 The compile rule (what goes where, and why): `kb show compile-rule`.

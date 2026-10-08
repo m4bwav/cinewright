@@ -304,6 +304,30 @@ class TestCompile(Base):
         self.assertEqual(code, 0, out)
         self.assertIn("Music: A lone cello, slow and low.", (self.tmp / "veo" / "1B.txt").read_text(encoding="utf-8"))
 
+    def test_join_names_the_new_place_at_the_cut(self):
+        proj = self.tmp / "p"
+        shutil.copytree(EXAMPLE, proj)
+        locs = json.loads((proj / "bibles/locations.json").read_text(encoding="utf-8"))
+        locs["locations"].append({"id": "cliff", "name": "Cliff", "int_ext": "EXT",
+                                  "description": "a storm-lashed cliff path below the lighthouse"})
+        (proj / "bibles/locations.json").write_text(json.dumps(locs), encoding="utf-8")
+        scenes = json.loads((proj / "bibles/scenes.json").read_text(encoding="utf-8"))
+        outside = dict(scenes["scenes"][0], id="0", location="cliff")
+        scenes["scenes"].insert(0, outside)
+        (proj / "bibles/scenes.json").write_text(json.dumps(scenes), encoding="utf-8")
+        edit(proj / "cards/1A.json", '"scene": "1"', '"scene": "0"')
+        args = ["compile", proj, "--model", "minimax-h3", "--sequence", "--resolution", "480p"]
+        code, out = run(*args)
+        self.assertEqual(code, 0, out)
+        self.assertIn("== 1A ", out)  # a new scene splits the generation
+        code, out = run(*(args + ["--join", "--out", self.tmp / "h3"]))
+        self.assertEqual(code, 0, out)
+        self.assertIn("== 1A+1B+1C", out)
+        text = (self.tmp / "h3" / "1A+1B+1C.txt").read_text(encoding="utf-8")
+        head, shot2 = text.split("[Shot 2]", 1)
+        self.assertIn("storm-lashed cliff path", head)
+        self.assertIn("the camera cuts to the round lamp room", shot2.lower())
+
     def test_compile_rejects_unsupported_format(self):
         proj = self.tmp / "p"
         shutil.copytree(EXAMPLE, proj)
