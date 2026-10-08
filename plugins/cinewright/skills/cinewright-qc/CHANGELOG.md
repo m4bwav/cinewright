@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261007-1 · 2026-10-07 · Step 1: qc measure, machine checks of a take
+- because: user request (improve how a run and a shot are judged); field test on a 60 s four-section comedy and 24 reviewed takes of an eight-section film
+- files: SKILL.md (Step 1 item 3), shared/lib/cine.py (qc measure)
+- Planned cuts are matched 1.0 s early to 0.6 s late, because the model put stamped cuts 0.1-0.8 s early in 24 reviewed takes; a cut within 2 s outside that window is reported early or late (a long line holds a shot); still pictures and silence on static-camera cards that ask for them warn instead of failing.
+
 ### C-20261005-1 · 2026-10-05 · Step 1: rubric without a clip, never by hand (S6)
 - because: T-20261004-1, L-003
 - files: SKILL.md
