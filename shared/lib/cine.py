@@ -1471,6 +1471,7 @@ def measure_take(clip, plan=None, seams=None, stills=None):
     """stills: {card id: its sound text} for cards whose camera is static; a still picture or silence there warns, not fails."""
     info = probe(clip)
     dur = info["duration"]
+    planned_cuts = bool(plan)  # without a plan, cuts are listed, never counted as unplanned
     if not plan:
         plan = [("whole", 0.0, dur, False)]
     plan = [(cid, s, min(e, dur), sp) for cid, s, e, sp in plan]  # prompts stamp absolute times, so no scaling
@@ -1492,7 +1493,7 @@ def measure_take(clip, plan=None, seams=None, stills=None):
         else:
             checks.append(("FAIL", "cut-missing", "planned cut at %.2fs not found: the shot held or cut elsewhere" % t))
     for c in cuts:
-        if c not in used and not any(t - MEASURE_CUT_EARLY_S <= c <= t + MEASURE_CUT_LATE_S for t in planned):
+        if planned_cuts and c not in used and not any(t - MEASURE_CUT_EARLY_S <= c <= t + MEASURE_CUT_LATE_S for t in planned):
             checks.append(("FAIL", "cut-extra", "unplanned cut at %.2fs (a jump, a flash or a new shot the plan did not ask for)" % c))
     quiet = bool(stills) and any("silen" in (s or "") for s in stills.values())
     x = pcm(clip) if info["audio"] else []
