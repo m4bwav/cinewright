@@ -17,8 +17,8 @@ Write an entry the moment a real signal happens: a user correction, the same err
 ### L-003 · 2026-10-07 · `famous-name-pulls-the-postcard-view`: describe the shape, not the name
 - Trigger: set field test, 2026-10-07: with the building's name in the prompt, its best-known curved portico appeared on the opposite facade, behind a garden it does not face, in the view from its own balcony and from its front porch, and a rectangular meeting room came out oval like the building's famous office (9 of 34 plates)
 - Hypothesis: an image model has one dominant picture per famous name and draws it wherever the name appears
-- Rule: name the place only for its establishing view; for every other wall, view and room, describe the geometry and leave the name out; say "no buildings in view" when looking out from it
-- Evidence: C-20261007-2 (references/wall-strings.md); the failed plates re-rendered without the name
+- Rule: name the place only for its establishing view; for every other wall, view and room, describe the geometry and leave the name out; say "no buildings in view" when looking out from it; give the scale (storeys, windows across, porch height), or the nameless building shrinks to a house
+- Evidence: C-20261007-2 (references/wall-strings.md); 13 of 14 failed plates passed re-rendered without the name; the 14th (a facade) came back as a one-storey house until storeys and windows across were added (confirmed 2026-10-07)
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-07
 
