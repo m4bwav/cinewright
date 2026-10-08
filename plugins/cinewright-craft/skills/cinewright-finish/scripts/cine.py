@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:dba277d9a2f681d94f491e0b347199e43ba370f82e4682bb913c071c8be33679; edit the source
+# copied from shared/lib/cine.py sha256:833b5ded866724f68bb6bdef89843362d4e00b7cf93464534971cb1703467cfc; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -1013,8 +1013,20 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None):
             main = prof["single_shot"] + " " + main
         if prof.get("negative_prompt") == "inline" and prof.get("negative_terms"):
             main = main + " " + prof["negative_terms"]
+        music = []
+        for c in g:
+            if c.get("music") and _cap(_sentence(c["music"])) not in music:
+                music.append(_cap(_sentence(c["music"])))
+        if music and "{music}" not in prof.get("layout", "") and prof["audio"]:
+            if prof.get("layout"):
+                sound.append("Music: " + " ".join(music))  # no separate music slot: say it with the sound
+            else:
+                main = main + " Music: " + " ".join(music)
+        elif music and not prof["audio"]:
+            warnings.append("%s makes no sound: the music goes in the mix" % prof["model_id"])
         if prof.get("layout"):
-            text = prof["layout"].format(main=main, sound=" ".join(sound) or prof.get("empty", "N/A"))
+            text = prof["layout"].format(main=main, sound=" ".join(sound) or prof.get("empty", "N/A"),
+                                         music=" ".join(music) or prof.get("empty", "N/A"))
         else:
             text = main
         dur, frames = plan_length(total, prof)
@@ -1355,6 +1367,188 @@ def repair_plan(rub, codes):
     return plan, errs
 
 
+# Machine measures of a take (qc measure). They find technical faults a reviewer misses at contact-sheet
+# resolution; they never judge acting, look or story (that is the rubric). Thresholds were set on 2026-10-07
+# against reviewed takes of three local multi-shot films (keepers and rejects).
+MEASURE_CUT_SCENE = 0.30     # ffmpeg scene score that counts as a cut
+MEASURE_CUT_EARLY_S = 1.0    # H3 cuts 0.1-0.8 s before the stamped time (24 reviewed takes), so allow early
+MEASURE_CUT_LATE_S = 0.6     # ... and less late
+MEASURE_FREEZE = 0.35        # mean luma difference (0-255, 160 px wide) below which the picture is frozen
+MEASURE_FREEZE_S = 1.5       # a frozen run longer than this inside one shot fails
+MEASURE_SILENCE_DB = -60.0   # 100 ms window RMS below this is silence (room tone sits above it)
+MEASURE_DEAD_AIR_S = 2.0     # a silent run longer than this fails
+MEASURE_CLIP = 0.999         # sample magnitude that counts as clipped
+MEASURE_SPEECH_S = 0.6       # seconds of speech-band activity a shot with a planned line must have
+MEASURE_SEAM_JUMP_DB = 6.0   # level change across a seam (1 s each side) that fails
+MEASURE_WEIGHTS = {"cut-missing": 10, "cut-extra": 4, "frozen": 10, "dead-air": 10, "clipping": 10,
+                   "speech-missing": 15, "seam-jump": 8}
+
+
+def scene_cuts(clip, thresh=MEASURE_CUT_SCENE):
+    r = subprocess.run([need_tool("ffmpeg"), "-hide_banner", "-nostats", "-i", str(clip), "-an", "-vf",
+                        "select='gt(scene,%s)',showinfo" % thresh, "-f", "null", "-"],
+                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if r.returncode != 0:
+        raise SystemExit("ffmpeg could not scan %s for cuts: %s" % (clip, r.stderr.strip()[-300:]))
+    return [round(float(t), 3) for t in re.findall(r"pts_time:([\d.]+)", r.stderr)]
+
+
+def frame_motion(clip):
+    """[(t, mean luma difference to the previous frame)] at 160 px wide."""
+    r = subprocess.run([need_tool("ffmpeg"), "-hide_banner", "-nostats", "-i", str(clip), "-an", "-vf",
+                        "scale=160:-2,format=gray,tblend=all_mode=difference,signalstats,"
+                        "metadata=print:key=lavfi.signalstats.YAVG:file=-", "-f", "null", "-"],
+                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if r.returncode != 0:
+        raise SystemExit("ffmpeg could not measure motion in %s: %s" % (clip, r.stderr.strip()[-300:]))
+    out, t = [], None
+    for line in r.stdout.splitlines():
+        m = re.search(r"pts_time:([\d.]+)", line)
+        if m:
+            t = float(m.group(1))
+            continue
+        m = re.search(r"YAVG=([\d.]+)", line)
+        if m and t is not None:
+            out.append((t, float(m.group(1))))
+    return out
+
+
+def pcm(clip, rate=8000, af=None):
+    args = [need_tool("ffmpeg"), "-v", "error", "-i", str(clip), "-vn", "-ac", "1", "-ar", str(rate)]
+    if af:
+        args += ["-af", af]
+    r = subprocess.run(args + ["-f", "s16le", "-"], capture_output=True)
+    if r.returncode != 0:
+        return []
+    import array
+    a = array.array("h")
+    a.frombytes(r.stdout[:len(r.stdout) // 2 * 2])
+    if sys.byteorder == "big":
+        a.byteswap()
+    return [x / 32768.0 for x in a]
+
+
+def window_db(x, rate=8000, win=0.1):
+    n = int(rate * win)
+    out = []
+    for i in range(0, len(x) - n + 1, n):
+        e = sum(v * v for v in x[i:i + n]) / n
+        out.append(10 * math.log10(e) if e > 1e-12 else -120.0)
+    return out
+
+
+def longest_run(flags, step):
+    best = cur = 0
+    for f in flags:
+        cur = cur + 1 if f else 0
+        best = max(best, cur)
+    return round(best * step, 2)
+
+
+def measure_plan(p, label):
+    """[(card id, start s, end s, has a visible speaker's line)] for a generation label such as 1A+1B+1C."""
+    plan, t = [], 0.0
+    for cid in label.split("+"):
+        c = card_by_id(p, cid)
+        cast = [m["id"] for m in c.get("cast", [])]
+        speaks = any(d["character"] in cast for d in c.get("dialogue", []))
+        plan.append((cid, t, t + c["duration_s"], speaks))
+        t += c["duration_s"]
+    return plan
+
+
+def measure_stills(p, label):
+    return {c["id"]: c.get("sound", "") for c in (card_by_id(p, cid) for cid in label.split("+")) if c["camera"].get("move") == "static"}
+
+
+def measure_take(clip, plan=None, seams=None, stills=None):
+    """stills: {card id: its sound text} for cards whose camera is static; a still picture or silence there warns, not fails."""
+    info = probe(clip)
+    dur = info["duration"]
+    if not plan:
+        plan = [("whole", 0.0, dur, False)]
+    plan = [(cid, s, min(e, dur), sp) for cid, s, e, sp in plan]  # prompts stamp absolute times, so no scaling
+    cuts = scene_cuts(clip)
+    motion = frame_motion(clip)
+    checks, shots = [], []
+    planned = [s for _, s, _, _ in plan[1:]]
+    for t in planned:
+        near = [c for c in cuts if t - MEASURE_CUT_EARLY_S <= c <= t + MEASURE_CUT_LATE_S]
+        checks.append(("PASS", "cut-planned", "planned cut at %.2fs found at %.2fs" % (t, near[0])) if near else
+                      ("FAIL", "cut-missing", "planned cut at %.2fs not found: the shot held or cut elsewhere" % t))
+    for c in cuts:
+        if not any(t - MEASURE_CUT_EARLY_S <= c <= t + MEASURE_CUT_LATE_S for t in planned):
+            checks.append(("FAIL", "cut-extra", "unplanned cut at %.2fs (a jump, a flash or a new shot the plan did not ask for)" % c))
+    quiet = bool(stills) and any("silen" in (s or "") for s in stills.values())
+    x = pcm(clip) if info["audio"] else []
+    sp = pcm(clip, af="highpass=f=300,lowpass=f=3400") if x else []
+    full, band = window_db(x), window_db(sp)
+    if x:
+        peak = max(abs(v) for v in x)
+        clipped = sum(1 for v in x if abs(v) >= MEASURE_CLIP)
+        checks.append(("FAIL" if clipped > 10 else "PASS", "clipping" if clipped > 10 else "audio-peak",
+                       "peak %.1f dBFS, %d clipped samples" % (20 * math.log10(peak) if peak > 0 else -120, clipped)))
+        dead = longest_run([d < MEASURE_SILENCE_DB for d in full], 0.1)
+        bad = "WARN" if quiet else "FAIL"
+        checks.append((bad if dead > MEASURE_DEAD_AIR_S else "PASS", "dead-air" if dead > MEASURE_DEAD_AIR_S else "audio-silence",
+                       "longest silence %.1fs%s" % (dead, " (a card asks for silence)" if quiet and dead > MEASURE_DEAD_AIR_S else "")))
+    elif plan and any(s for *_, s in plan):
+        checks.append(("FAIL", "speech-missing", "no audio stream"))
+    for cid, s, e, speaks in plan:
+        fr = [m for t, m in motion if s + 0.25 <= t < e - 0.25]  # skip the frames either side of a cut
+        frozen = longest_run([m < MEASURE_FREEZE for m in fr], 1 / max(info["fps"], 1))
+        row = {"card": cid, "start": round(s, 2), "end": round(e, 2),
+               "motion": round(sum(fr) / len(fr), 2) if fr else 0.0, "frozen_s": frozen}
+        if band:
+            ws = band[int(s * 10):int(e * 10)]
+            med = sorted(ws)[len(ws) // 2] if ws else MEASURE_SILENCE_DB
+            row["speech_s"] = round(sum(1 for d in ws if d >= max(MEASURE_SILENCE_DB + 20, med + 6)) * 0.1, 1)  # above the shot's own floor
+            row["level_db"] = round(sum(full[int(s * 10):int(e * 10)]) / max(1, len(ws)), 1)
+        shots.append(row)
+        if frozen > MEASURE_FREEZE_S:
+            st = "WARN" if stills and cid in stills else "FAIL"
+            checks.append((st, "frozen", "%s: picture frozen for %.1fs%s" % (cid, frozen, " (static camera: check it is meant)" if st == "WARN" else "")))
+        if speaks and band:
+            ok = row["speech_s"] >= MEASURE_SPEECH_S
+            checks.append(("PASS" if ok else "FAIL", "speech" if ok else "speech-missing",
+                           "%s: %.1fs of speech-band sound where a line is planned" % (cid, row["speech_s"])))
+    for t in seams or []:
+        a, b = full[max(0, int((t - 1.05) * 10)):int((t - 0.05) * 10)], full[int((t + 0.05) * 10):int((t + 1.05) * 10)]
+        if a and b:
+            ja, jb = 10 * math.log10(sum(10 ** (d / 10) for d in a) / len(a)), 10 * math.log10(sum(10 ** (d / 10) for d in b) / len(b))
+            bad = abs(ja - jb) > MEASURE_SEAM_JUMP_DB
+            checks.append(("WARN" if bad else "PASS", "seam-jump" if bad else "seam-level",  # often scripted (a roar cut to silence)
+                           "seam at %.2fs: level %.1f dB before, %.1f dB after" % (t, ja, jb)))
+    score = 100
+    for st, code, _ in checks:
+        if st == "FAIL":
+            score -= MEASURE_WEIGHTS.get(code, 5)
+        elif st == "WARN":
+            score -= MEASURE_WEIGHTS.get(code, 5) // 3
+    res = {"clip": str(clip), "duration": round(dur, 3), "cuts": cuts, "shots": shots,
+           "checks": [{"status": s, "code": c, "text": t} for s, c, t in checks], "score": max(0, score)}
+    if x:
+        try:
+            res["loudness"] = loudness(clip)
+        except SystemExit:
+            pass
+    return res
+
+
+def measure_lines(m):
+    out = ["%s: %.2fs, cuts at %s" % (m["clip"], m["duration"], ", ".join("%.2f" % c for c in m["cuts"]) or "none")]
+    for r in m["shots"]:
+        out.append("  %-6s %5.2f-%5.2fs  motion %5.2f  frozen %.1fs%s" % (
+            r["card"], r["start"], r["end"], r["motion"], r["frozen_s"],
+            ("  speech %.1fs  level %.1f dB" % (r["speech_s"], r["level_db"])) if "speech_s" in r else ""))
+    for c in m["checks"]:
+        out.append("%-4s %-15s %s" % (c["status"], c["code"], c["text"]))
+    if m.get("loudness"):
+        out.append("loudness %.1f LUFS, true peak %s dBTP" % (m["loudness"]["integrated_lufs"], m["loudness"]["true_peak_dbtp"]))
+    out.append("qc measure: score %d/100 (machine checks only; judge the picture with qc rubric)" % m["score"])
+    return out
+
+
 def cmd_qc(ctx, a):
     if a.cmd == "sheet":
         out = a.out or str(Path(a.clip).with_suffix("")) + ".sheet.png"
@@ -1390,6 +1584,23 @@ def cmd_qc(ctx, a):
             print("loudness range %.1f LU" % m["lra_lu"])
         print("qc loud: %s" % ("PASS" if ok_i and ok_tp else "FAIL (code loudness-off): normalise in the mix"))
         return 0 if ok_i and ok_tp else 1
+    if a.cmd == "measure":
+        plan = stills = None
+        if a.card:
+            if not a.project:
+                print("qc measure --card needs --project", file=sys.stderr)
+                return 2
+            pr = Project(a.project)
+            plan, stills = measure_plan(pr, a.card), measure_stills(pr, a.card)
+        seams = [float(t) for t in a.seams.split(",")] if a.seams else []
+        if a.every:
+            info = probe(a.clip)
+            seams = [a.every * k for k in range(1, int(info["duration"] / a.every + 0.999)) if a.every * k < info["duration"] - 0.5]
+        m = measure_take(a.clip, plan, seams, stills)
+        if a.out:
+            write_text(a.out, json.dumps(m, indent=2) + "\n")
+        print(json.dumps(m, indent=2) if a.json else "\n".join(measure_lines(m)))
+        return 1 if any(c["status"] == "FAIL" for c in m["checks"]) else 0
     if a.cmd == "rubric":
         codes = taxonomy(ctx)
         if not codes:
@@ -1766,6 +1977,14 @@ def build_parser(prog="cine.py"):
     s.add_argument("--target", type=float, help="integrated LUFS")
     s.add_argument("--tolerance", type=float, help="LU either side")
     s.add_argument("--true-peak", type=float, help="maximum dBTP")
+    s = q.add_parser("measure", help="machine checks of a take: planned cuts, frozen picture, dead air, clipping, speech where lines are planned, seam jumps")
+    s.add_argument("clip")
+    s.add_argument("--project")
+    s.add_argument("--card", help="card id, or a generation label such as 1A+1B+1C (plans the cuts and the lines)")
+    s.add_argument("--seams", help="comma list of seam times in a cut film, in seconds")
+    s.add_argument("--every", type=float, help="seams every N seconds (a film cut from equal generations)")
+    s.add_argument("--out", help="also write the result as JSON here")
+    s.add_argument("--json", action="store_true")
     s = q.add_parser("rubric", help="write a take's checklist, or read its verdicts back as fixes")
     s.add_argument("project", nargs="?")
     s.add_argument("--card")
