@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:833b5ded866724f68bb6bdef89843362d4e00b7cf93464534971cb1703467cfc; edit the source
+# copied from shared/lib/cine.py sha256:19985fa096953c99a9043f26ee7bee59405f9346782d1f89f8531c464023a3d2; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -933,7 +933,7 @@ def _stamp(tpl, n, start, end):
                       start_s="%g" % round(start, 3), end_s="%g" % round(end, 3), start_ms="%02d:%06.3f" % (mins, secs))
 
 
-def compile_cards(p, cards, prof, sequence=False, resolution=None):
+def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
     """Return a list of (label, prompt, params, warnings, info); info holds seconds and est_usd."""
     out = []
     st = p.style
@@ -951,7 +951,8 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None):
         groups, cur = [], []
         limit = max(prof["durations_s"])
         for c in cards:
-            if cur and (c["scene"] != cur[-1]["scene"] or sum(x["duration_s"] for x in cur) + c["duration_s"] > limit):
+            new_scene = c["scene"] != cur[-1]["scene"] if cur else False
+            if cur and ((new_scene and not join) or sum(x["duration_s"] for x in cur) + c["duration_s"] > limit):
                 groups.append(cur)
                 cur = []
             cur.append(c)
@@ -997,6 +998,10 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None):
                 tpl = prof["timestamp"] if i == 0 else prof.get("timestamp_next", prof["timestamp"])
                 stamp = _stamp(tpl, i + 1, start, end)
                 body = " ".join(parts[k] for k in prof.get("sequence_block", ["camera", "staging", "action", "key", "audio"]) if parts.get(k))
+                prev_loc = p.scene_map[g[i - 1]["scene"]]["location"] if i else None
+                if i and p.scene_map[c["scene"]]["location"] != prev_loc:
+                    # the head only describes the first card's place: say the new place where the sequence moves
+                    body = " ".join(x for x in (parts.get("context"), parts.get("sun"), body) if x)
                 if stamp and stamp.rstrip()[-1:] not in ".:]),":
                     body = _low(body)
                 blocks.append(("%s %s" % (stamp, body)).strip())
@@ -1116,7 +1121,7 @@ def cmd_compile(ctx, a):
     if not cards:
         print("no matching cards", file=sys.stderr)
         return 1
-    results = compile_cards(p, cards, prof, a.sequence, a.resolution)
+    results = compile_cards(p, cards, prof, a.sequence, a.resolution, getattr(a, "join", False))
     cost = 0.0
     for label, text, params, warnings, info in results:
         if a.out:
@@ -1373,6 +1378,8 @@ def repair_plan(rub, codes):
 MEASURE_CUT_SCENE = 0.30     # ffmpeg scene score that counts as a cut
 MEASURE_CUT_EARLY_S = 1.0    # H3 cuts 0.1-0.8 s before the stamped time (24 reviewed takes), so allow early
 MEASURE_CUT_LATE_S = 0.6     # ... and less late
+MEASURE_CUT_NEAR_S = 2.0     # a cut this close but outside the window is the planned cut, early or late (a long line
+                             # holds the shot: 1.2 s late on a 16-word line in 6 s, 2026-10-07)
 MEASURE_FREEZE = 0.35        # mean luma difference (0-255, 160 px wide) below which the picture is frozen
 MEASURE_FREEZE_S = 1.5       # a frozen run longer than this inside one shot fails
 MEASURE_SILENCE_DB = -60.0   # 100 ms window RMS below this is silence (room tone sits above it)
@@ -1380,7 +1387,7 @@ MEASURE_DEAD_AIR_S = 2.0     # a silent run longer than this fails
 MEASURE_CLIP = 0.999         # sample magnitude that counts as clipped
 MEASURE_SPEECH_S = 0.6       # seconds of speech-band activity a shot with a planned line must have
 MEASURE_SEAM_JUMP_DB = 6.0   # level change across a seam (1 s each side) that fails
-MEASURE_WEIGHTS = {"cut-missing": 10, "cut-extra": 4, "frozen": 10, "dead-air": 10, "clipping": 10,
+MEASURE_WEIGHTS = {"cut-missing": 10, "cut-extra": 4, "cut-off": 12, "frozen": 10, "dead-air": 10, "clipping": 10,
                    "speech-missing": 15, "seam-jump": 8}
 
 
@@ -1472,12 +1479,21 @@ def measure_take(clip, plan=None, seams=None, stills=None):
     motion = frame_motion(clip)
     checks, shots = [], []
     planned = [s for _, s, _, _ in plan[1:]]
+    used = set()
     for t in planned:
-        near = [c for c in cuts if t - MEASURE_CUT_EARLY_S <= c <= t + MEASURE_CUT_LATE_S]
-        checks.append(("PASS", "cut-planned", "planned cut at %.2fs found at %.2fs" % (t, near[0])) if near else
-                      ("FAIL", "cut-missing", "planned cut at %.2fs not found: the shot held or cut elsewhere" % t))
+        near = [c for c in cuts if t - MEASURE_CUT_EARLY_S <= c <= t + MEASURE_CUT_LATE_S and c not in used]
+        off = sorted((c for c in cuts if abs(c - t) <= MEASURE_CUT_NEAR_S and c not in used), key=lambda c: abs(c - t))
+        if near:
+            used.add(near[0])
+            checks.append(("PASS", "cut-planned", "planned cut at %.2fs found at %.2fs" % (t, near[0])))
+        elif off:
+            used.add(off[0])
+            checks.append(("WARN", "cut-off", "planned cut at %.2fs came %.2fs %s (a long line holds a shot; check the timing reads)"
+                           % (t, abs(off[0] - t), "late" if off[0] > t else "early")))
+        else:
+            checks.append(("FAIL", "cut-missing", "planned cut at %.2fs not found: the shot held or cut elsewhere" % t))
     for c in cuts:
-        if not any(t - MEASURE_CUT_EARLY_S <= c <= t + MEASURE_CUT_LATE_S for t in planned):
+        if c not in used and not any(t - MEASURE_CUT_EARLY_S <= c <= t + MEASURE_CUT_LATE_S for t in planned):
             checks.append(("FAIL", "cut-extra", "unplanned cut at %.2fs (a jump, a flash or a new shot the plan did not ask for)" % c))
     quiet = bool(stills) and any("silen" in (s or "") for s in stills.values())
     x = pcm(clip) if info["audio"] else []
@@ -1947,6 +1963,7 @@ def build_parser(prog="cine.py"):
     s.add_argument("--model", required=True)
     s.add_argument("--card", action="append", help="card id; repeat; default all")
     s.add_argument("--sequence", action="store_true", help="join consecutive cards of a scene into one timestamped generation")
+    s.add_argument("--join", action="store_true", help="with --sequence: keep cards of different scenes in one generation (an establishing exterior before the interior); the new place is described where it changes")
     s.add_argument("--resolution", help="override the style bible's resolution, e.g. a cheap draft size")
     s.add_argument("--style", metavar="FILE", help="compile with this style bible in place of bibles/style.json")
     s.add_argument("--out")
