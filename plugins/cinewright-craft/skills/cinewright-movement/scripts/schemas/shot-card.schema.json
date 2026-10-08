@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:3071617959946e756f56b4c8e7b5add44a0de37f0ee1353cb8089cdc8398a3fb; edit the source",
+  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:056812794264195cc3aea0d4302c34526915e90f410119535b9a9c65f85cbe73; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Shot card",
   "description": "One shot, generator-neutral. Fields follow the shot list (slate, size, angle, move, lens, action, dialogue, duration) and the script supervisor's notes (camera side, screen direction, eyelines, wardrobe, props in hand, start and end state).",
@@ -236,6 +236,11 @@
     "sound": {
       "type": "string",
       "maxLength": 200
+    },
+    "music": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Score under this card (non-diegetic): style, instruments, tempo, and where it starts, stops or hits. Models with a music slot get it there; other audio models get it after the sound."
     },
     "time_of_day": {
       "enum": [

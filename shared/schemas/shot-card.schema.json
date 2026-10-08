@@ -59,6 +59,7 @@
       }
     },
     "sound": {"type": "string", "maxLength": 200},
+    "music": {"type": "string", "maxLength": 240, "description": "Score under this card (non-diegetic): style, instruments, tempo, and where it starts, stops or hits. Models with a music slot get it there; other audio models get it after the sound."},
     "time_of_day": {"enum": ["dawn", "morning", "day", "golden-hour", "dusk", "night"]},
     "light": {
       "type": "object",

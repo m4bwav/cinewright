@@ -7,6 +7,8 @@
 
 - cinewright-voice (14th skill) built 2026-10-07 on branch voice-skill, merged to main as PR #18 (https://github.com/m4bwav/cinewright/pull/18) on 2026-10-07 after merging cinewright-sets into it; Sonnet evals 7/7, Haiku and Opus not run. Description budget YELLOW (4,680/4,000 with cinewright-sets; red at 5,500). TTS Audio Suite in ComfyUI not installed on the PC: install only with Mark's go, then run the design-then-clone route once and record it in the skill's SETUP.md.
 
+- Branch cartwheel-night, PR #21 (https://github.com/m4bwav/cinewright/pull/21), waiting for review: `qc measure`, `compile --sequence --join`, card `music` field, tests copy `assets/` (91 OK). From a 60 s comedy field test; details in the 2026-10-07 log entry. Budget yellow: shared/lib 104 KB.
+
 ## Waiting on Mark
 - claude.ai cleanup: delete the uploaded test skill cinewright-continuity (permanent delete; switched off for now), remove the cinewright marketplace source if the UI offers it, close the VS Code window `code chat -n` opened.
 - Old commits stay reachable from PR #1-#11 pages (refs/pull); only GitHub Support can purge. Closed PRs #12-#13 show a hostname in their head branch name.

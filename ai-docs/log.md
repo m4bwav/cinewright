@@ -385,3 +385,17 @@ PR: https://github.com/m4bwav/cinewright/pull/18 (assigned to Mark, needs-review
 $ python scripts/cine.py scrub --names <sidecar scrub-names.txt>
 scrub: 0 hits in 0 files
 ```
+## [2026-10-07] build | qc measure, compile --join, music field (branch cartwheel-night)
+- Field test: a 60 s four-section slapstick comedy rendered overnight on a local H3 pipeline, planned with cinewright cards. Goals from the owner: improve how a take and a run are judged, improve the audio.
+- `qc measure`: machine checks of a take (planned cuts found, early or late; frozen picture; dead air; clipping; speech-band sound where a line is planned; seam level jumps with `--every`; loudness) and a 0-100 score. Calibrated on 24 reviewed takes of an earlier eight-section film: H3 placed stamped cuts 0.1-0.8 s early, so the window is 1.0 s early / 0.6 s late; a cut within 2 s outside it is reported early or late (a 16-word line in 6 s held its shot 1.2 s); still picture or silence on a static-camera card that asks for it warns. Without a plan, cuts are listed only.
+- `compile --sequence --join`: cards of different scenes in one generation; the block where the place changes gets that place's words. Without it, an exterior establishing shot joined to interior shots was furnished with the interior's sofas and rug.
+- Card `music` field (schema, compiler): fills H3's non_diegetic_music; other audio models get "Music: ..." after the sound.
+- Tests: copy_repo now copies `assets/` (4 tests had failed on main since the README banner); new tests for measure, music and --join.
+```
+$ python -m unittest discover -s tests
+Ran 91 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ python scripts/cine.py budget
+budget: YELLOW (descriptions 4,680/4,000 as before; runtime shared/lib 104 KB, green to 100, red at 150)
+```

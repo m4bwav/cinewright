@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261007-2 · 2026-10-07 · compile --join and the music field
+- because: field test on a 60 s four-section comedy: an exterior establishing shot in the same generation as two interior shots came out with the interior's sofas and rug on the lawn, since the sequence header named only one place; user request (improve the audio)
+- files: SKILL.md (Step 2 item 4), shared/lib/cine.py (compile_cards join, location change in sequence blocks, music), shared/schemas/shot-card.schema.json (music), references/minimax-h3.md (layout {music})
+- `--join` keeps cards of different scenes in one generation and describes the new place in the block where it changes; a card's `music` fills H3's non_diegetic_music, or follows the sound on other audio models.
+
 ### C-20261007-1 · 2026-10-07 · Off-screen lines as H3 voiceovers, listeners silent, names respelled; lessons renumbered
 - because: L-012 (owner's review of the library film), L-009 to L-011
 - files: references/minimax-h3.md, LEARNINGS.md

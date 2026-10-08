@@ -26,7 +26,7 @@ def run(*args, script=CLI):
 
 
 def copy_repo(dst):
-    for name in ("plugins", "shared", ".claude-plugin", "examples", "ai-docs", "README.md", "LICENSE", "AGENTS.md", "CODEMAP.md"):
+    for name in ("plugins", "shared", ".claude-plugin", "examples", "ai-docs", "assets", "README.md", "LICENSE", "AGENTS.md", "CODEMAP.md"):
         src = REPO / name
         if src.is_dir():
             shutil.copytree(src, dst / name, ignore=shutil.ignore_patterns("__pycache__"))
@@ -291,6 +291,42 @@ class TestCompile(Base):
         self.assertIn("== 1B+1C", out)
         self.assertIn("[00:00-00:04]", out)
         self.assertIn("[00:04-00:08]", out)
+
+    def test_music_goes_in_the_music_slot(self):
+        proj = self.tmp / "p"
+        shutil.copytree(EXAMPLE, proj)
+        edit(proj / "cards/1B.json", '"sound":', '"music": "a lone cello, slow and low", "sound":')
+        code, out = run("compile", proj, "--model", "minimax-h3", "--sequence", "--resolution", "480p", "--out", self.tmp / "h3")
+        self.assertEqual(code, 0, out)
+        text = "".join(f.read_text(encoding="utf-8") for f in (self.tmp / "h3").glob("*.txt"))
+        self.assertIn("non_diegetic_music: A lone cello, slow and low.", text)
+        code, out = run("compile", proj, "--model", "veo", "--card", "1B", "--out", self.tmp / "veo")
+        self.assertEqual(code, 0, out)
+        self.assertIn("Music: A lone cello, slow and low.", (self.tmp / "veo" / "1B.txt").read_text(encoding="utf-8"))
+
+    def test_join_names_the_new_place_at_the_cut(self):
+        proj = self.tmp / "p"
+        shutil.copytree(EXAMPLE, proj)
+        locs = json.loads((proj / "bibles/locations.json").read_text(encoding="utf-8"))
+        locs["locations"].append({"id": "cliff", "name": "Cliff", "int_ext": "EXT",
+                                  "description": "a storm-lashed cliff path below the lighthouse"})
+        (proj / "bibles/locations.json").write_text(json.dumps(locs), encoding="utf-8")
+        scenes = json.loads((proj / "bibles/scenes.json").read_text(encoding="utf-8"))
+        outside = dict(scenes["scenes"][0], id="0", location="cliff")
+        scenes["scenes"].insert(0, outside)
+        (proj / "bibles/scenes.json").write_text(json.dumps(scenes), encoding="utf-8")
+        edit(proj / "cards/1A.json", '"scene": "1"', '"scene": "0"')
+        args = ["compile", proj, "--model", "minimax-h3", "--sequence", "--resolution", "480p"]
+        code, out = run(*args)
+        self.assertEqual(code, 0, out)
+        self.assertIn("== 1A ", out)  # a new scene splits the generation
+        code, out = run(*(args + ["--join", "--out", self.tmp / "h3"]))
+        self.assertEqual(code, 0, out)
+        self.assertIn("== 1A+1B+1C", out)
+        text = (self.tmp / "h3" / "1A+1B+1C.txt").read_text(encoding="utf-8")
+        head, shot2 = text.split("[Shot 2]", 1)
+        self.assertIn("storm-lashed cliff path", head)
+        self.assertIn("the camera cuts to the round lamp room", shot2.lower())
 
     def test_compile_rejects_unsupported_format(self):
         proj = self.tmp / "p"
@@ -685,6 +721,24 @@ class TestQc(Base):
         code, text = run("qc", "spec", long, "--project", self.proj, "--card", "1B+1C")
         self.assertEqual(code, 0, text)
         self.assertIn("for a 8s card", text)
+
+    def test_measure_finds_the_planned_cut_and_dead_air(self):
+        cut = self.tmp / "cut.mp4"
+        r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=24:duration=4",
+                            "-f", "lavfi", "-i", "mandelbrot=size=320x180:rate=24", "-f", "lavfi", "-i", "anullsrc=r=48000:cl=mono",
+                            "-filter_complex", "[1:v]trim=duration=4,setpts=PTS-STARTPTS[b];[0:v][b]concat=n=2:v=1:a=0[v]",
+                            "-map", "[v]", "-map", "2:a", "-t", "8", "-c:v", "mpeg4", "-c:a", "aac", str(cut)], capture_output=True)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        code, text = run("qc", "measure", cut, "--project", self.proj, "--card", "1B+1C")
+        self.assertIn("cut-planned", text)
+        self.assertIn("planned cut at 4.00s found", text)
+        self.assertIn("dead-air", text)
+        self.assertRegex(text, r"score \d+/100")
+        out = self.tmp / "m.json"
+        run("qc", "measure", self.clip, "--json", "--out", out)
+        m = json.loads(out.read_text(encoding="utf-8"))
+        self.assertEqual(m["cuts"], [])
+        self.assertEqual(m["shots"][0]["card"], "whole")
 
     def test_loud(self):
         code, text = run("qc", "loud", self.clip)
