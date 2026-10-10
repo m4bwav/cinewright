@@ -93,3 +93,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: owner's film test, sections 6 and 8 (helicopters), section 7 (lava-like wave)
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-10
+
+### L-015 · 2026-10-10 · A style rule line about speaking can be spoken aloud by the video model
+- Trigger: the same film's style `lighting` line said "every line is spoken to another person in the scene" to stop lens-talking. In a section whose only line was one word, MiniMax H3 voiced that sentence over the next shot; the word-recall score still read 1.0.
+- Hypothesis: `compile` puts the line in every generation's head; a sentence about speech is the nearest speech-shaped text when a section runs out of dialogue.
+- Rule: write the anti-lens-talking rule about looks only ("only ever look at each other or at the danger in front of them"); keep sentences about speaking or lines out of the style bible. Check every speaking section's full transcript, not only recall.
+- Evidence: owner's film test, section 7 (extra speech at 4.8-8.6 s; repaired by splicing sound from another take)
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-10
