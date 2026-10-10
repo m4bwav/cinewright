@@ -77,3 +77,27 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: library_120s_best_c section 6 (wrong mouth); compile of 6D after the fix writes the voiceover form; tests TestSpeakers (7). No re-render yet: the fix is unverified on H3 output
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-07
+
+### L-013 · 2026-10-10 · Cast order sets reference order, so a prop reference can lose its place to a fourth face
+- Trigger: a ten-section disaster-parody film on MiniMax H3 (four references per generation). A section whose first card cast four people listed four face references first, so the card's prop reference (a giant candy on its cart) came fifth and was dropped; the render shrank the candy to person height and put it on a two-wheeled hand truck. Casting only the leader in that first card put the prop reference second, and the next render drew it at the right scale.
+- Hypothesis: `compile` adds references in order of first appearance, cast before card refs within a card; the render keeps the first N the model accepts.
+- Rule: when a prop's look or scale matters in a section, read the compiled params' `refs` before rendering; if the prop is past the model's limit, cast fewer people in the earliest card (name the others in the action; their identity text still compiles in from later cards) so the prop's reference lands inside the limit.
+- Evidence: owner's film test, section 3, takes v1a (four faces, candy shrank) and v2 (leader only in the first card, candy at scale)
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-10
+
+### L-014 · 2026-10-10 · Nouns and glows in the style bible's look line are drawn in every shot
+- Trigger: the same film's look line said "sweeping helicopter shots"; small stray helicopters appeared in the city skies of three sections, even after a card said "a clear, empty blue sky". The liquid's description ("glowing amber where the sun shines through it") drew glowing orange, lava-like patches in a flood wave.
+- Hypothesis: `compile` puts the look line at the head of every generation, and the model cannot tell a phrase about the camera from a phrase about the scene.
+- Rule: keep object nouns out of the style bible's `look` and `lighting` lines ("sweeping aerial camera moves", not "helicopter shots"), and keep glow words off any substance that must read as wet. When an unwanted object recurs across sections, search the look line first.
+- Evidence: owner's film test, sections 6 and 8 (helicopters), section 7 (lava-like wave)
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-10
+
+### L-015 · 2026-10-10 · A style rule line about speaking can be spoken aloud by the video model
+- Trigger: the same film's style `lighting` line said "every line is spoken to another person in the scene" to stop lens-talking. In a section whose only line was one word, MiniMax H3 voiced that sentence over the next shot; the word-recall score still read 1.0.
+- Hypothesis: `compile` puts the line in every generation's head; a sentence about speech is the nearest speech-shaped text when a section runs out of dialogue.
+- Rule: write the anti-lens-talking rule about looks only ("only ever look at each other or at the danger in front of them"); keep sentences about speaking or lines out of the style bible. Check every speaking section's full transcript, not only recall.
+- Evidence: owner's film test, section 7 (extra speech at 4.8-8.6 s; repaired by splicing sound from another take)
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-10

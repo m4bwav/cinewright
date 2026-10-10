@@ -415,3 +415,15 @@ budget: YELLOW (descriptions 4,708/4,000; one entry 714/700 tokens; runtime shar
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 0 hits in 0 files
 ```
+
+## [2026-10-10] learn | Two genvideo lessons from an overnight disaster-parody film (branch mentos-night-lessons)
+- cinewright-genvideo LEARNINGS L-013 (cast order sets reference order; a prop ref lost its place to a fourth face) and L-014 (nouns and glows in the look line are drawn in every shot). Lessons only; no code change.
+```
+$ python -m unittest discover -s tests
+Ran 94 tests in 34.159s
+OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ python scripts/cine.py budget
+YELLOW (descriptions 4,708/4,000; one entry 714/700 tokens), both as before this change
+```
