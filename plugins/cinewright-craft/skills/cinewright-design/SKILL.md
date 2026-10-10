@@ -24,13 +24,14 @@ Write wardrobe per scene in the character bible, with each damage stage as its o
 
 ## Step 3: props
 
-Add every held or close-up prop to `bibles/props.json` with a fixed description (`kb show prop-constants`). Card `holding` values use the prop's `name`.
+Add every held, featured or close-up prop to `bibles/props.json` with a fixed description (`kb show prop-constants`). Card `holding` values use the prop's `name`; a prop nobody holds goes in the card's `props`. A hero prop gets a sheet, one per state (`kb show prop-sheets`).
 
 ## Step 4: reference images
 
 1. Write the turnaround sheet prompt per character and costume: three views, flat light, grey backdrop, identity and wardrobe strings verbatim (`kb show turnaround-sheets`). Generating the image is the user's image tool's job; writing the prompt never starts a paid render.
 2. Before any reference is used, list what to paint out and check marks at full size (`kb show clean-references`).
-3. Add the cropped views to the character's `refs`.
+3. Add the cropped views to the character's `refs`, prop sheets to the prop's or state's `refs`.
+4. A character or prop that recurs across many shots or films: weigh a trained LoRA (`kb show lora-or-references`).
 
 ## Step 5: check
 

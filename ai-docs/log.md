@@ -399,3 +399,19 @@ kb lint: 16 skills, 0 errors
 $ python scripts/cine.py budget
 budget: YELLOW (descriptions 4,680/4,000 as before; runtime shared/lib 104 KB, green to 100, red at 150)
 ```
+
+## [2026-10-09] build | Pre-production gaps: prop sheets and states, LoRA guidance, animatic, blockout control, shot matching (branch preproduction-gaps)
+- User request: research what AI film makers build to raise quality and add the gaps to cinewright and the local generation tooling. Research notes live in a private companion repo (prop sheets, animatic, blockout control, grade; LoRA training; identity scoring); this repo got the model-agnostic part.
+- Props: `props.json` entries take `states` (name, whole description, refs); cards pick one with `cast[].holding_state` or the new card-level `props` list (`name`, `state`, `where`) for props nobody holds. `generation_refs` now sends refs in order characters, props (the state's sheet when one is picked), the location's `refs`, the card's refs, with `<Picture N>`-style tags on prop words for models that take tags. Before this, prop and location refs never reached the model. Continuity: unknown state is an error, a featured prop with no description or no sheet a warning.
+- New `shared/lib/cine_post.py`, shipped only by cinewright-edit and cinewright-finish (needs.json), so the runtime copied into all 16 skills grows less: `animatic` (one still per card held for its duration with a zoompan for its move, grey when missing, scratch audio, a timing sheet; parts encoded to exact frame counts because the concat demuxer with duration lines drifts about 1.7 s) and `grade measure|match` (per-channel mean and spread pooled over up to 12 frames, Reinhard fit in RGB at strength 0.7, optional `--luma` target, 17-point .cube per shot, `--apply` with `--look` and `--grain`). Tried on a real eight-section film: shots moved toward the hero's balance; a hero with a big sky pulled an interior cool, so the entry says to match within a scene.
+- Entries: design `prop-sheets`, `lora-or-references`; edit `animatic`; finish `shot-matching`; sets `blockout-control`; `prop-constants` rules updated. Steps added to the design, edit, finish and sets SKILL.md files, each with a CHANGELOG entry.
+```
+$ python -m unittest discover -s tests
+Ran 94 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ python scripts/cine.py budget
+budget: YELLOW (descriptions 4,708/4,000; one entry 714/700 tokens; runtime shared/lib 120 KB, green to 100, red at 150)
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 0 hits in 0 files
+```

@@ -9,6 +9,8 @@
 
 - Branch cartwheel-night, PR #21 (https://github.com/m4bwav/cinewright/pull/21), waiting for review: `qc measure`, `compile --sequence --join`, card `music` field, tests copy `assets/` (91 OK). From a 60 s comedy field test; details in the 2026-10-07 log entry. Budget yellow: shared/lib 104 KB.
 
+- Branch preproduction-gaps (2026-10-09, PR waiting for review): prop `states` and card `props`, prop and location refs now sent to the model, `shared/lib/cine_post.py` (animatic, grade measure/match; shipped by edit and finish only), entries prop-sheets, lora-or-references, animatic, shot-matching, blockout-control, identity-score. Budget yellow: runtime shared/lib 120 KB (green 100, red 150), one entry 714/700 tokens. Details: 2026-10-09 log entry.
+
 ## Waiting on Mark
 - claude.ai cleanup: delete the uploaded test skill cinewright-continuity (permanent delete; switched off for now), remove the cinewright marketplace source if the UI offers it, close the VS Code window `code chat -n` opened.
 - Old commits stay reachable from PR #1-#11 pages (refs/pull); only GitHub Support can purge. Closed PRs #12-#13 show a hostname in their head branch name.

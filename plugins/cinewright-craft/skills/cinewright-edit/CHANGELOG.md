@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261009-1 · 2026-10-09 · Animatic before any render (cine_post.py)
+- because: user request (2026-10-09: research what AI film makers build to raise quality, and add the gaps: prop sheets, LoRAs, animatic, blockout control, identity scoring, one shared grade)
+- files: SKILL.md (description, CINE_POST line, new section "Before any render: animatic"), references/animatic.md (new), needs.json (cine_post.py)
+- The edit starts before rendering: stills timed to the cards over scratch audio, with a timing sheet, so story and length lock before video is paid for.
+
 ### C-20261005-2 · 2026-10-05 · L-003 retired: the rerun did not move its case (S6)
 - because: T-20261005-1, L-003
 - files: LEARNINGS.md, LEARNINGS-ARCHIVE.md

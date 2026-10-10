@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261009-1 · 2026-10-09 · Prop sheets, prop states and featured props; LoRA or references
+- because: user request (2026-10-09: research what AI film makers build to raise quality, and add the gaps: prop sheets, LoRAs, animatic, blockout control, identity scoring, one shared grade)
+- files: SKILL.md (Step 3, Step 4), references/prop-sheets.md (new), references/lora-or-references.md (new), references/prop-constants.md (Rules)
+- Props get a sheet per state, sent as refs by the compiler; cards can feature props nobody holds; a new entry says when a trained LoRA beats reference images and how to test one.
+
 ### C-20261004-1 · 2026-10-04 · Created as an evergreen unit (cinewright S3)
 - because: user request, R-20261004-1, L-001, L-002, L-003
 - files: SKILL.md, references/, needs.json, RESEARCH.md, LEARNINGS.md, TESTS.md, evals/evals.json, evergreen.json, MAINTENANCE.md

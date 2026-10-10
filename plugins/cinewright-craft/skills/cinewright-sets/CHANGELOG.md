@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261009-1 · 2026-10-09 · Blockout control
+- because: user request (2026-10-09: research what AI film makers build to raise quality, and add the gaps: prop sheets, LoRAs, animatic, blockout control, identity scoring, one shared grade)
+- files: SKILL.md (end of Step 3), references/blockout-control.md (new)
+- A blockout or phone footage turned into a depth, pose or layout video drives motion through a model's control input; the entry covers sources, strengths and checks.
+
 ### C-20261007-1 · 2026-10-07 · Created as an evergreen unit
 - because: user request, R-20261007-1, R-20261007-2, L-001, L-002
 - files: SKILL.md, references/ (set-plan, wall-strings, master-plates, coverage-angles, set-light, set-check), needs.json, RESEARCH.md, LEARNINGS.md, TESTS.md, evals/evals.json, evals/check_walls.py, evergreen.json, MAINTENANCE.md; shared: location bible `walls`, shot card `camera.faces`, compile adds the faced wall, WALL check, validator `propertyNames`

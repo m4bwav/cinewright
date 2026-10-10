@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261009-1 · 2026-10-09 · Identity score entry
+- because: user request (2026-10-09: add the gaps AI film makers fill, face-similarity scoring among them); field test against a reviewer's verdicts on two films
+- files: SKILL.md (Step 2, one line before the rubric read), references/identity-score.md (new)
+- How to score faces and props against the bible's refs, the verdicts, tuned thresholds, and where it cannot be trusted (faces under about 60 px).
+
 ### C-20261007-1 · 2026-10-07 · Step 1: qc measure, machine checks of a take
 - because: user request (improve how a run and a shot are judged); field test on a 60 s four-section comedy and 24 reviewed takes of an eight-section film
 - files: SKILL.md (Step 1 item 3), shared/lib/cine.py (qc measure)

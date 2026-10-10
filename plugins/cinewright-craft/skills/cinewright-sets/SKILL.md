@@ -28,6 +28,8 @@ Write the location's `description` with only what every angle shares (materials,
 
 Generate the widest establishing plate first, one per time of day, at the renderer's frame (`kb show master-plates`). Light comes from `kb show set-light`: a named source, a color temperature and a key side, the same words every time. Generating an image is the user's image tool's job; ask before any paid render.
 
+When words keep failing a blocking (crossings, a camera path, a vehicle's line), drive the shot from a blockout's depth, pose or layout video (`kb show blockout-control`).
+
 ## Step 4: coverage
 
 For every wall a camera will see, make its own plate from that wall's string, never a 180-degree turn of the master in text or with an angle-edit model. Small moves (up to about 45 degrees, push-ins) may come from the master (`kb show coverage-angles`).

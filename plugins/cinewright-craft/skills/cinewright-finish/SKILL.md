@@ -9,6 +9,7 @@ license: MIT
 Take the locked cut to a delivered picture: composites and cleanup, a four-pass grade, the crop to the film's frame, upscale and retime last, one tagged delivery encode. Outcome: `finish/grade.md` (every pass with its values), the delivery file, and its checks.
 
 `CINE` means `python scripts/cine.py` run from the folder holding this file (run it, never read it). Knowledge: read [references/INDEX.md](references/INDEX.md) once, then `CINE kb show <slug> --section Rules`. Never read the whole folder.
+`CINE_POST` means `python scripts/cine_post.py` from the same folder (animatic and grade; ffmpeg on PATH).
 
 ## Step 0: freshness
 
@@ -27,7 +28,7 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 
 ## Step 3: grade
 
-1. Correct, balance, match, look, in that order (`kb show grade-order`). Measure each shot (`signalstats`) and match blacks and skin within a scene before any look.
+1. Correct, balance, match, look, in that order (`kb show grade-order`). Match each scene's shots to its hero frame with `CINE_POST grade match` (per-shot `.cube`, optional `--luma` target per scene), then one `--look` LUT and grain for the film (`kb show shot-matching`).
 2. Night from day footage: `kb show day-for-night`.
 3. Write each pass and its values in `finish/grade.md`, as filters or ASC CDL a script can repeat.
 

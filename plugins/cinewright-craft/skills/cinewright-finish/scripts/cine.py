@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:ba42fe1f537ea7e3370f5ff1cbc22fe9dffc9998429445e5f11f550c4c611495; edit the source
+# copied from shared/lib/cine.py sha256:4c11dbc215774d887fb1eb276b6fe2d9a0165eb9a4c2ba7a713aedc5a7e98043; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -636,6 +636,16 @@ def continuity_diff(p):
                     add("warning", card, "PROP", "%s holds '%s', which no bible lists" % (ch["name"], m[key]))
                 elif m.get(key) and p.props and m[key] not in p.props:
                     add("warning", card, "PROP", "%s holds '%s', which has no description in bibles/props.json, so the model invents its look" % (ch["name"], m[key]))
+            st_name = m.get("holding_state")
+            if st_name and st_name not in [s["name"] for s in p.props.get(m.get("holding"), {}).get("states", [])]:
+                add("error", card, "PROP", "%s holds '%s' in state '%s', which props.json does not list" % (ch["name"], m.get("holding"), st_name))
+        for x in card.get("props", []):
+            if x["name"] not in p.props:
+                add("warning", card, "PROP", "features '%s', which has no description in bibles/props.json, so the model invents its look" % x["name"])
+            elif x.get("state") and x["state"] not in [s["name"] for s in p.props[x["name"]].get("states", [])]:
+                add("error", card, "PROP", "features '%s' in state '%s', which props.json does not list" % (x["name"], x["state"]))
+            elif not prop_look(p, x["name"], x.get("state")).get("refs") and not p.props[x["name"]].get("refs"):
+                add("warning", card, "PROP", "features '%s' with no prop sheet refs; make one (cinewright-design prop-sheets)" % x["name"])
         for i, a in enumerate(on_screen):
             for b in on_screen[i + 1:]:
                 want = POS_INDEX[positions[a["id"]]] - POS_INDEX[positions[b["id"]]]
@@ -770,29 +780,65 @@ DEFAULT_PARAMS = {"model": "model", "duration": "durationSeconds", "aspect": "as
                   "width": "width", "height": "height", "frames": "frames", "fps": "fps"}
 
 
+def card_props(c):
+    """(name, state) for every prop a card holds or features, in order."""
+    out = []
+    for m in c.get("cast", []):
+        for key in ("holding", "holding_end"):
+            if m.get(key):
+                out.append((m[key], m.get("holding_state") if key == "holding" else None))
+    out += [(x["name"], x.get("state")) for x in c.get("props", [])]
+    return out
+
+
+def prop_look(p, name, state=None):
+    """The bible entry for a prop, or for one of its states when the card names one."""
+    pr = p.props.get(name, {})
+    for s in pr.get("states", []):
+        if s["name"] == state:
+            return s
+    return pr
+
+
 def generation_refs(p, cards, prof):
-    """Ordered reference list for one generation and the tag text per character id."""
+    """Ordered reference list for one generation (characters, props, sets, card refs) and the tag text
+    per character id and per "prop:<name>"."""
     refs, tags = [], {}
-    for c in cards:
-        for m in c.get("cast", []):
-            for r in p.chars[m["id"]].get("refs", []):
-                if r not in refs:
-                    refs.append(r)
-        for r in c.get("refs", []):
+
+    def add(rs):
+        for r in rs:
             if r not in refs:
                 refs.append(r)
+    for c in cards:
+        for m in c.get("cast", []):
+            add(p.chars[m["id"]].get("refs", []))
+        # a prop sheet goes with every shot that shows the prop: without it the model redraws the object
+        # each shot (pre-production gaps, 2026-10-09)
+        for name, state in card_props(c):
+            look = prop_look(p, name, state)
+            add(look.get("refs") or p.props.get(name, {}).get("refs", []))
+        add(p.locs[p.scene_map[c["scene"]]["location"]].get("refs", []))
+        add(c.get("refs", []))
     if prof.get("ref_tag"):
         for cid, ch in p.chars.items():
             mine = [refs.index(r) + 1 for r in ch.get("refs", []) if r in refs]
             if mine:
                 tags[cid] = " ".join(prof["ref_tag"].format(n=n, n0=n - 1, name=ch["name"]) for n in mine)
+        for name, pr in p.props.items():
+            for look in [pr] + pr.get("states", []):
+                mine = [refs.index(r) + 1 for r in look.get("refs", []) if r in refs]
+                if mine:
+                    tags.setdefault("prop:" + name, " ".join(prof["ref_tag"].format(n=n, n0=n - 1, name=name) for n in mine))
     return refs, tags
 
 
-def prop_words(p, name):
-    """A held prop as the prop bible's verbatim description, else 'the <name>'."""
-    d = p.props.get(name, {}).get("description")
-    return d.rstrip(".") if d else "the %s" % name
+def prop_words(p, name, state=None, tags=None):
+    """A prop as the prop bible's verbatim description (of the state when given), else 'the <name>',
+    with the prop sheet's ref tag when the model takes tags."""
+    d = prop_look(p, name, state).get("description")
+    words = d.rstrip(".") if d else "the %s" % name
+    tag = (tags or {}).get("prop:" + name)
+    return "%s %s" % (words, tag) if tag else words
 
 
 def card_parts(p, card, prof, tags=None, speakers=None):
@@ -819,8 +865,10 @@ def card_parts(p, card, prof, tags=None, speakers=None):
         if m.get("position"):
             line += ", %s" % POSITION_WORDS[m["position"]]
         if m.get("holding"):
-            line += ", holding %s" % prop_words(p, m["holding"])
+            line += ", holding %s" % prop_words(p, m["holding"], m.get("holding_state"), tags)
         subj.append(_sentence(line))
+    for x in card.get("props", []):
+        subj.append(_sentence(_cap("%s%s" % (prop_words(p, x["name"], x.get("state"), tags), ", " + x["where"] if x.get("where") else ""))))
     if card.get("subject"):
         subj.append(_sentence(_cap(card["subject"])))
     parts["subject"] = " ".join(subj)
@@ -829,7 +877,7 @@ def card_parts(p, card, prof, tags=None, speakers=None):
     for m in card.get("cast", []):
         bits = [POSITION_WORDS[m["position"]]] if m.get("position") else []
         if m.get("holding"):
-            bits.append("holding %s" % prop_words(p, m["holding"]))
+            bits.append("holding %s" % prop_words(p, m["holding"], m.get("holding_state"), tags))
         if bits:
             stage.append(_sentence("%s is %s" % (p.chars[m["id"]]["name"], ", ".join(bits))))
     parts["staging"] = " ".join(stage)
@@ -1071,8 +1119,12 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
             for m in c.get("cast", []):
                 if p.chars[m["id"]]["identity"] not in text:
                     raise SystemExit("compiler bug: identity of %s not verbatim in %s" % (m["id"], c["id"]))
-                if m.get("holding") in p.props and prop_words(p, m["holding"]) not in text:
+                if m.get("holding") in p.props and prop_words(p, m["holding"], m.get("holding_state")) not in text:
                     raise SystemExit("compiler bug: prop '%s' not verbatim in %s" % (m["holding"], c["id"]))
+            for x in c.get("props", []):
+                # [1:]: a featured prop opens its sentence, so its first letter is capitalised
+                if x["name"] in p.props and prop_words(p, x["name"], x.get("state"))[1:] not in text:
+                    raise SystemExit("compiler bug: prop '%s' not verbatim in %s" % (x["name"], c["id"]))
         for key, want in (("lighting", st.get("lighting", "").rstrip(".")), ("frame_aspect", frame_words(st).rstrip("."))):
             if want and want not in text:
                 raise SystemExit("compiler bug: style %s not verbatim in %s" % (key, "+".join(c["id"] for c in g)))

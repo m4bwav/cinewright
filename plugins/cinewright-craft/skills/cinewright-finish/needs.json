@@ -3,7 +3,8 @@
     "aspect-ratios.md"
   ],
   "lib": [
-    "cine.py"
+    "cine.py",
+    "cine_post.py"
   ],
   "schemas": [
     "shot-card.schema.json",

@@ -24,7 +24,7 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 ## Step 2: judge
 
 1. `CINE qc rubric <p> --card <id> --clip <clip>` (no `--clip` before the first take) writes `<p>/qc/<id>.rubric.json`; never write a checklist by hand: one item per check the card makes possible (identity, wardrobe, props, positions, eyelines, light, camera, action, start and end state, text, sound, seam).
-2. Fill each `verdict` with `pass`, `fail` or `na` from the sheet, the last frame and the audio. On a fail, set `code` from the item's `codes` and a `note` saying what you saw. Judge rules: `kb show qc-loop --section Rules`.
+2. Fill each `verdict` with `pass`, `fail` or `na` from the sheet, the last frame and the audio. On a fail, set `code` from the item's `codes` and a `note` saying what you saw. Judge rules: `kb show qc-loop --section Rules`. An identity item with faces in a close shot can be scored against the bible's refs instead of by eye; wide shots stay by eye (`kb show identity-score`).
 3. `CINE qc rubric --read <rubric>` prints the fails ordered by repair rung and the one change for the next take. Evidence: its last line.
 
 ## Step 3: log and route

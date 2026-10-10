@@ -1,6 +1,6 @@
 ---
 name: cinewright-edit
-description: "Film editor for AI video: assembling takes, Murch's rule of six, J and L cuts, match cuts, cutting on action, pacing, trimming bad frames, cutting battles. Use when cutting rendered clips into a film or fixing its pace; not vlogs or live footage. Also 'refresh cinewright-edit'."
+description: "Film editor for AI video: animatics before rendering, assembling takes, Murch's rule of six, J and L cuts, match cuts, cutting on action, pacing, trimming bad frames, cutting battles. Use when cutting rendered clips into a film or fixing its pace; not vlogs or live footage. Also 'refresh cinewright-edit'."
 license: MIT
 ---
 
@@ -9,10 +9,15 @@ license: MIT
 Turn passing takes into a locked cut at the target length: every cut chosen for a reason, bad frames trimmed, dialogue split where it helps, and a conform that matches the table. Outcome: `edit/cut.md` (the cut list), a conformed cut file, and its length against `target_seconds`.
 
 `CINE` means `python scripts/cine.py` run from the folder holding this file (run it, never read it). Knowledge: read [references/INDEX.md](references/INDEX.md) once, then `CINE kb show <slug> --section Rules`. Never read the whole folder.
+`CINE_POST` means `python scripts/cine_post.py` from the same folder (animatic and grade; ffmpeg on PATH).
 
 ## Step 0: freshness
 
 Read `evergreen.json`. If `contradiction` is set or today is on or after `next_due`, say so in one line, do the task with the current content, then run `evergreen-refresh` if the evergreen plugin is installed. If `tests.failing` is non-empty, say so and run `evergreen-tune` after the task.
+
+## Before any render: animatic
+
+With approved stills (first frames) and a scratch track, cut the film as stills to the cards' durations: `CINE_POST animatic <project> --stills <dir> --audio <wav>`. Fix order and length on the cards there, not after rendering (`kb show animatic`).
 
 ## Step 1: gather
 
