@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261009-1 · 2026-10-09 · Shot matching with cine_post.py grade
+- because: user request (2026-10-09: research what AI film makers build to raise quality, and add the gaps: prop sheets, LoRAs, animatic, blockout control, identity scoring, one shared grade)
+- files: SKILL.md (CINE_POST line, Step 3), references/shot-matching.md (new), needs.json (cine_post.py)
+- Per-shot match to a hero frame as a .cube (stdlib Reinhard fit, pooled over the shot so it cannot flicker), luma targets per scene, then one look LUT and grain.
+
 ### C-20261004-2 · 2026-10-04 · Description tuned (S6)
 - because: T-20261004-2, L-003
 - files: SKILL.md

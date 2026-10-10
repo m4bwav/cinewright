@@ -372,6 +372,82 @@ class TestCompile(Base):
         self.assertIn("no model card", out)
 
 
+class TestProps(Base):
+    """Prop sheets as refs, prop states and featured props (pre-production gaps, 2026-10-09)."""
+
+    def project(self):
+        proj = self.tmp / "p"
+        shutil.copytree(EXAMPLE, proj)
+        props = json.loads((proj / "bibles/props.json").read_text(encoding="utf-8"))
+        props["props"][0]["refs"] = ["refs/matchbox_3q.png", "refs/matchbox_hand.png"]
+        props["props"][0]["states"] = [{"name": "open", "description": "the same small dented tin matchbox, lid flipped open, three matches left inside",
+                                        "refs": ["refs/matchbox_open.png"]}]
+        props["props"].append({"name": "brass lens", "description": "a huge dark brass-and-glass Fresnel lens taller than a man, ringed glass prisms",
+                               "refs": ["refs/lens.png"]})
+        lib.write_text(proj / "bibles/props.json", json.dumps(props, indent=2))
+        edit(proj / "bibles/locations.json", '"props":', '"refs": ["refs/lamp_room.png"], "props":')
+        edit(proj / "cards/1A.json", '"holding": "tin matchbox",', '"holding": "tin matchbox", "holding_state": "open",')
+        edit(proj / "cards/1A.json", '"action":', '"props": [{"name": "brass lens", "where": "behind them"}], "action":')
+        return proj
+
+    def test_states_featured_props_and_set_refs_compile(self):
+        proj = self.project()
+        code, out = run("compile", proj, "--model", "minimax-h3", "--card", "1A", "--resolution", "480p", "--out", self.tmp / "h3")
+        self.assertEqual(code, 0, out)
+        text = (self.tmp / "h3" / "1A.txt").read_text(encoding="utf-8")
+        params = json.loads((self.tmp / "h3" / "1A.params.json").read_text(encoding="utf-8"))
+        refs = params["refs"]
+        # characters first, then the state's sheet (not the plain prop's), the featured prop, the set
+        self.assertNotIn("refs/matchbox_3q.png", refs)
+        self.assertLess(refs.index("refs/matchbox_open.png"), refs.index("refs/lens.png"))
+        self.assertEqual(refs[-1], "refs/lamp_room.png")
+        n = refs.index("refs/matchbox_open.png") + 1
+        self.assertIn("lid flipped open, three matches left inside <Picture %d>" % n, text)
+        self.assertIn("ringed glass prisms <Picture %d>, behind them." % (refs.index("refs/lens.png") + 1), text)
+
+    def test_unknown_state_is_a_continuity_error(self):
+        proj = self.project()
+        edit(proj / "cards/1A.json", '"holding_state": "open"', '"holding_state": "melted"')
+        code, out = run("continuity", "diff", proj)
+        self.assertIn("state 'melted'", out)
+        self.assertNotEqual(code, 0, out)
+
+
+@unittest.skipUnless(shutil.which("ffmpeg"), "ffmpeg not on PATH")
+class TestPost(Base):
+    """cine_post.py: animatic and grade (pre-production gaps, 2026-10-09)."""
+    POST = REPO / "shared" / "lib" / "cine_post.py"
+
+    def ffmpeg(self, *args):
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error"] + [str(a) for a in args], check=True)
+
+    def test_animatic_times_the_cards(self):
+        stills = self.tmp / "stills"
+        stills.mkdir()
+        self.ffmpeg("-f", "lavfi", "-i", "testsrc2=s=640x360", "-frames:v", "1", stills / "1A.png")
+        out = self.tmp / "anim.mp4"
+        code, text = run("animatic", EXAMPLE, "--stills", stills, "--out", out, "--size", "320x180", script=self.POST)
+        self.assertEqual(code, 0, text)
+        self.assertIn("no still for 1B, 1C", text)
+        dur = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(out)],
+                             capture_output=True, text=True).stdout
+        self.assertAlmostEqual(float(dur), 14.0, delta=0.1)
+        sheet = out.with_suffix(".timing.md").read_text(encoding="utf-8")
+        self.assertIn("| 1B | 00:06.000 | 00:10.000 | 4 |", sheet)
+
+    def test_grade_match_moves_toward_the_ref_and_hits_a_luma_target(self):
+        ref, dark = self.tmp / "ref.png", self.tmp / "dark.mp4"
+        self.ffmpeg("-f", "lavfi", "-i", "testsrc2=s=320x180", "-frames:v", "1", ref)
+        self.ffmpeg("-f", "lavfi", "-i", "testsrc2=s=320x180:d=1,eq=brightness=-0.2:saturation=0.5", dark)
+        code, text = run("grade", "match", dark, "--ref", ref, "--luma", "60", "--apply", self.tmp / "out", script=self.POST)
+        self.assertEqual(code, 0, text)
+        cube = (self.tmp / "grade" / "dark.cube").read_text(encoding="utf-8").splitlines()
+        self.assertIn("LUT_3D_SIZE 17", cube)
+        self.assertEqual(len(cube), 4 + 17 ** 3)
+        report = json.loads((self.tmp / "grade" / "grade.json").read_text(encoding="utf-8"))
+        self.assertAlmostEqual(report["files"][str(dark)]["after_luma"], 60, delta=4)
+
+
 class TestContinuity(Base):
     def test_clean(self):
         code, out = run("continuity", "diff", EXAMPLE)

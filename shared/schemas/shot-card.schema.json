@@ -44,7 +44,22 @@
           "eyeline": {"enum": ["frame-left", "frame-right", "up", "down", "camera"]},
           "travel": {"enum": ["left-to-right", "right-to-left", "toward-camera", "away-from-camera", "none"]},
           "holding": {"type": ["string", "null"], "description": "Prop in hand at the start of the shot."},
-          "holding_end": {"type": ["string", "null"], "description": "Prop in hand at the end, when it changes."}
+          "holding_end": {"type": ["string", "null"], "description": "Prop in hand at the end, when it changes."},
+          "holding_state": {"type": "string", "description": "One of the held prop's states in props.json; its description and refs replace the prop's."}
+        }
+      }
+    },
+    "props": {
+      "type": "array",
+      "description": "Props the shot features that nobody holds (a parked car, a tank, a cart), compiled with the prop bible's description and refs.",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type": "string", "description": "A props.json name."},
+          "state": {"type": "string", "description": "One of that prop's states."},
+          "where": {"type": "string", "description": "Where it is in frame, e.g. in the foreground, frame-left."}
         }
       }
     },
