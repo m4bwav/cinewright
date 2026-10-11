@@ -45,3 +45,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: pink-noise control rendered with the same settings, 2026-10-10
 - Scope: skill
 - Status: new · helpful 1 · harmful 0 · last_confirmed 2026-10-10
+
+### L-006 · 2026-10-11 · `clone-copies-the-delivery`: an in-context clone cannot exclaim louder than its reference
+- Trigger: 2026-10-11: a narrator's one-word cry ("Land!") came out flat in every take from an in-context (reference audio plus transcript) Qwen3-TTS Base clone of a quiet, grave reference. The pitch fell like a full stop (66-80 Hz against 76-100 Hz in the same voice's ordinary sentences), whatever the punctuation or capitals ("LAND!", "Land!!!", "Land! Land ahead!"). The director called it "too dull, it should be a grand statement".
+- Hypothesis: in-context cloning copies the reference's delivery as well as its timbre. Embedding-only cloning (`x_vector_only_mode=True`) keeps the timbre and lets the text drive the prosody.
+- Rule: for a shout, cry or exclamation from a cloned voice, generate takes in embedding-only mode and measure the pitch lift before listening (the best rose to about 106 Hz, against 80). A small formant-preserving pitch lift (about +1.6 semitones) adds a little more. Then set the line's level by hand, because loudness normalization misjudges a one-second clip and left the cry quieter than the narration around it. If the cry is still too small, record it, or give it to a character with a designed voice (a voice-design prompt can ask for shouting).
+- Evidence: 23 measured takes across five wordings and two clone modes, 2026-10-11
+- Scope: skill
+- Status: new · helpful 1 · harmful 0 · last_confirmed 2026-10-11
