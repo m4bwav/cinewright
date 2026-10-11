@@ -427,3 +427,7 @@ kb lint: 16 skills, 0 errors
 $ python scripts/cine.py budget
 YELLOW (descriptions 4,708/4,000; one entry 714/700 tokens), both as before this change
 ```
+
+## 2026-10-10: Qwen3-TTS speed by host
+
+- Research note [research/2026-10-10-qwen3-tts-speed-by-host.md](research/2026-10-10-qwen3-tts-speed-by-host.md): the stock CPU route measured 0.18x real time (49 clips); stock PyTorch is below real time even on an RTX 4090; faster-qwen3-tts (CUDA graphs) gives 1.8x on an RTX 4060; Apple Silicon through MLX gives about 1-2x. While the GPU renders video, an MLX Mac is the fastest free host. Seeds do not carry across engines or quantizations, so voices stay locked by reference clip.
