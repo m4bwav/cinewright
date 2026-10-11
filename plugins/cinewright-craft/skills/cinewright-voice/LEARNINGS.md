@@ -53,3 +53,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: 23 measured takes across five wordings and two clone modes, 2026-10-11
 - Scope: skill
 - Status: new · helpful 1 · harmful 0 · last_confirmed 2026-10-11
+
+### L-007 · 2026-10-11 · `respell-the-homograph`: give the TTS a spelling with one reading, and prove the vowel with phonemes
+- Trigger: 2026-10-11: a narrator line "a cry from the bow" (the front of a ship, /baʊ/) came out as the ribbon "bow" (/boʊ/) in every Qwen3-TTS clone take; the director heard it at once. Whisper wrote "bow" for both readings, so the word-error check passed the wrong take.
+- Hypothesis: the TTS picks the commoner reading of a homograph with little regard for context; speech-to-text cannot tell homographs apart because it writes words, not sounds.
+- Rule: keep the subtitle text and the spoken text apart (a `say` field beside `text` in the line list, `text` for subtitles, `say` for the TTS) and respell the homograph as a word with only the wanted reading ("bough" for the ship's bow; "lead" the metal as "led", "wind" the verb as "wined" if needed). Check the vowel with a phoneme recogniser, not Whisper: `facebook/wav2vec2-lv-60-espeak-cv-ft` prints IPA (decode its CTC output from `vocab.json` with a plain argmax, which skips the tokenizer's phonemizer and espeak dependency); run it on an old take first as a control. Here the old takes read `b oʊ`, all four respelled takes and the final mix read `b aʊ`.
+- Evidence: 2 old and 4 new takes plus the mixed film, phoneme transcripts compared, 2026-10-11
+- Scope: skill
+- Status: new · helpful 1 · harmful 0 · last_confirmed 2026-10-11
