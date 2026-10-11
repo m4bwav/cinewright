@@ -29,3 +29,19 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: C-20261007-1 (shared/lib/cine.py), confirmed 2026-10-07 (normal read 200 wpm, fast read 321)
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-07
+
+### L-004 · 2026-10-10 · `tts-tone-notch`: Qwen3-TTS clone takes carry a steady tone near 1085 Hz; notch it on the joined track
+- Trigger: 2026-10-10, a narrator voice for a short film: Qwen3-TTS voice-clone takes (12Hz 1.7B Base, cloned from a VoiceDesign reference) carried a weak steady tone at about 1080-1090 Hz, up to +10 dB above its neighbours in a 1 Hz-resolution long-window spectrum over speech; joined, the lines summed to a visible line
+- Hypothesis: an artefact of the model's codec or vocoder, constant across takes, so it adds up where per-take checks miss it
+- Rule: measure narrow peaks on the joined track (Welch, 1 Hz bins, minus a median-filtered baseline), not per short take, where held vowels show narrow peaks too; a 30 Hz-wide -12 dB notch (`ffmpeg -af equalizer=f=1085:t=h:w=30:g=-12`) took it to +0.6 dB without changing the voice
+- Evidence: measured before and after the notch, 2026-10-10
+- Scope: skill
+- Status: new · helpful 1 · harmful 0 · last_confirmed 2026-10-10
+
+### L-005 · 2026-10-10 · `spectrogram-draws-a-line`: a line in a showspectrumpic picture is not proof of a tone
+- Trigger: 2026-10-10: ffmpeg `showspectrumpic` drew a horizontal line near 1 kHz even on pink noise
+- Hypothesis: a rendering artefact of the filter's scaling, not content in the audio
+- Rule: never read a line in its picture as a tone; check against a pink-noise control and measure the spectrum (see L-004 `tts-tone-notch`)
+- Evidence: pink-noise control rendered with the same settings, 2026-10-10
+- Scope: skill
+- Status: new · helpful 1 · harmful 0 · last_confirmed 2026-10-10
