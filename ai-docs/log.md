@@ -431,3 +431,8 @@ YELLOW (descriptions 4,708/4,000; one entry 714/700 tokens), both as before this
 ## 2026-10-10: Qwen3-TTS speed by host
 
 - Research note [research/2026-10-10-qwen3-tts-speed-by-host.md](research/2026-10-10-qwen3-tts-speed-by-host.md): the stock CPU route measured 0.18x real time (49 clips); stock PyTorch is below real time even on an RTX 4090; faster-qwen3-tts (CUDA graphs) gives 1.8x on an RTX 4060; Apple Silicon through MLX gives about 1-2x. While the GPU renders video, an MLX Mac is the fastest free host. Seeds do not carry across engines or quantizations, so voices stay locked by reference clip.
+
+## 2026-10-12: updating a LoRA, and costumes
+
+- [lora-or-references](../plugins/cinewright-craft/skills/cinewright-design/references/lora-or-references.md) gains three rules: captions decide what a costume change costs (unnamed clothes are baked into the trigger word); update a LoRA by warm start (same rank, new run name, about half the lr, 500 to 1,000 steps, a third to a half old images; ai-toolkit `network.pretrained_lora_path`, read in `BaseSDTrainProcess.get_latest_save_path`); one-off outfits by image edit, shared costumes by a small stacked LoRA. Plus a measured 6B timing (7.5 s a step on a 16 GB card, field lesson). The update and costume-LoRA numbers are marked unverified.
+- Checks: `python -m unittest discover -s tests` Ran 94 tests, OK. `cine.py kb lint` 16 skills, 0 errors. `claude plugin validate plugins/cinewright-craft` passed. `cine.py budget` YELLOW: this entry went from about 693 to 1,094 estimated tokens (green to 700, yellow to 1,200).
