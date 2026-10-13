@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261013-1 · 2026-10-13 · crowd-blockout entry; battle-scenes ranks the ways to make an army wide
+- because: user request (battle and crowd scenes from separate generations, Blender offloading), R-20261013-1
+- files: references/crowd-blockout.md (new), references/battle-scenes.md (scale rule, core plus extension, takes budget), SKILL.md step on battles
+- New entry stages crowds in 3D with polywright's `pw.py crowd`; battle-scenes now lists sound and cutting, a 3D blockout and tiling, cheapest first.
+
 ### C-20261004-3 · 2026-10-04 · battle-scenes links the post half
 - because: user request (S5)
 - files: references/battle-scenes.md

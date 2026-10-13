@@ -1,10 +1,10 @@
 ---
 title: Battle scenes
 slug: battle-scenes
-summary: Plan a battle as a map, two sides with fixed screen direction, three to five phases, and many small fights; build scale from few large foreground figures, haze and compositing, never a rendered mass.
+summary: Plan a battle as a map, two sides with fixed screen direction, three to five phases, and many small fights; build scale from a 3D blockout, tiled groups or few large figures, never a prompted mass.
 tags: [movement, battle, war, crowds, fights, geography, scale]
-last_checked: 2026-10-04
-sources: ["Steven D. Katz, Film Directing Shot by Shot, 1991", "Daniel Arijon, Grammar of the Film Language, 1976", "VES Handbook of Visual Effects, 3rd ed., 2020"]
+last_checked: 2026-10-13
+sources: ["Steven D. Katz, Film Directing Shot by Shot, 1991", "Daniel Arijon, Grammar of the Film Language, 1976", "VES Handbook of Visual Effects, 3rd ed., 2020", "https://www.vp-land.com/stories/house-of-david-season-2-used-253-ai-generated-shots-here-s-how-they-did-it (2025-10-16)", "https://creativetechorbit.substack.com/p/the-making-of-house-of-david-how (2025-11-20)"]
 ---
 
 # Battle scenes
@@ -16,14 +16,15 @@ sources: ["Steven D. Katz, Film Directing Shot by Shot, 1991", "Daniel Arijon, G
 - Make the sides readable in one glance: one color and one silhouette each (banner color, helmet shape), in the wardrobe strings and the color script (cinewright-design).
 - Split the battle into 3-5 phases (approach, clash, turn, rout, aftermath). Each phase is a scene in `scenes.json` with its own light, weather and smoke state; damage and dirt move forward as wardrobe stages.
 - Cover each phase as geography plus small fights: an establishing wide, then the hero's fight as single exchanges (entry fights-and-stunts), reactions, and a re-establishing wide every four cards.
-- Scale without a rendered crowd (entry hard-subjects): 1-5 large figures in the foreground, the mass as silhouettes in dust or smoke behind, long lenses to stack depth. The wide army shot is built in compositing by tiling separate generations of small groups (cinewright-finish, entry crowd-multiplication), or left implied by sound (cinewright-sound, entry battle-sound). Cutting it: cinewright-edit, entry cutting-a-battle.
+- Scale without a prompted crowd (entry hard-subjects): 1-5 large figures in the foreground, the mass as silhouettes in dust or smoke behind, long lenses to stack depth. The wide army shot, cheapest first: implied by sound and cutting (cinewright-sound, entry battle-sound; cinewright-edit, entry cutting-a-battle); staged in 3D and painted by the model (entry crowd-blockout), the default when the camera moves or the sides meet; or tiled from small-group generations (cinewright-finish, entry crowd-multiplication).
+- Make every army card from a small real core plus extension: a few hero fighters generated or composited large, the mass from the blockout or tiles behind. Cut AI wides against close coverage instead of holding on them.
 - Charges and cavalry: one or two riders side-on and large; the line is background dust.
 - Keep the camera simple in combat cards: static, one slow move, or handheld only if the style allows it.
 - Check the model card and the brief's rating before writing blood, wounds or death.
 
 ## Numbers
 
-- Phases 3-5; foreground figures 1-5; a re-establishing wide at least every 4 cards; combat cards 3-5 s.
+- Phases 3-5; foreground figures 1-5; a re-establishing wide at least every 4 cards; combat cards 3-5 s; budget 3-20 takes per kept army wide.
 
 ## Pitfalls
 

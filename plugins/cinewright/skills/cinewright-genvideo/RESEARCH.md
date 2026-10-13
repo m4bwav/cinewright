@@ -54,6 +54,13 @@ Best sources (primary first): Vendor docs and deprecation pages first (ai.google
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261013-1 · 2026-10-13 · Practice: crowd prompting and subject limits
+- Summary: Tiered crowds (hero, featured, groups), movement lanes, a stress ladder and per-frame scoring (seedance.tv crowd workflow, 2026-09-13); one reference per subject with a role, subject-count stability limits for Seedance (smixs visual-skills); no open model holds more than about 4 identities (Phantom); Kling 3.0 best crowd motion in one vendor test (Beeble).
+- Track: practice
+- Sources: https://www.seedance.tv/blog/comfyui-crowd-video-workflow, https://github.com/smixs/visual-skills, https://beeble.ai/blog/canvas-tutorial-crowd-vfx, https://github.com/HKUDS/ViMax, ai-docs/research/2026-10-13-battle-crowd-compositing.md
+- Magnitude: minor
+- Applied: C-20261013-1
+
 ### R-20261003-2 · 2026-10-03 · Every model re-verified from vendor docs (S2)
 - Summary: four subagents read the vendor pages; full notes are in the repo's ai-docs/research/2026-10-03-s2-model-verification.md. Corrections to the S1 brief: Luma's API model is ray-3.2 (Ray3 and 3.14 have no API ID); LTX-2.5 is current; Wan 2.2 has no first/last-frame or VACE (2.1 only); Seedance 2.5 is live; Seedance tags have a space (`@Image 1`); H3's official form uses labelled fields and `with small amplitude at slow speed`, and the guide does not mention the old bracket camera syntax.
 - Track: subject
