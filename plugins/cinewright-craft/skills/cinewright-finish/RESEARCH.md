@@ -46,6 +46,13 @@ Best sources (primary first): ACES documentation (acescentral); ITU-R BT.1886 an
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261013-1 · 2026-10-13 · Subject: alpha generation, tracked masks, whole-frame unify
+- Summary: Wan-Alpha generates RGBA video in ComfyUI (text-to-video, Wan 2.1 14B); SAM 3.1 Multiplex tracks many objects with shared memory; MatAnyone 2 is the current soft-edge video matting; per-frame matting flickers. Relight the merged frame, not the layer (Beeble crowd tutorial). GenCompositor needs 40 GB+ and HarmoVid has no code: not usable on consumer cards.
+- Track: subject
+- Sources: https://docs.comfy.org/tutorials/video/wan/wan-alpha, https://docs.comfy.org/tutorials/utility/video-segment-sam3, https://arxiv.org/abs/2512.11782, https://beeble.ai/blog/canvas-tutorial-crowd-vfx, https://github.com/TencentARC/GenCompositor, ai-docs/research/2026-10-13-battle-crowd-compositing.md
+- Magnitude: minor
+- Applied: C-20261013-1
+
 ### R-20261004-1 · 2026-10-04 · Initial research
 - Summary: Built from the research brief §3 color, finishing and VFX rows (subject), ACES 2 and ACEScct pages, ITU BT.1886 and BT.2100 pages, the DCI direct-view addendum and the ffmpeg filter documentation (checked this session by a research pass), the S5 exit check on the S2 render (practice: signalstats per shot, balance by linear luma maps, sRGB transfer tag replaced with setparams), and TESTING.md (testing: probe tags, qc spec and a contact sheet are checkable).
 - Track: subject

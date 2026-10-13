@@ -26,7 +26,7 @@ Cards must pass `CINE continuity diff <project>` with 0 errors (cinewright-conti
 4. Several cards of one scene in one generation, when the model has multi-shot syntax: add `--sequence`. Prefer it: every seam between generations can read as a restart. An establishing exterior before an interior goes in the same generation with `--join` (its card in its own scene): the new place is then named at the cut, else the model furnishes the exterior from the interior's words. Score under a card goes in its `music` field.
 5. Hosted models print `est. $` per prompt: quote it when asking for the go.
 
-The compile rule (what goes where, and why): `kb show compile-rule`.
+The compile rule (what goes where, and why): `kb show compile-rule`. Cards with extras, crowds or armies: tiers, lanes, one reference per subject, the subject limits (`kb show crowd-prompting`).
 
 ## Step 3: render and log
 

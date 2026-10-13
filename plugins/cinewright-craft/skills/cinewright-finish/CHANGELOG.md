@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261013-1 · 2026-10-13 · crowd-multiplication: alpha plates, tracked masks, whole-frame unify
+- because: user request (battle and crowd scenes from separate generations, Blender offloading), R-20261013-1
+- files: references/crowd-multiplication.md, SKILL.md step 2
+- Adds the empty first-frame plate, Wan-Alpha, SAM 3.1 Multiplex and MatAnyone 2 for cut-outs, hero layer first, and relighting the merged frame.
+
 ### C-20261009-1 · 2026-10-09 · Shot matching with cine_post.py grade
 - because: user request (2026-10-09: research what AI film makers build to raise quality, and add the gaps: prop sheets, LoRAs, animatic, blockout control, identity scoring, one shared grade)
 - files: SKILL.md (CINE_POST line, Step 3), references/shot-matching.md (new), needs.json (cine_post.py)

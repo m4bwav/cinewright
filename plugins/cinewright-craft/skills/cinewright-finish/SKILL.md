@@ -23,7 +23,7 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 
 ## Step 2: composites and cleanup
 
-1. Crowds and army wides: tile separate generations of small groups over a locked plate (`kb show crowd-multiplication`).
+1. Crowds and army wides: tile separate generations of small groups over a locked plate, cut out with alpha generation or tracked masks, then unify the whole frame (`kb show crowd-multiplication`). A moving camera needs a 3D blockout instead (cinewright-movement).
 2. Every added layer matches the plate; paint out short artifacts; identity faults go back to cinewright-qc (`kb show compositing-and-cleanup`).
 
 ## Step 3: grade

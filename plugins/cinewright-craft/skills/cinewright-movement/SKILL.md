@@ -28,7 +28,7 @@ Animals, crowds, animal-drawn vehicles, hands at fine work, liquids, spins: 1-5 
 
 ## Step 4: fights and stunts
 
-One exchange per card, fighters on fixed sides, take-off and landing in separate cards, a simple camera (`kb show fights-and-stunts`). Weapons go in `bibles/props.json`. A battle: map, two sides with fixed screen direction, phases as scenes, scale from few large figures and compositing (`kb show battle-scenes`).
+One exchange per card, fighters on fixed sides, take-off and landing in separate cards, a simple camera (`kb show fights-and-stunts`). Weapons go in `bibles/props.json`. A battle: map, two sides with fixed screen direction, phases as scenes, scale from few large figures and compositing (`kb show battle-scenes`). More than about 8 figures in motion, a moving camera over a crowd, or sides meeting: stage it in 3D and drive the model with its depth video (`kb show crowd-blockout`).
 
 ## Step 5: check
 

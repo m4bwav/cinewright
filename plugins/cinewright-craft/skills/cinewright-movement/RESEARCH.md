@@ -46,6 +46,13 @@ Best sources (primary first): Thomas and Johnston, The Illusion of Life; William
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261013-1 · 2026-10-13 · Subject: crowds staged in 3D drive the video model
+- Summary: A 3D crowd blockout rendered to depth (plus pose for the front ranks) drives Wan VACE or Fun Control; practitioners build battles from layers and cuts (House of David season 2: under 200 extras plus AI crowds on Unreal bases). Coarse proxies work better than detailed ones as reference video.
+- Track: subject
+- Sources: https://www.vp-land.com/stories/house-of-david-season-2-used-253-ai-generated-shots-here-s-how-they-did-it, https://docs.comfy.org/built-in-nodes/conditioning/video-models/wan-vace-to-video, https://github.com/smixs/visual-skills, ai-docs/research/2026-10-13-battle-crowd-compositing.md
+- Magnitude: minor
+- Applied: C-20261013-1
+
 ### R-20261004-1 · 2026-10-04 · Initial research
 - Summary: Built from the research brief §3 movement row and §7 coherence causes (subject), field lessons 020 and 021 (practice), the competitor study (tooling: no competitor checks crowd framing), and TESTING.md (testing: the diff's HARD-SUBJECT and ONE-ACTION warnings are checkable).
 - Track: subject
