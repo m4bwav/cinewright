@@ -34,6 +34,6 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Trigger: 2026-10-13, laying a narration track over a mastered 45 s cut (voice lines `adelay`ed, the bed ducked with `sidechaincompress`, then `alimiter=limit=0.85`): the result peaked at -0.2 dBFS. Lowering the limit to 0.75 changed nothing; `alimiter=limit=0.8:level=0` gave -1.9 dBFS and -17.2 LUFS.
 - Hypothesis: `alimiter` has `level` (auto level) on by default, which scales the limited signal back up to full scale, so the limit sets the character of the limiting, not the output ceiling.
 - Rule: write `alimiter=limit=<L>:level=0` whenever the limit is meant as a ceiling, and measure the peak after encoding (ebur128 peak=true).
-- Evidence: three mixes of `nogod_45s_full3_vo.mp4`, measured with ebur128: -0.2, -0.2, -1.9 dBFS.
+- Evidence: three mixes of a 45 s battle short (field lesson), measured with ebur128: -0.2, -0.2, -1.9 dBFS.
 - Scope: skill
 - Status: new · helpful 1 · harmful 0 · last_confirmed 2026-10-13

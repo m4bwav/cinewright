@@ -3,8 +3,8 @@ title: Fights and stunts
 slug: fights-and-stunts
 summary: Break a fight into single exchanges, one per shot, keep fighters on their sides of the axis, sell hits with reactions, and cut around contact rather than render it.
 tags: [movement, fights, stunts, choreography, action]
-last_checked: 2026-10-04
-sources: ["Steven D. Katz, Film Directing Shot by Shot, 1991", "Daniel Arijon, Grammar of the Film Language, 1976", "Frank Thomas and Ollie Johnston, The Illusion of Life, 1981"]
+last_checked: 2026-10-14
+sources: ["Field lesson 015, 2026-09-29: a guide still pinned at the impact frame made a lance-through-shield impact land where text alone gave a muddle", "r/StableDiffusion H3 fight-settings test, 2026-09-29: https://www.reddit.com/r/StableDiffusion/comments/1wtcitg/", "Steven D. Katz, Film Directing Shot by Shot, 1991", "Daniel Arijon, Grammar of the Film Language, 1976", "Frank Thomas and Ollie Johnston, The Illusion of Life, 1981"]
 ---
 
 # Fights and stunts
@@ -19,7 +19,9 @@ sources: ["Steven D. Katz, Film Directing Shot by Shot, 1991", "Daniel Arijon, G
 - Stunts (falls, jumps, crashes): show the take-off in one card and the landing in the next; never the whole arc in one generation.
 - Keep the camera simple in fights: static or one slow move. Shaky handheld plus fast action gives melted bodies.
 - Many fighters: two in the foreground fighting, the rest as background mass (entry hard-subjects).
-- Violence and gore rules differ by model and platform; check the model card and the brief's rating before writing blood or wounds.
+- Violence and gore rules differ by model and platform; check the model card and the brief's rating before writing blood or wounds. Local open weights refuse nothing; hosted services may strip blood. Describe blood and wounds physically (where, how much, what colour).
+- To show contact itself (a blade going in, a lance through a shield), write the beat as a chain (wind-up, contact, reaction, the body on the ground) and pin a still of the contact moment as a guide frame. Text alone blurs the moment of contact into a muddle.
+- One fight LoRA at a time, at the step count it was trained for. Stacks and extra steps bring back morphing weapons and can drop the kill.
 
 ## Numbers
 
@@ -31,5 +33,8 @@ sources: ["Steven D. Katz, Film Directing Shot by Shot, 1991", "Daniel Arijon, G
 
 ## Pitfalls
 
+- A long weapon (spear, trident, lance) morphs into a bare shaft or vanishes mid-fight; name it in every beat and check it frame by frame.
 - "An intense fight breaks out" gives limbs that merge and weapons that appear and vanish; name each exchange.
 - Two fighters swapping sides between cards with no move shown reads as a jump in geography (`continuity diff` POSITION).
+
+Related: see also [wounds-and-healing](wounds-and-healing.md), [flying-and-levitation](flying-and-levitation.md), [weight-and-contact](weight-and-contact.md).
