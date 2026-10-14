@@ -46,6 +46,13 @@ Best sources (primary first): Thomas and Johnston, The Illusion of Life; William
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261014-1 · 2026-10-14 · Subject: violence, wounds, healing and flight on local video models
+- Summary: Local open weights refuse nothing; contact (stab, impalement) lands with a pinned still of the moment; fight LoRA advice conflicts between a forum test (spear, trident) and the field record (swords, axes); no source shows a wound healing; flying heroes come from storyboard references and first/end frames, and similes about wires draw wires.
+- Track: subject
+- Sources: ai-docs/research/2026-10-14-violence-healing-flight.md (full list), https://www.reddit.com/r/StableDiffusion/comments/1wtcitg/, https://www.reddit.com/r/StableDiffusion/comments/1x050ne/
+- Magnitude: minor
+- Applied: C-20261014-1
+
 ### R-20261013-1 · 2026-10-13 · Subject: crowds staged in 3D drive the video model
 - Summary: A 3D crowd blockout rendered to depth (plus pose for the front ranks) drives Wan VACE or Fun Control; practitioners build battles from layers and cuts (House of David season 2: under 200 extras plus AI crowds on Unreal bases). Coarse proxies work better than detailed ones as reference video.
 - Track: subject

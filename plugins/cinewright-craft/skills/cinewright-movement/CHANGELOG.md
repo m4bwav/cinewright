@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261014-1 · 2026-10-14 · wounds-and-healing and flying-and-levitation entries; fights-and-stunts on contact and blood
+- because: user request (impalement, a wound that heals, real fights, flying people), R-20261014-1
+- files: references/wounds-and-healing.md (new), references/flying-and-levitation.md (new), references/fights-and-stunts.md (Rules, Pitfalls, sources, Related)
+- Contact can be rendered on local models with a pinned still; one fight LoRA at its trained steps; long weapons morph; healing is a two-frame change with the forced-end-frame warning; floating figures are held up by nothing, never by a simile about wires.
+
 ### C-20261013-1 · 2026-10-13 · crowd-blockout entry; battle-scenes ranks the ways to make an army wide
 - because: user request (battle and crowd scenes from separate generations, Blender offloading), R-20261013-1
 - files: references/crowd-blockout.md (new), references/battle-scenes.md (scale rule, core plus extension, takes budget), SKILL.md step on battles

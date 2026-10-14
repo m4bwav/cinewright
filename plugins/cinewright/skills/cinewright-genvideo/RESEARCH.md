@@ -54,6 +54,13 @@ Best sources (primary first): Vendor docs and deprecation pages first (ai.google
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261014-1 · 2026-10-14 · Practice: violence, fight LoRAs and the forced end frame on MiniMax H3
+- Summary: See the movement skill's R-20261014-1 and ai-docs/research/2026-10-14-violence-healing-flight.md. For this skill: local H3 refuses nothing (hosted strips blood); Combat Base V2 versus Weapon Combat is unresolved; first/last-frame H3 overshoots and snaps onto its end frame.
+- Track: practice
+- Sources: https://huggingface.co/JOKER141/MiniMax-H3-Combat-Base-V2, https://huggingface.co/RunningHubAI/rh-v1-weapon-combat-lora, https://www.reddit.com/r/StableDiffusion/comments/1wtcitg/, https://www.reddit.com/r/StableDiffusion/comments/1wmhny6/
+- Magnitude: minor
+- Applied: C-20261014-1
+
 ### R-20261013-1 · 2026-10-13 · Practice: crowd prompting and subject limits
 - Summary: Tiered crowds (hero, featured, groups), movement lanes, a stress ladder and per-frame scoring (seedance.tv crowd workflow, 2026-09-13); one reference per subject with a role, subject-count stability limits for Seedance (smixs visual-skills); no open model holds more than about 4 identities (Phantom); Kling 3.0 best crowd motion in one vendor test (Beeble).
 - Track: practice

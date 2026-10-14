@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261014-1 · 2026-10-14 · minimax-h3: violence, fight LoRAs, forced end frame
+- because: user request (impalement, fights, healing, flying), R-20261014-1
+- files: references/minimax-h3.md (Rules, sources, last_checked)
+- Three rules: nothing is refused locally and a pinned contact still lands a stab; the fight LoRA conflict and the one-LoRA rule; first/last frame overshoots and snaps to the end frame.
+
 ### C-20261013-1 · 2026-10-13 · crowd-prompting entry
 - because: user request (battle and crowd scenes from separate generations, Blender offloading), R-20261013-1
 - files: references/crowd-prompting.md (new), SKILL.md step 2

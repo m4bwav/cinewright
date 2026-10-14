@@ -4,7 +4,7 @@ slug: minimax-h3
 summary: MiniMax H3, local open weights: 4-15 s, 24 fps, joint audio, labelled fields, [Shot N] cuts, camera as type + amplitude + speed, no negative prompt.
 tags: [model-card, minimax, local, audio]
 last_checked: 2026-10-03
-sources: ["https://huggingface.co/MiniMaxAI/MiniMax-H3", "https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/docs/VIDEO_PROMPT_WRITING_GUIDE_base_en.md", "field lessons 011, 014, 015 (local renders, 2026-09)"]
+sources: ["https://huggingface.co/MiniMaxAI/MiniMax-H3", "https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/docs/VIDEO_PROMPT_WRITING_GUIDE_base_en.md", "field lessons 011, 014, 015 (local renders, 2026-09)", "https://huggingface.co/JOKER141/MiniMax-H3-Combat-Base-V2", "https://huggingface.co/RunningHubAI/rh-v1-weapon-combat-lora", "https://www.reddit.com/r/StableDiffusion/comments/1wtcitg/"]
 model: minimax-h3
 vendor: MiniMax
 version: "H3 Base"
@@ -31,6 +31,9 @@ volatile_claims: ["4-15 s at 24 fps", "17k+5 frame grid (field notes)", "license
 - Names: H3 guesses how to say an invented name; the guide says nothing on pronunciation. `pronounce` in characters.json respells it inside `<d>` only (unverified on H3; test with a 4 s render before a long one).
 - Several shots per render: each render restarts picture and sound (field lesson 011).
 - Bad opening: new seed, then a guide still at frame 0 (field lessons 014, 015).
+- Violence: the local weights refuse nothing; the hosted service strips blood. A stab or impalement lands when a still of the contact is pinned as a guide (field lesson 015).
+- Fight LoRAs (2026-10, conflicting): Combat Base V2 (`prfight2`; add `prfin1` for heavy finishers) at 0.9 won a same-seed test on swords and axes; a forum test on a trident fight found it morphed the weapon and preferred Weapon Combat (`BUNNY`) at 0.7. Use one fight LoRA, at the step count its speed LoRA was trained for.
+- First/last frame: the end frame is forced; motion can overshoot and snap back in the last second.
 
 ## Compile
 
