@@ -17,7 +17,7 @@ cinewright: an evergreen plugin set that gives an agent the craft of every film 
 - No AI attribution anywhere: no Co-Authored-By trailers, no "generated with" lines in commits, PRs or files.
 - Prose: plain short sentences, no em dashes.
 - Edit vocabulary, schemas and the runtime library in `shared/`, never the copies inside a skill. Run `python scripts/cine.py build`, then the checks below; lint fails on drift.
-- Before a PR: `python -m unittest discover -s tests`, `python scripts/cine.py kb lint`, `python scripts/cine.py budget` (red fails; tell Mark about a yellow in one line), `claude plugin validate` on the root and each `plugins/*` folder. CI is manual-dispatch while private, so run these locally and quote the output in `ai-docs/log.md`.
+- Before a PR: `python -m unittest discover -s tests`, `python scripts/cine.py kb lint`, `python scripts/cine.py budget` (red fails; tell Mark about a yellow in one line), `claude plugin validate` on the root and each `plugins/*` folder. Then `python scripts/cine.py scrub --names <the vault sidecar's scrub-names.txt>`: kb lint catches drive paths, LAN addresses and GPU names but not private project names, and evidence lines copied from private lessons leaked film names in #30 and #31. Third-party GPU benchmarks in ai-docs are expected hits. Add a new private project's name to that file when the work starts. CI is manual-dispatch while private, so run these locally and quote the output in `ai-docs/log.md`.
 - Shipped files cite lessons from private projects as "field lesson NNN" with a title, never the project's name (see the decision in `ai-docs/decisions/`).
 
 ## everlast (session knowledge, load on demand)
