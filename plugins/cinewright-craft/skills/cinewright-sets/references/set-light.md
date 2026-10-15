@@ -3,8 +3,8 @@ title: Set light
 slug: set-light
 summary: Write each set's light once per time of day as a named source, a color temperature and a key side tied to the plan's compass, and paste the same words into every plate and shot.
 tags: [sets, light, time-of-day, continuity, color-temperature]
-last_checked: 2026-10-07
-sources: ["https://hackernoon.com/every-ai-generated-shot-invents-its-own-light-heres-how-to-keep-lighting-consistent", "https://apps.apple.com/us/app/sun-seeker-3d-augmented-reality-viewer/id330247123", "Blain Brown, Motion Picture and Video Lighting, 3rd edition, 2018"]
+last_checked: 2026-10-15
+sources: ["https://hackernoon.com/every-ai-generated-shot-invents-its-own-light-heres-how-to-keep-lighting-consistent", "https://apps.apple.com/us/app/sun-seeker-3d-augmented-reality-viewer/id330247123", "Blain Brown, Motion Picture and Video Lighting, 3rd edition, 2018", "Set field test, 2026-10-15: one room, light line per view"]
 ---
 
 # Set light
@@ -16,6 +16,7 @@ sources: ["https://hackernoon.com/every-ai-generated-shot-invents-its-own-light-
 - Paste the light line verbatim into every plate at that time of day, and into the style or scene light of the shots. Never reword it for variety.
 - Exteriors: get the sun's direction for the time of day and the place's orientation (a sun-path app or table). A north facade in a northern-hemisphere summer morning has no direct sun on it.
 - Make the widest plate first and match closer plates to its light.
+- Name a source by its glow and direction in the shared line ("a flickering orange glow"); name the object it comes through (the windows, the fire beyond) only in plates of the wall that holds it. A shared line that named the windows got fire-lit windows cut into the solid walls in 6 of 6 plates of two views; with the windows named per view, 0 of 6.
 
 ## Numbers
 

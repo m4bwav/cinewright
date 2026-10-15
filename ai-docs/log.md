@@ -504,3 +504,27 @@ YELLOW: runtime shared/lib 145 KB (red 150; cine_fight.py is 14.5 KB); fight-pla
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: the known third-party GPU benchmark lines only
 ```
+
+## 2026-10-15: sets, set references, blocking marks and set LoRAs
+
+- Asked: is a set LoRA worth it for one short film; what video LoRAs are made for and whether set LoRAs are rising; the newest ways to get a setting right; how to keep a character at the same spot and facing across a cut; set reference images; check a Gemini conversation's LoRA claims. Test: the one room of a rapier duel from a novel (90 s, about 25 cards, all at night).
+- Research note [research/2026-10-15-sets-and-loras.md](research/2026-10-15-sets-and-loras.md) (raw notes in the private sidecar). No set LoRA: 0 location LoRAs among 830 for an open video model, the one single-room LoRA report failed on layout, no LoRA-against-reference test exists; makers hold rooms with plates, one grid reference, and 3D with control. Gemini: 3 verified, 7 partly, 1 not found (set LoRAs "skyrocketing"), the stacking numbers have no source.
+- Test (outside the repo): a Blender blockout of the set plan painted through an image model's Canny control into six plates; depth control washed plates white, Canny 0.95 kept the far throne at its planned size; a shared light line naming the windows cut windows into solid walls (6 of 6); plate claims from the blockout's class render asked twice of a vision model caught the wrong wall; a marks check with cameras placed from the marks went from 4 errors to 0 over 13 beats.
+- Built: entry blocking-marks (sets); set-light, master-plates, set-check, SKILL.md step 1 (sets); lora-or-references (design); LEARNINGS L-003 `light-line-draws-the-windows`, L-004 `cameras-from-marks`.
+- Not built: the marks check as a runtime command. The prototype is about 10 KB and the runtime has about 5 KB before red; port it with a trim.
+
+Check output (2026-10-15, Windows 11, Python 3.14):
+
+```
+$ python -m unittest discover -s tests
+Ran 101 tests in 33.534s
+OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ claude plugin validate (root and three plugins)
+Validation passed (4 of 4)
+$ python scripts/cine.py budget
+YELLOW: lora-or-references 1,199 tokens (red 1,200, trimmed from 1,246); runtime shared/lib 145 KB (red 150); other rows as before
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 6 hits in 2 files (the known third-party GPU benchmark lines only)
+```

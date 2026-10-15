@@ -15,6 +15,8 @@
 
 - Branch fight-plans (2026-10-15, PR waiting for review): fight plan schema, `cine_fight.py` check and sheet (movement only), entries fight-plan, fight-from-a-book, fight-previs, eval action-2 (3/3 Sonnet), harness allow list for `cine_*.py`. Research [research/2026-10-15-fight-planning.md](research/2026-10-15-fight-planning.md). Budget: runtime 145 KB of red 150, so the next runtime addition needs a trim first. Open from it: the five local tests at the end of the research note (H3 timecoded hits first); `pw.py duel` in polywright only if test 1 shows blades survive depth control.
 
+- Branch sets-and-loras-2026-10-15: entry blocking-marks, set-light, master-plates, set-check, lora-or-references; research [research/2026-10-15-sets-and-loras.md](research/2026-10-15-sets-and-loras.md). Open from it: port the marks check (prototype `set_check.py` in the duel's set folder, about 10 KB) into the runtime as `continuity marks` or a sets-only `cine_set.py`, after trimming about 6 KB elsewhere in shared/lib; a card field for the camera's plan position and per-card marks; lora-or-references sits at 1,199 of 1,200 tokens, so split it before the next addition.
+
 ## Waiting on Mark
 - claude.ai cleanup: delete the uploaded test skill cinewright-continuity (permanent delete; switched off for now), remove the cinewright marketplace source if the UI offers it, close the VS Code window `code chat -n` opened.
 - Old commits stay reachable from PR #1-#11 pages (refs/pull); only GitHub Support can purge. Closed PRs #12-#13 show a hostname in their head branch name.
