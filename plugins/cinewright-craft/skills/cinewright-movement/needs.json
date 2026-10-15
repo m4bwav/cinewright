@@ -3,7 +3,8 @@
     "screen-direction.md"
   ],
   "lib": [
-    "cine.py"
+    "cine.py",
+    "cine_fight.py"
   ],
   "schemas": [
     "shot-card.schema.json",
@@ -12,6 +13,7 @@
     "prop-bible.schema.json",
     "location-bible.schema.json",
     "scene-axis-bible.schema.json",
-    "voice-bible.schema.json"
+    "voice-bible.schema.json",
+    "fight-plan.schema.json"
   ]
 }

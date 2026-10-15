@@ -448,6 +448,73 @@ class TestPost(Base):
         self.assertAlmostEqual(report["files"][str(dark)]["after_luma"], 60, delta=4)
 
 
+class TestFight(Base):
+    """cine_fight.py: fight plans replayed and held against the cards (fight plans, 2026-10-15)."""
+    FIGHT = REPO / "shared" / "lib" / "cine_fight.py"
+
+    def plan(self, **over):
+        p = {"id": "match", "scene": "1", "question": "Will Tomas get the last match?", "ending": "Tomas holds the match to his chest.",
+             "bpm": 120,
+             "fighters": [{"id": "maren", "goal": "keep the match", "side": "frame-left", "right": "tin matchbox"},
+                          {"id": "tomas", "goal": "get the match", "side": "frame-right"}],
+             "phrases": [{"id": "P1", "ahead": "maren", "why": "she has the only light", "pause_secs": 2},
+                         {"id": "P2", "ahead": "tomas", "margin": 2, "why": "she gives it up"}],
+             "exchanges": [
+                 {"n": 1, "phrase": "P1", "lead": "maren", "with": "tin matchbox", "move": "thumbs the box open", "answer": "Tomas watches",
+                  "result": "none", "secs": 3, "card": "1A", "changes": [{"who": "maren", "right": "single match"}]},
+                 {"n": 2, "phrase": "P1", "lead": "maren", "with": "single match", "move": "holds the match out", "answer": "Tomas reaches",
+                  "result": "none", "secs": 2, "card": "1B"},
+                 {"n": 3, "phrase": "P2", "lead": "tomas", "move": "takes the match", "answer": "Maren lets go", "result": "disarm",
+                  "card": "1C", "changes": [{"who": "tomas", "right": "single match"}]}]}
+        p.update(over)
+        f = self.tmp / "match.json"
+        f.write_text(json.dumps(p), encoding="utf-8")
+        return f, p
+
+    def test_clean_plan_against_the_example_cards(self):
+        f, _ = self.plan()
+        code, text = run("check", f, "--project", EXAMPLE, script=self.FIGHT)
+        self.assertEqual(code, 0, text)
+        self.assertIn("0 errors, 0 warnings", text)
+
+    def test_weapon_after_it_changed_hands_and_one_sided_fight(self):
+        f, p = self.plan()
+        p["exchanges"].append({"n": 4, "phrase": "P2", "lead": "maren", "with": "single match", "move": "snatches at it", "answer": "Tomas pulls away", "result": "miss"})
+        p["phrases"] = [dict(x, ahead="maren") for x in p["phrases"]] + [{"id": "P3", "ahead": "maren", "why": "she still wins here"}]
+        f.write_text(json.dumps(p), encoding="utf-8")
+        code, text = run("check", f, script=self.FIGHT)
+        self.assertEqual(code, 1, text)
+        self.assertIn("WEAPON (move 4): maren moves with the single match, but holds nothing", text)
+        self.assertIn("ONE-SIDED", text)
+
+    def test_cards_held_to_the_plan(self):
+        f, p = self.plan()
+        p["fighters"][0]["marks"] = ["soot on her left cheek"]
+        p["exchanges"][2]["card"] = "1A"
+        f.write_text(json.dumps(p), encoding="utf-8")
+        code, text = run("check", f, "--project", EXAMPLE, script=self.FIGHT)
+        self.assertIn("MARK (move 1): card 1A: copy maren's mark 'soot on her left cheek'", text)
+        self.assertIn("CARD (move 3): card 1A comes before the previous exchange's card in the cut", text)
+        p["exchanges"][1]["card"] = "1A"
+        p["exchanges"][2]["card"] = "1A"
+        f.write_text(json.dumps(p), encoding="utf-8")
+        code, text = run("check", f, "--project", EXAMPLE, script=self.FIGHT)
+        self.assertIn("ONE-EXCHANGE", text)
+        self.assertIn("TIME", text)
+
+    def test_sheet_grid_and_csv(self):
+        f, _ = self.plan()
+        code, text = run("sheet", f, "--out", self.tmp / "out", script=self.FIGHT)
+        self.assertEqual(code, 0, text)
+        sheet = (self.tmp / "out" / "match.sheet.md").read_text(encoding="utf-8")
+        self.assertIn("| 3 | 7.0 (4.3) | Maren lets go | <- | takes the match | disarm | 1C | added |", sheet)
+        rows = (self.tmp / "out" / "match.csv").read_text(encoding="utf-8").splitlines()
+        self.assertEqual(rows[0], "n,time_s,phrase,ahead_score,result,lead,card")
+        self.assertEqual(rows[3], "3,7.0,P2,-2,disarm,tomas,1C")
+        code, text = run("sheet", f, "--project", EXAMPLE, "--out", self.tmp / "cut", script=self.FIGHT)
+        self.assertTrue((self.tmp / "cut" / "match.csv").read_text(encoding="utf-8").splitlines()[3].startswith("3,10.0,"))
+
+
 class TestContinuity(Base):
     def test_clean(self):
         code, out = run("continuity", "diff", EXAMPLE)

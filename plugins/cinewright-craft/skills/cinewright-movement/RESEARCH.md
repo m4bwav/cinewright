@@ -46,6 +46,13 @@ Best sources (primary first): Thomas and Johnston, The Illusion of Life; William
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261015-1 · 2026-10-15 · Subject: fight choreography documents, AI fight practice, 3D previs
+- Summary: Fight directors write fights operator first, in a numbered list or a table with a column per fighter and an arrow (FDC); the arc is a story decision per phrase, planned from the end, never a graph; music timing lives in animatics and bar sheets. AI makers plan fights in images (storyboard grids on hosted models); on local H3 hits land only when each hit has its own timecode, distant fighters smear, speed LoRAs change the moves, faces swap between fighters. SCAIL-style 3D skeletons and Blender rigs are the open route from staged motion to video; weapons vanish from skeleton controls. Nothing 3D tested on fights yet.
+- Track: subject, practice, tooling
+- Sources: ai-docs/research/2026-10-15-fight-planning.md (full list), https://web.archive.org/web/20150311201049/http://www.academieduello.com:80/news-blog/recording-choreography/, https://www.reddit.com/r/StableDiffusion/comments/1vsjezd/, https://github.com/zai-org/SCAIL
+- Magnitude: moderate
+- Applied: C-20261015-2
+
 ### R-20261014-1 · 2026-10-14 · Subject: violence, wounds, healing and flight on local video models
 - Summary: Local open weights refuse nothing; contact (stab, impalement) lands with a pinned still of the moment; fight LoRA advice conflicts between a forum test (spear, trident) and the field record (swords, axes); no source shows a wound healing; flying heroes come from storyboard references and first/end frames, and similes about wires draw wires.
 - Track: subject

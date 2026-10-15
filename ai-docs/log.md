@@ -461,7 +461,7 @@ YELLOW (descriptions 4,708/4,000; one entry 714/700 tokens), both as before this
 - Asked: improve how the agents critique generated video, stills, voices and sound, from how people do it by hand and with AI, so they can work semi-self-directed. Five research tracks (human review practice, vision judges, audio and voice judges, agentic critic loops, practitioner forums and blogs) plus experiments on a private film's 624 labelled claims: [research/2026-10-15-critic-research.md](research/2026-10-15-critic-research.md).
 - Measured: one claim per call after a blind description is worse than one keyed reply (82 % and 69 % against 92 %); Ollama 0.35.1 gives logprobs for the first generated token only; asking twice with the claim order reversed separates a reliable yes (228 of 231) from an unreliable no (54 of 95).
 - Built: `qc judge RUBRIC [--twice]` (local Ollama vision model, never shown the card's action, action split into clause claims, verdicts in `vlm` beside the agent's), `qc agree PROJECT` (agreement, kappa, Wilson bounds per prompt and check), standing claims from `<project>/qc/standing.json` in every rubric, failure code `air-steps`. Entries: review-passes, vision-judge, judge-calibration, take-selection (qc), voice-qc (voice), audio-qc (sound); flying-and-levitation gains the flight mode per character (reviewer note: flyers stepped on the air).
-- Companion change in comfyui-gen: `vlm_judge.py` claims mode, L-115 `judge-yes-check-no`.
+- Companion change in the maintainer's private image tools: the vision judge's claims mode, lesson `judge-yes-check-no`.
 - Budget: runtime shared/lib 131 KB (yellow; red 150); the qc SKILL.md body 1,262 tokens (yellow, green 1,200); the six new entries 780-1,090 tokens each (yellow, under red 1,200).
 
 Check output (2026-10-15, Windows 11, Python 3.14):
@@ -478,3 +478,29 @@ $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 6 hits in 2 files (the known third-party GPU benchmark lines only)
 ```
 
+
+## 2026-10-15: fight plans
+
+- Asked: deepen fight choreography and its documents; check Gemini's "combat notation plans", "reversal of fortune graphs" and "timeline moments"; research AI fight practice and 3D for fights; connect other plugins where it helps; keep out anything that confuses agents or generators. Test: a rapier duel from a novel.
+- Research note [research/2026-10-15-fight-planning.md](research/2026-10-15-fight-planning.md) (full notes in the private sidecar). Notation plans are real (FDC operator-first list and two-column table with an arrow); the reversal graph is not a document but a story decision per phrase; the timeline spreadsheet is not found (animatics and bar sheets are the real thing).
+- Built: `shared/schemas/fight-plan.schema.json`, `shared/lib/cine_fight.py` (check, sheet; shipped only in cinewright-movement), entries fight-plan, fight-from-a-book, fight-previs, two lines in fights-and-stunts, SKILL.md step 4, eval action-2, four tests. The ahead score goes to a CSV that chartwright draws as a step chart (`cw.py build --chart step --target vega-lite`, then `render`); readwright found the duel and gave line numbers for each exchange.
+- Eval harness: the allow list now covers `cine_*.py` (it blocked cine_fight.py, and would block cine_post.py); action-2 3/3 on Sonnet with evidence that needs a real plan path (L-003 in cinewright-movement).
+- Rejected on purpose: parry and target codes, per-second cause-and-effect spreadsheets, safety columns, coloured multi-series graphs, and 3D routes as rules before a local test. `pw.py duel` (polywright) is proposed, not built.
+- Scrubbed a private repo name from the critic entry above.
+- Test run files (outside the repo): the duel's plan, sheet, chart and book facts in the maintainer's local render folder.
+
+Check output (2026-10-15, Windows 11, Python 3.14):
+
+```
+$ python -m unittest discover -s tests
+Ran 101 tests in 32.123s
+OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ claude plugin validate (root and three plugins)
+Validation passed (4 of 4)
+$ python scripts/cine.py budget
+YELLOW: runtime shared/lib 145 KB (red 150; cine_fight.py is 14.5 KB); fight-plan entry about 1,040 tokens (yellow, red 1,200); other rows as before
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: the known third-party GPU benchmark lines only
+```
