@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261015-1 · 2026-10-15 · Blocking marks; light, plates and checks from a one-room field test
+- because: user request (2026-10-15: sets, set references, blocking continuity, set LoRAs), L-003, L-004, research note ai-docs/research/2026-10-15-sets-and-loras.md
+- files: references/blocking-marks.md (new), references/set-light.md, references/master-plates.md, references/set-check.md, SKILL.md (Step 1)
+- Marks in metres per beat and cameras placed from them, with the derived checks; name a window wall's light only in its own plates; blockout plus Canny at a strength that keeps the hero's size, one grid reference; plate claims from a class render, asked twice.
+
 ### C-20261009-1 · 2026-10-09 · Blockout control
 - because: user request (2026-10-09: research what AI film makers build to raise quality, and add the gaps: prop sheets, LoRAs, animatic, blockout control, identity scoring, one shared grade)
 - files: SKILL.md (end of Step 3), references/blockout-control.md (new)

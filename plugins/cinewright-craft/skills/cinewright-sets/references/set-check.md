@@ -3,8 +3,8 @@ title: Set check
 slug: set-check
 summary: Check every plate at full size against the plan before use: right wall, doors and windows in place, hero dressing present, light side, palette, no readable text, no people; log pass or fail per plate.
 tags: [sets, qc, check, signage, references]
-last_checked: 2026-10-07
-sources: ["https://gptproto.com/news/ai-video-generates-wrong-text", "https://higgsfield.ai/blog/consistent-characters-locations", "Set field test, 2026-10-07"]
+last_checked: 2026-10-15
+sources: ["https://gptproto.com/news/ai-video-generates-wrong-text", "https://higgsfield.ai/blog/consistent-characters-locations", "Set field test, 2026-10-07", "Set field test, 2026-10-15: class-render claims asked twice"]
 ---
 
 # Set check
@@ -19,6 +19,7 @@ sources: ["https://gptproto.com/news/ai-video-generates-wrong-text", "https://hi
   5. Palette and materials match the master.
   6. Text: no readable signs, plaques or labels. Models garble letters and the garble changes every frame. Keep signage blank in plates and add real text in post (cinewright-finish).
   7. People: none. Faces in portraits stay generic; no recognisable real person.
+- With a blockout, let the plan write the claims: its flat class render says which third of the frame holds the windows, doors, stair and hero dressing; turn each into a sentence and ask a vision model on the plate, twice in opposite orders. A yes in both passes; every no or split is a person's look at full size. It caught a window wall painted on the wrong side; its misses were parts cut by the frame edge.
 - Log each plate in `sets/<id>.md`: file, verdict, and the failing check by number.
 - A failed plate: fix by the cheapest route. Clean a small mark (cinewright-design, entry clean-references); regenerate with a corrected wall string for a wrong wall; regenerate with a new seed only after the words are right.
 - Move rejected plates to `refs/sets/_rejected/` with the reason in the name; they are evidence for the learnings.

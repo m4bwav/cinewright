@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261015-1 · 2026-10-15 · No set LoRA for one film
+- because: user request (2026-10-15), research note ai-docs/research/2026-10-15-sets-and-loras.md
+- files: references/lora-or-references.md
+- A Civitai census found no location LoRAs on video models, the one single-room LoRA report failed on layout; the rule gives the break-even and the measured A/B that would justify one.
+
 ### C-20261009-1 · 2026-10-09 · Prop sheets, prop states and featured props; LoRA or references
 - because: user request (2026-10-09: research what AI film makers build to raise quality, and add the gaps: prop sheets, LoRAs, animatic, blockout control, identity scoring, one shared grade)
 - files: SKILL.md (Step 3, Step 4), references/prop-sheets.md (new), references/lora-or-references.md (new), references/prop-constants.md (Rules)

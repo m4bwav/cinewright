@@ -18,7 +18,7 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 
 1. List every scene at the set from `script.md`: INT or EXT, time of day, what happens.
 2. A real place: research its current state with dated sources and tag each fact (`kb show set-plan`). An invented place: write its plan first, then its look.
-3. Write `sets/<id>.md`: size, the walls by compass name with what stands on each, doors and windows, hero dressing with fixed positions, the north arrow, the sun per scene, and which walls each planned camera sees (`kb show set-plan`).
+3. Write `sets/<id>.md`: size, the walls by compass name with what stands on each, doors and windows, hero dressing with fixed positions, the north arrow, the sun per scene, and which walls each planned camera sees (`kb show set-plan`). When people move through the set, mark them per beat and place each card's camera from the marks (`kb show blocking-marks`).
 
 ## Step 2: bible entry with walls
 
