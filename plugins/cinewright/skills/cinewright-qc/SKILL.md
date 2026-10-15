@@ -18,14 +18,15 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 
 1. `CINE qc sheet <clip>` writes `<clip>.sheet.png` (2 fps up to 10 s, then 1 fps). Read the sheet once, whole; never one read per frame.
 2. `CINE qc spec <clip> --project <p> --card <id> --params <compiled settings>`: fps, size, aspect, length, audio stream. For a multi-shot generation pass its label (`--card 1A+1B+1C`). Quote its last line.
-3. `CINE qc measure <clip> --project <p> --card <label>`: machine checks a sheet misses (planned cuts found, early or late; frozen picture; dead air; clipping; speech where a line is planned; `--every <s>` adds seam level jumps in a cut film) and a 0-100 score. Its fails are facts to confirm in Step 2, not verdicts on look or acting. When takes compete, rank them on it before reading sheets.
+3. `CINE qc measure <clip> --project <p> --card <label>`: machine checks a sheet misses (planned cuts found, early or late; frozen picture; dead air; clipping; speech where a line is planned; `--every <s>` adds seam level jumps in a cut film) and a 0-100 score. Its fails are facts to confirm in Step 2, not verdicts on look or acting. When takes compete, it drops the broken ones; rank the rest two at a time, both orders (`kb show take-selection`).
 4. `CINE takes lastframe <clip> --out <p>/qc/<id>-<n>.last.png` for the end state.
 
 ## Step 2: judge
 
 1. `CINE qc rubric <p> --card <id> --clip <clip>` (no `--clip` before the first take) writes `<p>/qc/<id>.rubric.json`; never write a checklist by hand: one item per check the card makes possible (identity, wardrobe, props, positions, eyelines, light, camera, action, start and end state, text, sound, seam).
-2. Fill each `verdict` with `pass`, `fail` or `na` from the sheet, the last frame and the audio. On a fail, set `code` from the item's `codes` and a `note` saying what you saw. Judge rules: `kb show qc-loop --section Rules`. An identity item with faces in a close shot can be scored against the bible's refs instead of by eye; wide shots stay by eye (`kb show identity-score`).
-3. `CINE qc rubric --read <rubric>` prints the fails ordered by repair rung and the one change for the next take. Evidence: its last line.
+2. Fill each `verdict` with `pass`, `fail` or `na` from the sheet, the last frame and the audio, in the passes of `kb show review-passes`. On a fail, set `code` from the item's `codes` and a `note` saying what you saw. Judge rules: `kb show qc-loop --section Rules`. An identity item with faces in a close shot can be scored against the bible's refs instead of by eye; wide shots stay by eye (`kb show identity-score`).
+3. Second opinion (optional, a local vision model in Ollama): `CINE qc judge <rubric> --twice [--start S --end S]` fills a `vlm` verdict per sheet item. Fill your own verdicts from the frames first, then compare: a yes in both orders can stand (right 228 of 231 in a field test); check every no, split and unclear yourself (`kb show vision-judge`). Reviewer notes go in `<p>/qc/standing.json` and join every rubric; `CINE qc agree <p>` scores the judge against you (`kb show judge-calibration`).
+4. `CINE qc rubric --read <rubric>` prints the fails ordered by repair rung and the one change for the next take. Evidence: its last line.
 
 ## Step 3: log and route
 

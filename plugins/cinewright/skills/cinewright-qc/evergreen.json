@@ -15,12 +15,14 @@
   "topic": "Quality control of AI-generated video takes against shot cards: contact sheets, rubric, failure codes, spec and loudness checks",
   "tier": "moderate",
   "interval_days": 30,
-  "last_checked": "2026-10-03",
-  "next_due": "2026-11-02",
+  "last_checked": "2026-10-15",
+  "next_due": "2026-11-14",
   "verify_at_use": false,
   "volatile_claims": [
     "qc loud default target -16 LUFS / -1 dBTP (re-check in S5)",
-    "ffmpeg ebur128 summary format"
+    "ffmpeg ebur128 summary format",
+    "Ollama returns logprobs for the first generated token only (0.35.1)",
+    "local judge agreement figures (gemma4:26b)"
   ],
   "contradiction": null,
   "events": [],
@@ -36,12 +38,18 @@
       "m": null,
       "interval_after": 30,
       "note": "created"
+    },
+    {
+      "date": "2026-10-15",
+      "m": "major",
+      "interval_after": 30,
+      "note": "critic research R-20261015-1: qc judge, qc agree, standing claims, four entries"
     }
   ],
   "counts": {
     "learnings": 2,
-    "changes": 4,
-    "research": 1,
+    "changes": 5,
+    "research": 2,
     "tests": 5
   },
   "consolidate_every": 25,

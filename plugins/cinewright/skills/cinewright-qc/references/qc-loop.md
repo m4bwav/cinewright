@@ -3,7 +3,7 @@ title: The QC loop
 slug: qc-loop
 summary: How to judge a take against its card from a contact sheet, last frame and audio; verdict rules, frame sampling numbers, one change per reroll, three strikes.
 tags: [qc, review, rubric, takes, sampling]
-last_checked: 2026-10-04
+last_checked: 2026-10-15
 sources: ["https://arxiv.org/abs/2503.21755", "https://tech.ebu.ch/publications/r128", "Pat P. Miller, Script Supervising and Film Continuity, 3rd ed., 1999"]
 ---
 
@@ -36,3 +36,4 @@ sources: ["https://arxiv.org/abs/2503.21755", "https://tech.ebu.ch/publications/
 ## Notes
 
 - 2026-10-03: automatic VLM scorers (VBench-2.0 and successors) measure model quality across many clips, not one take against a card; the rubric is judged by the agent or a person.
+- 2026-10-15: a local vision model can give a second opinion per rubric item (`qc judge`, entry vision-judge); the agent's verdict still decides, and choosing between takes is pairwise (entry take-selection).

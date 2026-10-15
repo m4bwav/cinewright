@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261015-1 · 2026-10-15 · Critic research: review passes, a vision judge, calibration, take selection
+- because: R-20261015-1 (five research tracks and a 600-claim field test), user request
+- files: SKILL.md (Steps 1-2), references/review-passes.md, references/vision-judge.md, references/judge-calibration.md, references/take-selection.md, references/qc-loop.md (note), shared/lib/cine.py (`qc judge`, `qc agree`, standing claims from `qc/standing.json` in `qc rubric`), shared vocab failures-motion (`air-steps`)
+- A local vision model gives a second opinion per rubric item without seeing the card text, in both claim orders; the agent's verdict decides; the judge is scored against the agent with kappa and Wilson bounds; competing takes are ranked pairwise.
+
 ### C-20261009-1 · 2026-10-09 · Identity score entry
 - because: user request (2026-10-09: add the gaps AI film makers fill, face-similarity scoring among them); field test against a reviewer's verdicts on two films
 - files: SKILL.md (Step 2, one line before the rubric read), references/identity-score.md (new)

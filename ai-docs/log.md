@@ -455,3 +455,26 @@ YELLOW (descriptions 4,708/4,000; one entry 714/700 tokens), both as before this
 ## 2026-10-14: scrub joins the pre-PR checks
 
 - Private film names reached shipped LEARNINGS in #30 and #31 (fixed in #32). kb lint only checks paths, LAN addresses and GPU names; `cine.py scrub --names` checks private names but was not in the AGENTS.md checklist, and the names file lacked the film project names. AGENTS.md now lists scrub; the sidecar's names file gained twelve names. `scrub` on main: 6 hits, all third-party GPU benchmarks in ai-docs (expected). Old commits still hold two mentions; history left alone.
+
+## 2026-10-15: critic research and `qc judge`
+
+- Asked: improve how the agents critique generated video, stills, voices and sound, from how people do it by hand and with AI, so they can work semi-self-directed. Five research tracks (human review practice, vision judges, audio and voice judges, agentic critic loops, practitioner forums and blogs) plus experiments on a private film's 624 labelled claims: [research/2026-10-15-critic-research.md](research/2026-10-15-critic-research.md).
+- Measured: one claim per call after a blind description is worse than one keyed reply (82 % and 69 % against 92 %); Ollama 0.35.1 gives logprobs for the first generated token only; asking twice with the claim order reversed separates a reliable yes (228 of 231) from an unreliable no (54 of 95).
+- Built: `qc judge RUBRIC [--twice]` (local Ollama vision model, never shown the card's action, action split into clause claims, verdicts in `vlm` beside the agent's), `qc agree PROJECT` (agreement, kappa, Wilson bounds per prompt and check), standing claims from `<project>/qc/standing.json` in every rubric, failure code `air-steps`. Entries: review-passes, vision-judge, judge-calibration, take-selection (qc), voice-qc (voice), audio-qc (sound); flying-and-levitation gains the flight mode per character (reviewer note: flyers stepped on the air).
+- Companion change in comfyui-gen: `vlm_judge.py` claims mode, L-115 `judge-yes-check-no`.
+- Budget: runtime shared/lib 131 KB (yellow; red 150); the qc SKILL.md body 1,262 tokens (yellow, green 1,200); the six new entries 780-1,090 tokens each (yellow, under red 1,200).
+
+Check output (2026-10-15, Windows 11, Python 3.14):
+
+```
+$ python -m unittest discover -s tests
+Ran 97 tests in 32.704s
+OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ claude plugin validate (root and three plugins)
+Validation passed (4 of 4)
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 6 hits in 2 files (the known third-party GPU benchmark lines only)
+```
+

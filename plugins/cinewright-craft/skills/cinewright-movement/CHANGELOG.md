@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261015-1 · 2026-10-15 · Flight mode per character
+- because: reviewer note 2026-10-15 (flying characters stepped on the air as if on ground)
+- files: references/flying-and-levitation.md, shared vocab failures-motion (`air-steps`)
+- Each card names flying or air-walking per character; a flyer's walking steps are a fault with its own code.
+
 ### C-20261014-1 · 2026-10-14 · wounds-and-healing and flying-and-levitation entries; fights-and-stunts on contact and blood
 - because: user request (impalement, a wound that heals, real fights, flying people), R-20261014-1
 - files: references/wounds-and-healing.md (new), references/flying-and-levitation.md (new), references/fights-and-stunts.md (Rules, Pitfalls, sources, Related)

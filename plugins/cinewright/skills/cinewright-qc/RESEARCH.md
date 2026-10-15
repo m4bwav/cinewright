@@ -9,6 +9,7 @@ Topic: Quality control of AI-generated video takes against shot cards. Tier `mod
 - Settled (practice): a take is judged against what the card and bibles asked for, item by item, like a script supervisor's notes; the repair cost ladder orders fixes cheapest first (router entry `pipeline`).
 - Settled (tooling): ffmpeg's `tile` filter gives a contact sheet in one call; `ebur128=peak=true` reports integrated loudness, range and true peak; `-sseof` grabs the last frame. All three are in every full ffmpeg build.
 - Moving (testing): automatic video scorers (VBench-2.0, VideoScore2 and successors) rate model quality over many clips; none checks one take against a shot card, so the rubric stays agent- or human-judged.
+- Moving (2026-10-15): a local vision model is a usable second opinion per rubric item when it never sees the card text and describes first; a yes given in both claim orders was right 228 of 231 times on 368 labelled claims, a no in both only 54 of 95 (R-20261015-1, entry vision-judge).
 - One data point (2026-10-03, LEARNINGS L-002): a contact sheet at 300 px caught positions, eyelines and actions, but missed a scar on the wrong side; full frames caught it.
 
 ## Open questions
@@ -45,6 +46,13 @@ Best sources (primary first): ffmpeg filter docs, EBU R128 and Tech 3341, benchm
 ## Findings log
 
 Newest first. `Track` is subject, tooling, practice, or testing.
+
+### R-20261015-1 · 2026-10-15 · How people and machines critique AI video, images, voices and sound
+- Summary: five tracks (human review practice, vision judges, audio and voice judges, agentic critic loops, practitioner forums) and a field test of a vision judge on 624 labelled claims; full note ai-docs/research/2026-10-15-critic-research.md.
+- Track: practice, testing, tooling
+- Sources: https://arxiv.org/abs/2511.18102, https://arxiv.org/abs/2510.15831, https://arxiv.org/abs/2608.15574, https://arxiv.org/abs/2506.19441, https://arxiv.org/abs/2507.12705, https://www.movielabs.com/md/qcvocabulary/, https://www.reddit.com/r/comfyui/comments/1vknr0v/
+- Magnitude: major (new judge, calibration and selection rules; two commands)
+- Applied: C-20261015-1
 
 ### R-20261003-1 · 2026-10-03 · Initial research
 - Summary: ffmpeg filters chosen from the ffmpeg docs (tooling); the rubric is built from the shot card's fields and the failure codes (practice: script supervision, the maintainer's field lessons); benchmark scorers checked and set aside for per-take review (testing: VBench-2.0, arXiv 2503.21755).

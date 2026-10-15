@@ -874,6 +874,76 @@ class TestQc(Base):
         self.assertEqual(code, 1)
         self.assertIn("does not belong", text)
 
+    def test_standing_claims_join_the_rubric(self):
+        lib.write_text(self.proj / "qc" / "standing.json", json.dumps({"*": [
+            {"id": "no-air-steps", "claim": "Nobody takes walking steps on the air.", "code": "air-steps", "why": "reviewer"}]}))
+        code, text = run("qc", "rubric", self.proj, "--card", "1B")
+        self.assertEqual(code, 0, text)
+        path = self.proj / "qc" / "1B.rubric.json"
+        rub = json.loads(path.read_text(encoding="utf-8"))
+        st = [i for i in rub["items"] if i["id"] == "standing:no-air-steps"]
+        self.assertEqual(len(st), 1)
+        self.assertEqual((st[0]["check"], st[0]["codes"]), ("action", ["air-steps"]))
+        for it in rub["items"]:
+            it["verdict"] = "fail" if it["id"] == "standing:no-air-steps" else "pass"
+        lib.write_text(path, json.dumps(rub))
+        code, text = run("qc", "rubric", "--read", path)
+        self.assertEqual(code, 1, text)
+        self.assertIn("air-steps", text)
+        lib.write_text(self.proj / "qc" / "standing.json", json.dumps({"*": [{"id": "x", "claim": "y", "code": "nope"}]}))
+        code, text = run("qc", "rubric", self.proj, "--card", "1B")
+        self.assertNotEqual(code, 0)
+        self.assertIn("needs a failure code", text)
+
+    def test_agree_stats(self):
+        s = lib.agree_stats([("yes", "yes")] * 8 + [("no", "no")] * 1 + [("no", "yes")] * 1)
+        self.assertEqual((s["n"], round(s["agree"], 2), round(s["kappa"], 2)), (10, 0.9, 0.62))
+        self.assertEqual(s["yes"][:2], (8, 9))
+        self.assertLess(s["yes"][2], 0.89)
+
+    def test_judge_and_agree(self):
+        import http.server, threading
+        seen = {}
+
+        class Fake(http.server.BaseHTTPRequestHandler):
+            def do_POST(self):
+                body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
+                seen["prompt"], seen["images"] = body["prompt"], body["images"]
+                ids = re.findall(r"^\[([^\]]+)\]", body["prompt"], re.M)
+                reply = {"seen": ["a", "b", "c", "d"], "verdicts": [{"id": i, "v": "yes" if k % 2 == 0 else "no", "why": "w"}
+                                                                      for k, i in enumerate(ids)]}
+                out = json.dumps({"response": json.dumps(reply)}).encode()
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(out)
+
+            def log_message(self, *a):
+                pass
+
+        srv = http.server.HTTPServer(("127.0.0.1", 0), Fake)
+        threading.Thread(target=srv.serve_forever, daemon=True).start()
+        self.addCleanup(srv.server_close)
+        self.addCleanup(srv.shutdown)
+        run("qc", "rubric", self.proj, "--card", "1B", "--clip", self.clip)
+        path = self.proj / "qc" / "1B.rubric.json"
+        code, text = run("qc", "judge", path, "--host", "http://127.0.0.1:%d" % srv.server_port)
+        self.assertEqual(code, 0, text)
+        self.assertIn("[action#1] Maren slowly stretches", seen["prompt"])
+        self.assertNotIn("Does the action happen", seen["prompt"], "the card's action goes as clause claims, not one question")
+        self.assertIn("describe exactly what you see", seen["prompt"])
+        self.assertEqual(len(seen["images"]), 1)
+        rub = json.loads(path.read_text(encoding="utf-8"))
+        judged = [i for i in rub["items"] if "vlm" in i]
+        self.assertTrue(judged and all(i["look"] == "sheet" for i in judged))
+        for it in rub["items"]:
+            it["verdict"] = "pass"
+        lib.write_text(path, json.dumps(rub))
+        code, text = run("qc", "agree", self.proj)
+        self.assertEqual(code, 0, text)
+        self.assertIn("prompt %s" % lib.JUDGE_VERSION, text)
+        self.assertIn("its yes right", text)
+
     def test_every_check_has_codes_and_every_code_a_check(self):
         codes = lib.taxonomy(repo_ctx())
         self.assertGreaterEqual(len(codes), 20)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:4c11dbc215774d887fb1eb276b6fe2d9a0165eb9a4c2ba7a713aedc5a7e98043; edit the source
+# copied from shared/lib/cine.py sha256:b2aa3770a0b473e309a6cd8ab20cbfe87c31d8ea8bb23d1dfadf1f74a94921a1; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -12,6 +12,7 @@ Run it; do not read it. Python 3.9+, standard library only.
   python scripts/cine.py continuity diff PROJECT [--with CARD.json] [--json]
   python scripts/cine.py qc sheet CLIP | qc spec CLIP --project P --card ID | qc loud FILE
   python scripts/cine.py qc rubric PROJECT --card ID | qc rubric --read RUBRIC.json
+  python scripts/cine.py qc judge RUBRIC.json [--clip CLIP] [--twice] | qc agree PROJECT
   python scripts/cine.py takes log PROJECT --card ID --model M --verdict V | takes lastframe CLIP --out PNG
   python scripts/cine.py voice measure FILE [--start S --end S] [--text LINE] | voice ref FILE --out WAV
   python scripts/cine.py voice check PROJECT [--character ID --clip FILE [--start S --end S]]
@@ -24,6 +25,7 @@ import datetime
 import hashlib
 import json
 import math
+import os
 import re
 import shutil
 import subprocess
@@ -1414,6 +1416,7 @@ def repair_plan(rub, codes):
         if code and codes.get(code, {}).get("check") != it["check"]:
             errs.append("%s: code %s does not belong to check %s; use one of %s" % (it["id"], code, it["check"], ", ".join(cands)))
             continue
+        code = code or it.get("standing_code")
         if not code:
             if len(cands) != 1:
                 errs.append("%s: pick a code: %s" % (it["id"], ", ".join(cands)))
@@ -1422,6 +1425,102 @@ def repair_plan(rub, codes):
         plan.append((codes[code]["rung"], it["id"], code, codes[code]["fix"]))
     plan.sort()
     return plan, errs
+
+
+def standing_items(p, card, codes):
+    """Reviewer notes kept as claims in <project>/qc/standing.json: {"*": [rule], "<card id>": [rule]}, a rule being
+    {"id", "claim" (a statement that holds in a good take), "code" (its failure code), "why"}. They join every rubric."""
+    f = p.root / "qc" / "standing.json"
+    if not f.is_file():
+        return []
+    rules = json.loads(read_text(f))
+    out = []
+    for r in rules.get("*", []) + rules.get(card["id"], []):
+        if r.get("code") not in codes:
+            raise SystemExit("%s: rule %s needs a failure code (kb show failures-picture or failures-motion)" % (f, r.get("id")))
+        out.append({"id": "standing:%s" % r["id"], "check": codes[r["code"]]["check"], "look": "sheet", "ask": r["claim"],
+                    "verdict": None, "code": None, "note": "", "standing_code": r["code"], "why": r.get("why", "")})
+    return out
+
+
+# qc judge: a local vision model's second opinion on a rubric (cinewright-qc entry vision-judge). It never sees the
+# card's action text, describes the frames first, and answers each item by id; the agent's own verdict stays separate.
+JUDGE_VERSION = "2026-10-15.1"
+JUDGE_ASK = ("You are a strict, sceptical film continuity checker. The picture is 4 frames from one take of an AI video, "
+             "in time order: top left, top right, bottom left, bottom right.%s\nFirst describe exactly what you see in "
+             "each frame: who is there and where in the frame, which way each person faces and moves, what each holds "
+             "and wears, the place and the light.\nThen answer each question below from that description only: yes only "
+             "if you can clearly see it hold; no if the frames show otherwise or the thing asked about is not visibly "
+             "there; unclear only if that part is out of frame or too small to see.\n%s\nReply with JSON only: "
+             '{"seen": ["<frame 1>", "<frame 2>", "<frame 3>", "<frame 4>"], "verdicts": [{"id": "<the id in brackets>", '
+             '"v": "yes|no|unclear", "why": "<a few words>"}]}')
+
+
+def judge_grid(clip, start, end):
+    """Four frames spread over [start, end], 2x2 at 576 px a frame, as base64 JPEG."""
+    import base64
+    import tempfile
+    dur = max(0.2, end - start)
+    with tempfile.TemporaryDirectory() as d:
+        out = Path(d) / "grid.jpg"
+        run_tool([need_tool("ffmpeg"), "-v", "error", "-y", "-ss", "%.3f" % (start + dur / 8), "-t", "%.3f" % dur, "-i",
+                  str(clip), "-vf", "fps=4/%.3f,scale=576:-2,tile=2x2" % dur, "-frames:v", "1", "-q:v", "3", str(out)])
+        return base64.b64encode(out.read_bytes()).decode()
+
+
+def judge_ask(host, model, prompt, img):
+    import urllib.error
+    import urllib.request
+    # gemma4 thinks by default (minutes, sometimes an empty reply) and can loop at temperature 0: retry warmer
+    for opts in ({"temperature": 0, "num_predict": 1500}, {"temperature": 0.4, "repeat_penalty": 1.3, "seed": 7, "num_predict": 1500}):
+        body = {"model": model, "prompt": prompt, "images": [img], "stream": False, "format": "json", "think": False, "options": opts}
+        req = urllib.request.Request(host.rstrip("/") + "/api/generate", json.dumps(body).encode(), {"Content-Type": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=900) as r:
+                return json.loads(json.load(r)["response"])
+        except (ValueError, urllib.error.HTTPError):
+            continue
+    raise SystemExit("the judge model looped or replied with no JSON twice")
+
+
+def split_clauses(text):
+    """An action as short claims: sentences, then ';' and ':' parts longer than 12 characters."""
+    out = []
+    for sentence in re.split(r"(?<=[.!?])\s+", text):
+        for part in re.split(r"[;:]\s+", sentence):
+            part = part.strip().rstrip(".")
+            if len(part) > 12:
+                out.append(part[0].upper() + part[1:] + ".")
+    return out
+
+
+def judge_verdicts(reply, ids):
+    got = {}
+    for v in reply.get("verdicts", []) if isinstance(reply, dict) else []:
+        k = str(v.get("id", "")).strip("[] ") if isinstance(v, dict) else ""
+        if k in ids:
+            got[k] = {"v": str(v.get("v", "")).lower(), "why": v.get("why", "")}
+    return got
+
+
+def agree_stats(pairs):
+    """pairs of (agent, judge) with values yes/no: agreement, Cohen's kappa, and the judge's yes and no precision with
+    95 % Wilson bounds."""
+    n = len(pairs)
+    if not n:
+        return None
+    po = sum(a == j for a, j in pairs) / n
+    pa, pj = sum(a == "yes" for a, _ in pairs) / n, sum(j == "yes" for _, j in pairs) / n
+    pe = pa * pj + (1 - pa) * (1 - pj)
+    res = {"n": n, "agree": po, "kappa": (po - pe) / (1 - pe) if pe < 1 else None}
+    for v in ("yes", "no"):
+        said = [a for a, j in pairs if j == v]
+        k, m = sum(a == v for a in said), len(said)
+        if m:
+            z, ph = 1.96, k / m
+            c, h = ph + z * z / (2 * m), z * math.sqrt(ph * (1 - ph) / m + z * z / (4 * m * m))
+            res[v] = (k, m, (c - h) / (1 + z * z / m), (c + h) / (1 + z * z / m))
+    return res
 
 
 # Machine measures of a take (qc measure). They find technical faults a reviewer misses at contact-sheet
@@ -1697,15 +1796,91 @@ def cmd_qc(ctx, a):
             return 2
         p = Project(a.project)
         card = card_by_id(p, a.card)
-        items = rubric_items(p, card)
+        items = rubric_items(p, card) + standing_items(p, card, codes)
         for it in items:
-            it["codes"] = [c for c, x in codes.items() if x["check"] == it["check"]]
+            it["codes"] = [it["standing_code"]] if it.get("standing_code") else [c for c, x in codes.items() if x["check"] == it["check"]]
         rub = {"card": card["id"], "clip": a.clip or "", "sheet": a.sheet or "",
                "how": "Set each verdict to pass, fail or na. On a fail set code (one of codes) and a note. Then run: qc rubric --read THIS_FILE",
                "items": items}
         out = a.out or str(p.root / "qc" / ("%s.rubric.json" % card["id"]))
         write_text(out, json.dumps(rub, indent=2, ensure_ascii=False) + "\n")
         print("wrote %s: %d items for card %s" % (out, len(items), card["id"]))
+        return 0
+    if a.cmd == "judge":
+        rub = json.loads(read_text(a.rubric))
+        clip = a.clip or rub.get("clip")
+        if not clip:
+            print("qc judge needs --clip (the rubric names none)", file=sys.stderr)
+            return 2
+        info = probe(clip)
+        start, end = a.start or 0.0, a.end or info["duration"]
+        items = [it for it in rub["items"] if it["look"] == "sheet"]
+        cast, action = "", ""
+        try:
+            p = Project(Path(a.rubric).resolve().parent.parent)
+            card = card_by_id(p, rub["card"].split("+")[0])
+            action = card["action"]
+            cast = " The people who may appear: " + "; ".join("%s: %s" % (p.chars[m["id"]]["name"], p.chars[m["id"]]["identity"])
+                                                              for m in card.get("cast", []))
+        except (OSError, SystemExit, KeyError):
+            pass
+        # the action item quotes the whole card: ask its clauses one by one instead, so the judge never reads the card
+        qs = []
+        for it in items:
+            parts = split_clauses(action) if it["check"] == "action" and not it.get("standing_code") and action else []
+            qs += [("%s#%d" % (it["id"], k + 1), c) for k, c in enumerate(parts)] or [(it["id"], it["ask"])]
+        host = a.host or os.environ.get("CINE_VLM_HOST", "http://localhost:11434")
+        model = a.model or os.environ.get("CINE_VLM_MODEL", "gemma4:26b")
+        img = judge_grid(clip, start, end)
+        orders = [qs, list(reversed(qs))] if a.twice else [qs]
+        runs = [judge_verdicts(judge_ask(host, model, JUDGE_ASK % (cast, "\n".join("[%s] %s" % q for q in o)), img),
+                               {q[0] for q in qs}) for o in orders]
+        for it in items:
+            mine = [q for q, _ in qs if q == it["id"] or q.startswith(it["id"] + "#")]
+            vs = []
+            for r in runs:
+                got = [r.get(q, {}).get("v") for q in mine]
+                vs.append("no" if "no" in got else "yes" if got and all(g == "yes" for g in got) else "unclear" if any(got) else "none")
+            said = [x for x in vs if x != "none"]  # a run that dropped the item does not count against the other
+            v = "split" if {"yes", "no"} <= set(said) else "unclear" if "unclear" in said else said[0] if said else "none"
+            it["vlm"] = {"v": v, "why": "; ".join(runs[0].get(q, {}).get("why", "") for q in mine if runs[0].get(q, {}).get("v") != "yes")[:300]}
+            if len(runs) > 1:
+                it["vlm"]["runs"] = vs
+            if len(mine) > 1:
+                it["vlm"]["parts"] = {q: runs[0].get(q, {}).get("v") for q in mine}
+        rub["judge"] = {"model": model, "prompt": JUDGE_VERSION, "orders": len(orders), "date": datetime.date.today().isoformat()}
+        write_text(a.rubric, json.dumps(rub, indent=2, ensure_ascii=False) + "\n")
+        for it in items:
+            print("%-8s %-24s %s" % (it["vlm"]["v"], it["id"], it["vlm"]["why"]))
+        print("qc judge %s: %d items, %d yes, %d no, %d to look at (unclear, split or none). A second opinion: fill each verdict "
+              "from your own look first, then compare." % (rub["card"], len(items), sum(it["vlm"]["v"] == "yes" for it in items),
+                                                            sum(it["vlm"]["v"] == "no" for it in items),
+                                                            sum(it["vlm"]["v"] not in ("yes", "no") for it in items)))
+        return 0
+    if a.cmd == "agree":
+        rows = []
+        for f in sorted((Project(a.project).root / "qc").glob("*.rubric.json")):
+            rub = json.loads(read_text(f))
+            for it in rub["items"]:
+                j = (it.get("vlm") or {}).get("v")
+                if it.get("verdict") in ("pass", "fail") and j:
+                    rows.append((it["check"], "yes" if it["verdict"] == "pass" else "no", j, (rub.get("judge") or {}).get("prompt", "?")))
+        if not rows:
+            print("qc agree: no item has both your verdict and the judge's (run qc judge, then fill the verdicts)")
+            return 1
+        groups = [("all", rows)] + [("prompt " + v, [r for r in rows if r[3] == v]) for v in sorted({r[3] for r in rows})]
+        groups += [("check " + c, [r for r in rows if r[0] == c]) for c in sorted({r[0] for r in rows})]
+        for name, rs in groups:
+            decided = [(x, j) for _, x, j, _ in rs if j in ("yes", "no")]
+            s = agree_stats(decided)
+            line = "%-22s %3d items, judge decided %3d" % (name, len(rs), len(decided))
+            if s:
+                line += ", agree %.0f %%, kappa %s" % (100 * s["agree"], "%.2f" % s["kappa"] if s["kappa"] is not None else "-")
+                for v in ("yes", "no"):
+                    if v in s:
+                        line += "; its %s right %d/%d (%.0f-%.0f %%)" % (v, s[v][0], s[v][1], 100 * s[v][2], 100 * s[v][3])
+            print(line)
+        print("A judge decides alone only where the lower bound is 90 % or more (entry judge-calibration).")
         return 0
     return 2
 
@@ -2062,6 +2237,16 @@ def build_parser(prog="cine.py"):
     s.add_argument("--sheet")
     s.add_argument("--out")
     s.add_argument("--read", metavar="RUBRIC.json", help="read a filled rubric and print the repair plan")
+    s = q.add_parser("judge", help="a local vision model's second opinion on a rubric's sheet items (Ollama API)")
+    s.add_argument("rubric")
+    s.add_argument("--clip")
+    s.add_argument("--start", type=float, help="the card's window in a multi-shot take, seconds")
+    s.add_argument("--end", type=float)
+    s.add_argument("--host", help="default $CINE_VLM_HOST or http://localhost:11434")
+    s.add_argument("--model", help="default $CINE_VLM_MODEL or gemma4:26b")
+    s.add_argument("--twice", action="store_true", help="ask again in reverse order; a verdict that changes is 'split'")
+    s = q.add_parser("agree", help="how often the judge agrees with your verdicts: kappa and bounds per prompt and check")
+    s.add_argument("project")
 
     t = g.add_parser("takes", help="take records").add_subparsers(dest="cmd", required=True)
     s = t.add_parser("log", help="write takes/<card>-<n>.json")
