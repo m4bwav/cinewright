@@ -3,7 +3,7 @@ title: Failure codes, motion, sound and spec
 slug: failures-motion
 summary: Failure codes for rendered takes (action, opening, end state, anatomy, physics, text, dialogue, sound, seams, spec, loudness): symptom, cause, cheapest fix, rung, check.
 tags: [vocab, qc, failures, taxonomy, motion, audio]
-last_checked: 2026-10-07
+last_checked: 2026-10-15
 sources: ["field lessons 005, 011, 014, 015, 020, 021 (maintainer's local renders, 2026-09)", "https://tech.ebu.ch/publications/r128"]
 ---
 
@@ -21,6 +21,7 @@ Rungs and checks as in `failures-picture`.
 | `end-state-wrong` | last frame differs from the card | model ran its own course | next card starts from the observed end | 6 | end-state |
 | `anatomy` | hands, limbs or faces melt or multiply | small, fast or hidden subject | larger, slower, side-on; cut around it | 6 | anatomy |
 | `physics-morph` | objects merge, pass through or slide | contact and weight unstated | name contact and weight; fewer subjects | 1 | physics |
+| `air-steps` | a flying figure takes walking steps on the air, as if on a floor | flight mode unstated; body pose left to the model | state the flight pose: legs together and trailing, body leaning into the flight; stepping only for air-walkers | 1 | action |
 | `text-artifact` | subtitles, captions, watermark, garbled signs | quoted dialogue; signs in scene | the card's dialogue syntax; negative terms | 1 | text |
 | `dialogue-wrong` | line missing, wrong mouth, lips off | two speakers, or speaker not in shot | one speaker per shot, in the cast; else the mix | 1 | audio |
 | `name-misread` | a name said wrong | spelling guessed | `pronounce` respelling | 1 | audio |

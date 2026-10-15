@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261015-1 · 2026-10-15 · Sound, music and sync checks
+- because: cinewright-qc R-20261015-1 (audio, human-practice and practitioner tracks)
+- files: references/audio-qc.md
+- MovieLabs audio fault words, lip-sync tolerances, per-stem quality scores, tempo checks, every effect needs a visible cause, sync metrics and spectrograms as flags only.
+
 ### C-20261006-1 · 2026-10-06 · Conform effects and foley to a cue's tempo
 - because: R-20261006-1
 - files: references/conform-to-tempo.md, references/INDEX.md, SKILL.md
