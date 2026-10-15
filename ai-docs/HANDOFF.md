@@ -13,6 +13,8 @@
 
 - Branch critic-research-2026-10-15 (2026-10-15): `qc judge` / `qc agree` / standing claims, six critic entries, `air-steps`; research note [research/2026-10-15-critic-research.md](research/2026-10-15-critic-research.md). Open from it, in order: per-region crops and geometry checks (screen side, people count, gaze, smile) before the judge; pairwise take ranking in a command; voice checks as commands (forced alignment, speaker similarity); score `qc judge --twice` on the reviewer's own verdicts, not the agent's.
 
+- Branch fight-plans (2026-10-15, PR waiting for review): fight plan schema, `cine_fight.py` check and sheet (movement only), entries fight-plan, fight-from-a-book, fight-previs, eval action-2 (3/3 Sonnet), harness allow list for `cine_*.py`. Research [research/2026-10-15-fight-planning.md](research/2026-10-15-fight-planning.md). Budget: runtime 145 KB of red 150, so the next runtime addition needs a trim first. Open from it: the five local tests at the end of the research note (H3 timecoded hits first); `pw.py duel` in polywright only if test 1 shows blades survive depth control.
+
 ## Waiting on Mark
 - claude.ai cleanup: delete the uploaded test skill cinewright-continuity (permanent delete; switched off for now), remove the cinewright marketplace source if the UI offers it, close the VS Code window `code chat -n` opened.
 - Old commits stay reachable from PR #1-#11 pages (refs/pull); only GitHub Support can purge. Closed PRs #12-#13 show a hostname in their head branch name.

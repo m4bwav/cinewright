@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fight plan",
+  "description": "fights/<id>.json: one fight choreographed before it is covered. The question and the ending come first; phrases say who is ahead and why; exchanges are written operator first (who acts, the move and its target, the answer, the result) and carry what changes (weapons in hand, wounds, posture, side). Cards cover exchanges; `cine_fight.py check` holds the cards to the plan.",
+  "type": "object",
+  "required": ["id", "scene", "question", "ending", "fighters", "phrases", "exchanges"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+    "scene": {"type": "string", "description": "Scene id in scenes.json where the fight starts."},
+    "source": {"type": "string", "description": "Where the fight comes from: book, chapter and edition, or the user's notes."},
+    "question": {"type": "string", "minLength": 10, "maxLength": 200, "description": "What the audience waits to learn, not who wins: 'Can a man who cannot outfence him still take his revenge?'"},
+    "ending": {"type": "string", "minLength": 10, "maxLength": 240, "description": "The final picture, written first; the phrases are planned back from it."},
+    "bpm": {"type": "number", "minimum": 40, "maximum": 240, "description": "Tempo of the music under the fight, when cuts are timed to it."},
+    "fighters": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["id", "goal", "side"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "description": "Character id in characters.json."},
+          "goal": {"type": "string", "maxLength": 160, "description": "What the fighter wants from this fight, which can change at a turn (say so in the phrase's why)."},
+          "style": {"type": "string", "maxLength": 200, "description": "How the fighter moves and fights, in visible terms: guard, footwork, tricks, how skilled."},
+          "side": {"enum": ["frame-left", "frame-right"], "description": "Screen side from camera side A at the start."},
+          "right": {"type": ["string", "null"], "description": "Prop in the right hand at the start (a props.json name)."},
+          "left": {"type": ["string", "null"], "description": "Prop in the left hand at the start."},
+          "carried": {"type": "array", "items": {"type": "string"}, "description": "Props worn but not in hand (a sheathed dagger, a coin in a sleeve)."},
+          "marks": {"type": "array", "items": {"type": "string"}, "description": "Wounds, blood or dirt already visible at the start, each a short phrase copied verbatim into card text."},
+          "posture": {"type": "string", "description": "standing, crouched, kneeling, down, grappling, or another word."}
+        }
+      }
+    },
+    "phrases": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Runs of 2 to 6 exchanges between pauses. The pause between phrases is where the audience reads the score.",
+      "items": {
+        "type": "object",
+        "required": ["id", "ahead", "why"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string", "maxLength": 60},
+          "ahead": {"type": "string", "description": "Fighter id who holds the upper hand by the end of the phrase, or 'even'."},
+          "margin": {"type": "integer", "minimum": 1, "maximum": 3, "description": "How far ahead: 1 edge, 2 clear, 3 the other is nearly beaten. Default 1."},
+          "why": {"type": "string", "minLength": 10, "maxLength": 240, "description": "The story decision of the phrase, in visible terms: what turns it."},
+          "pause": {"type": "string", "maxLength": 240, "description": "What happens in the breath after the phrase: a line, a look, a step back."},
+          "pause_secs": {"type": "number", "minimum": 0, "maximum": 30, "description": "Screen time of the pause, longer when it holds dialogue; default 1."}
+        }
+      }
+    },
+    "exchanges": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["n", "phrase", "lead", "move", "answer", "result"],
+        "additionalProperties": false,
+        "properties": {
+          "n": {"type": "integer", "minimum": 1, "description": "Move number, counting up through the fight."},
+          "phrase": {"type": "string"},
+          "lead": {"type": "string", "description": "The operator: fighter id who acts first in the exchange."},
+          "move": {"type": "string", "minLength": 5, "maxLength": 160, "description": "The operator's move with its weapon and target in body words: 'thrusts the rapier at the Gray King's chest'."},
+          "with": {"type": "string", "description": "The prop the operator uses (a props.json name); omit for bare hands. Must be in the operator's hand at that move."},
+          "answer": {"type": "string", "minLength": 3, "maxLength": 200, "description": "What the other fighter does in return: parry, dodge, riposte, takes the hit."},
+          "result": {"enum": ["miss", "parried", "dodged", "hit", "wound", "disarm", "fall", "grapple", "feint", "kill", "none"]},
+          "secs": {"type": "number", "minimum": 0.3, "maximum": 8, "description": "Screen time of the exchange; default 1.5."},
+          "card": {"type": "string", "description": "Id of the shot card that covers this exchange."},
+          "src": {"type": "string", "description": "Where in the source it happens (section and paragraph or line). Absent means added for the screen."},
+          "changes": {
+            "type": "array",
+            "description": "What is different after the exchange.",
+            "items": {
+              "type": "object",
+              "required": ["who"],
+              "additionalProperties": false,
+              "properties": {
+                "who": {"type": "string"},
+                "right": {"type": ["string", "null"], "description": "New prop in the right hand, or null when it is dropped."},
+                "left": {"type": ["string", "null"]},
+                "carried": {"type": "array", "items": {"type": "string"}, "description": "The whole list of worn props after the exchange."},
+                "mark": {"type": "string", "description": "A new visible wound or stain, a short phrase every later card copies verbatim."},
+                "posture": {"type": "string"},
+                "side": {"enum": ["frame-left", "frame-right"], "description": "The fighters cross: shown on screen in this exchange."}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

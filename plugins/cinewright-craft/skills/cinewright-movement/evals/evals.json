@@ -56,6 +56,20 @@
       "runs": 3
     },
     {
+      "id": "action-2",
+      "kind": "action",
+      "prompt": "Choreograph a short fight for examples/three-shot: Maren and Tomas struggle over the last match, five or six exchanges, and Tomas ends up with it. Plan the fight before any cards and check the plan.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine_fight\\.py[\\\"']?\\s+check\\s+[^-\\s][^\\n]*\\.json"
+      },
+      "runs": 3
+    },
+    {
       "id": "outcome-1",
       "kind": "outcome",
       "prompt": "Rewrite this AI video shot so it works: 'A huge army of riders charges across the plain toward the enemy, swords flashing, then they clash.'",

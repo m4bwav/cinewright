@@ -21,3 +21,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: C-20261004-1 (references/hard-subjects.md, shared/lib/cine.py HARD-SUBJECT check), confirmed 2026-10-04
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-04
+
+### L-003 · 2026-10-15 · An eval allow list written for one script silently blocks its companions
+- Trigger: action-2 (fight plan) failed 2 of 2 on Sonnet: the skill wrote the plan and ran `cine_fight.py check` five times, every call refused, because the harness allowed `*cine.py*` only. The first fix then passed on `cine_fight.py check --help`.
+- Hypothesis: allow-list patterns and evidence patterns name the file that existed when they were written; a new script needs both widened, and a pattern that matches the command name alone also matches its help
+- Rule: when a skill ships a new script, add it to the harness allow list in the same change, and make the evidence pattern require the real argument (here a `.json` path), not the command name
+- Evidence: evals/run_evals.py BASH_ALLOW (cine_*.py), evals.json action-2 input_match, T-20261015-1
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-15

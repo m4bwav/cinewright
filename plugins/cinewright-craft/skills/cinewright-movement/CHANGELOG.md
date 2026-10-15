@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261015-2 · 2026-10-15 · Fight plans: schema, cine_fight.py, entries fight-plan, fight-from-a-book, fight-previs
+- because: user request (deeper choreography documents; combat notation, reversal graphs and timeline moments checked; adapt fights from books; 3D for fights), R-20261015-1, L-003
+- files: SKILL.md (step 4), references/fight-plan.md, fight-from-a-book.md, fight-previs.md (new), references/fights-and-stunts.md (plan pointer, the double hit, Related), needs.json (cine_fight.py, fight-plan schema), evals/evals.json (action-2)
+- A fight longer than one exchange is planned in `fights/<id>.json` before its cards and checked with `cine_fight.py check`, which also holds the cards to it; `sheet` writes the grid and a CSV for a chart of who is ahead. Codes, per-second spreadsheets and coloured graphs were left out (research note).
+
 ### C-20261015-1 · 2026-10-15 · Flight mode per character
 - because: reviewer note 2026-10-15 (flying characters stepped on the air as if on ground)
 - files: references/flying-and-levitation.md, shared vocab failures-motion (`air-steps`)

@@ -4,7 +4,7 @@ Every run gets a fresh folder on a drive other than the repository's, holding a 
 (no README, design notes or compiled prompts, so neither arm can read the answer). The with-skill arm loads a per-run
 copy of the plugin under test with --plugin-dir (nothing else of the user's); the baseline arm runs with skills
 disabled. Both run `claude -p --restricted --strict-mcp-config --permission-mode dontAsk`: file tools confined to the
-run folder (and the plugin copy), Bash allowed only for cine.py, ffmpeg, ffprobe and copying inside the folder, no web,
+run folder (and the plugin copy), Bash allowed only for cine.py and its cine_*.py companions, ffmpeg, ffprobe and copying inside the folder, no web,
 agent, Glob, Grep, PowerShell or ToolSearch. Each run keeps its stream-json trace; every tool input is scanned for paths
 outside the folder, and a run that reached the repository is marked contaminated and run again.
 
@@ -49,6 +49,8 @@ BASH_ALLOW = [
     # the runtime in any form a model writes it (relative from the skill folder, or by its absolute path, quoted);
     # python -c and other scripts stay refused
     "Bash(python scripts/cine.py:*)", "Bash(python *cine.py*)", "Bash(python3 *cine.py*)", "Bash(py *cine.py*)",
+    # the runtime's companions shipped by some skills (cine_post.py, cine_fight.py)
+    "Bash(python scripts/cine_*.py:*)", "Bash(python *cine_*.py*)", "Bash(python3 *cine_*.py*)", "Bash(py *cine_*.py*)",
     "Bash(ffmpeg:*)", "Bash(ffprobe:*)",
     # read-only and single-file commands; --restricted refuses their reads outside the working directories, and the
     # path scan flags any that reach out. dontAsk refuses a recursive cp whatever the rule: cases copy in `setup`.

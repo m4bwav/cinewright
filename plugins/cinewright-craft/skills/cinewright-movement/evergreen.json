@@ -32,20 +32,26 @@
       "m": null,
       "interval_after": 120,
       "note": "created"
+    },
+    {
+      "date": "2026-10-15",
+      "m": null,
+      "interval_after": 120,
+      "note": "fight plans (C-20261015-2); action-2 3/3 Sonnet"
     }
   ],
   "counts": {
-    "learnings": 2,
-    "changes": 3,
-    "research": 1,
-    "tests": 4
+    "learnings": 3,
+    "changes": 4,
+    "research": 2,
+    "tests": 5
   },
   "consolidate_every": 25,
   "tests": {
     "last_run": "2026-10-05T22:57",
     "harness": "evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive)",
     "env": "windows/claude-code",
-    "cases": 6,
+    "cases": 7,
     "passed": 4,
     "failed": 2,
     "failing": [
