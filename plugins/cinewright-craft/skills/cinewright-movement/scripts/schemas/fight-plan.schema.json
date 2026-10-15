@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/fight-plan.schema.json sha256:fd0c7eb4243731bbc294d8769aaf11fd47078ba93edabc2b07d37c01240f6388; edit the source",
+  "$comment": "copied from shared/schemas/fight-plan.schema.json sha256:80d1ac18fb3856b53945c853cb10faf9218db2e77d0ecae83b29b2f9f91ebb61; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Fight plan",
   "description": "fights/<id>.json: one fight choreographed before it is covered. The question and the ending come first; phrases say who is ahead and why; exchanges are written operator first (who acts, the move and its target, the answer, the result) and carry what changes (weapons in hand, wounds, posture, side). Cards cover exchanges; `cine_fight.py check` holds the cards to the plan.",
@@ -194,7 +194,7 @@
             "type": "string",
             "minLength": 5,
             "maxLength": 160,
-            "description": "The operator's move with its weapon and target in body words: 'thrusts the rapier at the Gray King's chest'."
+            "description": "The operator's move with its weapon and target in body words: 'thrusts the rapier at his opponent's chest'."
           },
           "with": {
             "type": "string",

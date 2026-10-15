@@ -62,7 +62,7 @@
           "n": {"type": "integer", "minimum": 1, "description": "Move number, counting up through the fight."},
           "phrase": {"type": "string"},
           "lead": {"type": "string", "description": "The operator: fighter id who acts first in the exchange."},
-          "move": {"type": "string", "minLength": 5, "maxLength": 160, "description": "The operator's move with its weapon and target in body words: 'thrusts the rapier at the Gray King's chest'."},
+          "move": {"type": "string", "minLength": 5, "maxLength": 160, "description": "The operator's move with its weapon and target in body words: 'thrusts the rapier at his opponent's chest'."},
           "with": {"type": "string", "description": "The prop the operator uses (a props.json name); omit for bare hands. Must be in the operator's hand at that move."},
           "answer": {"type": "string", "minLength": 3, "maxLength": 200, "description": "What the other fighter does in return: parry, dodge, riposte, takes the hit."},
           "result": {"enum": ["miss", "parried", "dodged", "hit", "wound", "disarm", "fall", "grapple", "feint", "kill", "none"]},
