@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261016-1 · 2026-10-16 · Character refs keyed by stage (scene id or a named stage such as a wound)
+- because: L-005, owner's go-ahead for the compiler change (2026-10-16)
+- files: references/costume-arc.md, references/turnaround-sheets.md, LEARNINGS.md (L-005 resolved); shared/lib/cine.py, shared/schemas/character-bible.schema.json, shared/schemas/shot-card.schema.json, tests/test_cine.py
+- `refs` may be keyed like wardrobe and a card's cast entry names its stage with `refs_stage`; the compiler sends one stage per card, continuity checks the stage names and their order.
+
 ### C-20261015-3 · 2026-10-15 · L-005 confirmed: the refs swap reaches earlier cards; wound stages need a cast-level stage
 - because: L-005 (the first scene-1b card), comfyui-gen L-124
 - files: LEARNINGS.md (Active: L-005)

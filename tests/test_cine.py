@@ -515,6 +515,75 @@ class TestFight(Base):
         self.assertTrue((self.tmp / "cut" / "match.csv").read_text(encoding="utf-8").splitlines()[3].startswith("3,10.0,"))
 
 
+class TestRefStages(Base):
+    """Character refs keyed like wardrobe: a wound or costume stage gets its own sheet (design L-005, 2026-10-16)."""
+
+    def project(self, refs, stage_1a=None, stage_1b=None, name="p"):
+        proj = self.tmp / name
+        shutil.copytree(EXAMPLE, proj)
+        ch = json.loads((proj / "bibles/characters.json").read_text(encoding="utf-8"))
+        ch["characters"][0]["refs"] = refs
+        lib.write_text(proj / "bibles/characters.json", json.dumps(ch, indent=2))
+        for cid, stage in (("1A", stage_1a), ("1B", stage_1b)):
+            if stage:
+                edit(proj / "cards" / ("%s.json" % cid), '"id": "maren",', '"id": "maren", "refs_stage": "%s",' % stage)
+        return proj
+
+    def compiled_refs(self, proj, card):
+        out = self.tmp / ("h3_" + card)
+        code, log = run("compile", proj, "--model", "minimax-h3", "--card", card, "--resolution", "480p", "--out", out)
+        self.assertEqual(code, 0, log)
+        return (json.loads((out / ("%s.params.json" % card)).read_text(encoding="utf-8"))["refs"],
+                (out / ("%s.txt" % card)).read_text(encoding="utf-8"))
+
+    def levels(self, proj):
+        return sorted({(i["level"], i["card"]) for i in lib.continuity_diff(lib.Project(proj)) if i["code"] == "REFS"})
+
+    def test_stage_picks_its_sheet_and_only_its_sheet(self):
+        proj = self.project({"default": ["refs/maren.png"], "wet": ["refs/maren_wet.png"]}, stage_1b="wet")
+        refs, _ = self.compiled_refs(proj, "1A")
+        self.assertIn("refs/maren.png", refs)
+        self.assertNotIn("refs/maren_wet.png", refs)
+        refs, text = self.compiled_refs(proj, "1B")
+        self.assertEqual(refs, ["refs/maren_wet.png"])
+        self.assertIn("<Picture 1>", text)
+        code, out = run("cards", "validate", proj)
+        self.assertEqual(code, 0, out)
+        self.assertEqual(self.levels(proj), [])
+
+    def test_tags_follow_the_reference_order(self):
+        proj = self.project({"default": ["refs/maren.png", "refs/maren_face.png"],
+                             "wet": ["refs/maren_wet.png", "refs/maren_face.png"]}, stage_1b="wet")
+        refs, text = self.compiled_refs(proj, "1B")
+        self.assertEqual(refs, ["refs/maren_wet.png", "refs/maren_face.png"])
+        self.assertIn("<Picture 1> <Picture 2>", text)
+
+    def test_scene_id_is_the_fallback_key(self):
+        proj = self.project({"default": ["refs/maren.png"], "1": ["refs/maren_s1.png"]})
+        refs, _ = self.compiled_refs(proj, "1B")
+        self.assertEqual(refs, ["refs/maren_s1.png"])
+
+    def test_unknown_stage_is_an_error_and_going_back_a_warning(self):
+        proj = self.project({"default": ["refs/maren.png"], "wet": ["refs/maren_wet.png"]}, stage_1b="dry")
+        self.assertEqual(self.levels(proj), [("error", "1B")])
+        proj = self.project({"default": ["refs/maren.png"], "wet": ["refs/maren_wet.png"]}, stage_1a="wet", name="p2")
+        self.assertEqual(self.levels(proj), [("warning", "1B")])
+
+    def test_staged_refs_need_a_default(self):
+        proj = self.project({"wet": ["refs/maren_wet.png"]})
+        code, out = run("cards", "validate", proj)
+        self.assertNotEqual(code, 0, out)
+        self.assertIn("missing required 'default'", out)
+
+    def test_film_json_sends_stages_per_shot(self):
+        proj = self.project({"default": ["refs/maren.png"], "wet": ["refs/maren_wet.png"]}, stage_1b="wet")
+        film = lib.film_json(lib.Project(proj))
+        self.assertNotIn("refs/maren_wet.png", film.get("refs", []))
+        shots = {s["name"]: s.get("refs", []) for s in film["shots"]}
+        self.assertEqual(shots["shot_1A"], ["refs/maren.png"])
+        self.assertEqual(shots["shot_1B"], ["refs/maren_wet.png"])
+
+
 class TestContinuity(Base):
     def test_clean(self):
         code, out = run("continuity", "diff", EXAMPLE)

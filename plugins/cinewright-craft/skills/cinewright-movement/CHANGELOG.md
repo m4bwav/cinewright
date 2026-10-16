@@ -9,6 +9,11 @@ Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `f
 - files: LEARNINGS.md (Active: L-007)
 - From the cards for a duel's fourth phrase: read a dropped prop's pause mark against a mid-exchange blocking, and show a dropped blade as a featured prop.
 
+### C-20261016-1 · 2026-10-16 · A lasting wound gets its own ref stage
+- because: cinewright-design L-005, field lesson 124
+- files: references/wounds-and-healing.md
+- The rule that kept every wound in text with the clean sheet now covers one-card marks only; a wound that lasts gets a local-edit sheet listed as a ref stage, which the compiler now sends per card.
+
 ### C-20261015-4 · 2026-10-15 · Lessons: a prop's mark picks the throwing hand; singles on a close pair
 - because: L-005, L-006; L-004 confirmed again
 - files: LEARNINGS.md (Active: L-004 status, L-005, L-006)

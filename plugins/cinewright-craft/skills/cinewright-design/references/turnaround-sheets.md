@@ -15,7 +15,7 @@ sources: ["Field lesson 017, 2026-09-29: turnaround sheets hold one identity acr
 - Prompt the sheet as "character turnaround sheet: the same person shown three times side by side, front, three-quarter, back", then the identity string and the scene's wardrobe, word for word from the bibles.
 - Flat, even, neutral light on a plain mid-grey backdrop; no shadows across the face, no props unless the prop is part of the character.
 - Crop each view into its own reference file. A whole sheet passed as one reference leaves each view only a few pixels at the size models resize references to.
-- Name the crops `<character>-front.png`, `<character>-3q.png`, `<character>-back.png` in `refs/` and list them in the character bible's `refs`. The compiler passes them in that order.
+- Name the crops `<character>-front.png`, `<character>-3q.png`, `<character>-back.png` in `refs/` and list them in the character bible's `refs`. The compiler passes them in that order. A character with costume or wound stages keys `refs` by stage (entry costume-arc); each card then gets one stage's crops.
 - One sheet per costume. A costume change by scene (costume arc) needs a new sheet for that scene's look.
 - Check every sheet at full size before use: same face in all views, the side of every mark (scar, part, mole) correct as the character's own left or right, nothing the text did not ask for.
 

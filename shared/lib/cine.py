@@ -402,6 +402,37 @@ def wardrobe_for(char, scene_id):
     return w.get(scene_id, w.get("default", ""))
 
 
+def refs_for(char, scene_id=None, stage=None):
+    """A character's refs for one card. A flat list goes to every card; a dict is keyed like wardrobe
+    ("default" plus scene ids or named stages such as a wound), picked by the cast entry's refs_stage, then
+    the scene id, then "default", so a costume or wound stage that is not a scene change gets its own sheet."""
+    r = char.get("refs", [])
+    if isinstance(r, list):
+        return r
+    for k in (stage, scene_id):
+        if k and k in r:
+            return r[k]
+    return r.get("default", [])
+
+
+def all_refs(char):
+    """Every ref a character has, across stages, in bible order."""
+    r = char.get("refs", [])
+    out = []
+    for x in (r if isinstance(r, list) else [x for v in r.values() for x in v]):
+        if x not in out:
+            out.append(x)
+    return out
+
+
+def ref_stage(char, scene_id=None, stage=None):
+    """Which key of a staged refs dict a card resolves to (None for a flat list)."""
+    r = char.get("refs", [])
+    if isinstance(r, list):
+        return None
+    return next((k for k in (stage, scene_id) if k and k in r), "default")
+
+
 def validate_project(ctx, p):
     errs = []
     for name, data in [("style-bible", p.style), ("character-bible", p.characters),
@@ -480,7 +511,8 @@ def film_json(p, xfade=0.16, prof=None):
         w, h = model_size(prof, st["resolution"], st["aspect_ratio"])
     refs = list(st.get("refs", []))
     for ch in p.characters.get("characters", []):
-        for r in ch.get("refs", []):
+        # staged refs go per shot below: a film-wide list would send every stage to every shot
+        for r in (ch["refs"] if isinstance(ch.get("refs"), list) else []):
             if r not in refs:
                 refs.append(r)
     shots = []
@@ -498,8 +530,14 @@ def film_json(p, xfade=0.16, prof=None):
     else:
         for c in p.cards:
             shot = {"name": "shot_%s" % c["id"], "seed": c.get("seed", c["order"]), "length": int(round(c["duration_s"] * fps))}
-            if c.get("refs"):
-                shot["refs"] = c["refs"]
+            mine = []
+            for m in c.get("cast", []):
+                ch = p.chars.get(m["id"], {})
+                if isinstance(ch.get("refs"), dict):
+                    mine += [r for r in refs_for(ch, c["scene"], m.get("refs_stage")) if r not in mine]
+            mine += [r for r in c.get("refs", []) if r not in mine]
+            if mine:
+                shot["refs"] = mine
             shots.append(shot)
     name = re.sub(r"[^a-z0-9]+", "_", st["title"].lower()).strip("_")
     out = {"name": name, "target_seconds": st.get("target_seconds", sum(c["duration_s"] for c in p.cards)),
@@ -569,6 +607,7 @@ def continuity_diff(p):
         issues.append({"level": level, "card": card.get("id", "?"), "code": code, "message": msg})
 
     prev_by_scene = {}
+    last_stage = {}  # character id -> (card id, ref stage) on the last card that showed them
     for card in p.cards:
         sc = p.scene_map.get(card.get("scene"))
         if not sc:
@@ -616,6 +655,18 @@ def continuity_diff(p):
             want = wardrobe_for(ch, sc["id"])
             if "wardrobe" in m and m["wardrobe"] != want:
                 add("error", card, "WARDROBE", "%s wears '%s', the bible says '%s' in scene %s" % (ch["name"], m["wardrobe"], want, sc["id"]))
+            stage = m.get("refs_stage")
+            if stage and not (isinstance(ch.get("refs"), dict) and stage in ch["refs"]):
+                add("error", card, "REFS", "%s names ref stage '%s', which characters.json refs do not list (%s)" % (
+                    ch["name"], stage, ", ".join(ch["refs"]) if isinstance(ch.get("refs"), dict) else "refs is a flat list"))
+            elif isinstance(ch.get("refs"), dict):
+                keys = list(ch["refs"])
+                now = ref_stage(ch, sc["id"], stage)
+                was = last_stage.get(m["id"])
+                if was and keys.index(now) < keys.index(was[1]):
+                    add("warning", card, "REFS", "%s goes back from ref stage '%s' (card %s) to '%s': a wound or costume stage "
+                        "does not undo itself; set refs_stage, or list the stages in story order" % (ch["name"], was[1], was[0], now))
+                last_stage[m["id"]] = (card.get("id", "?"), now)
             t = m.get("travel")
             if t in FLIP and travel.get(m["id"]) in FLIP:
                 exp = FLIP[travel[m["id"]]] if flipped else travel[m["id"]]
@@ -812,7 +863,7 @@ def generation_refs(p, cards, prof):
                 refs.append(r)
     for c in cards:
         for m in c.get("cast", []):
-            add(p.chars[m["id"]].get("refs", []))
+            add(refs_for(p.chars[m["id"]], c["scene"], m.get("refs_stage")))
         # a prop sheet goes with every shot that shows the prop: without it the model redraws the object
         # each shot (pre-production gaps, 2026-10-09)
         for name, state in card_props(c):
@@ -822,7 +873,7 @@ def generation_refs(p, cards, prof):
         add(c.get("refs", []))
     if prof.get("ref_tag"):
         for cid, ch in p.chars.items():
-            mine = [refs.index(r) + 1 for r in ch.get("refs", []) if r in refs]
+            mine = sorted(refs.index(r) + 1 for r in all_refs(ch) if r in refs)  # in the order the model gets them
             if mine:
                 tags[cid] = " ".join(prof["ref_tag"].format(n=n, n0=n - 1, name=ch["name"]) for n in mine)
         for name, pr in p.props.items():

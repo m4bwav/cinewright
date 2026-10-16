@@ -3,8 +3,8 @@ title: Wounds and healing
 slug: wounds-and-healing
 summary: Show a wound appear or heal by pinning a wounded first frame and a clean last frame with only the wound changed, or by reversing a wounding shot; untested end to end.
 tags: [movement, wounds, healing, injury, transformation, first-last-frame]
-last_checked: 2026-10-14
-sources: ["Field lesson 098, 2026-10-13: a local-mark image edit (a cut, blood from the ears) keeps the face; a whole-figure wear edit drifts skin and backdrop", "r/StableDiffusion end-frame overshoot thread, 2026-09-21: https://www.reddit.com/r/StableDiffusion/comments/1wmhny6/", "Kling start and end frames guide: https://kling.ai/quickstart/ai-video-start-end-frames"]
+last_checked: 2026-10-16
+sources: ["Field lesson 098, 2026-10-13: a local-mark image edit (a cut, blood from the ears) keeps the face; a whole-figure wear edit drifts skin and backdrop", "Field lesson 124, 2026-10-15: a wound stage as an image edit at the source's own size, pasting back only the pixels it changed near the wound", "cinewright-design L-005, 2026-10-15: a clean sheet heals a wound the text describes (practitioner guides, reference-to-video papers, the maintainer's renders)", "r/StableDiffusion end-frame overshoot thread, 2026-09-21: https://www.reddit.com/r/StableDiffusion/comments/1wmhny6/", "Kling start and end frames guide: https://kling.ai/quickstart/ai-video-start-end-frames"]
 ---
 
 # Wounds and healing
@@ -18,7 +18,8 @@ Unverified as a whole: no forum or model card found (2026-10-14) shows a wound h
 - Write the change as a process with a direction: "the gash knits closed from its edges inward, the blood darkens, dries and flakes away, leaving smooth skin".
 - Keep the camera static and the subject still. Motion plus transformation gives melting.
 - Fallback for a tight close-up: render the wound being made and reverse the clip in the edit. Anything else moving in frame then moves backwards too.
-- Keep temporary marks (cuts, blood, dirt) in the shot text of the cards they belong to; the clean reference sheet keeps identity.
+- A wound that lasts across cards gets its own sheet: a local edit of the kept view on the wound area only (first rule), listed as a ref stage (`"refs": {"default": [...], "L1": [...]}` in the character bible, `"refs_stage": "L1"` on the cast entry of every card from the first wounded one). A clean sheet heals a wound the text describes. Name the wound in the card text too, on the character's own side.
+- Keep one-card marks (dirt, a splash of blood) in the shot text with the clean sheet.
 
 ## Numbers
 

@@ -18,7 +18,7 @@ sources: ["Deborah Nadoolman Landis, Costume Design, 2012", "Avril Rowlands, The
 - Silhouette first: each main character readable by outline alone (a long coat against a short jacket, a hood, a hat). Two characters with the same silhouette and color get confused across separately generated shots.
 - Color by character (entry color-script): one costume color per person that no one else in the scene wears.
 - Wardrobe strings name garment, color, material and one wear detail, in that order, 25 words or fewer. No brand names.
-- Each new wardrobe stage needs its own reference sheet (entry turnaround-sheets).
+- Each new wardrobe stage needs its own reference sheet (entry turnaround-sheets). Key the character's `refs` like wardrobe, `{"default": [...], "<scene id>": [...]}`, so each card gets only its own stage's sheet. A stage that starts inside a scene gets a name, and every card from it on sets `refs_stage` on that cast entry; `continuity diff` fails an unknown stage and warns when a later card goes back to an earlier one.
 
 ## Numbers
 
