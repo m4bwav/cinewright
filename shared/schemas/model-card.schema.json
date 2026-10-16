@@ -236,6 +236,14 @@
         "ref_replaces_name": {
           "type": "boolean"
         },
+        "beat_stamp": {
+          "type": "string",
+          "description": "The model takes timecodes inside a shot: marker before each of a card's beats, {t0} and {t1} in seconds with one decimal. Absent: the card's action is sent instead."
+        },
+        "beats_lead": {
+          "type": "string",
+          "description": "Words before the first beat ('Timeline:')."
+        },
         "frames": {
           "type": "object",
           "required": [

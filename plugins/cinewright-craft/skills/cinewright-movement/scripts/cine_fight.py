@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine_fight.py sha256:b42faf005c1522107927c56c0015e16ad49b69943de7bde32283b12563bb6e87; edit the source
+# copied from shared/lib/cine_fight.py sha256:be5ce2ffc7e23fa3ad0120cb508e070b521ef614ef3dfab4708ef8199908e7bc; edit the source
 """cinewright fight plans: replay a fight, hold its cards to it, write its sheet. Run it; do not read it.
 
   python scripts/cine_fight.py check FIGHT.json [--project P] [--json]
@@ -144,8 +144,9 @@ def card_checks(plan, rows, project):
         if secs > card.get("duration_s", 0):
             issues.append(("warning", n0, "TIME", "card %s is %ss but its exchanges take %.1fs" % (cid, card.get("duration_s"), secs)))
         start, end = items[0][1], items[-1][2]
-        text = " ".join(card.get(k, "") for k in ("start_state", "action")).lower()
-        end_text = " ".join(card.get(k, "") for k in ("action", "end_state")).lower()
+        beats = " ".join(b.get("text", "") for b in card.get("beats", []))
+        text = " ".join([card.get("start_state", ""), card.get("action", ""), beats]).lower()
+        end_text = " ".join([card.get("action", ""), beats, card.get("end_state", "")]).lower()
         flipped = card.get("camera", {}).get("crosses_axis")
         for m in card.get("cast", []):
             st = start.get(m.get("id"))
@@ -160,10 +161,10 @@ def card_checks(plan, rows, project):
                 issues.append(("error", n0, "SIDE", "card %s: %s is %s, the fight has them %s" % (cid, m["id"], m["position"], want)))
             for mark in st["marks"]:
                 if mark.lower() not in text:
-                    issues.append(("warning", n0, "MARK", "card %s: copy %s's mark '%s' verbatim into start_state or action" % (cid, m["id"], mark)))
+                    issues.append(("warning", n0, "MARK", "card %s: copy %s's mark '%s' verbatim into start_state, action or a beat" % (cid, m["id"], mark)))
             for mark in end[m["id"]]["marks"][len(st["marks"]):]:
                 if mark.lower() not in end_text:
-                    issues.append(("warning", n0, "MARK", "card %s: %s's new mark '%s' belongs in action or end_state" % (cid, m["id"], mark)))
+                    issues.append(("warning", n0, "MARK", "card %s: %s's new mark '%s' belongs in action, a beat or end_state" % (cid, m["id"], mark)))
     return issues, by_card, cards
 
 

@@ -611,3 +611,22 @@ YELLOW, the same rows as main (runtime shared/lib 149 KB, red 150)
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 11 hits in 4 files (the same 11 as before the set-tag entry)
 ```
+
+## 2026-10-16: card beats (timed hits compiled as a timeline)
+
+Code. Open test 2 of the fight-planning research note found that a fight card's hits land when each hit and its reaction has its own timecode, and that prose loses them; the card schema had no timed field and `action` caps at 240 characters. A card now takes `beats`: a list of `{t0, t1, text}` (text up to 160 characters), timed on the rendered clip, so a 3 s card that renders 4.46 s on H3 can use the whole clip while `duration_s` stays the edit length (the owner's ruling). Compile: on a model whose card has `beat_stamp` (H3: `[{t0}s-{t1}s]`, lead `Timeline:`) the beats replace the action sentence; elsewhere the action is sent with a warning. A beat past the rendered length is an error, and past `duration_s` a note to keep the last `duration_s` in the edit. With `--sequence`, beats are offset by the card's start. `cards validate` errors on a beat that overlaps the previous one or ends before it starts; the schema caps times at 16 s. `cine_fight.py check` reads marks in beats as well as start_state, action and end_state (movement L-009's proposed change, in part). `qc judge` asks a card's beats one by one in place of its action. Five new tests.
+
+Size: runtime shared/lib went from 149 to 150 KB (red above 150, 3 bytes of room); the H3 model card from 1096 to 1176 tokens (red above 1200). The code was compacted to stay under both. The next lib change needs a trim first.
+
+```
+$ python -m unittest discover -s tests
+Ran 113 tests  OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ claude plugin validate (root and three plugins)
+Validation passed (4 of 4)
+$ python scripts/cine.py budget
+budget: YELLOW (model card 1176 tokens, runtime shared/lib 150 KB; the other yellows as main)
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 11 hits in 4 files (the same 11 as main)
+```

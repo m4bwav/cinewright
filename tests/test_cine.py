@@ -1433,3 +1433,67 @@ class TestVoice(Base):
         code, text = run("cards", "validate", self.proj)
         self.assertEqual(code, 1, text)
         self.assertIn("bibles/voice-bible", text)
+
+
+class TestBeats(Base):
+    """Card beats: timed hits compiled as a timeline for models that take timecodes (open test 2, 2026-10-16)."""
+    BEATS = [{"t0": 0, "t1": 1.2, "text": "Maren lifts the match toward Tomas"},
+             {"t0": 1.2, "t1": 2.0, "text": "the flame gutters in the draught"},
+             {"t0": 2.0, "t1": 4.4, "text": "Tomas cups his hands round it"}]
+
+    def project(self, beats=None):
+        base = Path(tempfile.mkdtemp(dir=self.tmp))
+        proj = model_project(base)
+        c = json.loads((proj / "cards/1B.json").read_text(encoding="utf-8"))
+        c["beats"] = beats if beats is not None else self.BEATS
+        (proj / "cards/1B.json").write_text(json.dumps(c), encoding="utf-8")
+        return proj
+
+    def test_h3_compiles_a_timeline_in_place_of_the_action(self):
+        _, _, res = compile_one(self.project(), "minimax-h3", "1B")
+        text, warnings = res[0][1], res[0][3]
+        self.assertIn("at slow speed. Timeline: [0.0s-1.2s] Maren lifts the match toward Tomas. [1.2s-2.0s] The flame gutters in the draught. "
+                      "[2.0s-4.4s] Tomas cups his hands round it.", text)
+        self.assertNotIn("Maren slowly stretches her arm out", text, "the beats replace the action")
+        self.assertTrue(any("beats run to 4.4s: keep the last 4s in the edit" in w for w in warnings), warnings)
+
+    def test_models_without_timecodes_get_the_action(self):
+        _, _, res = compile_one(self.project(), "veo", "1B")
+        self.assertIn("Maren slowly stretches her arm out toward Tomas", res[0][1])
+        self.assertNotIn("Timeline", res[0][1])
+        self.assertTrue(any("takes no timecodes" in w for w in res[0][3]), res[0][3])
+
+    def test_beats_past_the_rendered_clip_fail(self):
+        proj = self.project(self.BEATS[:2] + [{"t0": 2.0, "t1": 5.0, "text": "Tomas cups his hands round it"}])
+        with self.assertRaises(SystemExit) as cm:
+            compile_one(proj, "minimax-h3", "1B")
+        self.assertIn("beats run to 5.0s, past the 4.458s render", str(cm.exception))
+
+    def test_validate_wants_beats_in_order_without_overlap(self):
+        code, out = run("cards", "validate", self.project())
+        self.assertEqual(code, 0, out)
+        bad = [{"t0": 0, "t1": 1.2, "text": "Maren lifts the match"}, {"t0": 1.0, "t1": 2.0, "text": "the flame gutters"},
+               {"t0": 3.0, "t1": 2.5, "text": "Tomas cups his hands"}, {"t0": 3.0, "t1": 17, "text": "the match goes out"}]
+        code, out = run("cards", "validate", self.project(bad))
+        self.assertEqual(code, 1, out)
+        self.assertIn("beats[1] (1.0-2.0s) overlaps or runs backward", out)
+        self.assertIn("beats[2] (3.0-2.5s) overlaps or runs backward", out)
+        self.assertIn("beats[3].t1: 17 is above 16", out)
+
+    def test_fight_check_reads_marks_in_beats(self):
+        f = self.tmp / "match.json"
+        plan = {"id": "match", "scene": "1", "question": "Who gets the match?", "ending": "Tomas holds it.",
+                "fighters": [{"id": "maren", "goal": "keep it", "side": "frame-left", "right": "single match", "marks": ["soot on her left cheek"]},
+                             {"id": "tomas", "goal": "get it", "side": "frame-right"}],
+                "phrases": [{"id": "P1", "ahead": "maren", "why": "she has it"}, {"id": "P2", "ahead": "tomas", "why": "she gives it", "margin": 2}],
+                "exchanges": [{"n": 1, "phrase": "P1", "lead": "maren", "with": "single match", "move": "holds the match out",
+                               "answer": "Tomas reaches", "result": "none", "secs": 3, "card": "1B"},
+                              {"n": 2, "phrase": "P2", "lead": "tomas", "move": "takes it", "answer": "Maren lets go", "result": "disarm",
+                               "card": "1C", "changes": [{"who": "tomas", "right": "single match"}]}]}
+        f.write_text(json.dumps(plan), encoding="utf-8")
+        fight = REPO / "shared" / "lib" / "cine_fight.py"
+        code, text = run("check", f, "--project", self.project(), script=fight)
+        self.assertIn("copy maren's mark 'soot on her left cheek'", text)
+        beats = [dict(self.BEATS[0], text="Maren, soot on her left cheek, lifts the match")] + self.BEATS[1:]
+        code, text = run("check", f, "--project", self.project(beats), script=fight)
+        self.assertNotIn("soot on her left cheek", text)
