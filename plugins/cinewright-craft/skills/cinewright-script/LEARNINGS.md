@@ -29,3 +29,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: library_120s_best_c (owner's ear); compiler and tests on the same day. Whether H3 follows a respelling is not yet tested
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-07
+
+### L-004 · 2026-10-16 · A card holds 8 seconds; cut a line past about 17 words at a comma across two shots
+- Trigger: the words before a stab in a rapier duel from a novel: the antagonist's 27-word line needs about 12 s at one second per 2.5 words plus a beat, and `cards validate` refused the card ("12 is above 8": the shot-card schema caps `duration_s` at 8).
+- Hypothesis: the schema keeps one action a card, so a long speech cannot be lengthened on one card; speeding it up loses the delivery, and trimming the line changes the source.
+- Rule: at one second per 2.5 words plus a beat a card holds about 17 spoken words. Cut a longer line at a comma or clause boundary into two cards with different setups (here a wider shot over the listener's shoulder, then the speaker's single: a cut-in), give each half its own `dialogue` entry, and note in the project README that the two halves are one line. Never speed the line up or trim the quote to fit.
+- Evidence: the duel project's cards 1Y and 1Z (10 and 17 words, 5 s and 8 s), `cards validate` 0 errors after the split.
+- Scope: skill (dialogue timing, coverage)
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-16

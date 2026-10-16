@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261016-1 · 2026-10-16 · Lesson: lay a lying figure across an overhead frame
+- because: L-003
+- files: LEARNINGS.md (Active: L-003)
+- From a duel's overhead close-up: point an overhead's frame top square to a lying body and keep the pair's screen order, instead of along the body, which turns the face upside down.
+
 ### C-20261005-1 · 2026-10-05 · "lighting a shot", not "a scene" (S6)
 - because: T-20261004-2, L-002
 - files: SKILL.md

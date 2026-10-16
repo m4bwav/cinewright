@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261016-1 · 2026-10-16 · Lesson: a card holds 8 s, so a long line is cut at a comma across two shots
+- because: L-004
+- files: LEARNINGS.md (Active: L-004)
+- From a duel's words before a stab: the card schema caps a card at 8 s, so a line past about 17 words is split across two setups instead of sped up or trimmed.
+
 ### C-20261007-2 · 2026-10-07 · Point locked voices to cinewright-voice
 - because: user request (cinewright-voice created, its C-20261007-1)
 - files: references/dialogue-for-generated-voices.md

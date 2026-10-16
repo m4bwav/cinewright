@@ -21,3 +21,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: C-20261004-2 (description); confirmed T-20261005-1: trigger-1 Haiku 3 of 3 (was 1 of 3); decoy-3 Sonnet and Opus 0 of 3 (Sonnet took it 1 of 3 with "a scene")
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-05
+
+### L-003 · 2026-10-16 · An overhead whose frame top points along a lying body turns the face upside down; lay the body across the frame
+- Trigger: the pause after a rapier duel's fifth phrase: an overhead close-up of the hero on his back, head west. The set plan's overhead camera had frame top east, chosen to keep the pair's screen order as seen from side A; with his feet to the east that put his crown at the bottom of the frame and his face upside down, and the set check read the overhead as side B because its centre stood almost on the line through the pair.
+- Hypothesis: an overhead camera's frame-top bearing sets both the screen order and which way a lying face reads, and a 16:9 frame holds a lying figure best when the body runs across it.
+- Rule: for an overhead on someone lying down, point frame top square to the body, so it lies across the frame with the head to one side; of the two such bearings, take the one that keeps the pair's screen order (here frame top north keeps west frame-left, so the hero still sits left of the antagonist). Centre the camera on the chest, off the line on the side the coverage uses. Never point frame top at the feet.
+- Evidence: the duel project's set plan cameras `floor` (frame top east) and `floor-p5` (frame top north, on side A), card 1AG; set check 36 beats, 0 errors.
+- Scope: skill (overhead framing, screen direction)
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-16
