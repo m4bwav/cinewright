@@ -4,6 +4,16 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261016-4 · 2026-10-16 · Lesson: late in a fight the standing marks overflow a card's 240-character fields; split them, or shorten a plan mark to a substring of itself
+- because: L-009
+- files: LEARNINGS.md (Active: L-009)
+- From the cards for a duel's last phrases.
+
+### C-20261016-3 · 2026-10-16 · Lesson: a prop's mark on the far side of the dropping hand can stand when the source moves the prop after the drop
+- because: L-008
+- files: LEARNINGS.md (Active: L-008)
+- From the cards for a duel's last phrases.
+
 ### C-20261016-2 · 2026-10-16 · Lesson: a dropped prop lands where the fighter stood at the drop
 - because: L-007
 - files: LEARNINGS.md (Active: L-007)

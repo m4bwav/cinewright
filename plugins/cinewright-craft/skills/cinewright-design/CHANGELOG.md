@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261016-3 · 2026-10-16 · Lesson: a fighter out of frame takes his new wound stage at his first card in frame; a back wound stays text; a sheathed weapon the story took away is a second weapon in the refs
+- because: L-007
+- files: LEARNINGS.md (Active: L-007)
+- From the cards for a duel's last phrases.
+
 ### C-20261016-2 · 2026-10-16 · L-005 confirmed after the staged-refs merge
 - because: L-005
 - files: LEARNINGS.md (L-005 status)

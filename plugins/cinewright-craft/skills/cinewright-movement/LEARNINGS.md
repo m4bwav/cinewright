@@ -61,3 +61,19 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: the duel project's cards 1S-1X, its set plan (`ex9` blocking, P4 marks) and fight plan (exchanges 9-10); `cine_fight.py check` 0 errors after the fix, `set_check.py` 28 beats, 0 errors.
 - Scope: skill (fight-plan, blocking marks); builds on L-004 and L-005
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-16
+
+### L-008 · 2026-10-16 · A prop's mark on the far side of the dropping hand can stand when the source moves the prop after the drop
+- Trigger: the sixth phrase of a rapier duel from a novel: the antagonist faces north at the pause marks, so his dagger's floor mark lies east of him, on his own right, but the hero bites it out of his left hand.
+- Hypothesis: L-005 and L-007 read a mark against the hand that lets go; a drop the source describes (the blade falls sideways and rebounds off the hero's shoulder) can carry the prop across the body first.
+- Rule: before moving a mark that sits on the wrong side, read the source for where the hand was and what the prop hit on the way down. Here the dagger hand was on the antagonist's centre line in front of the hero's face (stabbing down at his neck), and the rebound off the hero's left shoulder (east, since he faces south) carries it onto the mark. Keep the mark, write the path in the set plan, and say in the card where it leaves the frame from that camera.
+- Evidence: the duel project's set plan (P6 marks) and cards 1AJ-1AK; set check 0 errors.
+- Scope: skill (fight-plan, blocking marks); refines L-005 and L-007
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-16
+
+### L-009 · 2026-10-16 · Late in a fight the standing marks overflow a card's 240-character fields; split them, or shorten a plan mark to a substring of itself
+- Trigger: the same duel's last phrases: the hero carries six marks and the antagonist two or three, and the fight check wants every standing mark verbatim in an exchange card's `start_state` or `action`, each capped at 240 characters by the card schema. The exchange-20 card needed eight marks, more than the two fields hold beside the action.
+- Hypothesis: marks accumulate across the fight while the fields stay fixed; the check matches each mark as a substring of the card text.
+- Rule: on exchange cards, split the marks between `start_state` and `action` (the older ones in the state, the ones the beat touches in the action); on other cards keep only the marks the camera sees. When the fields still overflow, shorten the longest plan marks to substrings of themselves ("a stab wound in his left shoulder soaking his vest dark" to "a stab wound in his left shoulder"): every earlier card still holds the longer string and still passes, and the stage sheets keep the detail. Proposed change: let a card carry a `marks` list the check reads, or check only the marks added since the fighter's last exchange card.
+- Evidence: the duel project's cards 1AH-1AZ and fight plan (exchanges 11 and 19 shortened); fight check 0 errors, 0 warnings across 21 exchanges.
+- Scope: skill (fight-plan) and shared schema
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-16

@@ -579,7 +579,7 @@ scrub: 11 hits in 4 files (the same 11 as main)
 
 ## 2026-10-16: the set's refs get their tag in the compiled text
 
-`generation_refs` sent a location's `refs` with every shot but never named them, so a model that takes `<Picture N>` tags had no word to tie the set sheet to; a duel project's set test had to add a sentence by hand to make the grid hold the room. Now each location's refs get a tag (`loc:<id>`), and `card_parts` appends it to the location description. Checked on a scratch copy of that project (37 cards): main and the branch differ only by the tag after the location sentence in each prompt; every params file is identical. A card's own `refs` are still untagged (comfyui-gen's field lesson on card refs); not in this change.
+`generation_refs` sent a location's `refs` with every shot but never named them, so a model that takes `<Picture N>` tags had no word to tie the set sheet to; a duel project's set test had to add a sentence by hand to make the grid hold the room. Now each location's refs get a tag (`loc:<id>`), and `card_parts` appends it to the location description. Checked on a scratch copy of that project (37 cards): main and the branch differ only by the tag after the location sentence in each prompt; every params file is identical. A card's own `refs` are still untagged (field lesson 043, card refs untagged); not in this change.
 
 ```
 $ python -m unittest discover -s tests
@@ -593,4 +593,21 @@ $ python scripts/cine.py budget
 YELLOW, the same rows as main (runtime shared/lib 149 KB, red 150)
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 11 hits in 4 files (the same 11 as main)
+```
+
+## 2026-10-16: lessons from a duel's last four phrases, and open test 2
+
+Docs only. Movement L-008 (a mark on the far side of the dropping hand can stand when the source moves the prop after the drop) and L-009 (late in a fight the standing marks overflow a card's 240-character fields: split them, or shorten a plan mark to a substring of itself; proposes a card `marks` list or checking only new marks). Design L-007 (a fighter out of frame takes his new stage at his first card in frame; a back wound no sheet shows stays text; a sheet must not show a weapon the story took away). Camera L-004 (an overhead on a pinned fighter sees only the one on top). Genvideo L-016 answers the research note's open test 2: per-hit timecodes kept the staging and landed the hits at both step counts, prose did not, and 40 steps did no better than the 8-step turbo. Also fixes the 2026-10-16 set-tag entry, which named a private skill (scrub).
+
+```
+$ python -m unittest discover -s tests
+OK (108 tests)
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ claude plugin validate (root and three plugins)
+Validation passed (4 of 4)
+$ python scripts/cine.py budget
+YELLOW, the same rows as main (runtime shared/lib 149 KB, red 150)
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 11 hits in 4 files (the same 11 as before the set-tag entry)
 ```
