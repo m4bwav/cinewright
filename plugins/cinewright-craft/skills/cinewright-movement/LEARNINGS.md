@@ -36,4 +36,20 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Rule: until the schema has a second hand, put the blade the shot features in `holding`, chain `holding_end` to the next card's featured blade, and name both blades in the action text; link the exchange to the card that shows its operator's move and list the extra coverage cards in the project README. Proposed change: `holding_left` (or `holding` as a list) and `exchanges[].cards`.
 - Evidence: the duel project's cards 1F-1K and fights/duel.json (exchanges 3-6), `cine_fight.py check --project` 0 errors, `continuity diff` 0 errors.
 - Scope: skill (fight-plan) and shared schema
+- Status: active · helpful 2 · harmful 0 · last_confirmed 2026-10-15
+
+### L-005 · 2026-10-15 · A prop's floor mark decides which hand throws it and where it falls in each camera
+- Trigger: the third phrase of a rapier duel from a novel ends with the antagonist flinging off his cloak; the set plan had already put the cloak's mark east of him and half a metre behind, and the first card draft had him throw it with his dagger hand, across his body, "away to frame left".
+- Hypothesis: a mark written while blocking the room is a fact about the fighter's own side; a card written from the camera's view reads it as screen space and picks the hand that looks natural, which can be the wrong one.
+- Rule: before writing a throw, a drop or a disarm, take the prop's mark relative to the fighter's mark and facing (here facing north, the mark to the east: his own right), give the throw to that side's hand, and then say where it lands in each card's frame from that card's camera (over the opponent's shoulder, the fighter facing the lens, his right is frame left; in the low insert aimed at him, the prop lands just beyond his boots, left of centre).
+- Evidence: the duel project's cards 1Q and 1R (the throw with the rapier arm, the landing insert) and its set plan's mark for the cloak at the P3 pause.
+- Scope: skill (fight-plan, blocking marks)
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-15
+
+### L-006 · 2026-10-15 · Singles on a close pair turn too little to cut; move them in, not out
+- Trigger: the duel's pauses cut between two side-on MCU singles of fighters standing about 2 m apart; from 4 m the camera turned only 29 degrees about the pair between the singles and the set check refused the cut, where the same singles 2.8 m apart had turned 39.
+- Hypothesis: a side-on single square to the line, looking at its own fighter, turns about the pair's midpoint by 2·atan(half the gap / distance), so the turn falls as the fighters close in or the camera backs off.
+- Rule: for singles on a close pair, keep the camera close (3.5 m for a 2 m gap gives 33 degrees) and lengthen the lens if the framing needs it; backing off with a longer lens makes the cut worse. When the gap is under about 1.5 m, cut singles with a two-shot or an over-the-shoulder between them instead.
+- Evidence: the duel project's set plan (coverage beats for the P2 and P3 pauses, cards 1L, 1M, 1O, 1P) and its set check (2 errors at 4 m, 0 at 3.5 m).
+- Scope: skill (coverage, blocking marks)
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-15

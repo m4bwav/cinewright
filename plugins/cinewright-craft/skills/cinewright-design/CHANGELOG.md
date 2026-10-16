@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261015-3 · 2026-10-15 · L-005 confirmed: the refs swap reaches earlier cards; wound stages need a cast-level stage
+- because: L-005 (the first scene-1b card), comfyui-gen L-124
+- files: LEARNINGS.md (Active: L-005)
+- The swap the rule asks for re-sent the new sheets with every earlier card's compile; the workaround and the wider proposed change (a stage named on the cast entry) are recorded for a later code PR.
+
 ### C-20261015-2 · 2026-10-15 · Lessons: refs cannot follow a costume or wound stage; museum photo for a period weapon
 - because: L-005, L-006 (owner's question on wound stages, 2026-10-15)
 - files: LEARNINGS.md (Active: L-005, L-006)
