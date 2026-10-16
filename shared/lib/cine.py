@@ -881,6 +881,12 @@ def generation_refs(p, cards, prof):
                 mine = [refs.index(r) + 1 for r in look.get("refs", []) if r in refs]
                 if mine:
                     tags.setdefault("prop:" + name, " ".join(prof["ref_tag"].format(n=n, n0=n - 1, name=name) for n in mine))
+        # the set's sheet: sent with every shot but never named, so the model had no word to tie it to and drew a
+        # generic hall (a set field test, 2026-10-15: the grid ref alone lost the room until a sentence named it)
+        for lid, loc in p.locs.items():
+            mine = [refs.index(r) + 1 for r in loc.get("refs", []) if r in refs]
+            if mine:
+                tags["loc:" + lid] = " ".join(prof["ref_tag"].format(n=n, n0=n - 1, name=loc.get("name", lid)) for n in mine)
     return refs, tags
 
 
@@ -953,6 +959,8 @@ def card_parts(p, card, prof, tags=None, speakers=None):
     parts["action"] = " ".join(act)
     tod = card.get("time_of_day", sc["time_of_day"]).replace("-", " ")
     where = loc["description"].rstrip(".")
+    if tags.get("loc:" + sc["location"]):
+        where = "%s %s" % (where, tags["loc:" + sc["location"]])
     # the wall the camera faces: a whole-room description names the hero wall, and those words
     # beat "looking north", so a reverse came back as the establishing view (set field test, 2026-10-07)
     if cam.get("faces") in loc.get("walls", {}):

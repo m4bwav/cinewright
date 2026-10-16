@@ -404,6 +404,9 @@ class TestProps(Base):
         n = refs.index("refs/matchbox_open.png") + 1
         self.assertIn("lid flipped open, three matches left inside <Picture %d>" % n, text)
         self.assertIn("ringed glass prisms <Picture %d>, behind them." % (refs.index("refs/lens.png") + 1), text)
+        # the set's sheet is named where the set is described, or the model has no word to tie it to
+        self.assertIn("<Picture %d>" % len(refs), text)
+        self.assertEqual(text.count("<Picture %d>" % len(refs)), 1)
 
     def test_unknown_state_is_a_continuity_error(self):
         proj = self.project()

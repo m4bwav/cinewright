@@ -576,3 +576,21 @@ YELLOW, the same rows as main (no runtime change)
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 11 hits in 4 files (the same 11 as main)
 ```
+
+## 2026-10-16: the set's refs get their tag in the compiled text
+
+`generation_refs` sent a location's `refs` with every shot but never named them, so a model that takes `<Picture N>` tags had no word to tie the set sheet to; a duel project's set test had to add a sentence by hand to make the grid hold the room. Now each location's refs get a tag (`loc:<id>`), and `card_parts` appends it to the location description. Checked on a scratch copy of that project (37 cards): main and the branch differ only by the tag after the location sentence in each prompt; every params file is identical. A card's own `refs` are still untagged (comfyui-gen's field lesson on card refs); not in this change.
+
+```
+$ python -m unittest discover -s tests
+Ran 108 tests in 35.9s
+OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ claude plugin validate (root and three plugins)
+Validation passed (4 of 4)
+$ python scripts/cine.py budget
+YELLOW, the same rows as main (runtime shared/lib 149 KB, red 150)
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 11 hits in 4 files (the same 11 as main)
+```
