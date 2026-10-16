@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261016-2 · 2026-10-16 · Lesson: a dropped prop lands where the fighter stood at the drop
+- because: L-007
+- files: LEARNINGS.md (Active: L-007)
+- From the cards for a duel's fourth phrase: read a dropped prop's pause mark against a mid-exchange blocking, and show a dropped blade as a featured prop.
+
 ### C-20261015-4 · 2026-10-15 · Lessons: a prop's mark picks the throwing hand; singles on a close pair
 - because: L-005, L-006; L-004 confirmed again
 - files: LEARNINGS.md (Active: L-004 status, L-005, L-006)

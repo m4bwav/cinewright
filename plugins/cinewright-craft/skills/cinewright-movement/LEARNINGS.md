@@ -53,3 +53,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: the duel project's set plan (coverage beats for the P2 and P3 pauses, cards 1L, 1M, 1O, 1P) and its set check (2 errors at 4 m, 0 at 3.5 m).
 - Scope: skill (coverage, blocking marks)
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-15
+
+### L-007 · 2026-10-16 · A dropped prop lands where the fighter stood at the drop, not at the pause marks; a dropped blade is a featured prop
+- Trigger: the fourth phrase of a rapier duel from a novel: three touches make the hero drop the stiletto from his left hand. The set plan lists the stiletto's mark with the pause after the phrase, and read against the hero's pause mark it lay 1.2 m behind him on his right, where no left hand could drop it. The first card draft also chained `holding_end: stiletto` into the drop card, and the fight check failed it: the plan keeps the rapier in hand at the end of the exchange.
+- Hypothesis: a prop's mark is written for the pause that follows, after the fighters have moved on; the drop happened earlier, from wherever the fighter stood mid-exchange.
+- Rule: before writing a drop, a throw or a disarm inside an exchange, find where the fighter stood at that moment: add a mid-exchange blocking (here `ex9`, the hero driven back half a metre) from which the prop's mark lies on the right side of him (in front and to his own left, for a blade dropped from a left hand held in guard), then let the next exchange carry him to the pause marks. Show the falling blade as a featured prop (`props`), and keep `holding`/`holding_end` on the blade the fight plan leaves in hand. When the book puts the pause between two exchanges (here the drop, a line and a prayer before the frenzy), order the cards as the book does; the prayer then motivates the frenzy.
+- Evidence: the duel project's cards 1S-1X, its set plan (`ex9` blocking, P4 marks) and fight plan (exchanges 9-10); `cine_fight.py check` 0 errors after the fix, `set_check.py` 28 beats, 0 errors.
+- Scope: skill (fight-plan, blocking marks); builds on L-004 and L-005
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-16
