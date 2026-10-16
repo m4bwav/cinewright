@@ -143,9 +143,9 @@ def card_checks(plan, rows, project):
         if secs > card.get("duration_s", 0):
             issues.append(("warning", n0, "TIME", "card %s is %ss but its exchanges take %.1fs" % (cid, card.get("duration_s"), secs)))
         start, end = items[0][1], items[-1][2]
-        beats = " ".join(b.get("text", "") for b in card.get("beats", []))
-        text = " ".join([card.get("start_state", ""), card.get("action", ""), beats]).lower()
-        end_text = " ".join([card.get("action", ""), beats, card.get("end_state", "")]).lower()
+        act = " ".join(b.get("text", "") for b in card["beats"]) if card.get("beats") else card.get("action", "")
+        text = " ".join([card.get("start_state", ""), act]).lower()
+        end_text = " ".join([act, card.get("end_state", "")]).lower()
         flipped = card.get("camera", {}).get("crosses_axis")
         for m in card.get("cast", []):
             st = start.get(m.get("id"))

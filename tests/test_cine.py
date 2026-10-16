@@ -1494,6 +1494,10 @@ class TestBeats(Base):
         fight = REPO / "shared" / "lib" / "cine_fight.py"
         code, text = run("check", f, "--project", self.project(), script=fight)
         self.assertIn("copy maren's mark 'soot on her left cheek'", text)
+        proj = self.project()
+        edit(proj / "cards/1B.json", '"action": "Maren', '"action": "Maren, soot on her left cheek,')
+        code, text = run("check", f, "--project", proj, script=fight)
+        self.assertIn("copy maren's mark 'soot on her left cheek'", text, "a timecoded prompt drops the action, so its marks do not count")
         beats = [dict(self.BEATS[0], text="Maren, soot on her left cheek, lifts the match")] + self.BEATS[1:]
         code, text = run("check", f, "--project", self.project(beats), script=fight)
         self.assertNotIn("soot on her left cheek", text)
