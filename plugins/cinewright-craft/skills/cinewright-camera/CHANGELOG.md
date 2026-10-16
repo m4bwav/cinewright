@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261016-2 · 2026-10-16 · Lesson: an overhead on a fighter pinned under another sees only the top one's back; shoot the pinned face from the floor in profile
+- because: L-004
+- files: LEARNINGS.md (Active: L-004)
+- From the cards for a duel's last phrases.
+
 ### C-20261016-1 · 2026-10-16 · Lesson: lay a lying figure across an overhead frame
 - because: L-003
 - files: LEARNINGS.md (Active: L-003)

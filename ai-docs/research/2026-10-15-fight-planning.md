@@ -64,7 +64,7 @@ Novel to film: inner tactics become lines or visible changes (The Princess Bride
 ## Open tests (in order)
 
 1. H3 with Fun ControlNet Union on a depth video of two fighters with swords, normal against thickened blades; does the blade survive and the hit land on the planned frame.
-2. H3 fight card: every hit on its own timecode, 30-50 steps, no speed LoRA, against the same card in plain prose; same seed, scored with `qc judge`.
+2. H3 fight card: every hit on its own timecode, 30-50 steps, no speed LoRA, against the same card in plain prose; same seed, scored with `qc judge`. **Answered 2026-10-16** (genvideo L-016): the timeline kept the staging and landed the hits in both step counts, prose did not; 40 steps did no better than the 8-step turbo; stamps drift 0.3-0.9 s.
 3. A 3-4 panel storyboard reference against prose on one H3 fight card.
 4. SCAIL-2 at 16 GB with a two-person Blender rig render of one throw.
 5. A self-recorded 5 s exchange through H3 reference video against Wan Animate.

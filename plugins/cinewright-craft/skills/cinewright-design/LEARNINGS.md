@@ -56,3 +56,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: comfyui-gen LEARNINGS L-121 (merged 2026-10-15).
 - Scope: skill (prop-sheets)
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-15
+
+### L-007 · 2026-10-16 · A fighter out of frame takes his new wound stage at his first card in frame; a back wound no sheet shows stays text; a sheathed weapon the story took away is a second weapon in the refs
+- Trigger: the duel's later stages: the antagonist's bitten fingers (exchange 15) happen in a close-up that shows only his hand, his back wound (19) faces away from every camera that sees his face, and the hero's three-quarter sheet still shows his rapier in its scabbard though he holds it from the first exchange and loses it in the thirteenth.
+- Hypothesis: the cut-on-contact rule (a card that shows the wound happen keeps the old sheet) assumes the wounded fighter is in that card; a front three-quarter sheet cannot carry a back; whatever a sheet shows, the model may copy into the hand.
+- Rule: when the wounding card does not show the fighter (only his hand, or he is off frame), start his new stage at the first card that shows him after it. Keep a wound on his back as text while every shot that sees him sees his front. Make each stage sheet match the story at that point: an empty scabbard once the sword is in hand or on the floor (one local edit, "only the open top of the empty scabbard hanging from the belt", worked 1 of 4 and 1 of 4 again). An object run through a limb is composited in code from the prop's own sheet (an edit model will not add it), with the edit model used only for the blood, and the object pasted back over the edit (field lesson 127, an object through a figure by composite).
+- Evidence: the duel project's refs (`locke-L3-3q`, `locke-L4-3q`, `gray-king-1b-bitten-3q`, `gray-king-1b-ribs-3q`) and cards 1AH-1AZ; continuity diff 0 errors, 0 warnings.
+- Scope: skill (costume-arc, wound stages); builds on L-005
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-16

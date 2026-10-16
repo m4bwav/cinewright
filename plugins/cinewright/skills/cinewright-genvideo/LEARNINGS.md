@@ -101,3 +101,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: owner's film test, section 7 (extra speech at 4.8-8.6 s; repaired by splicing sound from another take)
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-10
+
+### L-016 · 2026-10-16 · A fight card's hits land when each hit has its own timecode; prose lets the model invent the fight
+- Trigger: open test 2 of the fight-planning research note, on a rapier duel's card of three quick touches to one arm (a 3 s card, 107 frames): the card's prose against the same card with a `Timeline:` giving each hit and its reaction its own 0.8 s range, at 40 steps with no speed LoRA and at the 8-step turbo; same seed, refs, set tag and Canny control.
+- Hypothesis: a forum maker landed punches with every hit on its own timecode; in one prose sentence the model chooses its own fight.
+- Rule: write a fight card's action as a timeline, one hit and its reaction to a range, in the order they happen, and keep the 8-step turbo. Both timeline takes kept the card's over-the-shoulder staging and aimed each lunge at the named arm; both prose takes lost the staging (one opponent ran past into the background, the other became a body-to-body melee) with no clear touch. Forty steps gave cleaner motion but no better hits, at 3.5 times the time (14.8 against 4.2 min). Expect each stamped hit 0.3-0.9 s off its range and blood on the wrong part of the limb; treat the stamps as order and rhythm. Check hits on a frame strip every 0.4 s: a 2x2 judge sheet holds four frames of a 4.5 s clip and cannot count three touches.
+- Evidence: a duel project's test folder (four takes of one card, frame grids, `qc judge --twice` reports); the research note's open test 2.
+- Scope: skill (fight cards, timed beats on H3); a card field for timed beats is proposed in cinewright-movement L-009's change list
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-16

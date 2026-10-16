@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261016-1 · 2026-10-16 · Lesson: a fight card's hits land when each hit has its own timecode
+- because: L-016
+- files: LEARNINGS.md (Active: L-016)
+- Open test 2 of the fight-planning research note, answered on one card at two step counts.
+
 ### C-20261014-1 · 2026-10-14 · minimax-h3: violence, fight LoRAs, forced end frame
 - because: user request (impalement, fights, healing, flying), R-20261014-1
 - files: references/minimax-h3.md (Rules, sources, last_checked)

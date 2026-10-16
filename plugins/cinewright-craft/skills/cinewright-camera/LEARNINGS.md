@@ -29,3 +29,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: the duel project's set plan cameras `floor` (frame top east) and `floor-p5` (frame top north, on side A), card 1AG; set check 36 beats, 0 errors.
 - Scope: skill (overhead framing, screen direction)
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-16
+
+### L-004 · 2026-10-16 · An overhead on a fighter pinned under another sees only the top one's back; shoot the pinned face from the floor in profile
+- Trigger: the duel's last exchange: the antagonist dies on his back with the hero astride his chest; the planned overhead ECU on his eyes would have looked straight down on the hero's back and head.
+- Hypothesis: a body on top covers the face below it from above; the only clear lines to the pinned face are low and from the side, or from beyond the head looking up at the one on top.
+- Rule: for a face pinned under another body, put the camera on the deck beside the head (here 0.3 m high, 85 mm, square to the body) for the pinned face, and beyond the head looking up for the one on top; keep the overhead for a body alone on the floor (L-003).
+- Evidence: the duel project's named cameras `gk-eyes` and `gk-pov`, cards 1AV-1AW; set check 0 errors.
+- Scope: skill (framing, blocking with bodies on the floor); builds on L-003
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-16
