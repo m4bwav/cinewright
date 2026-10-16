@@ -941,6 +941,24 @@ class TestQc(Base):
         self.assertEqual(code, 1)
         self.assertIn("does not belong", text)
 
+    def test_rubric_carries_the_faced_wall(self):
+        locs = json.loads((self.proj / "bibles" / "locations.json").read_text(encoding="utf-8"))
+        locs["locations"][0]["walls"] = {"east": "facing a solid panelled wall under a gallery"}
+        lib.write_text(self.proj / "bibles" / "locations.json", json.dumps(locs))
+        card = json.loads((self.proj / "cards" / "1B.json").read_text(encoding="utf-8"))
+        run("qc", "rubric", self.proj, "--card", "1B")
+        rub = json.loads((self.proj / "qc" / "1B.rubric.json").read_text(encoding="utf-8"))
+        self.assertEqual([i for i in rub["items"] if i["check"] == "set"], [])
+        card["camera"]["faces"] = "east"
+        lib.write_text(self.proj / "cards" / "1B.json", json.dumps(card))
+        code, text = run("qc", "rubric", self.proj, "--card", "1B")
+        self.assertEqual(code, 0, text)
+        rub = json.loads((self.proj / "qc" / "1B.rubric.json").read_text(encoding="utf-8"))
+        st = [i for i in rub["items"] if i["check"] == "set"]
+        self.assertEqual(len(st), 1)
+        self.assertIn("solid panelled wall under a gallery", st[0]["ask"])
+        self.assertIn("set-drift", st[0]["codes"])
+
     def test_standing_claims_join_the_rubric(self):
         lib.write_text(self.proj / "qc" / "standing.json", json.dumps({"*": [
             {"id": "no-air-steps", "claim": "Nobody takes walking steps on the air.", "code": "air-steps", "why": "reviewer"}]}))

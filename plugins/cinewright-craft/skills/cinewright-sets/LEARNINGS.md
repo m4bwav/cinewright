@@ -6,6 +6,22 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-005 · 2026-10-15 · `card-camera-control-holds-the-room`: a grid reference alone lost the room; Canny from the card's camera kept it
+- Trigger: set field test, 2026-10-15: the plan passed a one-image grid of six plates as the only set reference in every card; the first card's take drew a generic hall with a stair the plan does not have and sconces for niches
+- Hypothesis: a grid of views gives the materials but not which wall stands behind this camera; control rendered from the blockout at the card's own camera does
+- Rule: per card, the grid as the set ref plus Canny control from the blockout at the card's camera (strength 0.6, end 0.4 on the local video model), the camera taken from the marks; the faced wall's single plate also kept the room, by copying itself, so use it as a ref only when the card's camera is near the plate's
+- Evidence: one card three ways, same prompt and seed: grid alone lost the room, plate and grid plus control kept it (five set claims judged twice, then checked by eye); about 30 % more render time with control; one seed each
+- Scope: skill (blockout-control, master-plates)
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-15
+
+### L-006 · 2026-10-15 · `scene-sun-names-no-wall`: the scene's sun line is compiled into every card
+- Trigger: set field test, 2026-10-15: the scene bible's `sun` said the firelight came "through the tall west windows", and the compiled prompt of a card facing the solid east wall carried it (L-003's fault again, by another field)
+- Hypothesis: compile writes the scene's `sun` into every card of the scene whatever `camera.faces` says, as it does the location `description`
+- Rule: the scene's `sun` gives the source's direction only ("firelight from the west"); windows, fires and other wall features go in their wall's string. Also keep the location's `refs` to the one grid: compile sends every location ref with every card
+- Evidence: compiled card before and after; seven location refs became one
+- Scope: skill (wall-strings, set-light)
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-15
+
 ### L-003 · 2026-10-15 · `light-line-draws-the-windows`: name a wall's light source only in that wall's plates
 - Trigger: set field test, 2026-10-15: a shared light line said firelight came "through the tall windows"; all six plates of the solid east and south walls came back with fire-lit windows cut into them
 - Hypothesis: every noun in the prompt is drawn somewhere in the frame; the window noun wins over a solid wall's edges in the control picture

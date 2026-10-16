@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261015-2 · 2026-10-15 · Judge grid's black last tile fixed; the rubric checks the faced wall
+- because: L-004, L-005
+- files: shared/lib/cine.py (`judge_grid`; RUBRIC row `set`, filled from `camera.faces`), shared vocab failures-picture (`set-drift`), tests/test_cine.py, LEARNINGS.md
+- The judge's 2x2 grid now holds four frames of a one-card clip; a card that faces a wall gets a `set` item from that wall's string, with the new code `set-drift`.
+
 ### C-20261015-1 · 2026-10-15 · Critic research: review passes, a vision judge, calibration, take selection
 - because: R-20261015-1 (five research tracks and a 600-claim field test), user request
 - files: SKILL.md (Steps 1-2), references/review-passes.md, references/vision-judge.md, references/judge-calibration.md, references/take-selection.md, references/qc-loop.md (note), shared/lib/cine.py (`qc judge`, `qc agree`, standing claims from `qc/standing.json` in `qc rubric`), shared vocab failures-motion (`air-steps`)

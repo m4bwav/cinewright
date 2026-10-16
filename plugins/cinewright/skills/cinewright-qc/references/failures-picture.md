@@ -4,9 +4,9 @@ slug: failures-picture
 summary: Failure codes for rendered takes (identity, wardrobe, props, direction, eyeline, light, look, camera): symptom, cause, cheapest fix, rung, check.
 tags: [vocab, qc, failures, taxonomy, continuity]
 last_checked: 2026-10-03
-sources: ["field lessons 005, 010-013, 017, 019 (maintainer's local renders, 2026-09)", "Pat P. Miller, Script Supervising and Film Continuity, 3rd ed., 1999"]
+sources: ["field lessons 005, 010-013, 017, 019 (maintainer's local renders, 2026-09)", "set field test, 2026-10-15: a rapier duel from a novel, one card three ways", "Pat P. Miller, Script Supervising and Film Continuity, 3rd ed., 1999"]
 ---
-<!-- copied from shared/vocab/failures-picture.md sha256:1d5282fa2edbe43bfcf1261b31fc322b80de1abca2408285ce13c27d87c20dd1; edit the source -->
+<!-- copied from shared/vocab/failures-picture.md sha256:a1738be5955d1393d1cf40212255c382560a6323a61afe94a6a28390c0da5894; edit the source -->
 
 # Failure codes, picture and continuity
 
@@ -28,6 +28,7 @@ Rung: the repair ladder in the router's `pipeline` entry (1 prompt, 2 parameter,
 | `look-drift` | grade, grain or palette differs | look string edited or missing | paste the look verbatim; match in the grade | 7 | style |
 | `wrong-framing` | size or angle not as carded | camera words buried late | camera first, one size, one angle | 1 | camera |
 | `wrong-move` | extra, missing or fast camera move | two moves, or no speed | one move with a speed ("slow") | 1 | camera |
+| `set-drift` | the room behind is not the planned one: a wall, opening, stair or dressing the set does not have | the set passed only as a grid of views; the card's wall string missing | Canny control from the blockout at the card's own camera; the faced wall's plate as a ref | 4 | set |
 
 ## Rules
 

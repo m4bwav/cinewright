@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261015-2 · 2026-10-15 · First card against the set: control from the card's camera; the scene's sun names no wall
+- because: L-005, L-006
+- files: LEARNINGS.md
+- The grid reference alone lost the room on the first card; Canny control from the card's own blockout camera kept it. The scene bible's sun line reaches every card, so it names no window.
+
 ### C-20261015-1 · 2026-10-15 · Blocking marks; light, plates and checks from a one-room field test
 - because: user request (2026-10-15: sets, set references, blocking continuity, set LoRAs), L-003, L-004, research note ai-docs/research/2026-10-15-sets-and-loras.md
 - files: references/blocking-marks.md (new), references/set-light.md, references/master-plates.md, references/set-check.md, SKILL.md (Step 1)

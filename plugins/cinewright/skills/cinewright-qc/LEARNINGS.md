@@ -6,6 +6,22 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-004 · 2026-10-15 · `judge-grid-black-tile`: the judge's last tile fell past the end of a one-card clip
+- Trigger: set field test, 2026-10-15: `qc judge --twice` failed the action on all three takes of one 5.2 s card, saying the sequence ends on a black frame; the clips play to the end
+- Hypothesis: the 2x2 grid starts an eighth into the window but asked for the window's full length, so fps placed the fourth frame after the clip's last frame
+- Rule: fixed in `judge_grid` (a 7/8 window with fps fitted to it: four frames, tested on the full clip and on a mid-clip window); before the fix, read any "black frame" or "ends early" verdict on a one-card clip as the judge's fault
+- Evidence: ffmpeg showinfo, 3 frames before and 4 after; a rapier duel from a novel, takes s1a-s1c
+- Scope: tool (shared/lib/cine.py)
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-15
+
+### L-005 · 2026-10-15 · `rubric-checks-the-set`: the rubric had no set item; it now asks for the faced wall
+- Trigger: set field test, 2026-10-15: the card rubric checked light, style and camera but nothing about the room, and the take that lost the room (an invented stair) had no item to fail
+- Hypothesis: the rubric builds from the card's fields, and `camera.faces` is not one of its checks
+- Rule: `qc rubric` now adds a `set` item from the card's `camera.faces` and that wall's string (code `set-drift`); add sharper claims from the set plan and its blockout class render in `qc/standing.json` under the card id ("Is the background free of any staircase?"), never from the prompt
+- Evidence: five set claims judged twice per take: 4 yes and 1 split on the two takes that kept the room, a no on the stair in the one that lost it
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-15
+
 ### L-001 · 2026-10-03 · A multi-shot generation is one take: measure it whole, change one thing across its cards
 - Trigger: 2026-10-03, first local render (cards 1A, 1B, 1C in one 14 s H3 generation): `qc spec --card 1A` judged the 14.4 s clip against a 6 s card, and the three rubrics each proposed a different next change
 - Hypothesis: Rubrics are per card but a reroll re-renders the whole generation, so per-card changes stack into several changes at once

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:b2aa3770a0b473e309a6cd8ab20cbfe87c31d8ea8bb23d1dfadf1f74a94921a1; edit the source
+# copied from shared/lib/cine.py sha256:e50f456ab8d67402262c9fd1894f6879f981ec3db4bcb425f734fbc7ca342460; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -1210,6 +1210,9 @@ RUBRIC = [
     ("light", "sheet", "Light as planned ({light}), with no change of side or time of day?"),
     ("style", "sheet", "Does the look match: {look}?"),
     ("camera", "sheet", "Is it a {size}, {angle}, with {move} and no other move?"),
+    # the wall the card faces (camera.faces): a take that kept the action but lost the room had no item to fail
+    # (set field test, 2026-10-15; qc L-005)
+    ("set", "sheet", "Is the room behind as planned, with nothing the set does not have: {wall}?"),
     ("action", "sheet", "Does the action happen and finish at normal speed, already moving at frame 1: {action}"),
     ("opening", "first frame", "Does the first frame match the start state: {start_state}"),
     ("end-state", "last frame", "Does the last frame match the end state: {end_state} Write what it shows."),
@@ -1376,7 +1379,8 @@ def rubric_items(p, card):
     base = {"look": p.style["look"], "light": "; ".join(lt) or "as the scene bible", "size": SIZE_WORDS[cam["size"]],
             "angle": ANGLE_WORDS[cam["angle"]], "move": MOVE_WORDS[cam["move"]], "action": _sentence(card["action"]),
             "start_state": _sentence(card.get("start_state", "")), "end_state": _sentence(card.get("end_state", "")),
-            "audio": "; ".join(audio), "prev": prev[-1]["id"] if prev else ""}
+            "audio": "; ".join(audio), "prev": prev[-1]["id"] if prev else "",
+            "wall": p.locs.get(sc.get("location"), {}).get("walls", {}).get(cam.get("faces"), "").rstrip(".")}
     items = []
     for check, look, ask in RUBRIC:
         rows = []
@@ -1393,7 +1397,7 @@ def rubric_items(p, card):
                 if not need or v[need]:
                     rows.append(("%s:%s" % (check, m["id"]), ask.format(**v)))
         else:
-            need = {"opening": "start_state", "end-state": "end_state", "audio": "audio", "seam": "prev"}.get(check)
+            need = {"opening": "start_state", "end-state": "end_state", "audio": "audio", "seam": "prev", "set": "wall"}.get(check)
             if not need or base[need]:
                 rows.append((check, ask.format(**base)))
         for rid, text in rows:
@@ -1463,8 +1467,11 @@ def judge_grid(clip, start, end):
     dur = max(0.2, end - start)
     with tempfile.TemporaryDirectory() as d:
         out = Path(d) / "grid.jpg"
-        run_tool([need_tool("ffmpeg"), "-v", "error", "-y", "-ss", "%.3f" % (start + dur / 8), "-t", "%.3f" % dur, "-i",
-                  str(clip), "-vf", "fps=4/%.3f,scale=576:-2,tile=2x2" % dur, "-frames:v", "1", "-q:v", "3", str(out)])
+        # the window starts an eighth in, so it is 7/8 long and fps fits four frames in it; at the full length the
+        # fourth frame fell past the end of a one-card clip and its tile came out black (qc L-004)
+        win = dur * 7 / 8
+        run_tool([need_tool("ffmpeg"), "-v", "error", "-y", "-ss", "%.3f" % (start + dur / 8), "-t", "%.3f" % win, "-i",
+                  str(clip), "-vf", "fps=4/%.3f,scale=576:-2,tile=2x2" % win, "-frames:v", "1", "-q:v", "3", str(out)])
         return base64.b64encode(out.read_bytes()).decode()
 
 

@@ -528,3 +528,17 @@ YELLOW: lora-or-references 1,199 tokens (red 1,200, trimmed from 1,246); runtime
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 6 hits in 2 files (the known third-party GPU benchmark lines only)
 ```
+
+## 2026-10-15: first card against the set
+
+The one-room duel's first card (a rapier duel from a novel) rendered three ways with the same prompt and seed: the set as a grid reference only, as the faced wall's single plate, and as the grid plus Canny control from the blockout at the card's own camera. The grid alone drew a generic hall (a stair the plan lacks, sconces for niches); the plate and the control both kept the room. Route: grid plus card-camera control (sets L-005). Found on the way: the scene's `sun` line reaches every card, so it must not name a window (sets L-006); the judge's 2x2 grid left its last tile black on a one-card clip, fixed in `judge_grid` (qc L-004); the rubric had no set item, now generated from `camera.faces` with the new code `set-drift` (qc L-005).
+
+```
+$ python -m unittest tests.test_cine
+Ran 102 tests in 31.9s
+OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 6 hits in 2 files (the known benchmark lines only)
+```
