@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261016-2 · 2026-10-16 · minimax-h3: card beats compile to a Timeline
+- because: L-016
+- files: references/minimax-h3.md (`beat_stamp`, `beats_lead`, a Rules line); shared schemas and lib (card `beats`)
+- A card's `beats` compile to `Timeline: [t0s-t1s] ...` in place of its action on models whose card has `beat_stamp`; others get the action.
+
 ### C-20261016-1 · 2026-10-16 · Lesson: a fight card's hits land when each hit has its own timecode
 - because: L-016
 - files: LEARNINGS.md (Active: L-016)

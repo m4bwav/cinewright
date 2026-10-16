@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:94c473e827638a75906b3a58662e960502ee43d882d0b5637e61ab4556ee7f17; edit the source",
+  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:c2cc7ad0933a5860a911d5c23ccb031dac2ecf05aefdc4c7bdf391191dd5a136; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Shot card",
   "description": "One shot, generator-neutral. Fields follow the shot list (slate, size, angle, move, lens, action, dialogue, duration) and the script supervisor's notes (camera side, screen direction, eyelines, wardrobe, props in hand, start and end state).",
@@ -241,6 +241,38 @@
       "minLength": 5,
       "maxLength": 240,
       "description": "One action, present tense."
+    },
+    "beats": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The action as timed beats on the rendered clip (seconds from its first frame), in order and not overlapping: each hit and its reaction on its own range. Models whose card has beat_stamp get them as a timeline in place of the action; other models get the action, kept as a one-sentence summary.",
+      "items": {
+        "type": "object",
+        "required": [
+          "t0",
+          "t1",
+          "text"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "t0": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 16
+          },
+          "t1": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 16
+          },
+          "text": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 160,
+            "description": "One beat, present tense."
+          }
+        }
+      }
     },
     "dialogue": {
       "type": "array",

@@ -17,9 +17,9 @@ sources: ["David McCormick (Fight Directors Canada), Recording Choreography, Aca
 - The side that wins must almost lose. `check` warns ONE-SIDED when one fighter leads every phrase.
 - Write each exchange operator first: who acts (`lead`), the move with its weapon (`with`) and its target in body words ("thrusts at his left shoulder"), the other's `answer`, the `result`. Never fencing parry numbers or target codes: no video model knows "parry 4".
 - Record every change after an exchange: a prop drawn, dropped or taken (`right`, `left`, `carried`), a new `mark` (wound, blood), `posture`, and `side` when they cross on screen. A prop is in one place: taking it from the other's belt removes it there.
-- Copy every mark verbatim into the start_state or action of each later card of that fighter; the model forgets wounds between generations. Clean reference sheets keep identity (entry wounds-and-healing).
+- Copy every mark verbatim into the start_state or action of each later card of that fighter; the model forgets wounds between generations. On a card with beats, the marks go in the beats, not the action: the beats replace the action in a timecoded prompt, and `check` reads them instead. Clean reference sheets keep identity (entry wounds-and-healing).
 - One exchange per card, two at most; a card no shorter than its exchanges. Pause cards carry dialogue.
-- Music: set `bpm`; cut cards and land the big impacts on beats, not every contact. Timing inside one generation cannot be controlled; timing lives at the cuts.
+- Music: set `bpm`; cut cards and land the big impacts on beats, not every contact. Timing lives at the cuts. Inside a fight card, give the card `beats` (each hit and its reaction on its own range of about 0.8 s, times on the rendered clip) for models that take timecodes: they set order and rhythm, not frames (genvideo L-016). Keep `action` as a one-sentence summary for the others.
 - `cine_fight.py sheet` writes the grid (a column per fighter, an arrow from the operator) and a CSV; a step chart of `ahead_score` over `time_s` (chartwright) shows the turns at a glance. Sheets and charts are for people reviewing the arc; never paste them into prompts.
 
 ## Numbers

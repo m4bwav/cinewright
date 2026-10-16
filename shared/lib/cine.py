@@ -459,6 +459,12 @@ def validate_project(ctx, p):
         seen_orders.add(order)
         if card.get("scene") not in p.scene_map:
             errs.append("%s: scene '%s' is not in scenes.json" % (tag, card.get("scene")))
+        last = 0
+        for i, b in enumerate(card.get("beats", [])):
+            t0, t1 = b.get("t0", 0), b.get("t1", 0)
+            if t1 <= t0 or t0 < last:
+                errs.append("%s: beats[%d] (%s-%ss) overlaps or runs backward" % (tag, i, t0, t1))
+            last = max(last, t1)
         for m in card.get("cast", []):
             if m.get("id") not in p.chars:
                 errs.append("%s: cast '%s' is not in characters.json" % (tag, m.get("id")))
@@ -899,7 +905,7 @@ def prop_words(p, name, state=None, tags=None):
     return "%s %s" % (words, tag) if tag else words
 
 
-def card_parts(p, card, prof, tags=None, speakers=None):
+def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
     sc = p.scene_map[card["scene"]]
     loc = p.locs[sc["location"]]
     cam = card["camera"]
@@ -940,6 +946,9 @@ def card_parts(p, card, prof, tags=None, speakers=None):
             stage.append(_sentence("%s is %s" % (p.chars[m["id"]]["name"], ", ".join(bits))))
     parts["staging"] = " ".join(stage)
     act = [_sentence(card["action"])]
+    if card.get("beats") and prof.get("beat_stamp"):
+        act = [" ".join([prof.get("beats_lead", "")] + ["%s %s" % (prof["beat_stamp"].format(
+            t0="%.1f" % (b["t0"] + start), t1="%.1f" % (b["t1"] + start)), _sentence(_cap(b["text"]))) for b in card["beats"]]).strip()]
     for m in card.get("cast", []):
         name = p.chars[m["id"]]["name"]
         # only the card's own travel: the scene's travel is what continuity checks against, and stating it
@@ -1099,10 +1108,10 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
             head = " ".join(pool[k] for k in prof.get("sequence_head", ["people", "context", "sun", "style"]) if pool.get(k))
             blocks, t = [], 0.0
             for i, c in enumerate(g):
-                parts = card_parts(p, c, prof, tags, speakers)
+                start, end = t, t + c["duration_s"]
+                parts = card_parts(p, c, prof, tags, speakers, start)
                 if parts["sound"]:
                     sound.append(parts["sound"])
-                start, end = t, t + c["duration_s"]
                 tpl = prof["timestamp"] if i == 0 else prof.get("timestamp_next", prof["timestamp"])
                 stamp = _stamp(tpl, i + 1, start, end)
                 body = " ".join(parts[k] for k in prof.get("sequence_block", ["camera", "staging", "action", "key", "audio"]) if parts.get(k))
@@ -1152,6 +1161,14 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
             warnings.append("planned %ss, %s renders at most %ss: split the card or cut it shorter" % (total, prof["model_id"], max(prof["durations_s"])))
         elif abs(dur - total) > 0.1:
             warnings.append("planned %ss, rendered at %ss: trim in the edit" % (total, dur))
+        for c in g:
+            bt = c["beats"][-1]["t1"] if c.get("beats") else 0
+            if bt and not prof.get("beat_stamp"):
+                warnings.append("%s: %s takes no timecodes; sent the action" % (c["id"], prof["model_id"]))
+            elif bt > (dur if len(g) == 1 else c["duration_s"]) + 1e-6:
+                raise SystemExit("%s: beats run to %ss, past the %ss render" % (c["id"], bt, dur if len(g) == 1 else c["duration_s"]))
+            elif bt > total + 0.1:
+                warnings.append("%s: beats run to %ss: keep the last %ss in the edit" % (c["id"], bt, total))
         if refs and len(refs) > prof.get("max_reference_images", 0):
             warnings.append("%d reference images, %s takes %d" % (len(refs), prof["model_id"], prof.get("max_reference_images", 0)))
         if not prof["dialogue"] and any(c.get("dialogue") for c in g):
@@ -1884,7 +1901,7 @@ def cmd_qc(ctx, a):
         try:
             p = Project(Path(a.rubric).resolve().parent.parent)
             card = card_by_id(p, rub["card"].split("+")[0])
-            action = card["action"]
+            action = " ".join(_sentence(b["text"]) for b in card["beats"]) if card.get("beats") else card["action"]
             cast = " The people who may appear: " + "; ".join("%s: %s" % (p.chars[m["id"]]["name"], p.chars[m["id"]]["identity"])
                                                               for m in card.get("cast", []))
         except (OSError, SystemExit, KeyError):

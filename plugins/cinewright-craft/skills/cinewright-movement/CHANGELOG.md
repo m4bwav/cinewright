@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261016-5 · 2026-10-16 · Fight cards take timed beats; marks may sit in a beat
+- because: L-009 (its proposed change, in part), genvideo L-016
+- files: references/fight-plan.md; shared/lib/cine_fight.py (check reads beats)
+- The card's new `beats` field carries each hit on its own range; on a card with beats, `cine_fight.py check` reads the beats in place of the action, since a timecoded prompt sends the beats and drops the action.
+
 ### C-20261016-4 · 2026-10-16 · Lesson: late in a fight the standing marks overflow a card's 240-character fields; split them, or shorten a plan mark to a substring of itself
 - because: L-009
 - files: LEARNINGS.md (Active: L-009)
