@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261015-3 · 2026-10-15 · Lesson: two blades in hand and two shots per exchange
+- because: L-004
+- files: LEARNINGS.md (Active: L-004)
+- Cards for a duel's second phrase needed a blade per hand and several cards per exchange; the workaround and the proposed schema change are recorded.
+
 ### C-20261015-2 · 2026-10-15 · Fight plans: schema, cine_fight.py, entries fight-plan, fight-from-a-book, fight-previs
 - because: user request (deeper choreography documents; combat notation, reversal graphs and timeline moments checked; adapt fights from books; 3D for fights), R-20261015-1, L-003
 - files: SKILL.md (step 4), references/fight-plan.md, fight-from-a-book.md, fight-previs.md (new), references/fights-and-stunts.md (plan pointer, the double hit, Related), needs.json (cine_fight.py, fight-plan schema), evals/evals.json (action-2)
