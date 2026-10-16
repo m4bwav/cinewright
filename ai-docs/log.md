@@ -560,3 +560,19 @@ YELLOW: runtime shared/lib 149 KB (red 150; this change added 2.7 KB to cine.py)
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 11 hits in 4 files (the same 11 as main)
 ```
+
+## 2026-10-16: lessons from a duel's fifth phrase
+
+Docs only. Script L-004: a card holds 8 s, so a line past about 17 words is cut at a comma across two setups, never sped up or trimmed. Camera L-003: an overhead on a lying figure points frame top square to the body and keeps the pair's screen order; frame top toward the feet turns the face upside down. Design L-005 confirmed after the staged-refs merge: the project's swap snapshots matched the keyed compile file for file, and its next wound stage was one new key.
+
+```
+$ python -m unittest discover -s tests
+Ran 108 tests in 34.4s
+OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ python scripts/cine.py budget
+YELLOW, the same rows as main (no runtime change)
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 11 hits in 4 files (the same 11 as main)
+```

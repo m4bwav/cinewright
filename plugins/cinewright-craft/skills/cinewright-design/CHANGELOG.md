@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261016-2 · 2026-10-16 · L-005 confirmed after the staged-refs merge
+- because: L-005
+- files: LEARNINGS.md (L-005 status)
+- A project converted to staged refs compiled exactly as its swap snapshots did, and its next wound stage was one new key.
+
 ### C-20261016-1 · 2026-10-16 · Character refs keyed by stage (scene id or a named stage such as a wound)
 - because: L-005, owner's go-ahead for the compiler change (2026-10-16)
 - files: references/costume-arc.md, references/turnaround-sheets.md, LEARNINGS.md (L-005 resolved); shared/lib/cine.py, shared/schemas/character-bible.schema.json, shared/schemas/shot-card.schema.json, tests/test_cine.py
