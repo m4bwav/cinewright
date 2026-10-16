@@ -22,7 +22,9 @@
           "voice": {"type": "string"},
           "wardrobe": {"type": "object", "required": ["default"], "additionalProperties": {"type": "string"}, "description": "default plus optional overrides keyed by scene id."},
           "props": {"type": "array", "items": {"type": "string"}},
-          "refs": {"type": "array", "items": {"type": "string"}, "description": "Turnaround sheet or reference image ids."}
+          "refs": {"type": ["array", "object"], "items": {"type": "string"}, "required": ["default"],
+            "additionalProperties": {"type": "array", "items": {"type": "string"}},
+            "description": "Turnaround sheet or reference image ids. A list goes to every card. For a costume or wound stage, an object keyed like wardrobe: default plus scene ids or stage names (e.g. {\"default\": [...], \"1b\": [...], \"L1\": [...]}); a card's cast entry picks a stage with refs_stage, else its scene id, else default."}
         }
       }
     }

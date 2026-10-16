@@ -45,6 +45,7 @@
           "travel": {"enum": ["left-to-right", "right-to-left", "toward-camera", "away-from-camera", "none"]},
           "holding": {"type": ["string", "null"], "description": "Prop in hand at the start of the shot."},
           "holding_end": {"type": ["string", "null"], "description": "Prop in hand at the end, when it changes."},
+          "refs_stage": {"type": "string", "description": "Key of the character's staged refs (characters.json) this card shows, such as a wound stage; without it the scene id, then default."},
           "holding_state": {"type": "string", "description": "One of the held prop's states in props.json; its description and refs replace the prop's."}
         }
       }

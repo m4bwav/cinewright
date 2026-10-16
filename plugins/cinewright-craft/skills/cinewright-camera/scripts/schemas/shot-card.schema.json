@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:f5b6252020fc5450f5b4082b6fbb6efd6f8b0aae7937d373dd7a1c8cb8bb381a; edit the source",
+  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:94c473e827638a75906b3a58662e960502ee43d882d0b5637e61ab4556ee7f17; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Shot card",
   "description": "One shot, generator-neutral. Fields follow the shot list (slate, size, angle, move, lens, action, dialogue, duration) and the script supervisor's notes (camera side, screen direction, eyelines, wardrobe, props in hand, start and end state).",
@@ -199,6 +199,10 @@
               "null"
             ],
             "description": "Prop in hand at the end, when it changes."
+          },
+          "refs_stage": {
+            "type": "string",
+            "description": "Key of the character's staged refs (characters.json) this card shows, such as a wound stage; without it the scene id, then default."
           },
           "holding_state": {
             "type": "string",

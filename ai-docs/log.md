@@ -542,3 +542,21 @@ kb lint: 16 skills, 0 errors
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 6 hits in 2 files (the known benchmark lines only)
 ```
+
+## 2026-10-16: character refs keyed by stage
+
+A character's `refs` can now be keyed like its wardrobe (`{"default": [...], "1b": [...], "L1": [...]}`), and a card's cast entry names its stage with `refs_stage`, falling back to the scene id and then `default` (design L-005). Before this, every sheet went to every card, so a costume or wound stage meant swapping the bible list and keeping a compile snapshot per stage; the duel (a rapier duel from a novel) already had three snapshot folders. The compiler sends one stage per card, `film_json` puts staged sheets per shot instead of film-wide, and `continuity diff` errors on an unknown stage and warns when a later card goes back to an earlier stage. Check against the real case: a scratch copy of the duel with staged refs and no swaps compiled to exactly the files its three snapshot folders hold (48 of 48), after one fix found by that check (picture tags now follow the reference order, not the bible order). wounds-and-healing now gives a lasting wound its own ref stage; one-card marks stay text.
+
+```
+$ python -m unittest discover -s tests
+Ran 108 tests in 35.4s
+OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ claude plugin validate (root and three plugins)
+Validation passed (4 of 4)
+$ python scripts/cine.py budget
+YELLOW: runtime shared/lib 149 KB (red 150; this change added 2.7 KB to cine.py); other rows as before
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 11 hits in 4 files (the same 11 as main)
+```

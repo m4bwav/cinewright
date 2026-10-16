@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/character-bible.schema.json sha256:b408a8cf2325bb86b47a6a8e964139047b39efe351c1115c638f9a053313b507; edit the source",
+  "$comment": "copied from shared/schemas/character-bible.schema.json sha256:4d4e77004f7ffdce03d5284ce1c5d44a93839dbf569aa6d61dd4b11361c31f4e; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Character bible",
   "description": "bibles/characters.json: one identity string per character, copied verbatim into every card and prompt, plus wardrobe by scene.",
@@ -62,11 +62,23 @@
             }
           },
           "refs": {
-            "type": "array",
+            "type": [
+              "array",
+              "object"
+            ],
             "items": {
               "type": "string"
             },
-            "description": "Turnaround sheet or reference image ids."
+            "required": [
+              "default"
+            ],
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Turnaround sheet or reference image ids. A list goes to every card. For a costume or wound stage, an object keyed like wardrobe: default plus scene ids or stage names (e.g. {\"default\": [...], \"1b\": [...], \"L1\": [...]}); a card's cast entry picks a stage with refs_stage, else its scene id, else default."
           }
         }
       }
