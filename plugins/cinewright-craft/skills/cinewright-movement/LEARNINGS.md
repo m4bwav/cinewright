@@ -29,3 +29,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: evals/run_evals.py BASH_ALLOW (cine_*.py), evals.json action-2 input_match, T-20261015-1
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-15
+
+### L-004 · 2026-10-15 · A fighter with a blade in each hand has one `holding`; an exchange covered by two shots links one card
+- Trigger: phrase 2 of a rapier duel from a novel (rapier and dagger against rapier and stiletto): card `holding`/`holding_end` take one prop each, and continuity requires a card's `holding` to equal the previous card's `holding_end`, so cards had to pick one blade per hand-off (stiletto in, rapier out) though both stay in hand; exchange 3 was shot as two singles plus an insert, and `exchanges[].card` takes one id, so the second single and the insert cover the exchange without being linked.
+- Hypothesis: the card and fight schemas assume one weapon per fighter and one card per exchange.
+- Rule: until the schema has a second hand, put the blade the shot features in `holding`, chain `holding_end` to the next card's featured blade, and name both blades in the action text; link the exchange to the card that shows its operator's move and list the extra coverage cards in the project README. Proposed change: `holding_left` (or `holding` as a list) and `exchanges[].cards`.
+- Evidence: the duel project's cards 1F-1K and fights/duel.json (exchanges 3-6), `cine_fight.py check --project` 0 errors, `continuity diff` 0 errors.
+- Scope: skill (fight-plan) and shared schema
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-15

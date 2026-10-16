@@ -37,3 +37,19 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: v1 guide stills s7_magi (rejected), regenerated with the substance wording on 2026-10-06
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-06
+
+### L-005 · 2026-10-15 · A character's `refs` cannot follow a costume stage or a wound; every sheet goes to every card
+- Trigger: a rapier duel from a novel: the antagonist has two wardrobe stages (cloak and hood up, then cloak off), each with its own turnaround as costume-arc asks; character `refs` is one flat list, and the compiler (`generation_refs`) sends all of it with every card the character is in, so both stages would reach every shot. The owner then asked whether wounds need a reference per stage too.
+- Hypothesis: the bible keys wardrobe by scene but not refs, so the rule "one sheet per costume" cannot be honoured by the compiler; wound stages hit the same wall. Research (2026-10-15): no measured test of per-stage references against text exists for any model, but practitioner guides (Techloy, InVideo, Elser AI, Aug 2026), film costume and make-up practice (stage-labelled doubles and continuity photos per stage) and reference-to-video papers (OpenS2V-Nexus 2025, Aura 2026: a strong reference suppresses the prompt) agree that a clean sheet heals a wound the text describes; the maintainer's own renders saw blood come and go between text-only shots.
+- Rule: until refs can be keyed like wardrobe, keep only the current stage's crops in the character's `refs` and swap them in the same change that starts the next stage's scene; never list two stages at once. Make each later stage (and each wound stage) by editing the kept picture of the earlier one, the wound by a local edit on the wound area only (cinewright-movement entry wounds-and-healing, rule 1), so the face stays; describe the wound once, on the character's own left or right, matching the picture. Conflict to settle: wounds-and-healing's last rule keeps temporary marks in card text with the clean sheet for identity, which comfyui-gen L-056 (`state-needs-its-own-ref`: the words lose to a clean face ref) and the research above contradict for a wound that lasts across cards; a one-card mark can stay text. Proposed change: `refs` keyed like `wardrobe` (`{"default": [...], "1b": [...]}`), resolved per card by scene.
+- Evidence: the duel project's bibles/characters.json (stage 1 crops listed, 1b crops kept on disk), refs/sheets/edit_src.py; research summary in that project's README, "Wound stages".
+- Scope: skill (costume-arc, turnaround-sheets) and shared compiler
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-15
+
+### L-006 · 2026-10-15 · Image models draw a rapier as a dagger; start a period weapon's sheet from a public-domain museum photo
+- Trigger: prop sheets for the same duel: Z-Image (four prompts, two seeds each, length given in words and as a ratio) and a FLUX.2 Klein lengthening edit all drew short daggers with ring guards; a coin kept a portrait and letters until a Klein edit wore its faces blank.
+- Hypothesis: rare object shapes lose to the model's common one; length in words does not move it.
+- Rule: for a historical weapon or object the models do not know, take an open-access museum photograph (The Met, CC0), keep its real hilt or detail, and build the full view from it in code at the catalogued size; send one ref per prop when two people and several props share a card (the duel's busiest card uses exactly 9 slots). comfyui-gen L-121 has the steps and the script.
+- Evidence: comfyui-gen LEARNINGS L-121 (merged 2026-10-15).
+- Scope: skill (prop-sheets)
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-15
