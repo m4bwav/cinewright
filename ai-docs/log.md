@@ -630,3 +630,18 @@ budget: YELLOW (model card 1176 tokens, runtime shared/lib 150 KB; the other yel
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 11 hits in 4 files (the same 11 as main)
 ```
+
+## 2026-10-16: the 3D route for fights (research)
+
+Docs. The owner asked whether to build a fight in 3D and drive the video from it. Study: [research/2026-10-16-fight-3d-route.md](research/2026-10-16-fight-3d-route.md). Recommendation: keep H3 and put posed figures into its control (its Fun ControlNet Union 2.0 already takes Canny, depth, pose and layout). Pose two segmented mannequins with IK at the set plan's marks, keyed per exchange. Test Canny with figures first, then thick-blade depth, then pose. Build polywright's `pw.py duel` only if that holds the facing better. Previs test on two cards of a rapier duel from a novel: built and rendered in Blender (about 36 s per 107-frame card), H3 test proposed, not run. Findings: pose passes must leave out face points turned from the lens; one card's end state was below its own camera's frame; a box mannequin on the floor is unreadable. Also committed the morning's re-check paragraph in the fight-planning note, with its lesson cited as a field lesson.
+
+```
+$ python -m unittest discover -s tests
+OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ python scripts/cine.py budget
+budget: YELLOW (unchanged; docs only)
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 11 hits in 4 files (the same 11 as main)
+```
