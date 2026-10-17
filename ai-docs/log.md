@@ -645,3 +645,20 @@ budget: YELLOW (unchanged; docs only)
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 11 hits in 4 files (the same 11 as main)
 ```
+
+## 2026-10-17: the H3 previs test (research)
+
+Docs. Ran the four-take H3 test proposed in [research/2026-10-16-fight-3d-route.md](research/2026-10-16-fight-3d-route.md) on the owner's go-ahead and wrote the result there ("The H3 test"). Canny of the clay with the posed figures removed the duplicated kneeling fighter and held the kick card's start and end states; thick-blade depth held the near fighter's back to the camera through the cloak throw but not after it; Canny alone did not fix a standing two-shot's facing. Verdict: `pw.py duel` is worth building; it waits for the owner.
+
+```
+$ python -m unittest discover -s tests
+OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ python scripts/cine.py budget
+budget: YELLOW (unchanged; docs only)
+$ claude plugin validate (root and 3 plugins)
+Validation passed x4
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 11 hits in 4 files (the same 11 as main)
+```
