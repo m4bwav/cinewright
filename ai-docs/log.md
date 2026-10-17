@@ -662,3 +662,20 @@ Validation passed x4
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 11 hits in 4 files (the same 11 as main)
 ```
+
+## 2026-10-17: cinewright-sets points at polywright's asset folder
+
+2026-10-17: cinewright-sets Step 3 now says to ask polywright (when installed) for 3D models, sets, crowd blockouts or figure references through its asset-folder contract with the `video-blockout` target and read `out/` from `manifest.json` (C-20261017-1; polywright HANDOFF owed item 6). The target is `video-blockout`, the name in polywright's targets.json; there is no plain `video` target.
+
+```
+$ python -m unittest discover -s tests
+Ran 113 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ python scripts/cine.py budget
+budget: YELLOW (unchanged; cinewright-sets body 1,028 to 1,114 tokens, green)
+$ claude plugin validate (root and 3 plugins)
+Validation passed x4
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 11 hits in 4 files (the same 11 as main)
+```

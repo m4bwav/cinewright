@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261017-1 · 2026-10-17 · 3D models, sets and blockouts come from polywright's asset folder
+- because: user request (polywright HANDOFF owed item 6: siblings call polywright through the folder contract)
+- files: SKILL.md (end of Step 3)
+- One sentence: when polywright is installed, ask it for 3D models, sets, crowd blockouts or figure references through its asset folder with the `video-blockout` target and read `out/` from `manifest.json`.
+
 ### C-20261015-2 · 2026-10-15 · First card against the set: control from the card's camera; the scene's sun names no wall
 - because: L-005, L-006
 - files: LEARNINGS.md
