@@ -679,3 +679,20 @@ Validation passed x4
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 11 hits in 4 files (the same 11 as main)
 ```
+
+## 2026-10-17: cinewright-sets carries 3D for film and AI video
+
+2026-10-17: new entry `3d-models` in cinewright-sets (C-20261017-2, R-20261017-1), on the user's request that each plugin carry 3D modelling knowledge for its topic and point to polywright. It is the director's side: what the 3D is for (previs, techvis, postvis, control), model only what the cards' cameras see, detail by shot size (an LOD ladder per shot size), plates or 2.5D projection for far scenery, kitbashing, splats for scouting and layout, grey controls with the look in the style bible, real scale and the card's lens, and what to ask polywright for. It links polywright's contract and its film page (`skills/polywright/references/film-and-video.md`, drafted in the same session for polywright to add). Step 3 of SKILL.md got one pointer sentence. The entry is about 1,170 tokens (yellow, under the 1,200 red line).
+
+```
+$ python -m unittest discover -s tests
+Ran 113 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ python scripts/cine.py budget
+budget: YELLOW (unchanged worst values; the new entry is 1,168 tokens, yellow)
+$ claude plugin validate (root and 3 plugins)
+Validation passed x4
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 11 hits in 4 files (the same 11 as main)
+```

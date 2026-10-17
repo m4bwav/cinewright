@@ -49,6 +49,11 @@ Best sources (primary first): vendor docs and model cards (Google, Runway, Kling
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261017-1 · 2026-10-17 · 3D for film and AI video, from the director's side
+- Track: subject, practice · magnitude minor (new reference)
+- Previs, techvis and postvis answer different questions (The Third Floor). Detail follows the largest on-screen size, with an LOD ladder per shot size (CAVE Academy, 2020); hero status comes from screen time and story, not polish. Far scenery is a 2.5D projection or a plate card while the camera moves little. Kitbashing builds hard-surface sets fast. Productions use Gaussian splats for scouting, layout and sightlines, not final pixels (Jurassic World Rebirth, 2026-02-13). For AI video the blockout is for spatial reference, and too much detail confuses the model (flick.art, 2026-06). Matches the field tests of 2026-10-13 to 10-17. Led to entry 3d-models.
+- Sources: https://thethirdfloorinc.com/?p=76, https://caveacademy.com/wiki/post-production-assets/modelling/model-lods/, https://www.tripo3d.ai/blog/explore/hd-model-hero-asset-requirements-for-film-vfx, https://3dart.it/camera-projection-in-nuke, https://unity.com/blog/games/realizing-rapid-conceptual-design-with-kitbashing, https://radiancefields.com/jurassic-world-rebirth-and-gaussian-splatting, https://flick.art/blog/blender-ai-filmmaking, https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-vcam-virtual-camera-settings
+
 ### R-20261007-2 · 2026-10-07 · Field test: a real public building as eleven sets
 - Track: practice · magnitude 0.6
 - Eleven locations, 34 planned stills on a local image model, 16:9, one seed per set. The two off-wall shots rendered first (a reverse to the fireplace wall, an east-door shot) both came back as the establishing desk-and-windows view: the description named the desk and windows. Rewritten as per-wall strings for the re-render. Led to the `walls` field, `camera.faces` and entry wall-strings.
