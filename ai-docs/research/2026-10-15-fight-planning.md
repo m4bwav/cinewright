@@ -69,4 +69,8 @@ Novel to film: inner tactics become lines or visible changes (The Princess Bride
 4. SCAIL-2 at 16 GB with a two-person Blender rig render of one throw.
 5. A self-recorded 5 s exchange through H3 reference video against Wan Animate.
 
+Re-checked 2026-10-16 (Mark asked "best model for 3D animation to video"): no newer local model or benchmark than this note. Answer given: locally, H3 with depth `--control` (proven on crowds, field lesson 097) for now, Wan 2.2 VACE or Fun Control as the open runner-up (no Wan weights on the PC), SCAIL-2 the candidate for two-body fights (untested, open test 4). Hosted, vendor roundups name Luma Ray 3.2 (video-to-video, keyframes) and Moonvalley Marey (pose, trajectory and motion transfer); none tested.
+
+The 3D route (build the fight in Blender, then drive the video from it) is studied in [2026-10-16-fight-3d-route](2026-10-16-fight-3d-route.md), with a previs test on two cards and the first H3 test proposed.
+
 Related: builds on [2026-10-14-violence-healing-flight](2026-10-14-violence-healing-flight.md), [2026-10-13-battle-crowd-compositing](2026-10-13-battle-crowd-compositing.md).
