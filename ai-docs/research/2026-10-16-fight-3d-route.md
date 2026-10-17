@@ -1,6 +1,6 @@
 ---
 title: The 3D route for fights: a posed blockout as the video control
-summary: Study (2026-10-16) of building a fight in 3D and turning it into video. Motion sources and their licences, which control passes and models hold two bodies, a blade and their facing on a 16 GB GPU, what exists to build on and what it costs, and a previs test on two hard cards of a rapier duel from a novel. Recommendation - keep MiniMax H3 and put the posed figures into its control; first H3 test proposed, not run.
+summary: Study (2026-10-16) of building a fight in 3D and turning it into video. Motion sources and their licences, which control passes and models hold two bodies, a blade and their facing on a 16 GB GPU, what exists to build on and what it costs, and a previs test on two hard cards of a rapier duel from a novel. Recommendation - keep MiniMax H3 and put the posed figures into its control. The H3 test (2026-10-17) - figures in the control removed a duplicated fighter and held the start and end states; depth held a fighter's back to the camera through the action but not after it.
 tags: [research, fights, previs, blender, controlnet, depth, pose, canny, scail, motion-capture]
 date: 2026-10-16
 ---
@@ -18,7 +18,7 @@ Method: one web research pass (sources below, labelled vendor, paper, forum or i
 1. **Stay on MiniMax H3 and change only the control.** H3 speaks the lines, takes the character and prop references, and has the timed beats. Its installed Fun ControlNet Union 2.0 already accepts Canny, depth, pose, layout boxes and gray (vendor). No new model is needed to test the idea.
 2. **Pose the two fighters in Blender at the set plan's marks, keyed by hand per exchange.** Use the crowd route's segmented mannequin with two-bone IK and rigid blades. That is enough for a control at 0.6 strength, it is headless, and it needs no licence. Motion capture and Kimodo come later, as a v1 for the poses a box mannequin cannot carry (lying on the floor, a tumble).
 3. **First test Canny of the clay with the figures in it**, since it is the smallest change from what the film uses. Then depth with thickened blades, then pose. Use tonight's seeds and prompts, so the control is the only variable.
-4. **Build polywright's `pw.py duel` only if that test holds facing better than tonight's takes.** SCAIL-2 stays the fallback for two-body action that H3 cannot hold even with figures in the control.
+4. **Build polywright's `pw.py duel` only if that test holds facing better than tonight's takes.** It did, in part (see "The H3 test"): building it waits for the owner's go-ahead. SCAIL-2 stays the fallback for two-body action that H3 cannot hold even with figures in the control.
 
 ## Motion source
 
@@ -70,7 +70,7 @@ What the sheets showed:
 - **Blades:** at the real width (1.6 cm) the depth pass shows a thin, broken line at a 4 m two-shot. At 2.8 times (4.5 cm) it is a solid bar. Canny of the clay draws both edges at either width. Whether H3 keeps a blade from either is open test 1, still to run.
 - **The box mannequin fails on the floor.** A fighter on his back reads as a crumpled block in depth and as a small tangle in pose. Standing, kneeling and kicking read well. Lying, rolling and falling poses are where a rigged body (Mixamo or Kimodo) pays.
 
-## The H3 test (proposed; waits for the owner)
+## The H3 test (run 2026-10-17)
 
 Four takes, each one of tonight's takes re-rendered with the same prompt, references and seed, with only the control changed (0.6 strength, ending at 0.4 of the steps, as tonight):
 
@@ -85,6 +85,20 @@ About 15 minutes of GPU time. Judge them with the same frame strips as the film'
 
 - **If Canny with figures fixes the facing,** `pw.py duel` is worth building, and the film's two-shots get previs controls.
 - **If none does,** run open test 4 (SCAIL-2) on the kick card.
+
+**Result** (the owner's go-ahead on 2026-10-17; 4 takes in 40 minutes, sharing the GPU with another film's render; frame strips every 0.4 s and full-size frames):
+
+| Take | Facing and copies | Hits and states |
+|---|---|---|
+| cloak t1, Canny with figures | no better: both fighters side by side facing the lens, as in tonight's take | the cloak thrown and fallen on its beats |
+| cloak t2, thick-blade depth | **the near fighter's back to the camera, over his shoulder, to 1.2 s**, three-quarter toward the far fighter through the throw (2.0 s); turned to the lens from 2.4 s | the cloak thrown at 1.6-2.0 s; the face bared |
+| kick t1, Canny with figures | **one kneeling man, no copy**, kneeling from frame 0 | kick at 1.2-1.6 s, tumble at 2.4-2.8 s, on his back with the blade on the floor from 3.2 s: every beat, and the end state in frame (the tilted camera) |
+| kick t2, pose | no copy | starts standing and kneels by 1.2 s (inside the trimmed part); kick, tumble and end state land |
+
+- **Figures in the control fix copies and states.** Tonight's kick takes added a second kneeling man in 2 of 4; the previs takes in 0 of 2, and the Canny take is the best of the six.
+- **Facing holds while the control's figures hold it, then drifts.** Depth kept the near fighter's back to the camera through the first half; once the action was spent he turned to the lens as before (field lesson 128). The previs had him turn three-quarter at the throw, so part of the drift may be the pose file's own. Next: key his back to the camera to the last frame, and try depth at 0.8/0.6 (open question 2).
+- **Canny of figures is not enough for a two-shot standing still:** it draws two outlines a model can fill facing either way. Depth carries which side is the back.
+- Verdict: `pw.py duel` is worth building for the two-shots and the floor states. It waits for the owner. The kick card's Canny take is proposed to the owner as that card's pick.
 
 ## Open questions
 
