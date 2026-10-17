@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261017-2 · 2026-10-17 · 3D models for film and AI video, the director's side
+- because: user request: each plugin carries 3D modelling knowledge for its topic and points to polywright; R-20261017-1
+- files: references/3d-models.md (new), SKILL.md (end of Step 3), RESEARCH.md
+- What the 3D is for (previs, techvis, postvis, control), model only what the cards' cameras see, detail by shot size, plates for far scenery, grey controls, real scale and lens, and what to ask polywright for, with links to its contract and its film page.
+
 ### C-20261017-1 · 2026-10-17 · 3D models, sets and blockouts come from polywright's asset folder
 - because: user request (polywright HANDOFF owed item 6: siblings call polywright through the folder contract)
 - files: SKILL.md (end of Step 3)
