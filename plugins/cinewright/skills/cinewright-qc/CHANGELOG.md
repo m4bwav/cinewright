@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261022-1 · 2026-10-22 · Flicker measure; random sides for reviews; rejected takes in the label queue; drift inside a take
+- because: user request (book-learnings track 1: Huyen, *AI Engineering*; Enochs, *Video Generation with AI*); L-006
+- files: shared/lib/cine.py (`frame_motion(clip, diff)`, `measure_take` flicker per shot, MEASURE_FLICKER, MEASURE_FLICKER_RATE; `scene_cuts` and `frame_motion` through `run_tool` to stay inside the runtime budget), shared vocab failures-motion (`flicker`, `lip-lag`, two Rules lines), SKILL.md (Step 1, flicker warns), references/take-selection.md (random sides, a side-bias Verify line), references/judge-calibration.md (gate-rejected takes in the label queue), references/identity-score.md (a face against its own first face), tests/test_cine.py (a flickering clip warns, a clean one does not)
+- `qc measure` reports flicker a second per shot and warns past the threshold; reviewers see two takes in random order with the sides recorded; every film's label queue carries a few takes the gates removed; identity checks a face against itself across the take.
+
 ### C-20261015-2 · 2026-10-15 · Judge grid's black last tile fixed; the rubric checks the faced wall
 - because: L-004, L-005
 - files: shared/lib/cine.py (`judge_grid`; RUBRIC row `set`, filled from `camera.faces`), shared vocab failures-picture (`set-drift`), tests/test_cine.py, LEARNINGS.md

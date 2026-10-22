@@ -9,7 +9,7 @@ model: ltx2
 vendor: Lightricks
 version: "2.5"
 status: current
-volatile_claims: ["LTX-2.5 (2026-07-23) is current; LTX-2.3 and LTX-2 before it", "frames 8n+1, sizes multiple of 32", "local maximum length unverified (hosted API: 20 s)", "camera LoRAs for LTX-2 19B only"]
+volatile_claims: ["LTX-2.5 (2026-07-23) is current; LTX-2.3 and LTX-2 before it", "frames 8n+1, sizes multiple of 32", "local maximum length unverified (hosted API: 20 s)", "camera LoRAs for LTX-2 19B only", "LTX-2.5 still renders in two stages (base, then 2x upsampler and distilled refine), checked 2026-10-22"]
 ---
 
 # LTX-2 model card
@@ -28,6 +28,7 @@ volatile_claims: ["LTX-2.5 (2026-07-23) is current; LTX-2.3 and LTX-2 before it"
 - Camera relative to the subject: "pushes in", "circles around", "static frame".
 - Dialogue in quotes with the manner: `She speaks quietly to herself, "He's late."`
 - Several shots: one paragraph naming each cut ("A hard cut jumps to ..."), 2-4 shots, sound stated at each cut.
+- Judge stage 1 before paying for stage 2. Stage 1 renders at base size, then a 2x latent upsampler and a short distilled stage 2 add detail. Blocking, cuts, motion and sound timing are already fixed after stage 1 (after Enochs, *Video Generation with AI*, on LTX-2.3). Decode the stage-1 latent, run `qc measure` and the sheet on it, and reroll there. Judge the look, faces and texture on the final only.
 
 ## Pitfalls
 

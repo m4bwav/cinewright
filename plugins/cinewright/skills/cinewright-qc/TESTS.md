@@ -8,6 +8,12 @@ Entry shape: `### T-YYYYMMDD-n · date · harness · env · passed/total`, one l
 
 ## Runs
 
+### T-20261022-1 · 2026-10-22 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Sonnet · 2/2 new cases
+- action-2 (new: a flickering synthetic take made in setup): with the skill 3/3, each run called `qc measure` on take_1b.mp4 and got `WARN flicker whole: brightness jumps 23.4 times a second`; without 0/1.
+- outcome-2 (new: which take goes on which side): with 3/3 (random order, sides recorded, the keeper not named), without 0/1 (judged 1 of 3).
+- Other cases not rerun (the description is unchanged). Untested elsewhere.
+- led to: none
+
 ### T-20261005-2 · 2026-10-05 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Claude Code 2.1.281 · 4/7 cases on all three models
 - Models: H Haiku 4.5, S Sonnet 5, O Opus 5.5; with the skill 3 runs each; trigger counts are invocations.
 - Cases: trigger-1 H 3/3 S 3/3 O 3/3; trigger-2 H 1/3 S 3/3 O 3/3; decoy-1 H 0/3 S 0/3 O 0/3; decoy-2 H 0/3 S 0/3 O 0/3; decoy-3 H 0/3 S 0/3 O 0/3; action-1 H 1/3 S 3/3 O 3/3; outcome-1 H 0/3 S 3/3 O 3/3.

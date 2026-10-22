@@ -18,7 +18,7 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 
 1. `CINE qc sheet <clip>` writes `<clip>.sheet.png` (2 fps up to 10 s, then 1 fps). Read the sheet once, whole; never one read per frame.
 2. `CINE qc spec <clip> --project <p> --card <id> --params <compiled settings>`: fps, size, aspect, length, audio stream. For a multi-shot generation pass its label (`--card 1A+1B+1C`). Quote its last line.
-3. `CINE qc measure <clip> --project <p> --card <label>`: machine checks a sheet misses (planned cuts found, early or late; frozen picture; dead air; clipping; speech where a line is planned; `--every <s>` adds seam level jumps in a cut film) and a 0-100 score. Its fails are facts to confirm in Step 2, not verdicts on look or acting. When takes compete, it drops the broken ones; rank the rest two at a time, both orders (`kb show take-selection`).
+3. `CINE qc measure <clip> --project <p> --card <label>`: machine checks a sheet misses (planned cuts found, early or late; frozen picture; flicker, which only warns; dead air; clipping; speech where a line is planned; `--every <s>` adds seam level jumps in a cut film) and a 0-100 score. Its fails are facts to confirm in Step 2, not verdicts on look or acting. When takes compete, it drops the broken ones; rank the rest two at a time, both orders (`kb show take-selection`).
 4. `CINE takes lastframe <clip> --out <p>/qc/<id>-<n>.last.png` for the end state.
 
 ## Step 2: judge

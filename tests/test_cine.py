@@ -955,6 +955,19 @@ class TestQc(Base):
         self.assertEqual(m["cuts"], [])
         self.assertEqual(m["shots"][0]["card"], "whole")
 
+    def test_measure_warns_on_flicker_only(self):
+        code, text = run("qc", "measure", self.clip)
+        self.assertNotIn("flicker:", text.replace("flicker %", ""))
+        self.assertNotRegex(text, r"WARN flicker")
+        bad = self.tmp / "flicker.mp4"  # brightness up on every other frame: the take a re-render or deflicker fixes
+        r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(self.clip), "-vf",
+                            "eq=brightness='0.04*mod(n,2)':eval=frame", "-c:v", "mpeg4", "-q:v", "2", "-c:a", "copy", str(bad)],
+                           capture_output=True)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        code, text = run("qc", "measure", bad)
+        self.assertRegex(text, r"WARN\s+flicker\s+whole: brightness jumps \d+\.\d times a second")
+        self.assertNotRegex(text, r"FAIL\s+flicker")
+
     def test_loud(self):
         code, text = run("qc", "loud", self.clip)
         self.assertEqual(code, 1, text)

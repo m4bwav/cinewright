@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261022-1 · 2026-10-22 · LTX-2: judge stage 1 before paying for stage 2
+- because: user request (book-learnings track 1: Enochs, *Video Generation with AI*, on the LTX-2.3 two-stage pipeline); checked on the LTX-2.5 model page 2026-10-22 (base stage, 2x spatial upsampler, distilled refine)
+- files: references/ltx-2.md (a Rules line, a volatile claim dated 2026-10-22; last_checked stays with the last full card refresh); shared vocab failures-motion copy (`flicker`, `lip-lag`)
+- Blocking, cuts, motion and sound timing are fixed in stage 1, so `qc measure` and the sheet run on the decoded stage-1 latent and rerolls happen there; look and faces are judged on the final.
+
 ### C-20261016-2 · 2026-10-16 · minimax-h3: card beats compile to a Timeline
 - because: L-016
 - files: references/minimax-h3.md (`beat_stamp`, `beats_lead`, a Rules line); shared schemas and lib (card `beats`)

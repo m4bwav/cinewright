@@ -3,8 +3,8 @@ title: Calibrating a judge against the reviewer
 slug: judge-calibration
 summary: Keep a labelled set of reviewer verdicts, score every gate and judge prompt on it with kappa and interval bounds, let a check reject alone only above a 90 % lower bound, re-run on edits.
 tags: [qc, judge, calibration, labels, kappa, gates, regression]
-last_checked: 2026-10-15
-sources: ["Thakur et al., Judging the Judges, arXiv 2406.12624", "Trust or Escalate, ICLR 2025, arXiv 2407.18370", "EvalGen, Who Validates the Validators, UIST 2024, arXiv 2404.12272", "Rubric-induced preference drift, arXiv 2602.13576, 2026", "Stroebl, Kapoor, Narayanan, inference scaling flaws, arXiv 2411.17501", "Hamel Husain, Creating an LLM judge that drives business results, https://hamel.dev/blog/posts/llm-judge/", "field test 2026-10-12 and 2026-10-15: 152 labelled takes, 624 labelled claims"]
+last_checked: 2026-10-22
+sources: ["Huyen, AI Engineering, O'Reilly 2025, on feedback loops", "Thakur et al., Judging the Judges, arXiv 2406.12624", "Trust or Escalate, ICLR 2025, arXiv 2407.18370", "EvalGen, Who Validates the Validators, UIST 2024, arXiv 2404.12272", "Rubric-induced preference drift, arXiv 2602.13576, 2026", "Stroebl, Kapoor, Narayanan, inference scaling flaws, arXiv 2411.17501", "Hamel Husain, Creating an LLM judge that drives business results, https://hamel.dev/blog/posts/llm-judge/", "field test 2026-10-12 and 2026-10-15: 152 labelled takes, 624 labelled claims"]
 ---
 
 # Calibrating a judge against the reviewer
@@ -20,6 +20,7 @@ sources: ["Thakur et al., Judging the Judges, arXiv 2406.12624", "Trust or Escal
 - A judge that abstains is better than one that guesses: below its calibrated confidence it says "review" and the take goes to the escalation queue (entry vision-judge).
 - Every reviewer correction becomes a standing claim at once, judged and logged from the next take on; it becomes a gate only after it passes the bar above.
 - Re-label a few random takes each week, unannounced, to catch drift in the judge and in the labels.
+- Put a few takes the gates removed into every film's label queue, picked at random. Labels taken only on takes that passed the gates can never show a gate wrong. The loop sees only what it chose to show (after Huyen, *AI Engineering*, on degenerate feedback loops).
 - With an imperfect verifier, more samples stop helping early: its false-positive rate caps what rerolling can reach. Measure false positives before raising the reroll budget (entry take-selection).
 
 ## Numbers

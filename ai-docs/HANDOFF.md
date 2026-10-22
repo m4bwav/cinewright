@@ -17,6 +17,8 @@
 
 - Branch sets-and-loras-2026-10-15: entry blocking-marks, set-light, master-plates, set-check, lora-or-references; research [research/2026-10-15-sets-and-loras.md](research/2026-10-15-sets-and-loras.md). Open from it: port the marks check (prototype `set_check.py` in the duel's set folder, about 10 KB) into the runtime as `continuity marks` or a sets-only `cine_set.py`, after trimming about 6 KB elsewhere in shared/lib; a card field for the camera's plan position and per-card marks; lora-or-references sits at 1,199 of 1,200 tokens, so split it before the next addition.
 
+- Branch books-track1 (2026-10-22, book-learnings track 1): `qc measure` flicker per shot (warns only, L-006), vocab `flicker` and `lip-lag`, random review sides and gate-rejected takes in the label queue (take-selection, judge-calibration), identity against the take's own first face, LTX-2 stage-1 QC rule; evals action-2 and outcome-2. Runtime shared/lib is at 150 KB with about 30 bytes left before red: the next runtime addition needs a real trim (a module split or a cut feature), not a reworded comment.
+
 ## Waiting on Mark
 - claude.ai cleanup: delete the uploaded test skill cinewright-continuity (permanent delete; switched off for now), remove the cinewright marketplace source if the UI offers it, close the VS Code window `code chat -n` opened.
 - Old commits stay reachable from PR #1-#11 pages (refs/pull); only GitHub Support can purge. Closed PRs #12-#13 show a hostname in their head branch name.

@@ -78,6 +78,61 @@
       ],
       "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
+    },
+    {
+      "id": "action-2",
+      "kind": "action",
+      "prompt": "take_1b.mp4 in this folder seems to pulse brighter and darker. Run the machine checks on it before I decide whether to keep it.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so",
+        "the reply reports the flicker warning from the measure, not a guess from watching"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py\\s+qc\\s+measure\\s+\\S*take_1b"
+      },
+      "baseline": "2026-10-22, evals/run_evals.py, skills disabled, Sonnet: 0/1 (no qc measure call)",
+      "runs": 3,
+      "setup": [
+        [
+          "ffmpeg",
+          "-v",
+          "error",
+          "-y",
+          "-f",
+          "lavfi",
+          "-i",
+          "testsrc2=size=320x180:rate=24:duration=4",
+          "-f",
+          "lavfi",
+          "-i",
+          "sine=frequency=440:duration=4",
+          "-shortest",
+          "-vf",
+          "eq=brightness='0.04*mod(n,2)':eval=frame",
+          "-c:v",
+          "mpeg4",
+          "-q:v",
+          "2",
+          "-c:a",
+          "aac",
+          "take_1b.mp4"
+        ]
+      ]
+    },
+    {
+      "id": "outcome-2",
+      "kind": "outcome",
+      "prompt": "I have two takes of card 1B and I'll show them to my director side by side to pick one. Which take goes on which side?",
+      "files": [],
+      "expectations": [
+        "the reply says to place the two takes in random order (not the kept or older take always on one side)",
+        "the reply says to record which take was on which side with the answer, so side bias can be checked",
+        "judge: the reply does not tell the director which take is the current keeper before they choose (2 of 3 votes)"
+      ],
+      "baseline": "2026-10-22, evals/run_evals.py, skills disabled, Sonnet: 0/1 (judged 1 of 3 expectations)",
+      "runs": 3
     }
   ]
 }

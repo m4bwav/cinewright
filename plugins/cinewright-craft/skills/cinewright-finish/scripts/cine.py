@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:6228a099cdb83057e63ff863173affc4953cdfc91d981bef176a8b875be29a89; edit the source
+# copied from shared/lib/cine.py sha256:00a84de61d63d79f4acf5b984a92ef5f132717b5460565192da70938f6465be1; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -1616,6 +1616,8 @@ MEASURE_CUT_NEAR_S = 2.0     # a cut this close but outside the window is the pl
                              # holds the shot: 1.2 s late on a 16-word line in 6 s, 2026-10-07)
 MEASURE_FREEZE = 0.35        # mean luma difference (0-255, 160 px wide) below which the picture is frozen
 MEASURE_FREEZE_S = 1.5       # a frozen run longer than this inside one shot fails
+MEASURE_FLICKER = 2.0        # a frame's luma off its neighbours' mean (0-255)
+MEASURE_FLICKER_RATE = 3.0   # jumps a second that warn; no keeper of 58 reached it (VBench temporal flickering)
 MEASURE_SILENCE_DB = -60.0   # 100 ms window RMS below this is silence (room tone sits above it)
 MEASURE_DEAD_AIR_S = 2.0     # a silent run longer than this fails
 MEASURE_CLIP = 0.999         # sample magnitude that counts as clipped
@@ -1626,32 +1628,15 @@ MEASURE_WEIGHTS = {"cut-missing": 10, "cut-extra": 4, "cut-off": 12, "frozen": 1
 
 
 def scene_cuts(clip, thresh=MEASURE_CUT_SCENE):
-    r = subprocess.run([need_tool("ffmpeg"), "-hide_banner", "-nostats", "-i", str(clip), "-an", "-vf",
-                        "select='gt(scene,%s)',showinfo" % thresh, "-f", "null", "-"],
-                       capture_output=True, text=True, encoding="utf-8", errors="replace")
-    if r.returncode != 0:
-        raise SystemExit("ffmpeg could not scan %s for cuts: %s" % (clip, r.stderr.strip()[-300:]))
+    r = run_tool([need_tool("ffmpeg"), "-nostats", "-i", str(clip), "-an", "-vf", "select='gt(scene,%s)',showinfo" % thresh, "-f", "null", "-"])
     return [round(float(t), 3) for t in re.findall(r"pts_time:([\d.]+)", r.stderr)]
 
 
-def frame_motion(clip):
-    """[(t, mean luma difference to the previous frame)] at 160 px wide."""
-    r = subprocess.run([need_tool("ffmpeg"), "-hide_banner", "-nostats", "-i", str(clip), "-an", "-vf",
-                        "scale=160:-2,format=gray,tblend=all_mode=difference,signalstats,"
-                        "metadata=print:key=lavfi.signalstats.YAVG:file=-", "-f", "null", "-"],
-                       capture_output=True, text=True, encoding="utf-8", errors="replace")
-    if r.returncode != 0:
-        raise SystemExit("ffmpeg could not measure motion in %s: %s" % (clip, r.stderr.strip()[-300:]))
-    out, t = [], None
-    for line in r.stdout.splitlines():
-        m = re.search(r"pts_time:([\d.]+)", line)
-        if m:
-            t = float(m.group(1))
-            continue
-        m = re.search(r"YAVG=([\d.]+)", line)
-        if m and t is not None:
-            out.append((t, float(m.group(1))))
-    return out
+def frame_motion(clip, diff=True):
+    """[(t, mean luma difference to the previous frame)] at 160 px wide; diff=False: each frame's own mean luma."""
+    r = run_tool([need_tool("ffmpeg"), "-nostats", "-i", str(clip), "-an", "-vf", "scale=160:-2,format=gray,%ssignalstats,"
+                  "metadata=print:key=lavfi.signalstats.YAVG:file=-" % ("tblend=all_mode=difference," if diff else ""), "-f", "null", "-"])
+    return [(float(t), float(y)) for t, y in re.findall(r"pts_time:([\d.]+)\s+\S+YAVG=([\d.]+)", r.stdout)]
 
 
 def pcm(clip, rate=8000, af=None):
@@ -1711,7 +1696,7 @@ def measure_take(clip, plan=None, seams=None, stills=None):
         plan = [("whole", 0.0, dur, False)]
     plan = [(cid, s, min(e, dur), sp) for cid, s, e, sp in plan]  # prompts stamp absolute times, so no scaling
     cuts = scene_cuts(clip)
-    motion = frame_motion(clip)
+    motion, luma = frame_motion(clip), frame_motion(clip, False)
     checks, shots = [], []
     planned = [s for _, s, _, _ in plan[1:]]
     used = set()
@@ -1748,8 +1733,12 @@ def measure_take(clip, plan=None, seams=None, stills=None):
     for cid, s, e, speaks in plan:
         fr = [m for t, m in motion if s + 0.25 <= t < e - 0.25]  # skip the frames either side of a cut
         frozen = longest_run([m < MEASURE_FREEZE for m in fr], 1 / max(info["fps"], 1))
-        row = {"card": cid, "start": round(s, 2), "end": round(e, 2),
-               "motion": round(sum(fr) / len(fr), 2) if fr else 0.0, "frozen_s": frozen}
+        y = [v for t, v in luma if s + 0.25 <= t < e - 0.25]
+        jumps = sum(1 for a, b, c in zip(y, y[1:], y[2:]) if abs(b - (a + c) / 2) > MEASURE_FLICKER)
+        row = {"card": cid, "start": round(s, 2), "end": round(e, 2), "motion": round(sum(fr) / len(fr), 2) if fr else 0.0,
+               "frozen_s": frozen, "flicker": round(jumps * max(info["fps"], 1) / max(len(y), 1), 1)}
+        if row["flicker"] > MEASURE_FLICKER_RATE:
+            checks.append(("WARN", "flicker", "%s: brightness jumps %.1f times a second" % (cid, row["flicker"])))
         if band:
             ws = band[int(s * 10):int(e * 10)]
             med = sorted(ws)[len(ws) // 2] if ws else MEASURE_SILENCE_DB
@@ -1789,8 +1778,8 @@ def measure_take(clip, plan=None, seams=None, stills=None):
 def measure_lines(m):
     out = ["%s: %.2fs, cuts at %s" % (m["clip"], m["duration"], ", ".join("%.2f" % c for c in m["cuts"]) or "none")]
     for r in m["shots"]:
-        out.append("  %-6s %5.2f-%5.2fs  motion %5.2f  frozen %.1fs%s" % (
-            r["card"], r["start"], r["end"], r["motion"], r["frozen_s"],
+        out.append("  %-6s %5.2f-%5.2fs  motion %5.2f  frozen %.1fs  flicker %.1f/s%s" % (
+            r["card"], r["start"], r["end"], r["motion"], r["frozen_s"], r.get("flicker", 0),
             ("  speech %.1fs  level %.1f dB" % (r["speech_s"], r["level_db"])) if "speech_s" in r else ""))
     for c in m["checks"]:
         out.append("%-4s %-15s %s" % (c["status"], c["code"], c["text"]))

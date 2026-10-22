@@ -3,7 +3,7 @@ title: Identity score
 slug: identity-score
 summary: Score who is on screen by face embeddings against the character bible's refs (and props by crop similarity), with a margin over the other cast; trustworthy on MCU and closer, n/a on small faces.
 tags: [qc, identity, faces, props, scoring, references]
-last_checked: 2026-10-09
+last_checked: 2026-10-22
 sources: ["OpenCV Zoo, YuNet face detector and SFace recognizer (Apache 2.0)", "ConsisID and OpenS2V-Eval benchmarks: FaceSim-Arc, NexusScore, 2025-2026", "VBench subject consistency (DINO features)", "field test on two eight-section films against the reviewer's verdicts, 2026-10-09"]
 volatile_claims: ["InsightFace model weights are non-commercial", "thresholds tuned on one face model"]
 ---
@@ -14,6 +14,7 @@ volatile_claims: ["InsightFace model weights are non-commercial", "thresholds tu
 
 - Score faces against the character bible's `refs`: detect each face, embed it, take the cosine to every character's refs. A face is that character only when it scores high and beats every other cast member by a margin. Refs of two people can be close (0.49 between two old men in one test), so the margin matters more than the score.
 - Score three frames per shot, spread across it, not one.
+- Score each face against the take's own first matching face too, not only against the refs. A face that morphs within a take can still match the refs on its best frame; its curve against itself falls (VBench subject consistency, per character). A face under the recogniser's same-person line against its own first face is `identity-drift`: review it.
 - Props, animals, masked or drawn characters: crop the subject with an open-vocabulary detector (its bible description as the text), then compare crop features (DINOv2) with its sheet.
 - Verdicts: match, weak, other (a rival cast member or an uncast stranger wins), not found, n/a (no face big enough). Only "other" on a close shot is a hard fault; send it back with `identity-drift`.
 - Faces under about 60 px (wide shots, faces behind car glass) are n/a, not a pass: at 40 to 45 px the right actor scored no better than a stranger. Check those by eye or with the vision rubric.

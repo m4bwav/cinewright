@@ -3,8 +3,8 @@ title: Choosing between takes and spending rerolls
 slug: take-selection
 summary: Pick keepers by comparing takes two at a time in both orders, not by absolute scores; cap blind rerolls near three, then reroll with the critique; repair local faults; re-plan model limits.
 tags: [qc, selection, pairwise, reroll, budget, repair]
-last_checked: 2026-10-15
-sources: ["VISTA, arXiv 2510.15831, CVPR 2026", "VLM judges can rank but cannot score, arXiv 2604.25235, 2026", "Ma et al., inference-time scaling for diffusion, arXiv 2501.09732", "ReflectionFlow, arXiv 2504.16080", "VideoRepair, arXiv 2411.15115; GEARS, arXiv 2608.29322", "CHIEF, arXiv 2606.18591", "practitioner take selector on local H3, https://www.reddit.com/r/comfyui/comments/1vix8l9/ (2026-08)"]
+last_checked: 2026-10-22
+sources: ["Huyen, AI Engineering, O'Reilly 2025, on position bias in judges and reviewers", "VISTA, arXiv 2510.15831, CVPR 2026", "VLM judges can rank but cannot score, arXiv 2604.25235, 2026", "Ma et al., inference-time scaling for diffusion, arXiv 2501.09732", "ReflectionFlow, arXiv 2504.16080", "VideoRepair, arXiv 2411.15115; GEARS, arXiv 2608.29322", "CHIEF, arXiv 2606.18591", "practitioner take selector on local H3, https://www.reddit.com/r/comfyui/comments/1vix8l9/ (2026-08)"]
 ---
 
 # Choosing between takes and spending rerolls
@@ -13,6 +13,7 @@ sources: ["VISTA, arXiv 2510.15831, CVPR 2026", "VLM judges can rank but cannot 
 
 - Gates first: a take that fails a proven gate is out whatever else it does well (entry judge-calibration).
 - Rank the takes that pass by comparing two at a time: the same frame times of both side by side, one named axis per question (identity, gaze, blocking and screen side, restraint of the acting, life in the motion, sound), asked in both orders. Count a win only when both orders agree; a split is a tie and goes to the reviewer.
+- Show the reviewer the two takes in random order, never the keeper always on one side, and record which take was on which side with the answer. People lean to the last option and model judges to the first, so a fixed side turns into a bias. With the sides recorded, the answers can be checked for one (after Huyen, *AI Engineering*).
 - Never sum metrics that disagree. When face match and sharpness (or word recall) point at different takes, that is a review trigger. A frozen clip scores sharp, so a motion measure must sit beside any sharpness measure.
 - Classify every fault before the next take: a prompt cause (missing, vague or conflicting words; edit the card) or a model limit (the model will not do it; re-plan the card, change the shot, or cut around it). Do not reroll model limits.
 - Blind rerolls: about three per card. After that, reroll with the last take's critique in hand and change the one thing it names (entry qc-loop).
@@ -35,5 +36,6 @@ sources: ["VISTA, arXiv 2510.15831, CVPR 2026", "VLM judges can rank but cannot 
 ## Verify
 
 - Each pick in a board names its pairwise wins and any ties sent to the reviewer.
+- Over a run of reviewer answers, the share of left picks sits near half; a 95 % interval clear of 50 % is a side bias to fix before trusting the labels.
 
 Related: builds on [qc-loop](qc-loop.md); see also [judge-calibration](judge-calibration.md), [vision-judge](vision-judge.md).
