@@ -2,12 +2,17 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-20261022-3 · 2026-10-22 · Compile writes space, line, attention and light words (books track 3)
+Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+
+### C-20261022-4 · 2026-10-22 · Compile writes horizon, dutch side, view and the new moves (books track 4)
+- because: books track 4 (Mateu-Mestre, *Framed Ink* 1 and 2; Mascelli, *The Five C's*; Katz, *Shot by Shot*; Block, *The Visual Story*; Brown, *Cinematography*; Gurney), decision 2026-10-22-books-track4
+- files: SKILL.md (failure code pointer), needs.json (failures-framing), shared/lib/cine.py (card_parts: HORIZON_WORDS, dutch side, VIEW_WORDS)
+- Set fields compile to words ("the horizon on the lower third of the frame", "the frame tilted down to the right", "seen from behind at a three-quarter rear angle, only the cheek line showing"); unset fields change nothing, so no committed prompt changed.
+
+### C-20261022-3 · 2026-10-22 · Compile writes space, line, attention and light words (books track 3)
 - because: books track 3 (Block, *The Visual Story*; Brown, *Cinematography*; *FilmCraft: Cinematography*; Phillips on Resolve), decision 2026-10-22-books-track3
 - files: references/compile-rule.md; shared/lib/cine.py `card_parts`
 - The scene's space goes into the context, the card's line and attention cell after the camera words, and the light gets the far-side key, backlit atmosphere, firelight flicker and a hidden face.
-
-### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261022-2 · 2026-10-22 · Compile says entrances, exits, end positions, head turns and held moves (books track 2)
 - because: books track 2 (Katz, *Shot by Shot*; Mascelli, *The Five C's*; Murch, *In the Blink of an Eye*), decision 2026-10-22-books-track2

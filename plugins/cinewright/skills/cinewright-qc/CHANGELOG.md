@@ -2,12 +2,17 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-20261022-3 · 2026-10-22 · Look pass and nine light and structure codes (books track 3)
+Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+
+### C-20261022-4 · 2026-10-22 · Framing failure codes and a framing rubric row (books track 4)
+- because: books track 4 (Mateu-Mestre, *Framed Ink* 1 and 2; Mascelli, *The Five C's*; Katz, *Shot by Shot*; Block, *The Visual Story*; Brown, *Cinematography*; Gurney), decision 2026-10-22-books-track4; L-008
+- files: shared/vocab/failures-framing.md (new), needs.json; shared/lib/cine.py (RUBRIC `framing`)
+- Eight codes (`edge-tangent`, `bg-tangent`, `focal-competitor`, `horizon-split`, `horizon-head`, `floating-feet`, `flat-depth`, `ots-wrong`) and one sheet question for edges, heads and feet. A measured eye trace was left out of the runtime (L-008).
+
+### C-20261022-3 · 2026-10-22 · Look pass and nine light and structure codes (books track 3)
 - because: books track 3 (Block, *The Visual Story*; Brown, *Cinematography*; *FilmCraft: Cinematography*; Phillips on Resolve), decision 2026-10-22-books-track3; L-007
 - files: SKILL.md (Step 2), references/look-pass.md (new), references/review-passes.md; shared vocab failures-picture (`flat-light`, `source-mismatch`, `atmos-unlit`, `tone-hides-subject`, `space-break`, `attention-jump`) and failures-motion (`move-no-settle`, `pan-strobe`); shared/lib/cine.py RUBRIC rows `space` and `attention`, identity `na` under `light.tone: hide`
 - Reviewers judge light and visual structure in one pass with its own codes; settle and pan speed stay by eye because the measures failed on real takes.
-
-### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261022-2 · 2026-10-22 · Rank blind to cost, a decisive-frame board, notes as symptoms (books track 2)
 - because: books track 2 (Katz, *Shot by Shot*; Mascelli, *The Five C's*; Murch, *In the Blink of an Eye*), decision 2026-10-22-books-track2

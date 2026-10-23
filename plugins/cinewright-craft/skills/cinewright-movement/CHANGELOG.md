@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261022-1 · 2026-10-22 · Mobile staging as the one ONE-ACTION exception (books track 4)
+- because: books track 4 (Mateu-Mestre, *Framed Ink* 1 and 2; Mascelli, *The Five C's*; Katz, *Shot by Shot*; Block, *The Visual Story*; Brown, *Cinematography*; Gurney), decision 2026-10-22-books-track4
+- files: references/one-phrase-per-shot.md
+- On a long-take model a turn to camera or a countermove can replace an OTS-to-close-up cut, with a motive and the exception in `notes` (after Katz).
+
 ### C-20261016-5 · 2026-10-16 · Fight cards take timed beats; marks may sit in a beat
 - because: L-009 (its proposed change, in part), genvideo L-016
 - files: references/fight-plan.md; shared/lib/cine_fight.py (check reads beats)

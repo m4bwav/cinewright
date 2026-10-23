@@ -17,7 +17,7 @@ sources: ["Bruce Block, The Visual Story, 2nd ed., 2008, ch. 8 (Movement)", "Bla
 - `push-in` is a slow dolly toward a realization. Stop it on a composed frame and hold (`camera.settle`).
 - `arc-left` and `arc-right` circle the subject at one distance: the background slides fast behind a slow subject. A slow arc puts a person on show; around two people it binds them.
 - `dolly-zoom` stretches or squeezes the background behind a subject of fixed size. Once per film at most, for vertigo or a shock of recognition; a model may render it as a plain zoom (unverified), so check the take.
-- Punch-in at the turn: on the scene's turn (the beat marked as the turn in the script), cut from a wide straight to a much closer, longer-lens shot on the same axis. It is the one straight-in cut that is meant (the diff's STRAIGHT-IN warning can stay, with the reason in `notes`).
+- Punch-in at the turn: on the beat the script marks as the scene's turn, cut from a wide straight to a much closer, longer-lens shot on the same axis. It is the one straight-in cut that is meant (the diff's STRAIGHT-IN warning can stay, with the reason in `notes`).
 - Tracking alongside a walker at the same speed holds them; slower lets them pull ahead, faster leaves them behind (camera-moves vocab).
 - A reveal moves past a foreground object or around a corner to show something new; the card's `beat` names what is revealed.
 

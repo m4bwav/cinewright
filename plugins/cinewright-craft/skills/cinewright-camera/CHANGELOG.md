@@ -2,12 +2,17 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-20261022-1 · 2026-10-22 · Upstage key, back-cross, light sources, atmosphere (books track 3)
+Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+
+### C-20261022-2 · 2026-10-22 · Move grammar, arc, push-in and dolly-zoom; lens and focus rules (books track 4)
+- because: books track 4 (Mateu-Mestre, *Framed Ink* 1 and 2; Mascelli, *The Five C's*; Katz, *Shot by Shot*; Block, *The Visual Story*; Brown, *Cinematography*; Gurney), decision 2026-10-22-books-track4
+- files: references/move-grammar.md (new), references/lens-choice.md, references/depth-of-field.md, shared/vocab/camera-moves.md, needs.json (camera-angles); shared/lib/cine.py (MOVE_WORDS, MOVE_SENTENCES, SPACE_3D); evals/evals.json (outcome-3), evals/check_arc.py
+- Three move tokens (`push-in`, `arc-left`/`arc-right`, `dolly-zoom`), 2D against 3D moves, dolly against zoom and the punch-in at the turn; wide-and-close, running toward a long or wide lens, long lenses through doorways; who gets focus in a two-shot and when a rack lands.
+
+### C-20261022-1 · 2026-10-22 · Upstage key, back-cross, light sources, atmosphere (books track 3)
 - because: books track 3 (Block, *The Visual Story*; Brown, *Cinematography*; *FilmCraft: Cinematography*; Phillips on Resolve), decision 2026-10-22-books-track3; L-005
 - files: SKILL.md (Step 3), references/lighting-setups.md, references/light-sources.md (new), evals/evals.json (outcome-2), evals/check_lamp.py; shared schema shot card (`light.tone`, `light.atmosphere`); shared/lib/cine.py (KEY-SIDE warning, far-side, backlit and firelight words)
 - The key comes from the side the face turns to and the diff warns on a broad key; practicals are carried onto the face; airborne matter is a field compiled as backlit.
-
-### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261016-2 · 2026-10-16 · Lesson: an overhead on a fighter pinned under another sees only the top one's back; shoot the pinned face from the floor in profile
 - because: L-004

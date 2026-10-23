@@ -6,6 +6,14 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-008 · 2026-10-22 · `straight-in-is-for-cut-ins`: a straight-in check on any size change fires on cuts back out
+- Trigger: books track 4 added STRAIGHT-IN (two or more size steps, under 10 degrees of azimuth, someone off centre); on 163 cards of seven local multi-shot films it fired on 7, two of them cuts from a medium to a wide
+- Hypothesis: Mascelli's rule is about moving in: a cut straight back out on the axis re-establishes, and nobody reads it as a jump
+- Rule: STRAIGHT-IN warns only when the cut goes tighter; a planned punch-in at the turn keeps the warning, with the reason in `notes`
+- Evidence: after the change 4 of 163 cards (2.5 %), all cut-ins on two fighters across the frame on one axis; tests/test_cine.py TestFraming, mutation run
+- Scope: tool (shared/lib/cine.py continuity_diff) and vocab (thirty-degree-rule)
+- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-22
+
 ### L-001 · 2026-10-03 · Chained clips lose identity and prop shape; restate both in every continuation
 - Trigger: Field lesson 005 of the maintainer's local renders, 2026-09-06, 'Chained clips lose character identity and prop continuity, and the splice reads as a pause'
 - Hypothesis: A first frame conditions composition; nothing in it tells the model who a person is or what shape a prop has

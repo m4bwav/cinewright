@@ -15,8 +15,8 @@ sources: ["Marcos Mateu-Mestre, Framed Ink, 2010, and Framed Ink 2, 2016", "Stev
 - Lines of tension: write the two or three points that matter (eyes, a hand, the target) as frame positions. The wider apart and the nearer the edges, the higher the tension.
 - Horizon and mood: a low horizon gives sky, freedom and scale; a high one gives weight and threat; mid-frame only for a solemn or symmetrical beat. Set it with `camera.horizon` (camera-angles vocab).
 - Open framing (people cropped, objects in the foreground) pulls the viewer in; closed framing (everyone whole and balanced) keeps them at a distance. A doorway or a frame within the frame makes the viewer an eavesdropper. Choose one per scene and write it in the style bible's notes (after Katz, *Shot by Shot*).
-- Crowds and battles get one flow shape in the prompt, and it points at the hero: "the line of soldiers climbs from lower left to the banner, spears angled toward the king". Heads and weapons aim the eye (cinewright-movement for the crowd itself).
-- Give empty space a job: "lone rider small in the lower right, empty sky filling the upper left" carries more than "rule of thirds".
+- Crowds and battles get one flow shape in the prompt, pointed at the hero. For example: "the line of soldiers climbs from lower left to the banner, spears angled toward the king". Heads and weapons aim the eye (cinewright-movement for the crowd itself).
+- Give empty space a job: "lone rider small in the lower right, empty sky filling the upper left" carries more than naming a composition rule.
 
 ## Pitfalls
 

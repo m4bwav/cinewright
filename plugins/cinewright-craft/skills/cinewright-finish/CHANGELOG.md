@@ -2,12 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-20261022-1 · 2026-10-22 · grade stabilize, saturation and warmth targets, repair order (books track 3)
+Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+
+### C-20261022-1 · 2026-10-22 · grade stabilize, saturation and warmth targets, repair order (books track 3)
 - because: books track 3 (Block, *The Visual Story*; Brown, *Cinematography*; *FilmCraft: Cinematography*; Phillips on Resolve), decision 2026-10-22-books-track3; L-004, L-005
 - files: SKILL.md (Step 3), references/shot-matching.md, references/grade-order.md, evals/evals.json (action-2); shared/lib/cine_post.py (`grade stabilize`, `grade match --sat --warm`, `grade measure --plan`)
 - Drift inside a shot is held to its middle frame before the match; a scene's colour-script chroma and warmth survive the match; colour management is set first and repairs go whole-image, local, single frame.
-
-### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261013-1 · 2026-10-13 · crowd-multiplication: alpha plates, tracked masks, whole-frame unify
 - because: user request (battle and crowd scenes from separate generations, Blender offloading), R-20261013-1

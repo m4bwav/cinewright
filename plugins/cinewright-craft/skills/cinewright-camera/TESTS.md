@@ -4,14 +4,19 @@ Test runs for [SKILL.md](SKILL.md). Cases live in `evals/evals.json`. A failure 
 
 A test passes on evidence (a tool call in the trace, a file, a marker), never on the transcript's claim.
 
-Entry shape: `### T-20261022-1 · 2026-10-22 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Sonnet · 1/1 new case
+Entry shape: `### T-YYYYMMDD-n · date · harness · env · passed/total`, one line per failing case, then `led to:`. Newest first. Budget 150 lines.
+
+## Runs
+
+### T-20261022-2 · 2026-10-22 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Sonnet · 1/1 new case
+- outcome-3 (new: circle slowly around Maren and Tomas): with the skill 3/3 passed check_arc.py (move arc-left or arc-right, the arc words in the compiled prompt); without 0/1.
+- Other cases not rerun (descriptions unchanged).
+- led to: C-20261022-2
+
+### T-20261022-1 · 2026-10-22 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Sonnet · 1/1 new case
 - outcome-2 (new: an oil lamp at frame left and smoke in shot 1C): with the skill 3/3 passed check_lamp.py (lamp and side in `light.motivation`, `light.atmosphere: smoke`, compiled prompt says the smoke is backlit); without 0/1.
 - Other cases not rerun (descriptions unchanged).
 - led to: C-20261022-1, L-005
-
-### T-YYYYMMDD-n · date · harness · env · passed/total`, one line per failing case, then `led to:`. Newest first. Budget 150 lines.
-
-## Runs
 
 ### T-20261005-2 · 2026-10-05 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Claude Code 2.1.281 · 4/7 cases on all three models
 - Models: H Haiku 4.5, S Sonnet 5, O Opus 5.5; with the skill 3 runs each; trigger counts are invocations.
