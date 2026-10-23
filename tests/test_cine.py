@@ -1728,6 +1728,72 @@ class TestVisualStructure(Base):
                          {"flat-light": "light", "space-break": "space", "attention-jump": "attention", "pan-strobe": "camera"})
 
 
+class TestFraming(Base):
+    """Books track 4: framing, camera angles and moves (Mateu-Mestre, Mascelli, Katz, Block)."""
+
+    def warns(self, p, code):
+        return sorted(i["card"] for i in lib.continuity_diff(p) if i["code"] == code)
+
+    def test_straight_in_cut_on_people_across_the_frame(self):
+        p = lib.Project(EXAMPLE)
+        b = p.cards[1]
+        b["cast"] = json.loads(json.dumps(p.cards[0]["cast"]))  # the same two people, frame left and right
+        b["camera"]["azimuth_deg"] = 90  # 1A is a WS at 90: a straight-in cut to the MCU
+        self.assertEqual(self.warns(p, "STRAIGHT-IN"), ["1B"])
+        b["camera"]["azimuth_deg"] = 60
+        self.assertEqual(self.warns(p, "STRAIGHT-IN"), [], "30 degrees round is a move in and around")
+        b["camera"]["azimuth_deg"] = 90
+        for m in b["cast"]:
+            m["position"] = "center"
+        self.assertEqual(self.warns(p, "STRAIGHT-IN"), [], "a centred subject may take a straight-in cut")
+        b["cast"][0]["position"] = "frame-left"
+        p.cards[0]["camera"]["size"], b["camera"]["size"] = "MCU", "WS"
+        self.assertEqual(self.warns(p, "STRAIGHT-IN"), [], "cutting straight back out is not a cut-in")
+
+    def test_horizon_against_the_angle_and_dutch_pairs(self):
+        p = lib.Project(EXAMPLE)
+        a, b, c = (x["camera"] for x in p.cards)
+        a["angle"], a["horizon"] = "low", "upper-third"
+        self.assertEqual(self.warns(p, "HORIZON"), ["1A"])
+        a["horizon"] = "lower-third"
+        self.assertEqual(self.warns(p, "HORIZON"), [])
+        a["angle"], a["horizon"] = "overhead", "middle"
+        self.assertEqual(self.warns(p, "HORIZON"), ["1A"])
+        a["horizon"] = "above-frame"
+        self.assertEqual(self.warns(p, "HORIZON"), [])
+        b["angle"] = c["angle"] = "dutch"
+        b["dutch"] = c["dutch"] = "left"
+        self.assertEqual(self.warns(p, "DUTCH"), ["1C"], "Maren and Tomas tilt the same way")
+        c["dutch"] = "right"
+        self.assertEqual(self.warns(p, "DUTCH"), [])
+        a["dutch"] = "right"  # opposite to 1B, so only the side set on a non-dutch angle warns
+        self.assertEqual(self.warns(p, "DUTCH"), ["1A"], "dutch side on an overhead angle")
+
+    def test_compile_writes_horizon_dutch_view_and_new_moves(self):
+        proj = self.tmp / "p"
+        shutil.copytree(EXAMPLE, proj)
+        edit(proj / "cards/1C.json", '"angle": "eye-level"', '"angle": "dutch", "dutch": "right", "horizon": "lower-third"')
+        edit(proj / "cards/1C.json", '"move": "static"', '"move": "arc-left"')
+        edit(proj / "cards/1C.json", '"id": "tomas"', '"id": "tomas", "view": "three-quarter-back"')
+        code, out = run("compile", proj, "--model", "veo", "--card", "1C")
+        self.assertEqual(code, 0, out)
+        for words in ("dutch angle, the frame tilted down to the right, the horizon on the lower third of the frame",
+                      "the camera arcs slowly left around the subject", "only the cheek line showing"):
+            self.assertIn(words, out)
+        code, out = run("compile", proj, "--model", "minimax-h3", "--card", "1C", "--resolution", "480p")
+        self.assertIn("The camera arcs left around the subject", out)
+        code, out = run("cards", "new", proj, "--id", "1D", "--scene", "1", "--cast", "maren")
+        self.assertEqual(json.loads(lib.read_text(proj / "cards/1D.json"))["cast"][0]["view"], "three-quarter")
+
+    def test_framing_codes_reach_the_rubric(self):
+        p = lib.Project(EXAMPLE)
+        self.assertIn("framing", {i["check"] for i in lib.rubric_items(p, p.cards[0])})
+        codes = lib.taxonomy(repo_ctx())
+        self.assertEqual({c: codes[c]["check"] for c in ("edge-tangent", "bg-tangent", "ots-wrong", "horizon-split", "flat-depth")},
+                         {"edge-tangent": "framing", "bg-tangent": "framing", "ots-wrong": "framing", "horizon-split": "camera", "flat-depth": "space"})
+        self.assertIn("push-in", lib.SPACE_3D)
+
+
 _pspec = importlib.util.spec_from_file_location("cine_post_lib", REPO / "shared" / "lib" / "cine_post.py")
 post = importlib.util.module_from_spec(_pspec)
 _pspec.loader.exec_module(post)

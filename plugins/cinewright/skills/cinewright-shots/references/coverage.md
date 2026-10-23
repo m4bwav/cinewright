@@ -40,7 +40,7 @@ sources: ["Daniel Arijon, Grammar of the Film Language, 1976", "Steven D. Katz, 
 
 ## Pitfalls
 
-- An OTS shot asks the model to draw a second person from behind; that shoulder drifts in hair and wardrobe. Use clean singles unless the second person has reference images.
+- An OTS shot asks the model to draw a second person from behind; that shoulder drifts in hair and wardrobe. Use clean singles unless the second person has reference images. When you do shoot one, set `view: three-quarter-back` on the near person: it compiles to "seen from behind at a three-quarter rear angle, only the cheek line showing", so their nose and eye stay hidden and the shot does not read as a two-shot (`ots-wrong`; after Mascelli).
 
 ## Verify
 

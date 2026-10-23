@@ -3,8 +3,8 @@ title: Blockout control
 slug: blockout-control
 summary: Drive a shot's motion and layout from a rough 3D blockout or phone footage turned into a depth, pose, edge or layout-box video, through a model's control input; references still carry the look.
 tags: [sets, blockout, previs, control, depth, pose, 3d]
-last_checked: 2026-10-09
-sources: ["flick.art, Blender for AI filmmaking, 2026-06", "invideo FAQ, Blender blocking render as camera reference, 2026-10-08", "docs.comfy.org, MiniMax H3 Fun ControlNet tutorial, 2026", "alibaba-pai, MiniMax-H3-Fun-Controlnet-Union-2.0 model card, 2026-09", "RunComfy, H3 Fun Control workflow, 2026"]
+last_checked: 2026-10-22
+sources: ["flick.art, Blender for AI filmmaking, 2026-06", "invideo FAQ, Blender blocking render as camera reference, 2026-10-08", "docs.comfy.org, MiniMax H3 Fun ControlNet tutorial, 2026", "alibaba-pai, MiniMax-H3-Fun-Controlnet-Union-2.0 model card, 2026-09", "RunComfy, H3 Fun Control workflow, 2026", "James Gurney, Imaginative Realism, 2009"]
 volatile_claims: ["which open video models take depth or pose control", "Fun ControlNet Union 2.0 is the H3 control release"]
 ---
 
@@ -21,6 +21,7 @@ volatile_claims: ["which open video models take depth or pose control", "Fun Con
 - Render the control at the shot's frame rate and length (longer is trimmed, shorter holds its last frame).
 - Pair it with a first frame or references. Control alone gives the right motion with an invented look.
 - Strength 0.6 to 1.0 for one control; two controls summed to 1.0 or less (depth 0.3 plus pose 0.4). Stop the control at about 60% of the steps so the model restores texture; lower it if the result looks flat.
+- Depth, edge and pose controls carry no light. When the blockout render is also the first frame or a guide still, light it as the plan says (key side, colour, one plan for every element) and try two or three directions before keeping one (after Gurney, *Imaginative Realism*); otherwise the light words carry it.
 - Check the control at start, middle and end against the plan: a grey render is not automatically a depth pass. Say in the prompt that the camera moves, or the model may move the subject instead.
 
 ## Numbers

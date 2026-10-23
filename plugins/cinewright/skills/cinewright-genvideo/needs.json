@@ -5,7 +5,8 @@
     "camera-angles.md",
     "screen-direction.md",
     "failures-picture.md",
-    "failures-motion.md"
+    "failures-motion.md",
+    "failures-framing.md"
   ],
   "lib": [
     "cine.py"

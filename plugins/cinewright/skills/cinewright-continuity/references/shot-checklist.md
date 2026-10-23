@@ -26,7 +26,7 @@ Diff codes, what each means and the usual fix:
 | TIME, SUN | time of day or sun differs from the scene | use the scene's values |
 | ONE-ACTION | the action reads as two actions | split the card |
 | DIALOGUE | more words than 2.5 a second fits (warning) | cut the line, or lengthen the shot (cinewright-script) |
-| HARD-SUBJECT | crowd or herd words in an EWS or WS (warning) | 1-5 subjects, large and side-on (cinewright-movement) |
+| HARD-SUBJECT | crowd or herd words in an EWS or WS (warning) | 1-5 subjects, large and side-on (cinewright-movement); or a long lens past the principals (cinewright-camera lens-choice) |
 | EXIT-ENTRY | enters on the side the last card's exit left by | enter on the other side, or set a cross_reason |
 | LOOK-TRACK | a watcher's head turns with the travel, not against it (warning) | swap `eyeline` and `eyeline_end` |
 | MIDDLE-SWAP | the middle of a group jumps frame sides (warning) | a two-shot and a single (shots, group-staging) |

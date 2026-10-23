@@ -3,8 +3,8 @@ title: Animatic
 slug: animatic
 summary: Cut approved stills to the cards' durations over scratch audio before any video render; the timing sheet locks each card's length and the stills become first frames.
 tags: [edit, animatic, previs, timing, storyboard]
-last_checked: 2026-10-09
-sources: ["invideo FAQ, How do you make an AI animatic, 2026-08-10", "flick.art, Blender for AI filmmaking, 2026-06", "Boords, MP4 animatics", "local test, ffmpeg concat timing, 2026-10-09"]
+last_checked: 2026-10-22
+sources: ["invideo FAQ, How do you make an AI animatic, 2026-08-10", "flick.art, Blender for AI filmmaking, 2026-06", "Boords, MP4 animatics", "local test, ffmpeg concat timing, 2026-10-09", "James Gurney, Imaginative Realism, 2009"]
 ---
 
 # Animatic
@@ -14,6 +14,7 @@ sources: ["invideo FAQ, How do you make an AI animatic, 2026-08-10", "flick.art,
 - Before paying for video, cut the film as stills: one approved still per card, held for the card's `duration_s`, over a scratch track (temp voices read at speaking pace, temp music). Run `CINE_POST animatic PROJECT --stills DIR --audio scratch.wav`.
 - Watch it straight through, twice, with the sound. Fix story, order and length here: a cut that drags as stills drags as video. Change `duration_s` on the cards and re-run; it takes seconds.
 - Time dialogue cards to the line read aloud plus a beat; the timing sheet lists each card's lines beside its in and out points.
+- Pick each action card's still at the moment just before the peak (the raised sword, not the hit), or at a clear key pose: it reads as the action and leaves the motion for the video (after Gurney, *Imaginative Realism*).
 - The approved still becomes the shot's first frame (or its keyframe guide) and the locked duration becomes its render length, snapped up to the model's frame grid and trimmed in the conform.
 - A card with no still shows a grey frame: the animatic still plays, so missing art never blocks timing.
 - Camera moves show as a slow push or drift on the still, enough to judge pace, not framing.

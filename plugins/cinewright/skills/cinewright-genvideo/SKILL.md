@@ -32,7 +32,7 @@ The compile rule (what goes where, and why): `kb show compile-rule`. Cards with 
 
 - A render on a hosted model costs money. Show the prompt and settings and ask before any call. Local renders need no ask.
 - One change per reroll. Keep the seed when only the end of a take is wrong; change it when the opening is wrong.
-- Record each take with `CINE takes log` and judge it with cinewright-qc. Failure codes and fixes: `kb show failures-picture`, `kb show failures-motion`.
+- Record each take with `CINE takes log` and judge it with cinewright-qc. Failure codes and fixes: `kb show failures-picture`, `kb show failures-motion`, `kb show failures-framing`.
 
 ## Output
 

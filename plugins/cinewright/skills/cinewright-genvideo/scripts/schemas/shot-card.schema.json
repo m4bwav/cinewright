@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:dd34af3950537ab802c50577d7febd34831964fa6b4fcc1ae25efef427df8089; edit the source",
+  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:d11e29f154136d2519cf7868fcdd7dc73a74cc41ed42091898204bb08a98d9dc; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Shot card",
   "description": "One shot, generator-neutral. Fields follow the shot list (slate, size, angle, move, lens, action, dialogue, duration) and the script supervisor's notes (camera side, screen direction, eyelines, wardrobe, props in hand, start and end state).",
@@ -123,6 +123,23 @@
             "dutch"
           ]
         },
+        "dutch": {
+          "enum": [
+            "left",
+            "right"
+          ],
+          "description": "With angle dutch: the side the frame tilts down toward. Tilts on opposing subjects come in opposing pairs."
+        },
+        "horizon": {
+          "enum": [
+            "lower-third",
+            "middle",
+            "upper-third",
+            "above-frame",
+            "below-frame"
+          ],
+          "description": "Where the horizon sits; leave it unset indoors. Low angles put it low, high angles high or out of frame."
+        },
         "azimuth_deg": {
           "type": "number",
           "minimum": 0,
@@ -145,7 +162,11 @@
             "crane-down",
             "handheld",
             "zoom-in",
-            "zoom-out"
+            "zoom-out",
+            "push-in",
+            "arc-left",
+            "arc-right",
+            "dolly-zoom"
           ]
         },
         "lens_mm": {
@@ -220,6 +241,16 @@
               "center",
               "frame-right"
             ]
+          },
+          "view": {
+            "enum": [
+              "front",
+              "three-quarter",
+              "profile",
+              "back",
+              "three-quarter-back"
+            ],
+            "description": "How the camera sees the person; three-quarter by default, three-quarter-back for the near shoulder of an OTS."
           },
           "looks_at": {
             "type": "string",

@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/style-bible.schema.json sha256:2e7f74e01d0e8cc2d954ee02820b036253b2c5fac602372dda549ea934a373be; edit the source",
+  "$comment": "copied from shared/schemas/style-bible.schema.json sha256:9b50536dbd5e317047aa1ec794e255ba6be61081ad26f47702f1a6ea65324fe0; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Style bible",
   "description": "One per project (bibles/style.json): format and the look string every compiled prompt ends with.",
@@ -85,7 +85,11 @@
           "crane-down",
           "handheld",
           "zoom-in",
-          "zoom-out"
+          "zoom-out",
+          "push-in",
+          "arc-left",
+          "arc-right",
+          "dolly-zoom"
         ]
       },
       "description": "Camera moves the style permits; the continuity diff warns MOVE on any other."
