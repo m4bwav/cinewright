@@ -6,6 +6,14 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-007 · 2026-10-22 · `motion-proxies-miss-settle-and-strobe`: frame difference and column-shift pan speed cannot judge camera settle or strobing
+- Trigger: books track 3 proposed two `qc measure` checks from Brown, *Cinematography*: `move-no-settle` (the last 0.5 s of motion under 30 % of its peak) and `pan-strobe` (a pan over a third of the frame a second)
+- Hypothesis: whole-frame motion mixes the camera with the subject and the model's own shimmer, so neither measure isolates the camera
+- Rule: both stay review items in the look pass, never `qc measure` checks. Try again only with a measure of the camera alone (global motion with the subject masked) and labelled settle or judder faults
+- Evidence: 354 planned shots of 118 reviewed takes from local multi-shot films: static shots ended with a tail-to-peak motion ratio of median 0.47 against 0.63 for moving ones, and the 30 % line fired on 78 of 103 moving shots; the pan speed line fired on 17 of 354, its top hits kept tracking shots beside a moving car, and no review in the set names judder
+- Scope: skill (cinewright-qc look-pass; shared vocab failures-motion)
+- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-22
+
 ### L-006 · 2026-10-22 · `flicker-not-flash`: a flicker check counts jumps a second, so one explosion flash never trips it
 - Trigger: book-learnings build, 2026-10-22: a frame's mean brightness against the average of its two neighbours, on 152 reviewed takes of four local multi-shot films. At a 1.5-level jump and 2 a second, 4 of 58 keepers warned, all in an explosion comedy where flashes are the story; the two highest takes (17.9 and 12.5 a second) pulsed up and down every two or three frames for seconds
 - Hypothesis: real flicker alternates for a long stretch; a flash or a fast move is one or two jumps

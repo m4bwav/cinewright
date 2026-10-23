@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+Entry shape: `### C-20261022-1 · 2026-10-22 · Visual structure plan, story graph, colour rows (books track 3)
+- because: books track 3 (Block, *The Visual Story*; Brown, *Cinematography*; *FilmCraft: Cinematography*; Phillips on Resolve), decision 2026-10-22-books-track3
+- files: SKILL.md (Step 1), references/visual-structure.md (new), references/color-script.md, evals/evals.json (action-2); shared schemas style (`visual_structure`) and scenes (`intensity`, `space`, `color`); shared/lib/cine.py `cards graph`
+- Design draws the story intensity per scene, picks constants and two or three changing components, and checks the curve with `cards graph`; the colour script becomes a measurable row per scene and names its scheme.
+
+### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261016-3 · 2026-10-16 · Lesson: a fighter out of frame takes his new wound stage at his first card in frame; a back wound stays text; a sheathed weapon the story took away is a second weapon in the refs
 - because: L-007

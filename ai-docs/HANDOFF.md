@@ -21,6 +21,8 @@
 
 - Books track 2 (2026-10-22, branch books-track2): cutting and continuity from Katz, Mascelli and Murch. Card fields `pov`, `role`, `protects`, `camera.settle`, `cast[].position_end`, `eyeline_end`, `enters`, `exits`; diff codes EXIT-ENTRY, LOOK-TRACK, MIDDLE-SWAP, ESTABLISH, POV, ROLE; entries point-of-view, group-staging, vehicles, cut-points. Runtime red line raised to 200 KB by Mark (decision 2026-10-22-books-track2), so runtime additions no longer need a trim first. Left for track 4: STRAIGHT-IN, three-quarter default, camera height, `qc cutcheck`, `bg-tangent`, `ots-wrong`.
 
+- Books track 3 (2026-10-22, branch books-track3): visual structure and light from Block, Brown, FilmCraft and Phillips. Scene `intensity`, `space`, `color`; card `line`, `attention`, `light.tone`, `light.atmosphere`; style `visual_structure`; `cards graph`; diff SPACE, KEY-SIDE, ATTENTION; look-pass entry and eight codes; `cine_post.py grade measure --plan`, `grade stabilize`, `grade match --sat --warm`. Runtime 182 KB of red 200. Left for track 4 (decision 2026-10-22-books-track3 G13): arc, push-in and dolly-zoom tokens, lens and focus rules, framing.md, a measured attention check (`qc cutcheck`).
+
 ## Waiting on Mark
 - claude.ai cleanup: delete the uploaded test skill cinewright-continuity (permanent delete; switched off for now), remove the cinewright marketplace source if the UI offers it, close the VS Code window `code chat -n` opened.
 - Old commits stay reachable from PR #1-#11 pages (refs/pull); only GitHub Support can purge. Closed PRs #12-#13 show a hostname in their head branch name.

@@ -132,7 +132,8 @@
           "eq=brightness='-0.02+0.01*t':eval=frame",
           "out/grade/1B.mp4"
         ]
-      ]
+      ],
+      "baseline": "2026-10-22, books track 3 (evals/run_evals.py, Sonnet, skills disabled): without the skill 0 of 1 passed; with it 3 of 3 (T-20261022-1)."
     }
   ]
 }

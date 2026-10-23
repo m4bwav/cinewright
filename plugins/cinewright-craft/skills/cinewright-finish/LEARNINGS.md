@@ -6,6 +6,22 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-005 · 2026-10-22 · `colour-classes-miss-relative-light-faults`: absolute brightness thirds did not find the light faults a reviewer named
+- Trigger: books track 3, calibrating `grade measure --plan` on 354 shots of reviewed local takes, 10 of them faulted for light
+- Hypothesis: the reviewer's light notes are relative (lighter than the scene before, darker on the approach than in the close shots, golden where dusk was asked), so a fixed class per shot cannot see them
+- Rule: the class check is a plan check, labelled uncalibrated; it never stands in for the reviewer's light verdict. Shots of one scene that step in brightness are the match's job (`grade match --luma`)
+- Evidence: with dusk and night scenes planned dark, light-faulted takes had 0.19 of their shots off the plan and the rest 0.29; the luma and warmth spread inside a take did not separate them either (faulted median 19.4 luma, others 17.3). The progression ranking did read a sunset-to-night film correctly (luma rho -0.73, warmth -0.62), and a reversed plan came back AGAINST
+- Scope: tool (shared/lib/cine_post.py grade measure --plan)
+- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-22
+
+### L-004 · 2026-10-22 · `stabilize-reads-content-as-drift`: in a tracking shot the picture's own change looks like exposure drift
+- Trigger: books track 3, `grade stabilize` on eight real shots: seven drifted 0.3 to 4.3 luma and fell to 0.2 to 1.6; the eighth "drifted" 11.9
+- Hypothesis: the gains hold each frame's mean at the middle frame's, and a tracking shot's mean moves because the street in frame changes, not the exposure
+- Rule: stabilize static and slow shots only; it warns over 8 luma, and a planned light change (a lamp switched on, a flash) keeps its original
+- Evidence: the 11.9 shot was a backward track ahead of a running crowd down a street; the gains ran 0.98 to 1.17 on it
+- Scope: tool (shared/lib/cine_post.py grade stabilize)
+- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-22
+
 ### L-001 · 2026-10-04 · Set delivery color tags inside the picture with setparams
 - Trigger: 2026-10-04, S5 exit check: the S2 render is tagged transfer iec61966-2-1 (sRGB); `-color_trc bt709` on the libx264 output left the tag as sRGB in ffmpeg 9.0.1
 - Hypothesis: ffmpeg passes the frame's own color properties to the encoder, and they win over the output options

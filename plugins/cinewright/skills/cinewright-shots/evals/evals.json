@@ -138,7 +138,8 @@
           "examples/three-shot",
           "out/flat"
         ]
-      ]
+      ],
+      "baseline": "2026-10-22, books track 3 (evals/run_evals.py, Sonnet, skills disabled): without the skill 0 of 1 passed; with it 3 of 3 (T-20261022-2)."
     }
   ]
 }

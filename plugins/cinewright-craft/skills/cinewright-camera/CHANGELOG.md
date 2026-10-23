@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+Entry shape: `### C-20261022-1 · 2026-10-22 · Upstage key, back-cross, light sources, atmosphere (books track 3)
+- because: books track 3 (Block, *The Visual Story*; Brown, *Cinematography*; *FilmCraft: Cinematography*; Phillips on Resolve), decision 2026-10-22-books-track3; L-005
+- files: SKILL.md (Step 3), references/lighting-setups.md, references/light-sources.md (new), evals/evals.json (outcome-2), evals/check_lamp.py; shared schema shot card (`light.tone`, `light.atmosphere`); shared/lib/cine.py (KEY-SIDE warning, far-side, backlit and firelight words)
+- The key comes from the side the face turns to and the diff warns on a broad key; practicals are carried onto the face; airborne matter is a field compiled as backlit.
+
+### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261016-2 · 2026-10-16 · Lesson: an overhead on a fighter pinned under another sees only the top one's back; shoot the pinned face from the floor in profile
 - because: L-004

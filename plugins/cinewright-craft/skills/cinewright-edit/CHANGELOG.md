@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+Entry shape: `### C-20261022-2 · 2026-10-22 · Attention continuum, Block's editorial rhythm, frame repairs (books track 3)
+- because: books track 3 (Block, *The Visual Story*; Brown, *Cinematography*; *FilmCraft: Cinematography*; Phillips on Resolve), decision 2026-10-22-books-track3
+- files: SKILL.md (Steps 3 and 4), references/attention-continuum.md (new), references/pacing.md, references/cutting-around-bad-frames.md; shared/lib/cine.py (ATTENTION warning); shared/lib/cine_post.py (`grade measure --plan`)
+- Calm cuts keep the eye in one cell and peaks may jump; a cut's beat follows the contrast between its shots; one broken frame is replaced from its neighbours; the cut is measured against the visual plan.
+
+### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261022-1 · 2026-10-22 · Cut points, seam-hiding joins, a planned action overlap, the audience pass (books track 2)
 - because: books track 2 (Katz, *Shot by Shot*; Mascelli, *The Five C's*; Murch, *In the Blink of an Eye*), decision 2026-10-22-books-track2
