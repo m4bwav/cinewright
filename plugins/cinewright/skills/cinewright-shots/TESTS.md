@@ -4,14 +4,19 @@ Test runs for [SKILL.md](SKILL.md). Cases live in `evals/evals.json`. A failure 
 
 A test passes on evidence (a tool call in the trace, a file, a marker), never on the transcript's claim.
 
-Entry shape: `### T-20261022-2 · 2026-10-22 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Sonnet · 1/1 new case
+Entry shape: `### T-YYYYMMDD-n · date · harness · env · passed/total`, one line per failing case, then `led to:`. Newest first. Budget 150 lines.
+
+## Runs
+
+### T-20261022-3 · 2026-10-22 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Sonnet · 1/1 new case
+- outcome-3 (new: an OTS on Maren past Tomas, his face kept hidden): with the skill 3/3 passed check_ots.py (framing ots, Tomas `view` back or three-quarter-back, "seen from behind" in the compiled prompt); without 0/1.
+- Other cases not rerun (descriptions unchanged).
+- led to: C-20261022-3
+
+### T-20261022-2 · 2026-10-22 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Sonnet · 1/1 new case
 - outcome-2 (new: make scene 1 flat like a stage set): with the skill 3/3 passed check_flat.py (`space: flat`, the 24mm wide and the dolly-in changed, no SPACE warning); without 0/1.
 - Other cases not rerun (descriptions unchanged).
 - led to: C-20261022-2
-
-### T-YYYYMMDD-n · date · harness · env · passed/total`, one line per failing case, then `led to:`. Newest first. Budget 150 lines.
-
-## Runs
 
 ### T-20261022-1 · 2026-10-22 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Sonnet · 1/1 new case
 - action-2 (new: the scene belongs to Tomas; mark whose scene each card serves and its job): with the skill 3/3 wrote `pov` on 1C; without 0/1.

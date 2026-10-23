@@ -37,6 +37,7 @@ sources: ["Steven D. Katz, Film Directing Shot by Shot, 1991", "Giuseppe Cristia
 - A card whose action holds "then" is two cards (`continuity diff` ONE-ACTION).
 - A long run of singles with no wide shot loses the geography; put a wide shot back in at least every eight shots or at every re-block.
 - Two cards in a row that neither raise nor answer anything: drop one.
+- Not every important line needs a close-up. Holding one back makes the next close-up land (after Katz, *Shot by Shot*).
 
 ## Verify
 

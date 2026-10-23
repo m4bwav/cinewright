@@ -8,6 +8,11 @@ Entry shape: `### T-YYYYMMDD-n · date · harness · env · passed/total`, one l
 
 ## Runs
 
+### T-20261022-2 · 2026-10-22 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Sonnet · 1/1 new case
+- outcome-2 (new: a planted straight-in cut from the 1A two-shot to a close two-shot): with the skill 3/3 passed check_cutin.py (no STRAIGHT-IN or 30-DEGREE on 1B, still close on both); without 1/1 too, because the warning's own text says how to fix the cut, so the case proves the runtime check rather than the skill's prose.
+- Other cases not rerun (descriptions unchanged).
+- led to: C-20261022-3
+
 ### T-20261022-1 · 2026-10-22 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Sonnet · 1/1 new case
 - action-2 (new: Maren walks round Tomas in 1A; record it so later cards are checked against the end): with the skill 3/3, each run set `position_end` and ran `continuity diff` on out/walk; one caught the EYELINE errors the walk caused in 1B and 1C and fixed them. Without 0/1: the baseline wrote `position_end` by guessing the name but never ran a check, so the evidence moved from the file to the diff call (regraded on the saved traces).
 - Other cases not rerun (descriptions unchanged).

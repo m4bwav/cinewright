@@ -3,7 +3,7 @@ title: One movement phrase per shot
 slug: one-phrase-per-shot
 summary: Each shot holds one movement phrase with a clear start and end state; split anything longer, count beats for rhythmic moves, and keep subject and camera from fighting.
 tags: [movement, choreography, phrase, beats, action]
-last_checked: 2026-10-04
+last_checked: 2026-10-22
 sources: ["Rudolf Laban, The Mastery of Movement, 4th ed., 1980", "Steven D. Katz, Film Directing Shot by Shot, 1991"]
 ---
 
@@ -31,6 +31,7 @@ sources: ["Rudolf Laban, The Mastery of Movement, 4th ed., 1980", "Steven D. Kat
 
 - "Then" in an action means two phrases (`continuity diff` ONE-ACTION warns).
 - Asking for a long fight or dance in one generation produces moves that melt into each other; one exchange per shot.
+- Mobile staging is the one exception: on a model with long takes, an actor turning to camera or a countermove can replace an OTS-to-close-up cut and save a seam. It needs a motive in the behaviour, and the card's `notes` says the ONE-ACTION warning is meant (after Katz, *Shot by Shot*).
 
 ## Verify
 

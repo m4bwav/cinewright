@@ -764,5 +764,31 @@ $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 13 hits in 4 files (the same 13 as main, none in this change)
 ```
 
+## 2026-10-22: book-learnings track 4 (framing and prompt vocabulary)
+
+From Mateu-Mestre, *Framed Ink* 1 and 2; Roberts, Chen and Garvey-Williams on composition; Gurney; the items track 2 handed on from Mascelli, Katz and Murch (A5, A6, A7, C3, C4, C5, E); track 3's G13 list from Block and Brown. Branch books-track4. Rulings H1 to H13 in [decisions/2026-10-22-books-track4.md](decisions/2026-10-22-books-track4.md).
+
+- Built: card `camera.horizon`, `camera.dutch`, `cast[].view` (three-quarter by default in `cards new`); moves `push-in`, `arc-left`, `arc-right`, `dolly-zoom` (3D for SPACE); diff warnings STRAIGHT-IN, HORIZON, DUTCH; compile writes the horizon third, the dutch side and each person's view; rubric row `framing`; vocab failures-framing (eight codes); camera-angles rewritten (what each angle reads as, its horizon, camera height, the dominated-eyes rule, dutch pairs). New entries frame-tension (shots), move-grammar (camera); rules added to framing, lens-choice, depth-of-field, coverage (OTS rear view), shot-list-order (indirection), thirty-degree-rule, shot-checklist, one-phrase-per-shot (mobile staging), blockout-control (controls carry no light), animatic (the moment before the peak). No committed example prompt changed.
+- Real data: STRAIGHT-IN first fired on 7 of 163 cards of seven local multi-shot films; two were cuts back out, so it reads cut-ins only: 4 of 163 (2.5 %), all two fighters across the frame (continuity L-008). HORIZON, DUTCH and `view` read fields no real card has. A detector-based eye trace on 219 real cuts found faces on both sides of only 85, so no `qc cutcheck` in the runtime (qc L-008); the same data put planned left and right faces at 0.37 and 0.60 of the width (shots L-001).
+- Proof: 4 new tests; seven mutation runs (STRAIGHT-IN, cut-ins only, HORIZON, DUTCH pair, view compile, horizon compile, framing row) each make their test fail. Mutation runs use `python -B`: a mutation and its restore of the same size in the same second left a stale .pyc that failed the restored suite once.
+- Records: track 3 had spliced its entries into the "Entry shape" template line of twelve CHANGELOG and TESTS files; restored (H13).
+- Budget: runtime 185 KB of red 200 (yellow, +3 KB); other yellows unchanged.
+- Skipped: diagonal `travel` tokens, an OTS warning for a missing rear view, seated eye-level compile words, vertical reframing (H12).
+- Evals (Sonnet): shots outcome-3 3/3 (baseline 0/1), camera outcome-3 3/3 (0/1), continuity outcome-2 3/3 (baseline 1/1: the warning's own text tells any agent the fix).
+
+```
+$ python -m unittest discover -s tests
+Ran 137 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ python scripts/cine.py budget
+budget: YELLOW (runtime 185 KB of red 200; other yellows unchanged)
+$ claude plugin validate (root and 3 plugins)
+Validation passed x4
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 13 hits in 4 files (the same 13 as main, none added by this change)
+```
+
 ## [2026-10-22] index | rebuilt (22 entries)
 ## [2026-10-22] index | rebuilt (23 entries)
+## [2026-10-22] index | rebuilt (24 entries)

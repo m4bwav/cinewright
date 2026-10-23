@@ -51,8 +51,19 @@ MOVE_WORDS = {
     "truck-left": "camera trucks left", "truck-right": "camera trucks right",
     "track": "tracking shot following the subject", "crane-up": "crane up",
     "crane-down": "crane down", "handheld": "handheld camera",
-    "zoom-in": "slow zoom in", "zoom-out": "slow zoom out",
+    "zoom-in": "slow zoom in", "zoom-out": "slow zoom out", "push-in": "slow push in",
+    "arc-left": "the camera arcs slowly left around the subject, the background sliding behind",
+    "arc-right": "the camera arcs slowly right around the subject, the background sliding behind",
+    "dolly-zoom": "dolly zoom, the background stretching away while the subject keeps the same size",
 }
+# Camera height and horizon together pin the angle (after Mateu-Mestre, Framed Ink). Out-of-frame values name no
+# horizon: every noun gets drawn, so an interior card leaves horizon unset.
+HORIZON_WORDS = {"lower-third": "the horizon on the lower third of the frame", "middle": "the horizon across the middle of the frame",
+                 "upper-third": "the horizon on the upper third of the frame", "above-frame": "the ground fills the frame to the top edge",
+                 "below-frame": "only sky behind, the ground below the frame"}
+HORIZON_LOW, HORIZON_HIGH = ("lower-third", "below-frame"), ("upper-third", "above-frame")
+VIEW_WORDS = {"front": "facing the camera square-on", "three-quarter": "seen from a three-quarter angle", "profile": "seen in profile",
+              "back": "seen from behind", "three-quarter-back": "seen from behind at a three-quarter rear angle, only the cheek line showing"}
 TRAVEL_WORDS = {
     "left-to-right": "moving from left to right across the frame",
     "right-to-left": "moving from right to left across the frame",
@@ -83,7 +94,7 @@ SPACE_WORDS = {
     "ambiguous": "Ambiguous space: nothing of known size in frame, shadow and an unusual angle hide the size of the place and where the camera stands",
 }
 ATTENTION_CALM = 50  # below this intensity a cut keeps the eye in place; at or above it a jump is a planned contrast
-SPACE_3D = ("dolly-in", "dolly-out", "track", "crane-up", "crane-down")  # relative movement adds depth (Block ch. 3)
+SPACE_3D = ("dolly-in", "dolly-out", "push-in", "track", "crane-up", "crane-down", "arc-left", "arc-right", "dolly-zoom")  # relative movement adds depth (Block ch. 3)
 LINE_WORDS = {"horizontal": "Calm horizontal lines run across the frame", "vertical": "Strong vertical lines rise through the frame",
               "diagonal": "Strong diagonal lines cut across the frame", "curved": "Soft curving forms shape the frame"}
 CELL_WORDS = ["upper left", "top center", "upper right", "left", "center", "right", "lower left", "bottom center", "lower right"]
@@ -502,7 +513,7 @@ def new_card(p, cid, scene, cast_ids, order=None):
         if c not in p.chars:
             raise SystemExit("character '%s' is not in characters.json" % c)
         ch = p.chars[c]
-        cast.append({"id": c, "identity": ch["identity"], "wardrobe": wardrobe_for(ch, scene)})
+        cast.append({"id": c, "identity": ch["identity"], "wardrobe": wardrobe_for(ch, scene), "view": "three-quarter"})
     return {
         "id": cid, "scene": scene,
         "order": order or (max([c.get("order", 0) for c in p.cards] or [0]) + 1),
@@ -757,6 +768,16 @@ def continuity_diff(p):
                 cam["faces"], sc.get("location"), ", ".join(sorted(walls)) or "none"))
         if cam.get("angle") == "dutch" and not p.style.get("allow_dutch"):
             add("warning", card, "STYLE", "dutch angle but the style bible does not allow it")
+        hz = cam.get("horizon")
+        if hz and (cam.get("angle") == "low" and hz in HORIZON_HIGH or cam.get("angle") == "high" and hz in HORIZON_LOW
+                   or cam.get("angle") == "overhead" and hz != "above-frame"):
+            add("warning", card, "HORIZON", "a %s angle with the horizon %s: looking up puts it low, looking down puts it high or out of frame" % (cam["angle"], hz))
+        if cam.get("dutch") and cam.get("angle") != "dutch":
+            add("warning", card, "DUTCH", "camera.dutch is set but the angle is %s" % cam.get("angle"))
+        pc0 = (prev or {}).get("camera", {})
+        if cam.get("dutch") and pc0.get("dutch") == cam["dutch"] and card.get("cast") and prev.get("cast") and \
+                {m.get("id") for m in card["cast"]} != {m.get("id") for m in prev["cast"]}:
+            add("warning", card, "DUTCH", "%s and %s both tilt %s; dutch tilts on opposing subjects come in opposing pairs" % (prev["id"], card["id"], cam["dutch"]))
         lr = lens_range(p.style.get("lens_family"))
         if lr and cam.get("lens_mm") and not lr[0] <= cam["lens_mm"] <= lr[1]:
             add("warning", card, "LENS", "%gmm is outside the style's lens family (%s, %d-%dmm); change the lens or the family" % (
@@ -921,6 +942,9 @@ def continuity_diff(p):
                     elif abs(az - paz) < 30:
                         add("error", card, "30-DEGREE", "jump cut from %s: same subject, %d size step(s) and %d degrees; change size by 2+ steps or angle by 30+ degrees" % (
                             prev["id"], step, abs(az - paz)))
+                elif az is not None and paz is not None and abs(az - paz) < 10 and SIZES.index(cam["size"]) > SIZES.index(pc["size"]) and any(m.get("position") in FLIP for m in card.get("cast", [])):
+                    add("warning", card, "STRAIGHT-IN", "straight-in cut from %s (%d degrees) on someone off centre; move in and around: 30+ degrees "
+                        "with the size step, unless the subject is centred" % (prev["id"], abs(az - paz)))
         if role != "protection":  # a stand-in for another card, never the state the next card starts from
             prev_by_scene[sc["id"]] = card
             last = {m.get("id"): m for m in card.get("cast", [])}
@@ -995,7 +1019,9 @@ MOVE_SENTENCES = {
     "truck-left": "The camera trucks left", "truck-right": "The camera trucks right",
     "track": "The camera tracks the subject", "crane-up": "The camera pedestals up",
     "crane-down": "The camera pedestals down", "handheld": "The camera shakes",
-    "zoom-in": "The camera zooms in", "zoom-out": "The camera zooms out",
+    "zoom-in": "The camera zooms in", "zoom-out": "The camera zooms out", "push-in": "The camera pushes in",
+    "arc-left": "The camera arcs left around the subject", "arc-right": "The camera arcs right around the subject",
+    "dolly-zoom": "The camera dollies in while zooming out, the background stretching away behind a subject of fixed size",
 }
 # Generic parameter names; a Compile block's "param_names" renames them, null drops one.
 DEFAULT_PARAMS = {"model": "model", "duration": "durationSeconds", "aspect": "aspectRatio", "resolution": "resolution",
@@ -1081,7 +1107,9 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
     lens = ", %smm lens" % int(cam["lens_mm"]) if cam.get("lens_mm") else ""
     settle = cam.get("settle") and cam["move"] != "static"  # held frames at both ends give the edit handles
     move = "" if sentence_moves else ", " + MOVE_WORDS[cam["move"]] + (" that starts and ends on a held frame" if settle else "")
-    parts["camera"] = _sentence("%s, %s%s%s" % (_cap(SIZE_WORDS[cam["size"]]), ANGLE_WORDS[cam["angle"]], lens, move))
+    angle = ANGLE_WORDS[cam["angle"]] + (", the frame tilted down to the %s" % cam["dutch"] if cam.get("dutch") else "")
+    angle += ", " + HORIZON_WORDS[cam["horizon"]] if cam.get("horizon") else ""
+    parts["camera"] = _sentence("%s, %s%s%s" % (_cap(SIZE_WORDS[cam["size"]]), angle, lens, move))
     att = card.get("attention", {})
     if card.get("line"):
         parts["camera"] += " " + _sentence(LINE_WORDS[card["line"]])
@@ -1102,6 +1130,8 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
         line = "%s, %s, wearing %s" % (who, ch["identity"].rstrip("."), wardrobe_for(ch, sc["id"]).rstrip("."))
         if m.get("position"):
             line += ", %s" % POSITION_WORDS[m["position"]]
+        if m.get("view"):
+            line += ", %s" % VIEW_WORDS[m["view"]]
         if m.get("holding"):
             line += ", holding %s" % prop_words(p, m["holding"], m.get("holding_state"), tags)
         subj.append(_sentence(line))
@@ -1482,6 +1512,7 @@ RUBRIC = [
     ("action", "sheet", "Does the action happen and finish at normal speed, already moving at frame 1: {action}"),
     ("opening", "first frame", "Does the first frame match the start state: {start_state}"),
     ("end-state", "last frame", "Does the last frame match the end state: {end_state} Write what it shows."),
+    ("framing", "sheet", "Are heads, hands and key objects clear of the frame edges, with nothing growing out of a head and feet on the ground?"),
     ("anatomy", "sheet", "Are hands, limbs and faces whole in every frame?"),
     ("physics", "sheet", "Do objects keep their shape, contact and weight (nothing merges, slides or passes through)?"),
     ("text", "sheet", "Is the frame free of subtitles, captions, watermarks and garbled writing?"),
@@ -1719,7 +1750,7 @@ def standing_items(p, card, codes):
     out = []
     for r in rules.get("*", []) + rules.get(card["id"], []):
         if r.get("code") not in codes:
-            raise SystemExit("%s: rule %s needs a failure code (kb show failures-picture or failures-motion)" % (f, r.get("id")))
+            raise SystemExit("%s: rule %s needs a failure code (kb show failures-picture, failures-motion or failures-framing)" % (f, r.get("id")))
         out.append({"id": "standing:%s" % r["id"], "check": codes[r["code"]]["check"], "look": "sheet", "ask": r["claim"],
                     "verdict": None, "code": None, "note": "", "standing_code": r["code"], "why": r.get("why", "")})
     return out
@@ -2200,7 +2231,7 @@ def cmd_takes(ctx, a):
         if a.fix:
             codes = taxonomy(ctx)
             if codes and a.fix not in codes:
-                raise SystemExit("unknown fix code %s; run kb show failures-picture or failures-motion" % a.fix)
+                raise SystemExit("unknown fix code %s; run kb show failures-picture, failures-motion or failures-framing" % a.fix)
         errs = validate(rec, load_schema(ctx, "take"))
         if errs:
             raise SystemExit("take record invalid: %s" % "; ".join(errs))

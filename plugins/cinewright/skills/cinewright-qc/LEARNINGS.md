@@ -6,6 +6,14 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-008 · 2026-10-22 · `eye-trace-needs-faces`: a measured eye trace at a cut needs a face detector and finds faces on few cuts
+- Trigger: books track 4 (Mascelli's eye scan, Murch's eye trace) asked for `qc cutcheck`, the measured version of the `attention` cells
+- Hypothesis: the stdlib runtime has no face or subject detector, and wides, backs and profiles carry no face anyway
+- Rule: no `qc cutcheck` here: the rubric `attention` row and the ATTENTION warning stay the check; a detector-based eye trace (largest face either side of each planned cut, warn over 0.35 of the width) runs outside the runtime and points a reviewer at a cut, never gates
+- Evidence: on 236 planned cuts in 118 reviewed local takes, 219 were found within 0.6 s of the plan (median 0.10 s) but only 85 had a face on both sides; the jump passed 0.35 on 19 % of them, keeps and rejects alike, since nobody reviewed eye trace
+- Scope: skill (references/look-pass, rubric attention row)
+- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-22
+
 ### L-007 · 2026-10-22 · `motion-proxies-miss-settle-and-strobe`: frame difference and column-shift pan speed cannot judge camera settle or strobing
 - Trigger: books track 3 proposed two `qc measure` checks from Brown, *Cinematography*: `move-no-settle` (the last 0.5 s of motion under 30 % of its peak) and `pan-strobe` (a pan over a third of the frame a second)
 - Hypothesis: whole-frame motion mixes the camera with the subject and the model's own shimmer, so neither measure isolates the camera

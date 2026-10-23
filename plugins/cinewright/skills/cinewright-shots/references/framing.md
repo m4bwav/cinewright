@@ -3,8 +3,8 @@ title: Framing and composition
 slug: framing
 summary: Thirds, looking room, headroom, depth layers and Block's contrast and affinity, written as the position words a video prompt can carry.
 tags: [shots, framing, composition, thirds, headroom, contrast]
-last_checked: 2026-10-04
-sources: ["Bruce Block, The Visual Story, 2nd ed., 2008", "Gustavo Mercado, The Filmmaker's Eye, 2010", "Joseph V. Mascelli, The Five C's of Cinematography, 1965"]
+last_checked: 2026-10-22
+sources: ["Bruce Block, The Visual Story, 2nd ed., 2008", "Gustavo Mercado, The Filmmaker's Eye, 2010", "Joseph V. Mascelli, The Five C's of Cinematography, 1965", "Marcos Mateu-Mestre, Framed Ink, 2010"]
 ---
 
 # Framing and composition
@@ -15,9 +15,12 @@ sources: ["Bruce Block, The Visual Story, 2nd ed., 2008", "Gustavo Mercado, The 
 - Looking room: leave the open side of the frame in front of a face or a move. Frame-left person looks frame-right; a person travelling left-to-right sits on the left third.
 - Headroom shrinks as the shot tightens: a hand's width above the head in MS, almost none in MCU; in CU and ECU the top of the head may be cut, never the chin.
 - Shot and reverse mirror each other: same third, same headroom, opposite sides.
-- Depth: three layers (foreground, subject, background) make a flat generated frame read as a place. Name the foreground object in the prompt.
+- Depth: three layers (foreground, subject, background) make a flat generated frame read as a place. Name the foreground layer first in the subject line ("dark doorframe in the foreground, the figure in the lit room beyond").
+- Three-quarter by default: video models draw people and things square-on and centred. Set `view: three-quarter` (about 45 degrees to the face; `cards new` fills it), show two walls of a room, and run travel on a diagonal toward or away from the camera ("walks diagonally toward camera"). A square-on, level view is a choice for flatness (a courtroom, a facade, deadpan) and the card says so (after Mascelli, *The Five C's*).
+- Keep heads, hands and key objects clear of the frame edges, or crop boldly through them. Frame lines never cut at a joint (knee, waist, elbow, wrist).
 - Contrast and affinity (Block): pick the visual component that changes with the story (space, line, shape, tone, color, movement, rhythm). Keep it similar (affinity) in calm beats; push it apart (contrast) as intensity rises. Write which component in the brief.
 - Prompt form: "on the left third of the frame, looking toward frame right" beats "rule of thirds composition", which models ignore.
+- Pressure, tension, horizon and open or closed framing: entry frame-tension. Size with lens: cinewright-camera lens-choice.
 
 ## Numbers
 

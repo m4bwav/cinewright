@@ -3,7 +3,8 @@
     "aspect-ratios.md",
     "lens-terms.md",
     "lighting-terms.md",
-    "camera-moves.md"
+    "camera-moves.md",
+    "camera-angles.md"
   ],
   "lib": [
     "cine.py"

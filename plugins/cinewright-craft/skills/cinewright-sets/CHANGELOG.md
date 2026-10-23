@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261022-1 · 2026-10-22 · Controls carry no light: light the guide still (books track 4)
+- because: books track 4 (Mateu-Mestre, *Framed Ink* 1 and 2; Mascelli, *The Five C's*; Katz, *Shot by Shot*; Block, *The Visual Story*; Brown, *Cinematography*; Gurney), decision 2026-10-22-books-track4
+- files: references/blockout-control.md
+- Gurney's lit maquette, corrected for this pipeline: depth, edge and pose passes carry no light, so a blockout that is also the first frame gets the planned light, and otherwise the words carry it.
+
 ### C-20261017-2 · 2026-10-17 · 3D models for film and AI video, the director's side
 - because: user request: each plugin carries 3D modelling knowledge for its topic and points to polywright; R-20261017-1
 - files: references/3d-models.md (new), SKILL.md (end of Step 3), RESEARCH.md

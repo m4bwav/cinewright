@@ -3,8 +3,8 @@ title: Lens choice
 slug: lens-choice
 summary: Pick a focal length per card from what the shot must do to the face and the space; one lens family per film, recorded in the style bible so the continuity diff can check every card.
 tags: [camera, lens, focal-length, perspective]
-last_checked: 2026-10-04
-sources: ["Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "Steven D. Katz, Film Directing Shot by Shot, 1991", "ASC Manual, 11th ed., 2022"]
+last_checked: 2026-10-22
+sources: ["Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "Steven D. Katz, Film Directing Shot by Shot, 1991", "ASC Manual, 11th ed., 2022", "Bruce Block, The Visual Story, 2nd ed., 2008", "FilmCraft: Cinematography, 2012 (Suschitzky)", "Marcos Mateu-Mestre, Framed Ink, 2010"]
 ---
 
 # Lens choice
@@ -15,8 +15,13 @@ sources: ["Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "St
 - Match the lens across a reverse pair: both singles of a conversation use the same focal length and distance, or the faces change size and the cut jumps (cinewright-continuity, matched singles).
 - Close-ups below 35mm distort the face (nose grows, ears shrink). Use a wide close-up only on purpose: comedy, menace, a character losing control.
 - Long lenses (85mm and up) flatten the background and isolate the subject; use them for a figure in a crowd, heat shimmer, or a chase seen from far.
+- A long lens does not flatten a scene by itself; flat staging does. A flat scene needs the staging words too (cinewright-shots space-types; after Block).
+- Wide and close: a wide lens close to the face keeps the room in the close-up, the named alternative to a long-lens close-up (after Suschitzky in *FilmCraft*).
+- Running toward a long lens reads slow and dreamlike, the runner barely gaining; toward a wide lens it reads fast and violent.
+- Cramped interiors: try a longer lens shooting through a doorway or past foreground objects, not a wider one. Shallow focus on a long lens makes a few figures read as a crowd and hides crowd artifacts behind the principals (after Katz; the HARD-SUBJECT fix).
+- Punch-in at a scene's turn: cinewright-camera move-grammar.
 - One lens family per film in `bibles/style.json` `lens_family`, with its range in mm ("spherical primes, 24-85mm"). The diff warns LENS when a card leaves it.
-- Write the focal length in the card (`lens_mm`); the compiler says "50mm lens". Add an effect word only when the effect is the point ("wide-angle lens, the room stretching away").
+- Write the focal length in the card (`lens_mm`); the compiler says "50mm lens". Add an effect word only when the effect is the point ("wide-angle lens inches from the face, the room stretching away", "telephoto from far away, depth compressed"): a size word alone does not say what the lens does.
 
 ## Numbers
 

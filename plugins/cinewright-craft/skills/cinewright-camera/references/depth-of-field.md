@@ -3,8 +3,8 @@ title: Depth of field
 slug: depth-of-field
 summary: Decide what is sharp per card and say it in words a video model follows (shallow focus, background soft, deep focus), never as an f-stop; keep depth consistent within a scene.
 tags: [camera, focus, depth-of-field, bokeh]
-last_checked: 2026-10-04
-sources: ["Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "ASC Manual, 11th ed., 2022"]
+last_checked: 2026-10-22
+sources: ["Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "ASC Manual, 11th ed., 2022", "Bruce Block, The Visual Story, 2nd ed., 2008"]
 ---
 
 # Depth of field
@@ -15,7 +15,9 @@ sources: ["Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "AS
 - Default: shallow for singles and close-ups (the subject sharp, the background soft), deep for wides and anything where geography matters (where people stand must read).
 - Say it in words in the card's `subject` or `notes`-driven action: "shallow depth of field, background soft" or "deep focus, foreground and background sharp". Models follow these phrases; they do not compute an f-stop. (Practice observation, unverified across models.)
 - Keep depth the same for every card of one scene unless a focus change is the point.
-- A rack focus (focus pull) is one move: give it a card of its own, from one named subject to another, with the camera static.
+- A rack focus (focus pull) is one move: give it a card of its own, from one named subject to another, with the camera static. The rack lands on its new subject at the moment of the line or action, not before.
+- In a two-shot with shallow focus, focus goes to the face with the strongest moment, else the speaker, else the face turned to camera, else the lead (after Brown).
+- A soft background carries no depth cues, so shallow focus is a flat-space tool; a deep scene needs deep focus or staged layers (after Block).
 - Deep-focus looks (1940s, Citizen Kane style) need a wide lens and light everywhere; ask for "deep focus" and "sharp to the back wall".
 
 ## Numbers

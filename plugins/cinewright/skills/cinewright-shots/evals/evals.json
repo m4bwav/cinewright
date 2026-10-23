@@ -140,6 +140,30 @@
         ]
       ],
       "baseline": "2026-10-22, books track 3 (evals/run_evals.py, Sonnet, skills disabled): without the skill 0 of 1 passed; with it 3 of 3 (T-20261022-2)."
+    },
+    {
+      "id": "outcome-3",
+      "kind": "outcome",
+      "prompt": "out/ots is a copy of examples/three-shot. Make 1B an over-the-shoulder shot on Maren, past Tomas's shoulder in the foreground. Video models keep turning the near person's face toward the camera, so plan the card so his face stays hidden, then compile 1B's Veo prompt into out/ots/compiled/veo.",
+      "files": [],
+      "checks": [
+        [
+          "python",
+          "evals/check_ots.py",
+          "{work}"
+        ]
+      ],
+      "expectations": [
+        "check: 1B is an OTS with Maren and Tomas, Tomas has view back or three-quarter-back, the cards validate, and out/ots/compiled/veo/1B.txt says he is seen from behind (evals/check_ots.py exits 0)"
+      ],
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/ots"
+        ]
+      ]
     }
   ]
 }
