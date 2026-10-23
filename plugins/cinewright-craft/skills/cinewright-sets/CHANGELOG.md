@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261023-1 · 2026-10-23 · Mist against inverse depth, tested once on H3
+- because: L-007
+- files: references/blender-passes.md (summary; Rules)
+- The Mist line said a video model's response to Mist was untested. One blind test on H3 picked Mist over inverse depth on two seeds; the rule now says to render both and keep the better take.
+
 ### C-20261022-2 · 2026-10-22 · Entry blender-passes; master-plates tracking line; description names control passes
 - because: books track 7 (van Gumster, *Blender All-in-One For Dummies*, passes and motion tracking; polywright recipes run on Blender 5.2.1); T-20261022-1; L-003
 - files: references/blender-passes.md (new), references/master-plates.md (Pitfalls), references/blockout-control.md (Related), SKILL.md (description; the blockout paragraph), evals/evals.json (action-blender)

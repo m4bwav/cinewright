@@ -1,9 +1,9 @@
 ---
 title: Blender passes
 slug: blender-passes
-summary: Render a blockout's control passes in Blender: inverse depth over one range per shot, masks per side from the same render, Mist only with care, line passes, no depth of field or motion blur.
+summary: Render a blockout's control passes in Blender: inverse depth or Mist over one range per shot (Mist won one blind H3 test), masks from the same render, line passes, no depth of field or motion blur.
 tags: [sets, blockout, blender, depth, mask, previs, control]
-last_checked: 2026-10-22
+last_checked: 2026-10-23
 sources: ["Jason van Gumster, Blender All-in-One For Dummies, rendering in passes", "polywright bpy-recipes-scenes and bpy-recipes-physics, run on Blender 5.2.1, 2026-10-22"]
 volatile_claims: ["Blender 5.2 compositor and File Output API names"]
 ---
@@ -13,7 +13,7 @@ volatile_claims: ["Blender 5.2 compositor and File Output API names"]
 ## Rules
 
 - Depth control: inverse depth, near white, one near and far range for the whole shot, or the control video pulses. polywright's `pw.py crowd` and `pw.py duel` render it; for a hand-built scene, a shader AOV that maps 1 / view depth over the shot's range does the same (polywright recipe `passes-one-render`).
-- Mist is anti-aliased and normalised but maps plain distance, not 1/z, so near figures get fewer tones. If Mist is used, fix its start and depth to the shot's whole range, falloff linear, inverted so near is white, written as 16-bit PNG. Whether a video model follows Mist as well as inverse depth is untested.
+- Mist is anti-aliased and normalised but maps plain distance, not 1/z, so near figures get fewer tones. If Mist is used, fix its start and depth to the shot's whole range, falloff linear, inverted so near is white, written as 16-bit PNG. One blind test on the local H3 graph (Fun ControlNet Union 2.0 at 0.6, end 0.4; a 73-frame crowd push-in, two seeds): the owner picked the Mist render over the inverse depth render on both seeds (L-007). Render both when the pass is cheap and keep the better take; one shot is not yet a rule for every model.
 - Masks per character or team come from the same render: a shader AOV or Cryptomatte, no second render with swapped materials.
 - Keep depth of field and motion blur off in every control pass. Write the lens, f-stop and focus distance into the camera record and let the prompt name them.
 - Line control straight from geometry (Grease Pencil Line Art or Freestyle) is an option beside a Canny of a clay render; which one a video model's edge control prefers is untested.

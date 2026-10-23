@@ -16,6 +16,7 @@ Source notes: the book-learnings folder, `blender-polywright.md` section 3. The 
 
 - K1. New entries, not growth: blockout-control (3.2 KB), master-plates (3.9 KB) and fight-previs (3.4 KB) are near the 700-token line, so the Blender pass rules went into a new sets entry `blender-passes` and the animation checks into a new movement entry `previs-animation`. The old entries got one line each.
 - K2. Inverse depth stays the depth signal. Mist is described as plain distance with fewer near tones; whether a video model follows it as well is written as untested, not decided.
+  Update 2026-10-23: tested once on H3 (crowd push-in, 0.6/0.4, two seeds): the owner picked Mist blind both times (sets L-007). Inverse depth stays what `pw.py crowd` writes; Mist is now a pass worth trying beside it, not a rule.
 - K3. Animation principles (after Hess) ship as checks, labelled untested on video models. No runtime check measures them.
 - K4. Motion tracking for plates is one line in master-plates, untested headless; `pw.py match` covers stills.
 - K5. The sets description names "3D blockouts rendered as control passes (Blender depth, Mist, masks)". Without it the eval never reached the skill (L-003). Descriptions total 4,778 of the 5,500 red line.
