@@ -1,6 +1,6 @@
 ---
 name: cinewright-sets
-description: "Set and location designer for AI video: plan with walls and sun, per-wall descriptions, master plates, reverse angles, set light, plate checks. Use when building a set, location or environment reference for shots, or when a room drifts or a reverse repeats the wide between clips. Also 'refresh cinewright-sets'."
+description: "Set and location designer for AI video: plan with walls and sun, per-wall descriptions, master plates, reverse angles, set light, plate checks, 3D blockouts rendered as control passes (Blender depth, Mist, masks). Use when building a set, location or environment reference for shots, or when a room drifts or a reverse repeats the wide between clips. Also 'refresh cinewright-sets'."
 license: MIT
 ---
 
