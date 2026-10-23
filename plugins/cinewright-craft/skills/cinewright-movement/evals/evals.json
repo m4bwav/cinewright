@@ -96,7 +96,7 @@
         "tool": "Bash",
         "input_match": "cine\\.py\"?\\s+kb\\s+show\\s+previs-animation"
       },
-      "baseline": "not yet run",
+      "baseline": "2026-10-22 (T-20261022-1), Sonnet, one run without the skill: fail",
       "runs": 3
     }
   ]

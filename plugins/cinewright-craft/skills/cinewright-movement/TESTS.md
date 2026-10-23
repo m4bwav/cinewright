@@ -8,6 +8,10 @@ Entry shape: `### T-YYYYMMDD-n · date · harness · env · passed/total`, one l
 
 ## Runs
 
+### T-20261022-1 · 2026-10-22 · evals/run_evals.py, Sonnet · Windows 11 dev machine · 3/3
+- action-previs-anim (new) 3/3, each ran `cine.py kb show previs-animation`; baseline 0/1.
+- led to: C-20261022-2
+
 ### T-20261015-1 · 2026-10-15 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code · action-2 3/3 on Sonnet
 - New case action-2 (plan a fight in examples/three-shot before any cards and check it); evidence a Bash call `cine_fight.py check <plan>.json`.
 - Round 1: 0/2, every `cine_fight.py` call refused by the harness allow list (`*cine.py*` only). Round 2: 3/3, but two runs matched only `check --help`. Round 3 (evidence needs a .json argument): 3/3, 24-53 turns, $0.30-1.18 a run. One kept plan: 6 exchanges, 2 phrases, an emotional question, the match changing hands through `changes`, check 0 errors.
