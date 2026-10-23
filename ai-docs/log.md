@@ -717,3 +717,27 @@ Validation passed x4
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 11 hits in 4 files (the same 11 as main)
 ```
+
+## 2026-10-22: book-learnings track 2 (cutting and continuity)
+
+From Katz, *Shot by Shot*; Mascelli, *The Five C's*; Murch, *In the Blink of an Eye*. Branch books-track2. Rulings F1 to F10 in [decisions/2026-10-22-books-track2.md](decisions/2026-10-22-books-track2.md).
+
+- Built: shot card fields `pov`, `role`, `protects`, `camera.settle`, `cast[].position_end`, `eyeline_end`, `enters`, `exits` (all optional). `continuity diff` checks each card against the block after the card before (moved by `position_end`) and adds EXIT-ENTRY, LOOK-TRACK, MIDDLE-SWAP, ESTABLISH, POV, ROLE and an AXIS warning for a cross_reason with no legal method. Compile writes entrances, exits, end positions, head turns and held moves as sentences. New entries point-of-view, group-staging (shots), vehicles (continuity), cut-points (edit); rules added to coverage, shot-list-order, blocking, ai-continuity, axis-and-screen-direction, eyelines, shot-checklist, cutting-on-action, pacing, assembly-to-delivery (audience pass, picture-only first assembly, notes as symptoms), take-selection, review-passes, qc-loop, compile-rule; shared vocab camera-moves (settle, move meanings), cut-terms (clearing the frame, foreground wipe, soft cut), failures-motion (`insert-too-fast`).
+- Budget: runtime red line raised from 150 to 200 KB by Mark in session (F1); runtime now 154 KB, yellow.
+- Real cards: on 163 cards of seven local multi-shot films the first ESTABLISH check fired twice, both people seen in earlier scenes; people now count film-wide (continuity L-007 `establish-people-film-wide`), 0 fires after. The other new checks read only the new fields, so they cannot fire on old cards.
+- Evals (Sonnet): continuity, shots and edit action-2, 3/3 each with the skill, baselines 0/1. The continuity baseline first passed by guessing `position_end`; its evidence is now the diff run on the copy (T-20261022-1 in each skill).
+- Skipped, for track 4 (F10): STRAIGHT-IN, three-quarter default, camera height, dutch pairs, `qc cutcheck`, `bg-tangent`, `ots-wrong`, open framing, the long-lens interior note, mobile staging.
+
+```
+$ python -m unittest discover -s tests
+Ran 120 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ python scripts/cine.py budget
+budget: YELLOW (runtime 154 KB of red 200; other yellows unchanged)
+$ claude plugin validate (root and 3 plugins)
+Validation passed x4
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 13 hits in 4 files (all in old log lines and cinewright-design notes, none in this change)
+```
+## [2026-10-22] index | rebuilt (22 entries)

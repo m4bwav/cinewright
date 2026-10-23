@@ -642,10 +642,101 @@ class TestContinuity(Base):
     def test_crossing_with_reason_flips_expectations(self):
         p = self.project()
         cam = p.cards[2]["camera"]
-        cam.update({"side": "B", "crosses_axis": True, "cross_reason": "Tomas crosses the line on screen"})
+        cam.update({"side": "B", "crosses_axis": True, "cross_reason": "subject-crosses: Tomas crosses the line on screen"})
         self.assertEqual(self.codes(p), [("1C", "EYELINE")], "on side B the eyeline must flip to frame-right")
         p.cards[2]["cast"][0]["eyeline"] = "frame-right"
         self.assertEqual(self.codes(p), [])
+        self.assertNotIn(("1C", "AXIS"), self.warns(p))
+        cam["cross_reason"] = "it looks cool"
+        self.assertIn(("1C", "AXIS"), self.warns(p), "a reason that names no legal way to cross")
+
+    # ---------- cutting and continuity (books track 2) ----------
+
+    def warns(self, p):
+        return sorted({(i["card"], i["code"]) for i in lib.continuity_diff(p) if i["level"] == "warning"})
+
+    def twin(self, p, src, cid, order):
+        c = json.loads(json.dumps(p.cards[src]))
+        c.update({"id": cid, "order": order})
+        p.cards.append(c)
+        return c
+
+    def test_next_card_starts_from_position_end(self):
+        p = self.project()
+        d = self.twin(p, 0, "1D", 4)
+        d["camera"]["azimuth_deg"] = 30
+        d["cast"][1]["holding"] = "single match"  # Tomas took it in 1C
+        self.assertEqual(self.codes(p), [])
+        p.cards[0]["cast"][0]["position_end"] = "frame-right"  # Maren walks past Tomas in 1A
+        p.cards[0]["cast"][1]["position_end"] = "frame-left"
+        self.assertIn(("1D", "POSITION"), self.codes(p), "1D still uses the opening block")
+        d["cast"][0]["position"], d["cast"][1]["position"] = "frame-right", "frame-left"
+        self.assertNotIn(("1D", "POSITION"), self.codes(p))
+
+    def test_exit_and_entry_sides(self):
+        p = self.project()
+        p.cards[0]["cast"][0]["exits"] = "frame-right"
+        p.cards[1]["cast"][0]["enters"] = "frame-right"
+        self.assertIn(("1B", "EXIT-ENTRY"), self.codes(p))
+        p.cards[1]["cast"][0]["enters"] = "frame-left"
+        self.assertNotIn(("1B", "EXIT-ENTRY"), self.codes(p))
+
+    def test_watcher_turns_against_the_travel(self):
+        p = self.project()
+        p.scene_map["1"]["axis"]["travel"] = {"tomas": "left-to-right"}
+        m = p.cards[1]["cast"][0]  # Maren looks frame-right at Tomas
+        m["eyeline_end"] = "frame-left"
+        self.assertNotIn(("1B", "LOOK-TRACK"), self.warns(p), "right to left follows a left-to-right walk")
+        m["eyeline"], m["eyeline_end"] = "frame-left", "frame-right"
+        self.assertIn(("1B", "LOOK-TRACK"), self.warns(p))
+
+    def test_middle_person_keeps_one_side(self):
+        p = self.project()
+        p.chars["nell"] = dict(p.chars["tomas"], name="Nell")
+        p.scene_map["1"]["axis"]["positions"] = {"nell": "frame-left", "maren": "center", "tomas": "frame-right"}
+        nell = dict(p.cards[0]["cast"][1], id="nell", position="frame-left", looks_at="maren", eyeline="frame-right")
+        p.cards[0]["cast"] = [nell, dict(p.cards[0]["cast"][0], position="frame-right")]
+        d = self.twin(p, 0, "1D", 4)
+        d["cast"] = [dict(p.cards[0]["cast"][1], position="frame-left"), dict(p.cards[2]["cast"][0], position="frame-right", eyeline="frame-left")]
+        p.cards = [p.cards[0], d]
+        self.assertIn(("1D", "MIDDLE-SWAP"), self.warns(p))
+        d["cast"][0]["position"] = "frame-right"
+        self.assertNotIn(("1D", "MIDDLE-SWAP"), self.warns(p))
+
+    def test_pov_role_protection_and_establish(self):
+        p = self.project()
+        p.cards[2]["pov"] = "nobody"
+        self.assertIn(("1C", "POV"), self.codes(p))
+        p.cards[2]["pov"] = "tomas"
+        p.cards[2]["camera"]["framing"] = "pov"
+        self.assertIn(("1C", "POV"), self.warns(p), "1B before it shows Maren looking, not Tomas")
+        p.cards[2]["pov"] = "maren"
+        self.assertNotIn(("1C", "POV"), self.warns(p))
+        d = self.twin(p, 1, "1D", 4)
+        d.update({"role": "protection", "protects": "9Z"})
+        self.assertIn(("1D", "ROLE"), self.codes(p))
+        d["protects"] = "1B"
+        self.assertNotIn(("1D", "ROLE"), self.codes(p))
+        e = self.twin(p, 2, "1E", 5)
+        e["camera"]["framing"] = "insert"
+        e["cast"] = []
+        e["props"] = [{"name": "brass lantern key"}]
+        self.assertIn(("1E", "ESTABLISH"), self.warns(p))
+        e["props"] = [{"name": "tin matchbox"}]  # Maren held it in 1A
+        self.assertNotIn(("1E", "ESTABLISH"), self.warns(p))
+
+    def test_compile_says_entries_end_states_and_held_moves(self):
+        p, prof, _ = compile_one(EXAMPLE, "minimax-h3", "1B")
+        c = json.loads(json.dumps(p.cards[1]))
+        c["cast"][0].update({"enters": "frame-left", "position_end": "center", "eyeline_end": "down"})
+        c["camera"]["settle"] = True
+        text = lib.compile_cards(p, [c], prof, False, "480p")[0][1]
+        self.assertIn("Maren enters the frame on the left.", text)
+        self.assertIn("Maren ends in the center of the frame.", text)
+        self.assertIn("Maren turns, looking down.", text)
+        self.assertIn("The camera holds, then pushes in with small amplitude at slow speed, then holds.", text)
+        _, vprof, _ = compile_one(EXAMPLE, "veo", "1B")
+        self.assertIn("slow dolly in that starts and ends on a held frame", lib.compile_cards(p, [c], vprof)[0][1])
 
 
 class TestBudgetZip(Base):

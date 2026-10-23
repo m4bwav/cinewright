@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261022-1 · 2026-10-22 · Cut points, seam-hiding joins, a planned action overlap, the audience pass (books track 2)
+- because: books track 2 (Katz, *Shot by Shot*; Mascelli, *The Five C's*; Murch, *In the Blink of an Eye*), decision 2026-10-22-books-track2
+- files: SKILL.md (Step 3 item 2, Step 5 item 3), references/cut-points.md (new), references/cutting-on-action.md, references/pacing.md, references/assembly-to-delivery.md, shared vocab cut-terms (clearing the frame, foreground wipe, soft cut), evals action-2
+- Cut where an idea ends, on a look or a reaction before an action; the two branches of a dialogue line; card B repeats the last 0.5-1 s of card A's action; a picture-only first assembly and an audience pass by a fresh context before lock; notes traced to their cause upstream.
+
 ### C-20261009-1 · 2026-10-09 · Animatic before any render (cine_post.py)
 - because: user request (2026-10-09: research what AI film makers build to raise quality, and add the gaps: prop sheets, LoRAs, animatic, blockout control, identity scoring, one shared grade)
 - files: SKILL.md (description, CINE_POST line, new section "Before any render: animatic"), references/animatic.md (new), needs.json (cine_post.py)

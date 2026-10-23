@@ -3,7 +3,7 @@ title: Review passes and note format
 slug: review-passes
 summary: How film and VFX reviewers look at a take, in passes (real time, silent, per element, cut points, sound), and how each note is written as one record with time, region, code and one fix.
 tags: [qc, review, notes, dailies, passes, continuity]
-last_checked: 2026-10-15
+last_checked: 2026-10-22
 sources: ["SPOTLIGHT error annotation protocol, arXiv 2511.18102, 2025-11", "MovieLabs QC vocabulary (video, audio, production), https://www.movielabs.com/md/qcvocabulary/", "Walter Murch, In the Blink of an Eye, 2nd ed., 2001 (Rule of Six)", "Frame.io comment guide, https://help.frame.io/en/articles/5042472", "SyncSketch compare and ghosting guides, https://support.syncsketch.com/", "Netflix QC modes (spot QC sampling), backlothelp.netflix.com, read through search 2026-10-15"]
 ---
 
@@ -21,6 +21,7 @@ sources: ["SPOTLIGHT error annotation protocol, arXiv 2511.18102, 2025-11", "Mov
 - When notes conflict, give up the lowest first: emotion, story, rhythm, eye-trace, the screen plane, 3D space (Murch). A strong emotional take hides a small continuity flaw; the reverse never holds.
 - Assume a physics-heavy shot has a glitch until checked: people spot one in most of them.
 - Secondary props degrade first; identity drifts first in eye shape, lip line and hairline on head turns.
+- Per kept take, pick the one frame that sums up the shot, usually near its out point, and lay them all out in cut order on one contact sheet. Reading the board left to right catches hairline, collar, prop and light drift between shots that are not adjacent (after Murch).
 
 ## Numbers
 

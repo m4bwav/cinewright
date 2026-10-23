@@ -3,8 +3,8 @@ title: Continuity rules specific to AI video
 slug: ai-continuity
 summary: What separately generated clips lose between shots (identity, props, sound, direction) and the planning rules that carry it across.
 tags: [continuity, ai-video, seams, identity, seeds]
-last_checked: 2026-10-03
-sources: ["https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1", "Maintainer's local-render field notes, 2026-09 (private; lessons 005, 011, 012, 013)"]
+last_checked: 2026-10-22
+sources: ["https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1", "Maintainer's local-render field notes, 2026-09 (private; lessons 005, 011, 012, 013)", "Joseph V. Mascelli, The Five C's of Cinematography, 1965"]
 ---
 
 # Continuity rules specific to AI video
@@ -17,6 +17,7 @@ sources: ["https://cloud.google.com/blog/products/ai-machine-learning/ultimate-p
 - At a continuation seam, the next clip starts "already moving, no pause"; trim the first few frames where the model eases in.
 - Every prompt states direction with the fixed screen-direction phrases. The model has no map of the scene.
 - Describe what is there. Exclusion lines lose against strong associations; write absences inside the positive description.
+- Anything may change during a shot, nothing between shots. Where someone moved in a card, record where they ended (`position_end`); the next card matches that end state, not the scene's opening block, and the diff checks it (after Mascelli, *The Five C's*).
 
 ## Numbers
 

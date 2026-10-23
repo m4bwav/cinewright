@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261022-2 · 2026-10-22 · Compile says entrances, exits, end positions, head turns and held moves (books track 2)
+- because: books track 2 (Katz, *Shot by Shot*; Mascelli, *The Five C's*; Murch, *In the Blink of an Eye*), decision 2026-10-22-books-track2
+- files: references/compile-rule.md, shared/lib/cine.py (card_parts), shared vocab camera-moves (settle and move meanings), shared schema shot-card (`camera.settle`)
+- `enters`, `exits`, `position_end` and `eyeline_end` become sentences in the action; `camera.settle` compiles to a move that starts and ends on held frames.
+
 ### C-20261022-1 · 2026-10-22 · LTX-2: judge stage 1 before paying for stage 2
 - because: user request (book-learnings track 1: Enochs, *Video Generation with AI*, on the LTX-2.3 two-stage pipeline); checked on the LTX-2.5 model page 2026-10-22 (base stage, 2x spatial upsampler, distilled refine)
 - files: references/ltx-2.md (a Rules line, a volatile claim dated 2026-10-22; last_checked stays with the last full card refresh); shared vocab failures-motion copy (`flicker`, `lip-lag`)

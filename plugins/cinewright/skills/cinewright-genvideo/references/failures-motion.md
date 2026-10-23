@@ -6,7 +6,7 @@ tags: [vocab, qc, failures, taxonomy, motion, audio]
 last_checked: 2026-10-22
 sources: ["field lessons 005, 011, 014, 015, 020, 021 (maintainer's local renders, 2026-09)", "https://tech.ebu.ch/publications/r128"]
 ---
-<!-- copied from shared/vocab/failures-motion.md sha256:47e0548e1286c7fc53f11ff3e3321cadcd3ab87e3b6e3587ddeaeea328e5746a; edit the source -->
+<!-- copied from shared/vocab/failures-motion.md sha256:9e752c67d8bf3ef2328280303a438104ddd8b445af27b2c06c6359d44bc89e8a; edit the source -->
 
 # Failure codes, motion, sound and spec
 
@@ -18,6 +18,7 @@ Rungs and checks as in `failures-picture`.
 |---|---|---|---|---|---|
 | `action-incomplete` | action stops short or plays in slow motion | too much action for the length | one action; longer, or split the card | 2 | action |
 | `frozen-start` | picture holds still for the first frames | image-to-video eases in | write "already moving"; trim the head | 7 | action |
+| `insert-too-fast` | hands or tools flick through an insert or ECU | magnified motion reads as sped up | write "slowly, deliberately" in the insert's action and match that tempo in the wide | 1 | action |
 | `bad-opening` | wrong opening, the same on every reroll | the seed fixes the opening | new seed; then a guide still at frame 0 | 2 | opening |
 | `end-state-wrong` | last frame differs from the card | model ran its own course | next card starts from the observed end | 6 | end-state |
 | `anatomy` | hands, limbs or faces melt or multiply | small, fast or hidden subject | larger, slower, side-on; cut around it | 6 | anatomy |

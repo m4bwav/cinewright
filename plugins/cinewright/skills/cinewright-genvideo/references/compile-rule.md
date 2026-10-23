@@ -3,7 +3,7 @@ title: The compile rule
 slug: compile-rule
 summary: How a shot card and the bibles become one model's prompt: what goes in, in what order, what is pasted verbatim, and how durations and limits are handled.
 tags: [compile, prompts, shot-card, models]
-last_checked: 2026-10-04
+last_checked: 2026-10-22
 sources: ["https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1", "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/video/video-gen-prompt-guide"]
 ---
 
@@ -18,6 +18,7 @@ sources: ["https://cloud.google.com/blog/products/ai-machine-learning/ultimate-p
 - Over the word guide: shorten the action or the location, never the identity string.
 - Several cards of one scene that fit one generation: `--sequence` writes the people, place, sun and look once, then one timestamp block per card.
 - The settings file holds the model's parameters (duration, aspect, resolution, seed, refs, negative terms). Keep it with the prompt; a take record points to both.
+- Card fields that become sentences: `enters` and `exits` ("enters the frame on the left"), `position_end` ("ends on the right of the frame"), `eyeline_end` ("turns, looking toward frame left") and `camera.settle` ("the camera holds, then pushes in, then holds").
 
 ## Pitfalls
 

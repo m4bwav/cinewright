@@ -119,7 +119,7 @@ Measured by `cine.py budget`; CI fails at red; at yellow the session tells Mark 
 | Model card tokens (est.), Compile block included (entries with `model`) | ≤ 900 | 901-1,200 | > 1,200 |
 | `references/INDEX.md` tokens per skill | ≤ 1,500 | 1,501-3,000 | > 3,000 |
 | Skill folder size, without the hash-tracked `shared/lib/` copies | ≤ 150 KB | 151-300 KB | > 300 KB |
-| Runtime (`shared/lib/`), measured once (decision 2026-10-04, accepted by Mark 2026-10-06) | ≤ 100 KB | 101-150 KB | > 150 KB |
+| Runtime (`shared/lib/`), measured once (decision 2026-10-04, accepted by Mark 2026-10-06; red raised from 150 to 200 KB by Mark 2026-10-22) | ≤ 100 KB | 101-200 KB | > 200 KB |
 | Files per plugin (directory cap 512) | ≤ 350 | 351-450 | > 450 |
 | Repo ZIP (`git archive`) | ≤ 2 MB | 2-5 MB | > 5 MB |
 

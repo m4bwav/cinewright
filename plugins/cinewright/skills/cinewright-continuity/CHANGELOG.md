@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261022-1 · 2026-10-22 · Diff checks end positions, exits and entrances, head turns, the middle person, cut-ins and POV (books track 2)
+- because: books track 2 (Katz, *Shot by Shot*; Mascelli, *The Five C's*; Murch, *In the Blink of an Eye*), decision 2026-10-22-books-track2
+- files: SKILL.md (Step 2 pointer to vehicles), references/vehicles.md (new), references/ai-continuity.md, references/axis-and-screen-direction.md (cross_reason tokens), references/eyelines.md, references/shot-checklist.md, shared/lib/cine.py (continuity_diff), tests/test_cine.py, evals action-2
+- The diff checks each card against the block as it stands after the card before (moved by `position_end`), and adds EXIT-ENTRY, LOOK-TRACK, MIDDLE-SWAP, ESTABLISH, POV and ROLE, plus an AXIS warning for a cross_reason that names no legal method. A `role: protection` card is checked but never becomes the next card's starting state.
+
 ### C-20261005-1 · 2026-10-05 · Output ranks the diff's errors above by-eye doubts (S6)
 - because: T-20261004-1, L-005
 - files: SKILL.md
