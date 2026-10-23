@@ -108,6 +108,48 @@
           "out/walk"
         ]
       ]
+    },
+    {
+      "id": "outcome-2",
+      "kind": "outcome",
+      "prompt": "out/cutin is a copy of examples/three-shot where 1B now moves in from the 1A two-shot to a closer shot of Maren and Tomas together. Check the cut from 1A to 1B and fix what the check says about it, keeping 1B a close shot of both of them.",
+      "files": [],
+      "checks": [
+        [
+          "python",
+          "evals/check_cutin.py",
+          "{work}"
+        ]
+      ],
+      "expectations": [
+        "check: 1B is still MS or tighter on Maren and Tomas, the cards validate, and continuity diff gives 1B no STRAIGHT-IN and no 30-DEGREE (evals/check_cutin.py exits 0)"
+      ],
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/cutin"
+        ],
+        [
+          "replace",
+          "out/cutin/cards/1B.json",
+          "\"azimuth_deg\": 45, \"move\": \"dolly-in\", \"lens_mm\": 50, \"side\": \"A\", \"framing\": \"single\"",
+          "\"azimuth_deg\": 90, \"move\": \"static\", \"lens_mm\": 50, \"side\": \"A\", \"framing\": \"two-shot\""
+        ],
+        [
+          "replace",
+          "out/cutin/cards/1B.json",
+          "\"looks_at\": \"tomas\",",
+          "\"position\": \"frame-left\", \"looks_at\": \"tomas\","
+        ],
+        [
+          "replace",
+          "out/cutin/cards/1B.json",
+          "\"holding\": \"single match\"\n    }\n  ],",
+          "\"holding\": \"single match\"\n    },\n    {\"id\": \"tomas\", \"identity\": \"a wiry boy of about twelve with a mop of curly black hair, brown eyes and a gap between his front teeth\", \"wardrobe\": \"an oversized yellow oilskin coat over a grey shirt\", \"position\": \"frame-right\", \"looks_at\": \"maren\", \"eyeline\": \"frame-left\", \"holding\": null}\n  ],"
+        ]
+      ]
     }
   ]
 }

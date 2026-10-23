@@ -128,6 +128,33 @@
         "cinewright"
       ],
       "baseline": "2026-10-22, books track 3 (evals/run_evals.py, Sonnet, skills disabled): without the skill 0 of 1 passed; with it 3 of 3 (T-20261022-1)."
+    },
+    {
+      "id": "outcome-3",
+      "kind": "outcome",
+      "prompt": "out/arc is a copy of examples/three-shot. In 1A the camera should circle slowly around Maren and Tomas at the same distance, so the room slides past behind them. Change the shot and compile its Veo prompt into out/arc/compiled/veo.",
+      "files": [],
+      "checks": [
+        [
+          "python",
+          "evals/check_arc.py",
+          "{work}"
+        ]
+      ],
+      "expectations": [
+        "check: 1A moves arc-left or arc-right, the cards validate, and out/arc/compiled/veo/1A.txt carries the arc words (evals/check_arc.py exits 0)"
+      ],
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/arc"
+        ]
+      ],
+      "plugins": [
+        "cinewright"
+      ]
     }
   ]
 }
