@@ -696,3 +696,24 @@ Validation passed x4
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 11 hits in 4 files (the same 11 as main)
 ```
+
+## 2026-10-22: book-learnings track 1 (qc measure flicker, review sides, label queue)
+
+From Huyen, *AI Engineering* (judge and reviewer position bias, degenerate feedback loops) and Enochs, *Video Generation with AI* (temporal flicker, the 45 ms lip-sync threshold, LTX-2's two stages). Branch books-track1; the comfyui-gen side (board by gates then head to head, identity drift, the pair tool) is in that repository's PR.
+
+- Built: `qc measure` flicker per shot (a frame's luma off its neighbours' mean by more than 2.0, more than 3 times a second, warns only; L-006 has the calibration on 152 reviewed takes: no keeper reached it); vocab `flicker` and `lip-lag`; take-selection (random sides, recorded), judge-calibration (gate-rejected takes in the label queue), identity-score (a face against its own first face in the take), ltx-2 (judge stage 1 before stage 2; LTX-2.5 still two stages, checked on its model page). Evals action-2 and outcome-2: 3/3 each on Sonnet, baselines 0/1 (T-20261022-1).
+- Budget: runtime shared/lib went to 151 KB (red) with the flicker code; `scene_cuts` and `frame_motion` now go through `run_tool` and the metadata parse is one regex, back to 150 KB (yellow, about 30 bytes left). The next runtime addition needs a real cut.
+- Skipped: CLIP prompt adherence, timestamped judge frames, the compile contradiction lint and the VACE/IC-LoRA repair rungs (not in track 1). Lip-sync lag as a measure: the cheap proxy failed on real takes (comfyui-gen L-149), so only the vocabulary rule went in.
+
+```
+$ python -m unittest discover -s tests
+Ran 114 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ python scripts/cine.py budget
+budget: YELLOW (runtime 150 KB, unchanged worst values)
+$ claude plugin validate (root and 3 plugins)
+Validation passed x4
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 11 hits in 4 files (the same 11 as main)
+```

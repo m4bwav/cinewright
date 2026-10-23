@@ -6,6 +6,14 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-006 · 2026-10-22 · `flicker-not-flash`: a flicker check counts jumps a second, so one explosion flash never trips it
+- Trigger: book-learnings build, 2026-10-22: a frame's mean brightness against the average of its two neighbours, on 152 reviewed takes of four local multi-shot films. At a 1.5-level jump and 2 a second, 4 of 58 keepers warned, all in an explosion comedy where flashes are the story; the two highest takes (17.9 and 12.5 a second) pulsed up and down every two or three frames for seconds
+- Hypothesis: real flicker alternates for a long stretch; a flash or a fast move is one or two jumps
+- Rule: `qc measure` warns on `flicker` at a 2.0-level jump, more than 3 a second inside a shot (no keeper reached it); it never fails a take until `qc agree` has scored it on reviewer labels with flicker named
+- Evidence: luma series at 160 px (`frame_motion(clip, False)`), cut-guarded shot windows; the reviewer never named flicker, so precision is unmeasured
+- Scope: tool (shared/lib/cine.py)
+- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-22
+
 ### L-004 · 2026-10-15 · `judge-grid-black-tile`: the judge's last tile fell past the end of a one-card clip
 - Trigger: set field test, 2026-10-15: `qc judge --twice` failed the action on all three takes of one 5.2 s card, saying the sequence ends on a black frame; the clips play to the end
 - Hypothesis: the 2x2 grid starts an eighth into the window but asked for the window's full length, so fps placed the fourth frame after the clip's last frame
