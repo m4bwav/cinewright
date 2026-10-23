@@ -35,3 +35,4 @@ volatile_claims: ["reference counts per model change with releases", "World Labs
 
 - Locking a background image raises consistency and lowers angle freedom: a plate pins the view it shows. Make the plate for the view the shot needs.
 - A 3D world model invents the parts its input never showed; check it against the plan like any plate.
+- A blockout put into filmed or generated footage needs the plate's camera: Blender's tracker solves it from eight or more good markers, then three floor markers set the ground and a known distance sets the scale (after van Gumster, *Blender All-in-One For Dummies*). Untested headless; `pw.py match` covers a still.

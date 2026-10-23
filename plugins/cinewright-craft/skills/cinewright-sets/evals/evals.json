@@ -100,6 +100,22 @@
       ],
       "baseline": "not yet run",
       "runs": 3
+    },
+    {
+      "id": "action-blender",
+      "kind": "action",
+      "prompt": "I'm rendering my Blender blockout of the throne room shot as a Mist pass to drive H3's depth control. The camera pushes in over 5 seconds. Which pass settings should I use?",
+      "expectations": [
+        "the agent reads the sets knowledge on Blender passes (evidence below) before answering",
+        "the answer keeps one depth range for the whole shot and says Mist is plain distance, not inverse depth"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py\"?\\s+kb\\s+show\\s+blender-passes"
+      },
+      "baseline": "not yet run",
+      "runs": 3
     }
   ]
 }

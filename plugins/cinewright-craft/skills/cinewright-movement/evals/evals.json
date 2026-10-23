@@ -82,6 +82,22 @@
       ],
       "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 0 of 3 passed (Haiku fail, Sonnet fail, Opus fail).",
       "runs": 3
+    },
+    {
+      "id": "action-previs-anim",
+      "kind": "action",
+      "prompt": "I keyed a two-mannequin sword fight in Blender to render as a depth control for my AI fight card. Before I render, what should I check in the animation?",
+      "expectations": [
+        "the agent reads the movement knowledge on previs animation (evidence below) before answering",
+        "the answer names wind-ups before strikes and drift in held poses"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine\\.py\"?\\s+kb\\s+show\\s+previs-animation"
+      },
+      "baseline": "not yet run",
+      "runs": 3
     }
   ]
 }

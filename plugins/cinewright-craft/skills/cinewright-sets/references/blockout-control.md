@@ -42,3 +42,5 @@ volatile_claims: ["which open video models take depth or pose control", "Fun Con
 ## Verify
 
 - Three frames of the render beside the same frames of the control: same positions, same timing.
+
+Related: rendering the passes in Blender: [blender-passes](blender-passes.md).

@@ -34,6 +34,7 @@ sources: ["invideo FAQ, How do you make an AI animatic, 2026-08-10", "flick.art,
 - Timing to the music before the lines: dialogue sets the length, music is cut to it.
 - Treating the animatic's push-ins as camera direction: write the move on the card.
 - Joining stills with ffmpeg's concat demuxer and `duration` lines drifts by a second or more; encode each card to its exact frame count first (the tool does).
+- No ffmpeg on the machine: Blender's sequencer encodes image sequences or scene strips to an MP4 at an exact frame count; set the scene's frame rate to the video model's first (polywright recipe `encode-mp4`).
 
 ## Verify
 

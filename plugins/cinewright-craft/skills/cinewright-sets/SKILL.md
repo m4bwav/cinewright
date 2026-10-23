@@ -28,7 +28,7 @@ Write the location's `description` with only what every angle shares (materials,
 
 Generate the widest establishing plate first, one per time of day, at the renderer's frame (`kb show master-plates`). Light comes from `kb show set-light`: a named source, a color temperature and a key side, the same words every time. Generating an image is the user's image tool's job; ask before any paid render.
 
-When words keep failing a blocking (crossings, a camera path, a vehicle's line), drive the shot from a blockout's depth, pose or layout video (`kb show blockout-control`). When a shot needs a 3D model, set, crowd blockout or figure references and the polywright plugin is installed, ask polywright through its asset folder ([contract](https://github.com/m4bwav/polywright/blob/main/skills/polywright/references/contract.md)) with the `video-blockout` target, then take the files `manifest.json` lists from `out/`. What to model and how much per shot: `kb show 3d-models`.
+When words keep failing a blocking (crossings, a camera path, a vehicle's line), drive the shot from a blockout's depth, pose or layout video (`kb show blockout-control`). When a shot needs a 3D model, set, crowd blockout or figure references and the polywright plugin is installed, ask polywright through its asset folder ([contract](https://github.com/m4bwav/polywright/blob/main/skills/polywright/references/contract.md)) with the `video-blockout` target, then take the files `manifest.json` lists from `out/`. What to model and how much per shot: `kb show 3d-models`. Rendering the control passes in Blender (inverse depth, Mist, masks, lines): `kb show blender-passes`.
 
 ## Step 4: coverage
 
