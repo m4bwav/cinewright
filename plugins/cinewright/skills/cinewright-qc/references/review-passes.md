@@ -18,6 +18,7 @@ sources: ["SPOTLIGHT error annotation protocol, arXiv 2511.18102, 2025-11", "Mov
 - Cut points: the last second of shot A beside the first second of shot B; gaze, position, direction of travel and light must carry over.
 - One note is one record: time range, screen region, code from the failure vocabulary, severity 1-5 (how easily a viewer spots it), what you saw in eight words or more, and the one fix. Rank notes by what they cost the story; drop the small ones.
 - Never ask for what cannot be fixed. A note that only a different model could satisfy is "re-plan the card", not "reroll".
+- Look pass, after the per-element pass: light, atmosphere, space, line, moves and attention, one rubric verdict each (entry look-pass).
 - When notes conflict, give up the lowest first: emotion, story, rhythm, eye-trace, the screen plane, 3D space (Murch). A strong emotional take hides a small continuity flaw; the reverse never holds.
 - Assume a physics-heavy shot has a glitch until checked: people spot one in most of them.
 - Secondary props degrade first; identity drifts first in eye shape, lip line and hairline on head turns.
@@ -42,4 +43,4 @@ sources: ["SPOTLIGHT error annotation protocol, arXiv 2511.18102, 2025-11", "Mov
 
 - Every fail in a rubric has a time, a code and a fix; no note says only "feels off".
 
-Related: builds on [qc-loop](qc-loop.md); see also [vision-judge](vision-judge.md), [judge-calibration](judge-calibration.md).
+Related: builds on [qc-loop](qc-loop.md); see also [look-pass](look-pass.md), [vision-judge](vision-judge.md), [judge-calibration](judge-calibration.md).

@@ -28,7 +28,7 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 
 ## Step 3: grade
 
-1. Correct, balance, match, look, in that order (`kb show grade-order`). Match each scene's shots to its hero frame with `CINE_POST grade match` (per-shot `.cube`, optional `--luma` target per scene), then one `--look` LUT and grain for the film (`kb show shot-matching`).
+1. Stabilize static and slow shots that drift (`CINE_POST grade stabilize`), then correct, balance, match, look, in that order (`kb show grade-order`). Match each scene's shots to its hero frame with `CINE_POST grade match` (per-shot `.cube`, optional `--luma`, `--sat` and `--warm` targets per scene from the color script), then one `--look` LUT and grain for the film (`kb show shot-matching`).
 2. Night from day footage: `kb show day-for-night`.
 3. Write each pass and its values in `finish/grade.md`, as filters or ASC CDL a script can repeat.
 

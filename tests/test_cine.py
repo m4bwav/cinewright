@@ -1605,3 +1605,213 @@ class TestBeats(Base):
         beats = [dict(self.BEATS[0], text="Maren, soot on her left cheek, lifts the match")] + self.BEATS[1:]
         code, text = run("check", f, "--project", self.project(beats), script=fight)
         self.assertNotIn("soot on her left cheek", text)
+
+
+class TestVisualStructure(Base):
+    """Books track 3: Block's visual structure and Brown's light rules in the diff, compile, graph and rubric."""
+
+    def project(self):
+        return lib.Project(EXAMPLE)
+
+    def warns(self, p, code):
+        return sorted(i["card"] for i in lib.continuity_diff(p) if i["code"] == code)
+
+    def test_space_warnings(self):
+        p = self.project()
+        self.assertEqual(self.warns(p, "SPACE"), [])
+        p.scene_map["1"]["space"] = "flat"  # 1A has a 24mm lens, 1B dollies in
+        self.assertEqual(self.warns(p, "SPACE"), ["1A", "1B"])
+        p.scene_map["1"]["space"] = "deep"
+        self.assertEqual(self.warns(p, "SPACE"), [])
+        for c in p.cards:
+            c["camera"]["move"] = "static"
+        self.assertEqual(self.warns(p, "SPACE"), ["1C"], "a deep scene of static eye-level frames only warns once")
+
+    def test_key_side_broad_light(self):
+        p = self.project()
+        self.assertEqual(self.warns(p, "KEY-SIDE"), [])  # both singles are keyed on the side the face turns to
+        p.cards[2]["light"]["key_side"] = "frame-right"  # Tomas looks frame-left: the key is now on the near side
+        self.assertEqual(self.warns(p, "KEY-SIDE"), ["1C"])
+        p.cards[2]["light"]["motivation"] = "broad window light, the sea side"
+        self.assertEqual(self.warns(p, "KEY-SIDE"), [])
+        p.cards[2]["light"].pop("motivation")
+        p.cards[2]["light"]["tone"] = "hide"
+        self.assertEqual(self.warns(p, "KEY-SIDE"), [])
+
+    def test_attention_jump_and_position(self):
+        p = self.project()
+        p.cards[1]["attention"] = {"start": 3, "end": 3}
+        p.cards[2]["attention"] = {"start": 7, "end": 7}
+        self.assertEqual(self.warns(p, "ATTENTION"), ["1C"])
+        p.cards[2]["attention"] = {"start": 2, "end": 2}
+        self.assertEqual(self.warns(p, "ATTENTION"), [], "one cell over is not a jump across the frame")
+        p.cards[2]["attention"] = {"start": 7}
+        p.cards[2]["intensity"] = 80
+        self.assertEqual(self.warns(p, "ATTENTION"), [], "a jump at a peak is planned contrast")
+        p.cards[2]["cast"][0]["position"] = "frame-right"
+        self.assertEqual(self.warns(p, "ATTENTION"), ["1C"], "cell 7 is the left column, Tomas stands frame right")
+
+    def test_compile_writes_structure_and_light_words(self):
+        proj = self.tmp / "p"
+        shutil.copytree(EXAMPLE, proj)
+        scenes = json.loads(lib.read_text(proj / "bibles/scenes.json"))
+        scenes["scenes"][0]["space"] = "flat"
+        lib.write_text(proj / "bibles/scenes.json", json.dumps(scenes))
+        edit(proj / "cards/1C.json", '"light": {"key_side": "frame-left", "quality": "soft"}',
+             '"line": "diagonal", "attention": {"start": 4, "end": 5}, "light": {"key_side": "frame-left", "quality": "soft", '
+             '"motivation": "the brazier at frame left", "atmosphere": "smoke", "tone": "hide"}')
+        code, out = run("compile", proj, "--model", "veo", "--card", "1C")
+        self.assertEqual(code, 0, out)
+        for words in ("Flat space: a wall square to the camera", "Strong diagonal lines cut across the frame",
+                      "Tomas's face is in the left of the frame, ending in the center", "on the far side of the face",
+                      "the firelight flickers and the shadows jump", "the smoke is backlit", "the face stays hidden in shadow"):
+            self.assertIn(words, out)
+        edit(proj / "cards/1C.json", '"key_side": "frame-left"', '"key_side": "frame-right"')
+        code, out = run("compile", proj, "--model", "veo", "--card", "1C")
+        self.assertNotIn("far side of the face", out, "a broad key is not the upstage side")
+
+    def test_cards_validate_reads_the_new_fields(self):
+        proj = self.tmp / "p"
+        shutil.copytree(EXAMPLE, proj)
+        edit(proj / "cards/1A.json", '"beat":', '"intensity": 140, "line": "zigzag", "beat":')
+        code, out = run("cards", "validate", proj)
+        self.assertEqual(code, 1, out)
+        self.assertIn("140 is above 100", out)
+        self.assertIn("zigzag", out)
+
+    def graph_project(self, levels, climax=None, peaks=None):
+        proj = self.tmp / "g"
+        shutil.copytree(EXAMPLE, proj)
+        scenes = json.loads(lib.read_text(proj / "bibles/scenes.json"))
+        base = scenes["scenes"][0]
+        scenes["scenes"] = [dict(json.loads(json.dumps(base)), id=str(i + 1), intensity=lv, space=sp, color={"hue": hue})
+                            for i, (lv, sp, hue) in enumerate(levels)]
+        lib.write_text(proj / "bibles/scenes.json", json.dumps(scenes))
+        style = json.loads(lib.read_text(proj / "bibles/style.json"))
+        style["visual_structure"] = {"climax": climax, "plans": [{"component": "saturation", "mode": "peaks", "peaks": peaks or []}]}
+        lib.write_text(proj / "bibles/style.json", json.dumps(style))
+        card = json.loads(lib.read_text(proj / "cards/1C.json"))
+        for f in proj.glob("cards/*.json"):
+            f.unlink()
+        for i in range(len(levels)):
+            lib.write_text(proj / "cards" / ("%dA.json" % (i + 1)), json.dumps(dict(card, id="%dA" % (i + 1), scene=str(i + 1), order=i + 1)))
+        return proj
+
+    def test_cards_graph_flags_a_bad_curve(self):
+        proj = self.graph_project([(10, "flat", "blue"), (30, "flat", "blue"), (30, "flat", "blue"), (20, "deep", "amber")], climax="4", peaks=["1"])
+        code, out = run("cards", "graph", proj, "--csv", self.tmp / "g.csv")
+        self.assertEqual(code, 0, out)
+        for flag in ("FLAG CLIMAX", "FLAG FLAT", "FLAG SAME: scenes 2 and 3", "FLAG PEAK: saturation spikes at scene 1"):
+            self.assertIn(flag, out)
+        self.assertIn("order,card,scene,scene_intensity", lib.read_text(self.tmp / "g.csv"))
+
+    def test_cards_graph_passes_a_shaped_curve(self):
+        proj = self.graph_project([(10, "flat", "blue"), (45, "limited", "blue"), (95, "deep", "red"), (30, "flat", "amber")], climax="3", peaks=["3"])
+        code, out = run("cards", "graph", proj)
+        self.assertIn("0 flag(s)", out)
+        code, out = run("cards", "graph", EXAMPLE)
+        self.assertIn("FLAG INTENSITY: no scene has an intensity", out)
+
+    def test_rubric_hides_identity_and_asks_space_and_attention(self):
+        p = self.project()
+        p.scene_map["1"]["space"] = "limited"
+        p.cards[1]["attention"] = {"start": 6, "end": 6}
+        p.cards[2]["attention"] = {"start": 4}
+        p.cards[2]["light"]["tone"] = "hide"
+        items = {i["id"]: i for i in lib.rubric_items(p, p.cards[2])}
+        self.assertEqual(items["identity:tomas"]["verdict"], "na")
+        self.assertIn("Limited space", items["space"]["ask"])
+        self.assertIn("in the left of the first frame, where 1B left the eye in the right", items["attention"]["ask"])
+        self.assertIsNone(lib.rubric_items(p, p.cards[1])[0]["verdict"])
+        codes = lib.taxonomy(repo_ctx())
+        self.assertEqual({c: codes[c]["check"] for c in ("flat-light", "space-break", "attention-jump", "pan-strobe")},
+                         {"flat-light": "light", "space-break": "space", "attention-jump": "attention", "pan-strobe": "camera"})
+
+
+_pspec = importlib.util.spec_from_file_location("cine_post_lib", REPO / "shared" / "lib" / "cine_post.py")
+post = importlib.util.module_from_spec(_pspec)
+_pspec.loader.exec_module(post)
+
+
+class TestLookMeasures(Base):
+    """cine_post.py grade measure --plan, grade stabilize, grade match --sat/--warm (books track 3)."""
+    POST = REPO / "shared" / "lib" / "cine_post.py"
+
+    def ffmpeg(self, *args):
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error"] + [str(a) for a in args], check=True)
+
+    def stripes(self, name, expr):
+        f = self.tmp / name
+        self.ffmpeg("-f", "lavfi", "-i", "color=c=gray:s=320x180", "-vf", "format=yuv444p,geq=lum='255*gt(mod(%s,24),12)':cb=128:cr=128" % expr,
+                    "-frames:v", "1", f)
+        return post.look_stats(f)
+
+    def test_edge_orientation_reads_the_dominant_line(self):
+        h, v, d = self.stripes("h.png", "Y"), self.stripes("v.png", "X"), self.stripes("d.png", "X+Y")
+        self.assertGreater(h["horizontal"], 0.8)
+        self.assertGreater(v["vertical"], 0.8)
+        self.assertGreater(d["diagonal"], 0.8)
+
+    def shots(self, levels, names=("1A", "1B", "1C", "1D")):
+        out = []
+        for name, b in zip(names, levels):
+            f = self.tmp / ("take_%s-1.mp4" % name)
+            self.ffmpeg("-f", "lavfi", "-i", "testsrc2=s=160x90:d=1,eq=brightness=%s" % b, f)
+            out.append(f)
+        return out
+
+    def plan_project(self, plan, color=None):
+        proj = self.tmp / "p"
+        if not proj.exists():
+            shutil.copytree(EXAMPLE, proj)
+        d = json.loads(lib.read_text(proj / "cards/1C.json"))
+        lib.write_text(proj / "cards/1D.json", json.dumps(dict(d, id="1D", order=4)))
+        style = json.loads(lib.read_text(proj / "bibles/style.json"))
+        style["visual_structure"] = {"plans": [plan]}
+        lib.write_text(proj / "bibles/style.json", json.dumps(style))
+        if color:
+            scenes = json.loads(lib.read_text(proj / "bibles/scenes.json"))
+            scenes["scenes"][0]["color"] = color
+            lib.write_text(proj / "bibles/scenes.json", json.dumps(scenes))
+        return proj
+
+    def test_plan_progression_follows_and_runs_against(self):
+        files = self.shots(["-0.3", "-0.1", "0.1", "0.3"])  # brighter shot by shot
+        proj = self.plan_project({"component": "brightness", "mode": "progression", "from": "dark", "to": "bright"})
+        code, out = run("grade", "measure", "--plan", proj, *files, script=self.POST)
+        self.assertEqual(code, 0, out)
+        self.assertIn("luma rho +1.00 follows over the cut", out)
+        files = self.shots(["0.3", "0.1", "-0.1", "-0.3"])  # the same shots in the wrong order
+        code, out = run("grade", "measure", "--plan", proj, *files, script=self.POST)
+        self.assertEqual(code, 1, out)
+        self.assertIn("AGAINST", out)
+
+    def test_plan_colour_row_by_class(self):
+        files = self.shots(["-0.35"] * 4)
+        proj = self.plan_project({"component": "shape", "mode": "progression"}, color={"brightness": "bright"})
+        code, out = run("grade", "measure", "--plan", proj, *files, script=self.POST)
+        self.assertEqual(code, 1, out)
+        self.assertIn("OFF brightness dark, planned bright", out)
+        self.assertIn("plan shape: not measured", out)
+
+    def test_stabilize_removes_slow_drift(self):
+        clip = self.tmp / "drift.mp4"
+        self.ffmpeg("-f", "lavfi", "-i", "testsrc2=s=160x90:r=24:d=4", "-vf", "eq=brightness='-0.15+0.075*t':eval=frame", clip)
+        code, out = run("grade", "stabilize", clip, "--out", self.tmp / "st", script=self.POST)
+        self.assertEqual(code, 0, out)
+        before, after = (float(x) for x in re.search(r"drift ([\d.]+) -> ([\d.]+)", out).groups())
+        self.assertGreater(before, 20)
+        self.assertLess(after, before / 4)
+        self.assertIn("WARN", out, "a drift this large is flagged for a look by eye")
+
+    def test_match_holds_a_saturation_and_warmth_target(self):
+        ref, shot = self.tmp / "ref.png", self.tmp / "shot.mp4"
+        self.ffmpeg("-f", "lavfi", "-i", "testsrc2=s=160x90", "-frames:v", "1", ref)
+        self.ffmpeg("-f", "lavfi", "-i", "testsrc2=s=160x90:d=1,eq=saturation=0.25", shot)  # chroma about 0.19, like a real shot
+        code, out = run("grade", "match", shot, "--ref", ref, "--strength", "0", "--sat", "0.08", "--warm", "0.10", "--apply", self.tmp / "out", script=self.POST)
+        self.assertEqual(code, 0, out)
+        was, now = post.look_stats(shot), post.look_stats(self.tmp / "out" / "shot.mp4")
+        self.assertGreater(abs(was["chroma"] - 0.08), 0.08)
+        self.assertGreater(abs(was["warmth"] - 0.10), 0.08)
+        self.assertLess(abs(now["chroma"] - 0.08), 0.03)
+        self.assertLess(abs(now["warmth"] - 0.10), 0.03)

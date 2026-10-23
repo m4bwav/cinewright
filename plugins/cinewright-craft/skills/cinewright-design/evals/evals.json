@@ -79,6 +79,28 @@
       ],
       "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 1 of 3 passed (Haiku fail, Sonnet fail, Opus pass).",
       "runs": 3
+    },
+    {
+      "id": "action-2",
+      "kind": "action",
+      "prompt": "out/arc is a copy of examples/three-shot. Before anything is rendered, plan the film's visual structure: how intense each moment of the story is, what in the look changes with it and what stays the same, and check that the curve holds up.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "(?s)cine\\.py\"?\\s+cards\\s+graph\\s+\\S*out/arc",
+        "_why": "the graph is new in books track 3 (2026-10-22); a baseline can plan in prose but has no reason to run it"
+      },
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/arc"
+        ]
+      ]
     }
   ]
 }

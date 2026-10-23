@@ -3,8 +3,8 @@ title: Shot matching
 slug: shot-matching
 summary: Match every shot of a scene to one hero frame with a per-shot LUT (cine_post grade match), then one look LUT and grain for the whole film; a look LUT alone never fixes mismatched shots.
 tags: [finish, grade, color, lut, matching]
-last_checked: 2026-10-09
-sources: ["invideo, colour grading workflow for AI-generated video, 2026-07-27", "Houbre, How to color match AI video clips, HackerNoon, 2026-07-30", "Reinhard et al., Color transfer between images, 2001", "local tests on H3 footage, 2026-10-09"]
+last_checked: 2026-10-22
+sources: ["Lance Phillips, Video Editing Made Easy with DaVinci Resolve 18, 2023, ch. 11", "invideo, colour grading workflow for AI-generated video, 2026-07-27", "Houbre, How to color match AI video clips, HackerNoon, 2026-07-30", "Reinhard et al., Color transfer between images, 2001", "local tests on H3 footage, 2026-10-09"]
 ---
 
 # Shot matching
@@ -15,6 +15,8 @@ sources: ["invideo, colour grading workflow for AI-generated video, 2026-07-27",
 - Pick the hero frame per scene: the establishing wide, rendered and approved first. Match the scene's closer angles to it, never to a frame from another scene: matching averages the whole picture, so a hero with a big blue sky pulls an interior cool.
 - Run `CINE_POST grade match SHOTS --ref hero.png --cube-dir grade/ --apply graded/`. It writes one 17-point `.cube` per shot (ffmpeg, Resolve and Premiere read it) and `grade.json` with the gains. Strength 0.7 by default; 1.0 copies the hero's balance fully and can look forced.
 - Light that falls across the story (day into night, a darkening mood): give each scene a mean luma target with `--luma` and record the targets in `finish/grade.md`.
+- A planned colour progression (entry color-script) survives the match only with its own targets: `--sat` (mean chroma) and `--warm` (mean red minus blue) per scene, in the units `grade measure --plan` prints. Record them beside the luma targets.
+- Slow exposure or white balance drift inside one shot: `CINE_POST grade stabilize SHOTS --out stable/` before the match. It holds each frame to the shot's middle frame, smoothed over a second, so flicker is left to deflicker. Use it on static and slow shots; on a tracking shot the picture's own change reads as drift (it warns over 8 luma).
 - The look LUT (`--look`) is the film's one creative grade, made once in a grading tool or exported from the hero; apply it at 60 to 80% intensity when building it. Grain last (`--grain 4` to `8`).
 - Stats are pooled over the whole shot, so the correction is one fixed transform and does not flicker. Brightness pulsing inside a shot is a separate fix (deflicker); texture shimmer and identity drift are not grading problems: re-render.
 - Grade a mezzanine copy; keep the ungraded renders.
@@ -23,6 +25,7 @@ sources: ["invideo, colour grading workflow for AI-generated video, 2026-07-27",
 
 - Strength 0.5 to 0.8; per-channel gain is clamped to 0.4 to 2.5 so a near-flat shot cannot blow up its noise.
 - Luma targets are 0 to 255 full range (Rec.709 weights), not the 16 to 235 video range scopes show.
+- `grade measure --plan` classes: brightness by thirds (under 85 dark, 170 and up bright); chroma under 0.10 muted, 0.155 and up saturated; warmth under 0.02 cool, 0.13 and up warm. Chroma and warmth bounds sit at the sixths of 354 shots from local multi-shot films (2026-10-22), which run warm. Uncalibrated: on those films the classes did not separate takes a reviewer faulted for light (in-sample, 10 faults).
 
 ## Vocabulary
 

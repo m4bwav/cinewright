@@ -29,7 +29,7 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 
 1. Write the film's `lighting` string: key style, contrast as shadow words, color of the main sources (`kb show lighting-ratios`, `kb show color-temperature`). It compiles verbatim into every prompt.
 2. Per scene, the `sun` string names the source, its direction and color (`kb show lighting-setups`). One exposure key per scene (`kb show exposure`).
-3. Per card, set `light.key_side`, `quality` and `motivation`, consistent with the camera side.
+3. Per card, set `light.key_side`, `quality` and `motivation`, consistent with the camera side: the key from the side the face turns to (`kb show lighting-setups`). A lamp, fire or window in frame, or rain, smoke or haze: `kb show light-sources` (`light.atmosphere`, `light.tone`).
 
 ## Step 4: moves
 

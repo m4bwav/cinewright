@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/scene-axis-bible.schema.json sha256:8c47eae1339216b0d3fe0000ce147e3b0ecb384974c24d8318d49b3cbac240c8; edit the source",
+  "$comment": "copied from shared/schemas/scene-axis-bible.schema.json sha256:255305876c167089cf4937a489664444dc66a546b5ee60dce21508d363565b32; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Scene axis bible",
   "description": "bibles/scenes.json: per scene, the location, time, sun, the axis (line of action), which side the camera stays on, and where each character sits and travels as seen from side A.",
@@ -50,6 +50,54 @@
             "type": "array",
             "items": {
               "type": "string"
+            }
+          },
+          "intensity": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Story intensity, 0 (calm exposition) to 100 (the climax), from the story graph."
+          },
+          "space": {
+            "enum": [
+              "deep",
+              "flat",
+              "limited",
+              "ambiguous"
+            ],
+            "description": "Block's type of space (cinewright-shots space-types), compiled once into every card of the scene."
+          },
+          "color": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The scene's colour-script row in words the grade can measure.",
+            "properties": {
+              "hue": {
+                "type": "string",
+                "description": "Dominant hue in a plain word, e.g. amber."
+              },
+              "brightness": {
+                "enum": [
+                  "dark",
+                  "middle",
+                  "bright"
+                ],
+                "description": "Which third of the grey scale."
+              },
+              "saturation": {
+                "enum": [
+                  "muted",
+                  "mid",
+                  "saturated"
+                ]
+              },
+              "warmth": {
+                "enum": [
+                  "warm",
+                  "neutral",
+                  "cool"
+                ]
+              }
             }
           },
           "axis": {

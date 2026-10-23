@@ -20,6 +20,17 @@
     "lighting": {"type": "string", "minLength": 10, "maxLength": 200, "description": "Verbatim lighting string for the whole film: key style, contrast and color temperature in words. Compiled after the look string in every prompt."},
     "allowed_moves": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["static", "pan-left", "pan-right", "tilt-up", "tilt-down", "dolly-in", "dolly-out", "truck-left", "truck-right", "track", "crane-up", "crane-down", "handheld", "zoom-in", "zoom-out"]}, "description": "Camera moves the style permits; the continuity diff warns MOVE on any other."},
     "history": {"type": "array", "items": {"type": "string", "pattern": "^[a-z0-9-]+$"}, "description": "Ids of the cinewright-history style cards the look was built from (provenance; the compiler reads the fields, not the cards)."},
-    "refs": {"type": "array", "items": {"type": "string"}}
+    "refs": {"type": "array", "items": {"type": "string"}},
+    "visual_structure": {"type": "object", "additionalProperties": false, "description": "Block's plan (cinewright-design visual-structure): the point of view, what never changes, what changes with the story intensity, and what each value was taught to mean.", "properties": {
+      "point_of_view": {"type": "string", "maxLength": 200, "description": "One line: whose film it is and how it looks."},
+      "flow": {"enum": ["peaks", "staccato", "undulating"], "description": "The rhythm flow-line: big peaks and valleys, short sharp beats, or slow swells."},
+      "climax": {"type": "string", "description": "Scene id of the story's peak; cards graph checks it has the highest intensity."},
+      "constants": {"type": "object", "additionalProperties": {"type": "string"}, "description": "Components that never change, as component: value."},
+      "plans": {"type": "array", "items": {"type": "object", "required": ["component", "mode"], "additionalProperties": false, "properties": {
+        "component": {"enum": ["space", "line", "shape", "tone", "brightness", "saturation", "warmth", "hue", "movement", "rhythm"]},
+        "mode": {"enum": ["progression", "peaks"], "description": "progression: changes steadily with the story; peaks: contrast spikes at the named scenes."},
+        "from": {"type": "string"}, "to": {"type": "string"},
+        "peaks": {"type": "array", "items": {"type": "string"}, "description": "Scene ids where the contrast spikes."}}}},
+      "meanings": {"type": "object", "additionalProperties": {"type": "string"}, "description": "What the first use taught each value to mean, e.g. red: danger."}}}
   }
 }
