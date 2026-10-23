@@ -6,6 +6,14 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-007 · 2026-10-23 · `mist-beat-inverse-depth-on-h3`: a crowd shot conditioned on Mist was picked over inverse depth, twice
+- Trigger: books track 7 left "does a video model follow Mist as well as inverse depth" open. On 2026-10-23 one polywright crowd blockout (608x352, 73 frames, push-in, ranks clashing) was rendered with inverse depth and with a real Mist pass from the same Cycles render (start and depth at the shot's range, linear, inverted), then through H3 with the same prompt, seed and strength 0.6, end 0.4. Blind random-side pairs: the owner picked Mist on both seeds.
+- Hypothesis: Mist's linear ramp gives the middle and far ranks more tones than inverse depth, which spends most of its range on the nearest figures; the crowd lives in the middle.
+- Rule: for a crowd or set seen across a wide depth range, render the Mist pass beside inverse depth and try both; until more shots agree, keep the take that reads better rather than switching every shot.
+- Evidence: depth test 2026-10-23 (H3, two seeds, owner's blind pick 2/2); decisions 2026-10-22-books-track7 K2 update
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-23
+
 ### L-005 · 2026-10-15 · `card-camera-control-holds-the-room`: a grid reference alone lost the room; Canny from the card's camera kept it
 - Trigger: set field test, 2026-10-15: the plan passed a one-image grid of six plates as the only set reference in every card; the first card's take drew a generic hall with a stair the plan does not have and sconces for niches
 - Hypothesis: a grid of views gives the materials but not which wall stands behind this camera; control rendered from the blockout at the card's own camera does

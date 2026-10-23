@@ -801,3 +801,8 @@ From the Blender books (van Gumster, Hess, Brito, Pearson; polywright's recipes 
 ## [2026-10-22] index | rebuilt (23 entries)
 ## [2026-10-22] index | rebuilt (24 entries)
 ## [2026-10-22] index | rebuilt (25 entries)
+
+## [2026-10-23] test | Mist against inverse depth on H3
+- One polywright crowd blockout rendered with inverse depth and a real Mist pass from the same Cycles render (identical depth frames, checked byte for byte), then H3 with Fun ControlNet Union 2.0 at 0.6/0.4 on seeds 11 and 23. Blind random-side pairs: the owner picked Mist both times. blender-passes.md and sets L-007 updated; track 7's K2 has the update line. Files in the owner's video output folder (depthtest).
+## [2026-10-23] index | rebuilt (25 entries)
+- Checks: `python -m unittest discover -s tests` OK; `cine.py kb lint` 0 errors; budget YELLOW as before; `claude plugin validate` passed on the root and each plugin; scrub 13 hits, the same as main.
