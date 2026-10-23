@@ -16,7 +16,7 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 
 ## Step 1: block the scene
 
-Before any card, write each person's position and travel as seen from camera side A into `bibles/scenes.json` (`kb show blocking`). The bibles must exist first (cinewright-continuity).
+Before any card, write each person's position and travel as seen from camera side A into `bibles/scenes.json` (`kb show blocking`). The bibles must exist first (cinewright-continuity). Set the scene's `space` (deep, flat, limited, ambiguous) and stage to it (`kb show space-types`).
 
 ## Step 2: choose coverage
 
@@ -27,7 +27,7 @@ Pick the fewest shots the cut needs, plus one escape shot per scene (`kb show co
 1. `CINE cards new <project> --id 1A --scene 1 --cast a,b` per shot; it copies identity and wardrobe from the bibles.
 2. Fill one subject, one action, one camera move, 3-8 s, and a `beat`. Tokens: `kb show shot-sizes`, `kb show camera-angles`, `kb show camera-moves`.
 3. Set `azimuth_deg` on every card. Two cuts in a row on one subject need 30 degrees or two size steps (`kb show thirty-degree-rule`).
-4. Write framing as position words, never "rule of thirds" (`kb show framing`).
+4. Write framing as position words, never "rule of thirds" (`kb show framing`). When the design has a visual plan, set the card's `line` and its `attention` start and end cells; calm cuts keep the eye in one cell (cinewright-edit `kb show attention-continuum`).
 5. Set `pov` (whose scene it is) and `role` (the card's job in the edit) (`kb show point-of-view`). Three or more people: `kb show group-staging`. Someone moves, enters or exits: `position_end`, `enters`, `exits` (`kb show blocking`).
 6. Hands, liquids, crowds, animals, fights: hand the action to cinewright-movement if installed; otherwise frame few subjects, large and side-on.
 

@@ -19,6 +19,8 @@ sources: ["https://cloud.google.com/blog/products/ai-machine-learning/ultimate-p
 - Several cards of one scene that fit one generation: `--sequence` writes the people, place, sun and look once, then one timestamp block per card.
 - The settings file holds the model's parameters (duration, aspect, resolution, seed, refs, negative terms). Keep it with the prompt; a take record points to both.
 - Card fields that become sentences: `enters` and `exits` ("enters the frame on the left"), `position_end` ("ends on the right of the frame"), `eyeline_end` ("turns, looking toward frame left") and `camera.settle` ("the camera holds, then pushes in, then holds").
+- Visual structure fields that become sentences: the scene's `space` (one sentence of staging words, in the context), the card's `line` ("strong diagonal lines cut across the frame") and `attention.start` ("her face is in the upper left of the frame"), both after the camera words.
+- Light fields that become words: a short-side key gets "on the far side of the face"; `light.atmosphere` becomes "the rain is backlit, lit from behind so it shows"; a `light.motivation` naming fire, flames or a torch adds "the firelight flickers and the shadows jump"; `light.tone: hide` keeps the face in shadow with only its outline lit.
 
 ## Pitfalls
 

@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+Entry shape: `### C-20261022-2 · 2026-10-22 · Space types, line and attention cells (books track 3)
+- because: books track 3 (Block, *The Visual Story*; Brown, *Cinematography*; *FilmCraft: Cinematography*; Phillips on Resolve), decision 2026-10-22-books-track3
+- files: SKILL.md (Steps 1 and 3), references/space-types.md (new), evals/evals.json (outcome-2), evals/check_flat.py; shared/lib/cine.py (`SPACE_WORDS`, SPACE warnings, `line` and `attention` compile words)
+- Each scene gets a type of space that compiles into every card and that the diff checks against moves and lenses; cards can carry their dominant line and where the eye is.
+
+### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261022-1 · 2026-10-22 · Point of view and role per card, group staging, entries and end positions (books track 2)
 - because: books track 2 (Katz, *Shot by Shot*; Mascelli, *The Five C's*; Murch, *In the Blink of an Eye*), decision 2026-10-22-books-track2

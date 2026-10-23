@@ -4,7 +4,7 @@ slug: pacing
 summary: Set pace by average shot length per scene from the style and the scene's job, vary it across the film, and cut to the target length by dropping shots before trimming every shot.
 tags: [edit, pacing, rhythm, asl, length]
 last_checked: 2026-10-22
-sources: ["David Bordwell, The Way Hollywood Tells It, 2006", "Ken Dancyger, The Technique of Film and Video Editing, 6th ed., 2019", "Walter Murch, In the Blink of an Eye, 2nd ed., 2001", "Joseph V. Mascelli, The Five C's of Cinematography, 1965"]
+sources: ["Bruce Block, The Visual Story, 3rd ed., 2021, ch. 8 (Rhythm)", "David Bordwell, The Way Hollywood Tells It, 2006", "Ken Dancyger, The Technique of Film and Video Editing, 6th ed., 2019", "Walter Murch, In the Blink of an Eye, 2nd ed., 2001", "Joseph V. Mascelli, The Five C's of Cinematography, 1965"]
 ---
 
 # Pacing and average shot length
@@ -18,6 +18,9 @@ sources: ["David Bordwell, The Way Hollywood Tells It, 2006", "Ken Dancyger, The
 - Over target length: drop whole shots (the weakest beat) before shaving frames from every shot. Under target: hold reactions, never stretch action.
 - Rhythm across cuts: cut on beats the scene sets (breaths, steps, line ends). Music cuts on the bar only when the scene is music-driven.
 - Deciding where not to cut is most of the work. An overcut film is a tour guide who never stops pointing (after Murch).
+- A cut's beat is as strong as the visual contrast between its two shots. Quiet stretches cut between similar shots; intense ones between shots that differ in size, space, tone, colour or movement (after Block, *The Visual Story*).
+- Alternate continuous events (one long take, or one multi-shot generation) with fragmented ones (coverage): each makes the other stronger, and an overcut film gains from one long take.
+- Pick the film's flow-line and write it in `visual_structure.flow`: `peaks` (big rises and drops), `staccato` (short sharp beats, comedy) or `undulating` (slow swells).
 - Cross-cutting: give the first shot of each line a little more time. Opposite travel predicts a meeting; cut toward it with shots that get closer and shorter each round (after Mascelli, *The Five C's*).
 
 ## Numbers

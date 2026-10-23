@@ -6,6 +6,14 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-005 · 2026-10-22 · `atmosphere-is-a-field-not-a-word`: atmosphere words in card prose are mostly not in the air
+- Trigger: books track 3 planned to compile "backlit" whenever a card names rain, smoke, haze or dust (Brown, *Cinematography*: they show only with light behind them)
+- Hypothesis: the words name things on the ground or in the action ("a dusty SUV", "spits into the dust", "dragon fire") as often as air the light passes through
+- Rule: airborne matter is `light.atmosphere`, set by the planner; firelight flicker comes only from `light.motivation`, the source the card says lights it
+- Evidence: on 163 cards of seven local multi-shot films, 28 cards' own text matched an atmosphere word, most of them dust on cars and floors; fire words matched 77, mostly action and set dressing
+- Scope: tool (shared/lib/cine.py compile) and skill (references/light-sources.md)
+- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-22
+
 ### L-001 · 2026-10-04 · A model renders only its own sizes; compose for the film's frame and crop later
 - Trigger: 2026-10-04, S4 exit check: "shoot it like 1970s New Hollywood, 2.39" could not set aspect_ratio to 2.39 because compile stops on a size the model card does not offer
 - Hypothesis: Video models render a fixed set of aspects (mostly 16:9 and 9:16), so a scope frame has to be asked for as composition inside the render and made in finishing

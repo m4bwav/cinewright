@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:55a2a3cb6790a4bdcdf204e0557df59465423cdd9d16169278fd0094b7897c5e; edit the source
+# copied from shared/lib/cine.py sha256:a09182844f276bc41fe1818e8c4204449031e775339bf8c51e742ff535ca8e5e; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -76,6 +76,21 @@ SPEECH_LEAD_S = 0.5  # breath before the first word
 # Many small figures in a wide frame: legs, faces and clones break (field lessons 020, 021)
 HARD_SUBJECT = re.compile(r"\b(crowds?|herds?|flocks?|swarms?|army|armies|troops|cavalry|caravans?|stampedes?|hordes?|columns? of|dozens|hundreds)\b", re.I)
 SECTIONS = ["Rules", "Numbers", "Vocabulary", "Pitfalls", "Verify", "Notes", "Compile"]
+# Block's visual structure (cinewright-shots space-types, cinewright-edit attention-continuum)
+SPACE_WORDS = {
+    "deep": "Deep space: lines run to a far vanishing point, people and things stand near, middle and far, one object close to the lens, the distance hazier and cooler",
+    "flat": "Flat space: a wall square to the camera closes the background, everyone on one plane at one size, movement only across the frame, even light",
+    "limited": "Limited space: two or three flat planes one behind another, told apart by the size of the figures, no lines running into the distance",
+    "ambiguous": "Ambiguous space: nothing of known size in frame, shadow and an unusual angle hide the size of the place and where the camera stands",
+}
+ATTENTION_CALM = 50  # below this intensity a cut keeps the eye in place; at or above it a jump is a planned contrast
+SPACE_3D = ("dolly-in", "dolly-out", "track", "crane-up", "crane-down")  # relative movement adds depth (Block ch. 3)
+LINE_WORDS = {"horizontal": "Calm horizontal lines run across the frame", "vertical": "Strong vertical lines rise through the frame",
+              "diagonal": "Strong diagonal lines cut across the frame", "curved": "Soft curving forms shape the frame"}
+CELL_WORDS = ["upper left", "top center", "upper right", "left", "center", "right", "lower left", "bottom center", "lower right"]
+ATMOS_WORDS = {"rain": "the rain", "snow": "the falling snow", "smoke": "the smoke", "haze": "the haze", "fog": "the fog",
+               "dust": "the dust in the air", "steam": "the steam"}
+FIRE_LIGHT = re.compile(r"\b(fire|firelight|flames?|campfire|fireplace|bonfire|torch(es|light)?|brazier)\b", re.I)
 
 
 # ---------- context ----------
@@ -586,6 +601,14 @@ def cmd_cards(ctx, a):
         scenes = len({c.get("scene") for c in p.cards})
         print("shot list: %d shots, %d scene(s), %gs" % (len(p.cards), scenes, sum(c.get("duration_s", 0) for c in p.cards)))
         return 0
+    if a.cmd == "graph":
+        rows, flags = cards_graph(p)
+        if a.csv:
+            keys = list(rows[0]) if rows else []
+            write_text(a.csv, "\n".join([",".join(keys)] + [",".join("" if r[k] is None else str(r[k]) for k in keys) for r in rows]) + "\n")
+            print("wrote %s" % a.csv)
+        print("\n".join(graph_lines(rows, flags)))
+        return 0
     if a.cmd == "export":
         if not a.film_json:
             raise SystemExit("choose an export format: --film-json")
@@ -606,6 +629,86 @@ def cmd_cards(ctx, a):
     return 2
 
 
+SPARK = "▁▂▃▄▅▆▇█"
+GRAPH_FLAT = 30  # a story curve whose scenes span fewer points than this reads as monotone (Block ch. 9)
+
+
+def cards_graph(p):
+    """Block's story intensity graph: (rows in cut order, flags). A row is one card with its scene's plan beside it."""
+    vs = p.style.get("visual_structure", {})
+    rows, flags = [], []
+    for c in p.cards:
+        sc = p.scene_map.get(c.get("scene"), {})
+        col = sc.get("color", {})
+        rows.append({"order": c.get("order"), "card": c.get("id"), "scene": c.get("scene"), "scene_intensity": sc.get("intensity"),
+                     "intensity": c.get("intensity", sc.get("intensity")), "space": sc.get("space", ""), "line": c.get("line", ""),
+                     "hue": col.get("hue", ""), "brightness": col.get("brightness", ""), "saturation": col.get("saturation", ""),
+                     "warmth": col.get("warmth", ""), "move": c.get("camera", {}).get("move", "")})
+    order = []
+    for r in rows:
+        if r["scene"] not in order:
+            order.append(r["scene"])
+    level = {s: p.scene_map.get(s, {}).get("intensity") for s in order}
+    known = [s for s in order if level[s] is not None]
+    if not known:
+        return rows, [("INTENSITY", "no scene has an intensity: draw the story graph first, 0-100 per scene (cinewright-design visual-structure)")]
+    if len(known) < len(order):
+        flags.append(("INTENSITY", "no intensity on scene(s) %s" % ", ".join(s for s in order if level[s] is None)))
+    top = max(level[s] for s in known)
+    climax = vs.get("climax")
+    if climax and climax in level and level[climax] is not None and level[climax] < top:
+        flags.append(("CLIMAX", "the planned climax, scene %s, is at %d but scene %s reaches %d" % (
+            climax, level[climax], next(s for s in known if level[s] == top), top)))
+    elif climax and climax not in level:
+        flags.append(("CLIMAX", "visual_structure names climax scene %s, which has no cards" % climax))
+    peak = climax if climax in level and level.get(climax) is not None else next(s for s in known if level[s] == top)
+    if len(known) > 2 and known.index(peak) == 0:
+        flags.append(("CLIMAX", "the peak is the first scene: the story graph rises from exposition to the climax"))
+    if len(known) > 2 and peak != known[-1] and level[known[-1]] >= level[peak]:
+        flags.append(("RESOLUTION", "the last scene is as intense as the climax; the resolution comes back down"))
+    if len(known) > 1 and top - min(level[s] for s in known) < GRAPH_FLAT:
+        flags.append(("FLAT", "scene intensities span %d points (under %d): the curve is monotone; push the exposition down and the climax up" % (
+            top - min(level[s] for s in known), GRAPH_FLAT)))
+    for a, b in zip(order, order[1:]):
+        sa, sb = p.scene_map.get(a, {}), p.scene_map.get(b, {})
+        if level[a] is not None and level[a] == level[b] and sa.get("space") and sa.get("space") == sb.get("space") \
+                and sa.get("color", {}).get("hue") and sa.get("color", {}).get("hue") == sb.get("color", {}).get("hue"):
+            flags.append(("SAME", "scenes %s and %s share intensity, space and dominant hue: nothing tells them apart" % (a, b)))
+    changing = vs.get("plans", [])
+    if len(changing) > 3:
+        flags.append(("PLANS", "%d components change; keep the rest constant so the changes read (two or three at most)" % len(changing)))
+    for pl in changing:
+        for s in pl.get("peaks", []):
+            i = order.index(s) if s in order else -1
+            if i < 0 or level.get(s) is None:
+                flags.append(("PEAK", "%s peaks at scene %s, which has no cards or no intensity" % (pl["component"], s)))
+                continue
+            near = [level[order[j]] for j in (i - 1, i + 1) if 0 <= j < len(order) and level[order[j]] is not None]
+            if near and level[s] < max(near):
+                flags.append(("PEAK", "%s spikes at scene %s (%d), but a neighbour is more intense (%d): a contrast with no story peak under it" % (
+                    pl["component"], s, level[s], max(near))))
+    return rows, flags
+
+
+def graph_lines(rows, flags):
+    out, seen = [], []
+    for r in rows:
+        if r["scene"] in seen:
+            continue
+        seen.append(r["scene"])
+        cards = [x for x in rows if x["scene"] == r["scene"]]
+        lv = r["scene_intensity"]
+        bar = SPARK[min(7, lv * 8 // 101)] if lv is not None else "?"
+        per = "".join(SPARK[min(7, x["intensity"] * 8 // 101)] if x["intensity"] is not None else "?" for x in cards)
+        plan = " ".join(x for x in (r["space"], r["hue"], r["brightness"], r["saturation"], r["warmth"]) if x)
+        out.append("scene %-4s %s %3s  cards %-12s %s" % (r["scene"], bar, "-" if lv is None else lv, per, plan))
+    out.append("curve %s" % "".join(SPARK[min(7, x["intensity"] * 8 // 101)] if x["intensity"] is not None else "?" for x in rows))
+    for code, msg in flags:
+        out.append("FLAG %s: %s" % (code, msg))
+    out.append("cards graph: %d cards, %d scene(s), %d flag(s)" % (len(rows), len(seen), len(flags)))
+    return out
+
+
 # ---------- continuity diff ----------
 
 def continuity_diff(p):
@@ -615,7 +718,7 @@ def continuity_diff(p):
     def add(level, card, code, msg):
         issues.append({"level": level, "card": card.get("id", "?"), "code": code, "message": msg})
 
-    prev_by_scene, blocks, seen, last, met = {}, {}, {}, {}, set()  # met: people already on screen, film-wide
+    prev_by_scene, blocks, seen, last, met, flat_deep = {}, {}, {}, {}, set(), {}  # met: people already on screen, film-wide
     ids = {c.get("id") for c in p.cards}
     last_stage = {}  # character id -> (card id, ref stage) on the last card that showed them
     for card in p.cards:
@@ -662,6 +765,30 @@ def continuity_diff(p):
         moves = p.style.get("allowed_moves")
         if moves and cam.get("move") and cam["move"] not in moves:
             add("warning", card, "MOVE", "%s is not one of the style's moves (%s)" % (cam["move"], ", ".join(moves)))
+        if sc.get("space") in ("flat", "limited"):
+            if cam.get("move") in SPACE_3D:
+                add("warning", card, "SPACE", "%s in %s space: a dolly, track or crane adds depth; use a static camera, a pan, a tilt or a zoom" % (cam["move"], sc["space"]))
+            if cam.get("lens_mm") and cam["lens_mm"] < 35:
+                add("warning", card, "SPACE", "a %gmm lens in %s space stretches the depth; 35mm or longer, with the staging on one plane" % (cam["lens_mm"], sc["space"]))
+        flat_deep.setdefault(sc["id"], []).append(card if sc.get("space") == "deep" and cam.get("move") == "static" and cam.get("angle") == "eye-level" else None)
+        light = card.get("light", {})
+        cast1 = card.get("cast", [])
+        if len(cast1) == 1 and cast1[0].get("eyeline") in FLIP and light.get("key_side") in FLIP and light["key_side"] != cast1[0]["eyeline"] \
+                and light.get("tone") != "hide" and not re.search(r"\b(broad|high-key|flat)\b", "%s %s" % (p.style.get("lighting", ""), light.get("motivation", "")), re.I):
+            add("warning", card, "KEY-SIDE", "%s looks %s and the key comes from %s, the near side of the face (broad light); key from %s, the side the face "
+                "turns to, or turn the face toward the source; when the source fixes it, write 'broad' in light.motivation" % (
+                    p.chars.get(cast1[0]["id"], {}).get("name", cast1[0]["id"]), cast1[0]["eyeline"], light["key_side"], cast1[0]["eyeline"]))
+        att = card.get("attention", {})
+        if att.get("start") and len(cast1) == 1 and cast1[0].get("position") in POS_INDEX and (att["start"] - 1) % 3 != POS_INDEX[cast1[0]["position"]]:
+            add("warning", card, "ATTENTION", "attention starts in cell %d but %s stands %s" % (att["start"], cast1[0]["id"], cast1[0]["position"]))
+        pa = (prev or {}).get("attention", {})
+        if att.get("start") and pa.get("end", pa.get("start")):
+            a0, b0 = pa.get("end", pa.get("start")) - 1, att["start"] - 1
+            jump = max(abs(a0 // 3 - b0 // 3), abs(a0 % 3 - b0 % 3))
+            level = card.get("intensity", sc.get("intensity"))
+            if jump >= 2 and (level is None or level < ATTENTION_CALM):
+                add("warning", card, "ATTENTION", "the eye jumps across the frame from %s (cell %d) to cell %d at intensity %s; in a calm stretch keep it in the "
+                    "same cell, or mark the jump as a peak with intensity %d or more" % (prev["id"], a0 + 1, b0 + 1, "unset" if level is None else level, ATTENTION_CALM))
         positions = blocks.setdefault(sc["id"], dict(axis.get("positions", {})))  # moved by position_end
         travel = axis.get("travel", {})
         pcast = {m["id"]: m for m in (prev or {}).get("cast", [])}
@@ -801,6 +928,10 @@ def continuity_diff(p):
             for m in last.values():
                 if m.get("position_end") in POS_INDEX:
                     positions[m["id"]] = FLIP.get(m["position_end"], "center") if flipped else m["position_end"]
+    for sid, cs in flat_deep.items():
+        if len(cs) > 1 and all(cs):
+            add("warning", cs[-1], "SPACE", "scene %s is planned as deep space, but every card is a static eye-level frame; stage near, middle "
+                "and far, put an object close to the lens, or move the camera toward or away" % sid)
     return issues
 
 
@@ -952,6 +1083,14 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
     settle = cam.get("settle") and cam["move"] != "static"  # held frames at both ends give the edit handles
     move = "" if sentence_moves else ", " + MOVE_WORDS[cam["move"]] + (" that starts and ends on a held frame" if settle else "")
     parts["camera"] = _sentence("%s, %s%s%s" % (_cap(SIZE_WORDS[cam["size"]]), ANGLE_WORDS[cam["angle"]], lens, move))
+    att = card.get("attention", {})
+    if card.get("line"):
+        parts["camera"] += " " + _sentence(LINE_WORDS[card["line"]])
+    if att.get("start"):
+        cast = card.get("cast", [])
+        who = "%s's face is" % p.chars[cast[0]["id"]]["name"] if len(cast) == 1 else "The main subject is"
+        end = ", ending in the %s" % CELL_WORDS[att["end"] - 1] if att.get("end", att["start"]) != att["start"] else ""
+        parts["camera"] += " " + _sentence("%s in the %s of the frame%s" % (who, CELL_WORDS[att["start"] - 1], end))
     if sentence_moves:
         s = MOVE_SENTENCES[cam["move"]] + ("" if cam["move"] == "static" else prof.get("move_suffix", ""))
         parts["move"] = _sentence("The camera holds, then %s, then holds" % s[11:] if settle else s)
@@ -1015,14 +1154,25 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
     if cam.get("faces") in loc.get("walls", {}):
         where = "%s. %s" % (where, _cap(loc["walls"][cam["faces"]].rstrip(".")))
     parts["context"] = _sentence(_cap("%s, %s" % (where, tod)))
+    if sc.get("space"):
+        parts["context"] += " " + _sentence(SPACE_WORDS[sc["space"]])
     light = card.get("light", {})
     lt = []
     if sc.get("sun"):
         lt.append(sc["sun"])
     if light.get("key_side"):
-        lt.append("%s key light from %s" % (light.get("quality", "soft"), light["key_side"].replace("-", " ")))
+        eyes = [m.get("eyeline") for m in card.get("cast", [])]
+        # the upstage key (Brown): from the side the face turns to, so the far side of the face is lit
+        far = ", on the far side of the face" if len(eyes) == 1 and eyes[0] == light["key_side"] else ""
+        lt.append("%s key light from %s%s" % (light.get("quality", "soft"), light["key_side"].replace("-", " "), far))
     if light.get("motivation"):
         lt.append(light["motivation"])
+        if FIRE_LIGHT.search(light["motivation"]):
+            lt.append("the firelight flickers and the shadows jump")
+    if light.get("atmosphere"):
+        lt.append("%s is backlit, lit from behind so it shows" % ATMOS_WORDS[light["atmosphere"]])
+    if light.get("tone") == "hide":
+        lt.append("the face stays hidden in shadow, only its outline catches the light")
     parts["light"] = _sentence(_cap(", ".join(lt))) if lt else ""
     # --sequence: the scene's sun goes in the shared header, each shot keeps its own key side
     parts["sun"] = _sentence(_cap(sc["sun"])) if sc.get("sun") else ""
@@ -1328,6 +1478,8 @@ RUBRIC = [
     # the wall the card faces (camera.faces): a take that kept the action but lost the room had no item to fail
     # (set field test, 2026-10-15; qc L-005)
     ("set", "sheet", "Is the room behind as planned, with nothing the set does not have: {wall}?"),
+    ("space", "sheet", "Does the space read as planned? {space_words}."),
+    ("attention", "the previous take's last frame and this take's first frame", "Is the face or moving subject in the {cell} of the first frame{from_cell}?"),
     ("action", "sheet", "Does the action happen and finish at normal speed, already moving at frame 1: {action}"),
     ("opening", "first frame", "Does the first frame match the start state: {start_state}"),
     ("end-state", "last frame", "Does the last frame match the end state: {end_state} Write what it shows."),
@@ -1486,6 +1638,10 @@ def rubric_items(p, card):
     lt = [sc["sun"]] if sc.get("sun") else []
     if light.get("key_side"):
         lt.append("%s key from %s" % (light.get("quality", "soft"), light["key_side"].replace("-", " ")))
+    if light.get("atmosphere"):
+        lt.append("%s backlit" % ATMOS_WORDS[light["atmosphere"]])
+    if light.get("tone") == "hide":
+        lt.append("the face hidden in shadow on purpose")
     in_shot = [m["id"] for m in card.get("cast", [])]
     audio = ["%s%s says: %s" % (p.chars[d["character"]]["name"], "" if d["character"] in in_shot else " (off screen, no visible mouth)", d["line"])
              for d in card.get("dialogue", [])]
@@ -1495,7 +1651,13 @@ def rubric_items(p, card):
             "angle": ANGLE_WORDS[cam["angle"]], "move": MOVE_WORDS[cam["move"]], "action": _sentence(card["action"]),
             "start_state": _sentence(card.get("start_state", "")), "end_state": _sentence(card.get("end_state", "")),
             "audio": "; ".join(audio), "prev": prev[-1]["id"] if prev else "",
-            "wall": p.locs.get(sc.get("location"), {}).get("walls", {}).get(cam.get("faces"), "").rstrip(".")}
+            "wall": p.locs.get(sc.get("location"), {}).get("walls", {}).get(cam.get("faces"), "").rstrip("."),
+            "space_words": SPACE_WORDS.get(sc.get("space"), ""),
+            "cell": CELL_WORDS[card["attention"]["start"] - 1] if card.get("attention", {}).get("start") else "",
+            "from_cell": ""}
+    pa = prev[-1].get("attention", {}) if prev else {}
+    if base["cell"] and pa.get("end", pa.get("start")):
+        base["from_cell"] = ", where %s left the eye in the %s" % (prev[-1]["id"], CELL_WORDS[pa.get("end", pa.get("start")) - 1])
     items = []
     for check, look, ask in RUBRIC:
         rows = []
@@ -1512,11 +1674,13 @@ def rubric_items(p, card):
                 if not need or v[need]:
                     rows.append(("%s:%s" % (check, m["id"]), ask.format(**v)))
         else:
-            need = {"opening": "start_state", "end-state": "end_state", "audio": "audio", "seam": "prev", "set": "wall"}.get(check)
+            need = {"opening": "start_state", "end-state": "end_state", "audio": "audio", "seam": "prev", "set": "wall", "space": "space_words", "attention": "cell"}.get(check)
             if not need or base[need]:
                 rows.append((check, ask.format(**base)))
+        hidden = check == "identity" and light.get("tone") == "hide"  # a face kept in shadow cannot fail on its features
         for rid, text in rows:
-            items.append({"id": rid, "check": check, "look": look, "ask": text, "verdict": None, "code": None, "note": ""})
+            items.append({"id": rid, "check": check, "look": look, "ask": text, "verdict": "na" if hidden else None, "code": None,
+                          "note": "light.tone is hide: the face is hidden on purpose" if hidden else ""})
     return items
 
 
@@ -2289,6 +2453,9 @@ def build_parser(prog="cine.py"):
     s.add_argument("--style", metavar="FILE", help="check this style bible in place of bibles/style.json")
     s = cards.add_parser("list", help="print the shot list in cut order")
     s.add_argument("project")
+    s = cards.add_parser("graph", help="the story intensity curve per scene and card, with the visual plan beside it, and its flags")
+    s.add_argument("project")
+    s.add_argument("--csv", help="also write the rows as CSV (for a chart)")
     s = cards.add_parser("export", help="export the shot list")
     s.add_argument("project")
     s.add_argument("--film-json", action="store_true", help="film.json shape for a local long-render pipeline")

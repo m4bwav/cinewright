@@ -20,6 +20,9 @@
           "time_of_day": {"enum": ["dawn", "morning", "day", "golden-hour", "dusk", "night"]},
           "sun": {"type": "string", "description": "World direction and height of the sun or main source, verbatim."},
           "props": {"type": "array", "items": {"type": "string"}},
+          "intensity": {"type": "integer", "minimum": 0, "maximum": 100, "description": "Story intensity, 0 (calm exposition) to 100 (the climax), from the story graph."},
+          "space": {"enum": ["deep", "flat", "limited", "ambiguous"], "description": "Block's type of space (cinewright-shots space-types), compiled once into every card of the scene."},
+          "color": {"type": "object", "additionalProperties": false, "description": "The scene's colour-script row in words the grade can measure.", "properties": {"hue": {"type": "string", "description": "Dominant hue in a plain word, e.g. amber."}, "brightness": {"enum": ["dark", "middle", "bright"], "description": "Which third of the grey scale."}, "saturation": {"enum": ["muted", "mid", "saturated"]}, "warmth": {"enum": ["warm", "neutral", "cool"]}}},
           "axis": {
             "type": "object",
             "required": ["line", "camera_side"],

@@ -115,6 +115,31 @@
           "out/pov"
         ]
       ]
+    },
+    {
+      "id": "outcome-2",
+      "kind": "outcome",
+      "prompt": "out/flat is a copy of examples/three-shot. Scene 1 should feel flat and boxed in, like a stage set with no depth. Plan the scene that way and make its shots agree, then check the project.",
+      "files": [],
+      "checks": [
+        [
+          "python",
+          "evals/check_flat.py",
+          "{work}"
+        ]
+      ],
+      "expectations": [
+        "check: scene 1 has space flat, the cards validate, and continuity diff gives no SPACE warning, so the 24mm wide and the dolly-in were changed (evals/check_flat.py exits 0)"
+      ],
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/flat"
+        ]
+      ],
+      "baseline": "2026-10-22, books track 3 (evals/run_evals.py, Sonnet, skills disabled): without the skill 0 of 1 passed; with it 3 of 3 (T-20261022-2)."
     }
   ]
 }

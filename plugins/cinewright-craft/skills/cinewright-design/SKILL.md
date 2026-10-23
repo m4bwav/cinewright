@@ -14,9 +14,10 @@ Design what the camera sees so it holds across separately generated shots: one t
 
 Read `evergreen.json`. If `contradiction` is set or today is on or after `next_due`, say so in one line, do the task with the current content, then run `evergreen-refresh` if the evergreen plugin is installed. If `tests.failing` is non-empty, say so and run `evergreen-tune` after the task.
 
-## Step 1: palette and color script
+## Step 1: visual structure, palette and color script
 
-Set three to five named colors in `bibles/style.json` `palette`, then one color-script row per scene in `design.md` with its dominant color and why (`kb show color-script`).
+1. Draw the story graph: `intensity` 0-100 on every scene, then `visual_structure` in `style.json` (point of view, constants, at most three changing components, the climax). Run `CINE cards graph <project>` and answer every flag (`kb show visual-structure`).
+2. Set three to five named colors in `palette` and one scheme, then each scene's `color` row (hue, brightness third, saturation, warmth) in `bibles/scenes.json`, with why in `design.md` (`kb show color-script`).
 
 ## Step 2: costumes
 

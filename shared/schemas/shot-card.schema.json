@@ -11,6 +11,9 @@
     "order": {"type": "integer", "minimum": 1, "description": "Position in the cut."},
     "duration_s": {"type": "number", "minimum": 3, "maximum": 8},
     "beat": {"type": "string", "maxLength": 200, "description": "What the shot tells the audience: the question it raises or answers."},
+    "intensity": {"type": "integer", "minimum": 0, "maximum": 100, "description": "Story intensity of this card, for a scene graphed card by card (usually the climax)."},
+    "line": {"enum": ["horizontal", "vertical", "diagonal", "curved"], "description": "The card's dominant line. Horizontal is calmest, diagonal strongest (Block)."},
+    "attention": {"type": "object", "additionalProperties": false, "description": "Where the eye is on the nine-cell grid (1-3 top row left to right, 4-6 middle, 7-9 bottom) on the first and last frame (cinewright-edit attention-continuum).", "properties": {"start": {"type": "integer", "minimum": 1, "maximum": 9}, "end": {"type": "integer", "minimum": 1, "maximum": 9}}},
     "pov": {"type": "string", "description": "Whose view the card serves: objective, or the id of the character whose scene it is (cinewright-shots point-of-view)."},
     "role": {"enum": ["establishing", "master", "coverage", "reaction", "cut-in", "cut-away", "protection"], "description": "The card's job in the edit. A cut-in shows part of what a wider card established; a protection card is a cheaper stand-in, rendered only if the card in protects fails."},
     "protects": {"type": "string", "description": "With role protection: the id of the risky card this one stands in for."},
@@ -107,7 +110,9 @@
         "sun": {"type": "string"},
         "key_side": {"enum": ["frame-left", "frame-right", "top", "back"]},
         "quality": {"enum": ["hard", "soft"]},
-        "motivation": {"type": "string"}
+        "motivation": {"type": "string"},
+        "tone": {"enum": ["reveal", "hide"], "description": "reveal (default): the light shows the subject. hide: the face stays in shadow or glare on purpose, so the identity checks are na."},
+        "atmosphere": {"enum": ["rain", "snow", "smoke", "haze", "fog", "dust", "steam"], "description": "Airborne matter in the shot. Compiled as backlit, because it shows only with light behind it."}
       }
     },
     "start_state": {"type": "string", "maxLength": 240},

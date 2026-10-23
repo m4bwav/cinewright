@@ -6,7 +6,7 @@ tags: [vocab, qc, failures, taxonomy, motion, audio]
 last_checked: 2026-10-22
 sources: ["field lessons 005, 011, 014, 015, 020, 021 (maintainer's local renders, 2026-09)", "https://tech.ebu.ch/publications/r128"]
 ---
-<!-- copied from shared/vocab/failures-motion.md sha256:9e752c67d8bf3ef2328280303a438104ddd8b445af27b2c06c6359d44bc89e8a; edit the source -->
+<!-- copied from shared/vocab/failures-motion.md sha256:501d3d28d30ce4a6106183c8385d113323a379ebd923a109627d17625753818d; edit the source -->
 
 # Failure codes, motion, sound and spec
 
@@ -25,6 +25,8 @@ Rungs and checks as in `failures-picture`.
 | `flicker` | brightness pulses frame to frame inside one shot | the model's exposure wavers between frames | `deflicker` in the grade; re-render when it stays | 7 | light |
 | `physics-morph` | objects merge, pass through or slide | contact and weight unstated | name contact and weight; fewer subjects | 1 | physics |
 | `air-steps` | a flying figure takes walking steps on the air, as if on a floor | flight mode unstated; body pose left to the model | state the flight pose: legs together and trailing, body leaning into the flight; stepping only for air-walkers | 1 | action |
+| `move-no-settle` | the camera is still moving on the last frame, so the cut lands mid-move | no held end on the move | `camera.settle` (held frames at both ends); trim to the hold | 2 | camera |
+| `pan-strobe` | the background steps or smears across a fast pan or track | the frame crosses faster than about a third of its width a second | a slower move ("slow pan") or a longer shot; cut the fast part | 1 | camera |
 | `text-artifact` | subtitles, captions, watermark, garbled signs | quoted dialogue; signs in scene | the card's dialogue syntax; negative terms | 1 | text |
 | `dialogue-wrong` | line missing, wrong mouth, lips off | two speakers, or speaker not in shot | one speaker per shot, in the cast; else the mix | 1 | audio |
 | `lip-lag` | the mouth moves before or after its voice | picture and sound drift apart in the render or the mix | slip the sound by the measured lag when it is steady; re-render when it wanders | 7 | audio |
@@ -36,6 +38,7 @@ Rungs and checks as in `failures-picture`.
 
 ## Rules
 
+- `move-no-settle` and `pan-strobe` are judged by eye (cinewright-qc look-pass says why).
 - `spec-mismatch` and `loudness-off` are measured (`qc spec`, `qc loud`), never judged by eye.
 - `flicker` is measured too (`qc measure`): a shot whose mean brightness jumps off its neighbours' average often, every second. It warns, never fails, until `qc agree` has scored it on reviewed takes.
 - `lip-lag`: people notice sound and picture about 45 ms apart, one or two frames at 24 fps (after Enochs, *Video Generation with AI*). Measure the lag before slipping the sound; a lag that changes along the take is a re-render.

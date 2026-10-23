@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+Entry shape: `### C-20261022-3 · 2026-10-22 · Look pass and nine light and structure codes (books track 3)
+- because: books track 3 (Block, *The Visual Story*; Brown, *Cinematography*; *FilmCraft: Cinematography*; Phillips on Resolve), decision 2026-10-22-books-track3; L-007
+- files: SKILL.md (Step 2), references/look-pass.md (new), references/review-passes.md; shared vocab failures-picture (`flat-light`, `source-mismatch`, `atmos-unlit`, `tone-hides-subject`, `space-break`, `attention-jump`) and failures-motion (`move-no-settle`, `pan-strobe`); shared/lib/cine.py RUBRIC rows `space` and `attention`, identity `na` under `light.tone: hide`
+- Reviewers judge light and visual structure in one pass with its own codes; settle and pan speed stay by eye because the measures failed on real takes.
+
+### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261022-2 · 2026-10-22 · Rank blind to cost, a decisive-frame board, notes as symptoms (books track 2)
 - because: books track 2 (Katz, *Shot by Shot*; Mascelli, *The Five C's*; Murch, *In the Blink of an Eye*), decision 2026-10-22-books-track2

@@ -100,6 +100,34 @@
       "plugins": [
         "cinewright"
       ]
+    },
+    {
+      "id": "outcome-2",
+      "kind": "outcome",
+      "prompt": "out/lamp is a copy of examples/three-shot. In shot 1C an oil lamp now stands on the window sill at frame left, and smoke from its wick drifts through the shot. Update the shot's light so the prompt gets the lamp and the smoke right, then compile 1C's Veo prompt into out/lamp/compiled/veo.",
+      "files": [],
+      "checks": [
+        [
+          "python",
+          "evals/check_lamp.py",
+          "{work}"
+        ]
+      ],
+      "expectations": [
+        "check: card 1C names the lamp and its side in light.motivation, sets light.atmosphere to smoke, validates, and out/lamp/compiled/veo/1C.txt says the smoke is backlit (evals/check_lamp.py exits 0)"
+      ],
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/lamp"
+        ]
+      ],
+      "plugins": [
+        "cinewright"
+      ],
+      "baseline": "2026-10-22, books track 3 (evals/run_evals.py, Sonnet, skills disabled): without the skill 0 of 1 passed; with it 3 of 3 (T-20261022-1)."
     }
   ]
 }

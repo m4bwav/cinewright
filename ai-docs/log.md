@@ -740,4 +740,29 @@ Validation passed x4
 $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 13 hits in 4 files (all in old log lines and cinewright-design notes, none in this change)
 ```
+## 2026-10-22: book-learnings track 3 (visual structure and light)
+
+From Block, *The Visual Story*; Brown, *Cinematography: Theory and Practice*; *FilmCraft: Cinematography*; Phillips on DaVinci Resolve. Branch books-track3. Rulings G1 to G14 in [decisions/2026-10-22-books-track3.md](decisions/2026-10-22-books-track3.md).
+
+- Built: scene `intensity`, `space`, `color`; card `intensity`, `line`, `attention`, `light.tone`, `light.atmosphere`; style `visual_structure`. `cards graph` (story curve per scene and card, CSV, flags CLIMAX, FLAT, SAME, PEAK, PLANS, RESOLUTION, INTENSITY). `continuity diff` warnings SPACE, KEY-SIDE, ATTENTION. Compile writes space, line, attention cell, far-side key, backlit atmosphere, firelight flicker and a hidden face. Rubric rows `space` and `attention`; identity `na` under `tone: hide`. Codes `flat-light`, `source-mismatch`, `atmos-unlit`, `tone-hides-subject`, `space-break`, `attention-jump`, `move-no-settle`, `pan-strobe`. `cine_post.py grade measure --plan`, `grade stabilize`, `grade match --sat --warm`. New entries visual-structure (design), space-types (shots), attention-continuum (edit), light-sources (camera), look-pass (qc); rules added to lighting-setups, color-script, pacing, cutting-around-bad-frames, shot-matching, grade-order, review-passes, compile-rule. Six committed example prompts gained "on the far side of the face".
+- Real data: KEY-SIDE fired on 13 of 163 cards of seven local multi-shot films (8 %). SPACE and ATTENTION read fields no real card has. 354 planned shots cut from 118 reviewed takes calibrated the chroma and warmth classes; the settle and pan-speed proxies failed there and stayed review items (qc L-007); brightness classes and within-take spreads did not separate the 10 light-faulted takes (finish L-005); the progression ranking read a sunset-to-night film right (rho -0.73 luma, -0.62 warmth) and a reversed plan AGAINST. `grade stabilize` cut drift on 7 real shots from 0.3-4.3 to 0.2-1.6 luma; the eighth was a tracking shot whose content moved (finish L-004, warns over 8).
+- Proof: 13 new tests; four mutation runs (stabilize gain held at 1, KEY-SIDE removed, ATTENTION removed, rho sign dropped) each make their test fail.
+- Budget: runtime 182 KB of red 200 (yellow, +28 KB); review-passes was split (look-pass) to stay under red.
+- Skipped: see G13 and G14 (camera-move tokens, lens and focus, framing.md go to track 4; `qc sheet --squint`; vertical reframing).
+- Evals (Sonnet): design action-2, finish action-2, camera outcome-2, shots outcome-2: 3/3 each with the skill, baselines 0/1 (T-20261022 entries in each skill's TESTS.md).
+
+```
+$ python -m unittest discover -s tests
+Ran 133 tests ... OK
+$ python scripts/cine.py kb lint
+kb lint: 16 skills, 0 errors
+$ python scripts/cine.py budget
+budget: YELLOW (runtime 182 KB of red 200; other yellows unchanged)
+$ claude plugin validate (root and 3 plugins)
+Validation passed x4
+$ python scripts/cine.py scrub --names <vault scrub-names.txt>
+scrub: 13 hits in 4 files (the same 13 as main, none in this change)
+```
+
 ## [2026-10-22] index | rebuilt (22 entries)
+## [2026-10-22] index | rebuilt (23 entries)

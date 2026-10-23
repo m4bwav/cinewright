@@ -3,8 +3,8 @@ title: Grade order
 slug: grade-order
 summary: Grade in four passes in this order, correct (exposure, balance, contrast per shot), balance (a scene's shots agree), match (scenes agree), look (the style, once, on top).
 tags: [finish, color, grade, correction, look, cdl]
-last_checked: 2026-10-04
-sources: ["Alexis Van Hurkman, Color Correction Handbook, 2nd ed., 2014", "ASC Manual, 11th ed., 2022"]
+last_checked: 2026-10-22
+sources: ["Lance Phillips, Video Editing Made Easy with DaVinci Resolve 18, 2023, ch. 6 and 11", "Alexis Van Hurkman, Color Correction Handbook, 2nd ed., 2014", "ASC Manual, 11th ed., 2022"]
 ---
 
 # Grade order
@@ -15,6 +15,8 @@ sources: ["Alexis Van Hurkman, Color Correction Handbook, 2nd ed., 2014", "ASC M
 - Correct, per shot: set black point, white point and contrast on the waveform; neutralise white balance on something that should be neutral (a grey wall, a white shirt); keep the scene's motivated color (the amber flame is not a cast to remove).
 - Balance, within a scene: every shot of one moment matches the master shot's exposure, contrast and skin tone. Generated takes from separate generations drift most here; shots from one multi-shot generation drift least.
 - Match, across scenes and generations: same time of day looks the same; a deliberate change (night falls) changes on purpose.
+- Before the correct pass: stabilise exposure and balance inside each shot (`CINE_POST grade stabilize`), then deflicker. Repairs go whole-image first, then local fixes, then single-frame replacement, and the order is recorded in `finish/grade.md` (after Phillips on Resolve).
+- Set the colour management (working space) before the first pass; changing it later changes every grade already made.
 - Look, last and once: the style bible's `look` (contrast curve, color split, grain, saturation) as one node or LUT over everything, with per-scene trims only.
 - Skin: keep skin tones on the vectorscope's skin line in correct and balance; a look may push them off it a little, never to green or grey.
 - Record each pass as numbers a script can repeat: ASC CDL (slope, offset, power per channel, plus saturation) or ffmpeg filter values, in `finish/grade.md`.

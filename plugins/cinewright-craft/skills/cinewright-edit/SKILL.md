@@ -34,14 +34,14 @@ With approved stills (first frames) and a scratch track, cut the film as stills 
 ## Step 3: cut
 
 1. Each cut gets a reason by the rule of six; give up the lower criteria first (`kb show rule-of-six`).
-2. Pick the cut point: where an idea ends, on a look or a reaction before an action, and hide generation seams (`kb show cut-points`).
+2. Pick the cut point: where an idea ends, on a look or a reaction before an action, and hide generation seams (`kb show cut-points`). Keep the eye in its cell across calm cuts; jump across the frame only at a peak (`kb show attention-continuum`).
 3. Cut on action where a move continues (`kb show cutting-on-action`); match cuts only where both cards planned one (`kb show match-cuts`).
 4. Dialogue: L cut to hold a line over the reaction, J cut to lead into a speaker or a new place (`kb show j-and-l-cuts`; terms in `kb show cut-terms`).
 5. Battles: geography wides between small fights, sides on fixed screen directions (`kb show cutting-a-battle`).
 
 ## Step 4: pace and length
 
-Set each scene's average shot length, then reach the target by dropping weak shots before trimming all of them (`kb show pacing`). The total lands within ±0.5 s of `target_seconds` on a short.
+Set each scene's average shot length, then reach the target by dropping weak shots before trimming all of them (`kb show pacing`). The total lands within ±0.5 s of `target_seconds` on a short. With a visual plan, run `CINE_POST grade measure SHOTS --plan <project>` on the trimmed shots (named by card id) and fix what runs against it.
 
 ## Step 5: write and conform
 
