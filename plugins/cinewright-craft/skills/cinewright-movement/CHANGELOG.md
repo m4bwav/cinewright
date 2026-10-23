@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261022-2 · 2026-10-22 · Entry previs-animation
+- because: books track 7 (Hess, *Tradigital Blender*); T-20261022-1
+- files: references/previs-animation.md (new), references/fight-previs.md (Related), SKILL.md (the battle paragraph), evals/evals.json (action-previs-anim)
+- Checks for keyed 3D previs before it becomes a control video: wind-ups, offset limbs, drifting holds, arcs, trailing parts, timing by weight, a rigged body for falls. Written as book craft, untested on video models.
+
 ### C-20261022-1 · 2026-10-22 · Mobile staging as the one ONE-ACTION exception (books track 4)
 - because: books track 4 (Mateu-Mestre, *Framed Ink* 1 and 2; Mascelli, *The Five C's*; Katz, *Shot by Shot*; Block, *The Visual Story*; Brown, *Cinematography*; Gurney), decision 2026-10-22-books-track4
 - files: references/one-phrase-per-shot.md

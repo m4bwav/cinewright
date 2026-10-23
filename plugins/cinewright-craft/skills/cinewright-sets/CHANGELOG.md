@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261022-2 · 2026-10-22 · Entry blender-passes; master-plates tracking line; description names control passes
+- because: books track 7 (van Gumster, *Blender All-in-One For Dummies*, passes and motion tracking; polywright recipes run on Blender 5.2.1); T-20261022-1; L-003
+- files: references/blender-passes.md (new), references/master-plates.md (Pitfalls), references/blockout-control.md (Related), SKILL.md (description; the blockout paragraph), evals/evals.json (action-blender)
+- How to render a blockout's control passes in Blender: inverse depth over one range per shot, Mist only with care (it is plain distance), masks from the same render, no depth of field or motion blur, Line Art as an untested edge option, baked set pieces. The description now names blockout control passes: without it the eval's three runs never loaded the skill.
+
 ### C-20261022-1 · 2026-10-22 · Controls carry no light: light the guide still (books track 4)
 - because: books track 4 (Mateu-Mestre, *Framed Ink* 1 and 2; Mascelli, *The Five C's*; Katz, *Shot by Shot*; Block, *The Visual Story*; Brown, *Cinematography*; Gurney), decision 2026-10-22-books-track4
 - files: references/blockout-control.md

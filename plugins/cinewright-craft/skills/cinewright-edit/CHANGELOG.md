@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261022-4 · 2026-10-22 · Animatic without ffmpeg
+- because: books track 7 (Brito, *Blender for Video Production*); polywright recipe encode-mp4, run on Blender 5.2.1
+- files: references/animatic.md (Pitfalls)
+- One line: with no ffmpeg, Blender's sequencer encodes image sequences to an MP4 at an exact frame count.
+
 ### C-20261022-3 · 2026-10-22 · Animatic stills at the moment before the peak (books track 4)
 - because: books track 4 (Mateu-Mestre, *Framed Ink* 1 and 2; Mascelli, *The Five C's*; Katz, *Shot by Shot*; Block, *The Visual Story*; Brown, *Cinematography*; Gurney), decision 2026-10-22-books-track4
 - files: references/animatic.md

@@ -789,6 +789,15 @@ $ python scripts/cine.py scrub --names <vault scrub-names.txt>
 scrub: 13 hits in 4 files (the same 13 as main, none added by this change)
 ```
 
-## [2026-10-22] index | rebuilt (22 entries)
+## 2026-10-22: book-learnings track 7 (Blender)
+
+From the Blender books (van Gumster, Hess, Brito, Pearson; polywright's recipes run on Blender 5.2.1). The commands live in polywright (same track: `crowd --scatter`, `inspect --topology`, the recipe files).
+
+- Built: sets entry `blender-passes` (inverse depth over one range per shot, Mist is plain distance, masks from one render, no depth of field or motion blur, Line Art untested, baked set pieces); movement entry `previs-animation` (wind-ups, offset limbs, drifting holds, arcs, trailing parts, timing by weight; untested on video); a tracking line in master-plates; an ffmpeg-free line in animatic; Related lines in blockout-control and fight-previs; the sets description names blockout control passes. Rulings K1-K6 in decisions/2026-10-22-books-track7.md.
+- Evals (Sonnet): sets action-blender 0/3 until the description named blockout passes, then 3/3; sets triggers and decoys 12/12; movement action-previs-anim 3/3; baselines 0/1 each.
+- Local gate: `python -m unittest discover -s tests` 137 OK; `kb lint` 0 errors; `cine.py build` 0 files written; budget YELLOW (descriptions 4,778/5,500, runtime 185/200 KB unchanged); plugin validate and scrub in the PR body.
+- Not built: anything runtime; Boids and tracking beyond one line (untested).
+
 ## [2026-10-22] index | rebuilt (23 entries)
 ## [2026-10-22] index | rebuilt (24 entries)
+## [2026-10-22] index | rebuilt (25 entries)

@@ -28,7 +28,7 @@ Animals, crowds, animal-drawn vehicles, hands at fine work, liquids, spins: 1-5 
 
 ## Step 4: fights and stunts
 
-One exchange per card, fighters on fixed sides, take-off and landing in separate cards, a simple camera (`kb show fights-and-stunts`). A fight of more than one exchange: write `fights/<id>.json` first and check it with `python scripts/cine_fight.py check` (`kb show fight-plan`; from a book or notes, `fight-from-a-book`; route per card, `fight-previs`). Weapons go in `bibles/props.json`. A battle: map, two sides with fixed screen direction, phases as scenes, scale from few large figures and compositing (`kb show battle-scenes`). More than about 8 figures in motion, a moving camera over a crowd, or sides meeting: stage it in 3D and drive the model with its depth video (`kb show crowd-blockout`).
+One exchange per card, fighters on fixed sides, take-off and landing in separate cards, a simple camera (`kb show fights-and-stunts`). A fight of more than one exchange: write `fights/<id>.json` first and check it with `python scripts/cine_fight.py check` (`kb show fight-plan`; from a book or notes, `fight-from-a-book`; route per card, `fight-previs`). Weapons go in `bibles/props.json`. A battle: map, two sides with fixed screen direction, phases as scenes, scale from few large figures and compositing (`kb show battle-scenes`). More than about 8 figures in motion, a moving camera over a crowd, or sides meeting: stage it in 3D and drive the model with its depth video (`kb show crowd-blockout`). Before keyed 3D previs becomes a control video, check its animation (`kb show previs-animation`).
 
 ## Step 5: check
 

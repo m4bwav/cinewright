@@ -53,3 +53,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: field test log 2026-10-07
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-07
+
+### L-003 · 2026-10-22 · A Blender pass question does not reach this skill unless the description names blockout passes
+- Trigger: three runs of a Mist-pass question for H3 depth control loaded no sets skill (T-20261022-1).
+- Hypothesis: the description named sets, plates and light, nothing about blockouts or passes, so the model answered the Blender question itself.
+- Rule: keep "3D blockouts rendered as control passes (Blender depth, Mist, masks)" in the description; plain Blender scripting stays polywright-blender's.
+- Evidence: C-20261022-2; 0/3 then 3/3, triggers and decoys 12/12.
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-22
