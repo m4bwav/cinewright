@@ -17,6 +17,7 @@ Rungs and checks as in `failures-picture`.
 |---|---|---|---|---|---|
 | `action-incomplete` | action stops short or plays in slow motion | too much action for the length | one action; longer, or split the card | 2 | action |
 | `frozen-start` | picture holds still for the first frames | image-to-video eases in | write "already moving"; trim the head | 7 | action |
+| `insert-too-fast` | hands or tools flick through an insert or ECU | magnified motion reads as sped up | write "slowly, deliberately" in the insert's action and match that tempo in the wide | 1 | action |
 | `bad-opening` | wrong opening, the same on every reroll | the seed fixes the opening | new seed; then a guide still at frame 0 | 2 | opening |
 | `end-state-wrong` | last frame differs from the card | model ran its own course | next card starts from the observed end | 6 | end-state |
 | `anatomy` | hands, limbs or faces melt or multiply | small, fast or hidden subject | larger, slower, side-on; cut around it | 6 | anatomy |

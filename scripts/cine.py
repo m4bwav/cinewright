@@ -50,7 +50,7 @@ BUDGETS = [  # key, label, green max, yellow max
     ("card_tokens", "model card tokens (est.)", 900, 1200),
     ("index_tokens", "references/INDEX.md tokens (est.)", 1500, 3000),
     ("skill_kb", "skill folder KB (without shared/lib copies)", 150, 300),
-    ("runtime_kb", "runtime shared/lib KB, counted once", 100, 150),
+    ("runtime_kb", "runtime shared/lib KB, counted once", 100, 200),
     ("plugin_files", "files per plugin", 350, 450),
     ("repo_zip_kb", "repo ZIP KB", 2048, 5120),
 ]

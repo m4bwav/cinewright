@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:c2cc7ad0933a5860a911d5c23ccb031dac2ecf05aefdc4c7bdf391191dd5a136; edit the source",
+  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:1ff23fa16e8934f4a9d19f7c78f635c01b1e4e59b0d1c45d7b353694cfd27b0e; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Shot card",
   "description": "One shot, generator-neutral. Fields follow the shot list (slate, size, angle, move, lens, action, dialogue, duration) and the script supervisor's notes (camera side, screen direction, eyelines, wardrobe, props in hand, start and end state).",
@@ -37,7 +37,27 @@
     "beat": {
       "type": "string",
       "maxLength": 200,
-      "description": "What the shot tells the audience."
+      "description": "What the shot tells the audience: the question it raises or answers."
+    },
+    "pov": {
+      "type": "string",
+      "description": "Whose view the card serves: objective, or the id of the character whose scene it is (cinewright-shots point-of-view)."
+    },
+    "role": {
+      "enum": [
+        "establishing",
+        "master",
+        "coverage",
+        "reaction",
+        "cut-in",
+        "cut-away",
+        "protection"
+      ],
+      "description": "The card's job in the edit. A cut-in shows part of what a wider card established; a protection card is a cheaper stand-in, rendered only if the card in protects fails."
+    },
+    "protects": {
+      "type": "string",
+      "description": "With role protection: the id of the risky card this one stands in for."
     },
     "camera": {
       "type": "object",
@@ -117,7 +137,12 @@
           "type": "boolean"
         },
         "cross_reason": {
-          "type": "string"
+          "type": "string",
+          "description": "Opens with how the audience follows the cross: turn-shown, subject-crosses, camera-moves, pivot, neutral, curve, reaction, cleared-frame or doorway."
+        },
+        "settle": {
+          "type": "boolean",
+          "description": "The move starts and ends on held frames, so the edit has handles (a move cannot be trimmed mid-move)."
         },
         "framing": {
           "enum": [
@@ -185,6 +210,40 @@
               "away-from-camera",
               "none"
             ]
+          },
+          "position_end": {
+            "enum": [
+              "frame-left",
+              "center",
+              "frame-right"
+            ],
+            "description": "Where they stand at the end when they move in the shot; later cards of the scene are checked against it."
+          },
+          "eyeline_end": {
+            "enum": [
+              "frame-left",
+              "frame-right",
+              "up",
+              "down",
+              "camera"
+            ],
+            "description": "Where the eyes end, for a head turn (a watcher following something)."
+          },
+          "enters": {
+            "enum": [
+              "frame-left",
+              "frame-right",
+              "near-camera"
+            ],
+            "description": "Edge they enter by. An exit on one side is followed by an entrance on the other."
+          },
+          "exits": {
+            "enum": [
+              "frame-left",
+              "frame-right",
+              "near-camera"
+            ],
+            "description": "Edge they leave by."
           },
           "holding": {
             "type": [

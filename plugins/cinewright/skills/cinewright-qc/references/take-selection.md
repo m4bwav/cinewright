@@ -4,7 +4,7 @@ slug: take-selection
 summary: Pick keepers by comparing takes two at a time in both orders, not by absolute scores; cap blind rerolls near three, then reroll with the critique; repair local faults; re-plan model limits.
 tags: [qc, selection, pairwise, reroll, budget, repair]
 last_checked: 2026-10-22
-sources: ["Huyen, AI Engineering, O'Reilly 2025, on position bias in judges and reviewers", "VISTA, arXiv 2510.15831, CVPR 2026", "VLM judges can rank but cannot score, arXiv 2604.25235, 2026", "Ma et al., inference-time scaling for diffusion, arXiv 2501.09732", "ReflectionFlow, arXiv 2504.16080", "VideoRepair, arXiv 2411.15115; GEARS, arXiv 2608.29322", "CHIEF, arXiv 2606.18591", "practitioner take selector on local H3, https://www.reddit.com/r/comfyui/comments/1vix8l9/ (2026-08)"]
+sources: ["Huyen, AI Engineering, O'Reilly 2025, on position bias in judges and reviewers", "VISTA, arXiv 2510.15831, CVPR 2026", "VLM judges can rank but cannot score, arXiv 2604.25235, 2026", "Ma et al., inference-time scaling for diffusion, arXiv 2501.09732", "ReflectionFlow, arXiv 2504.16080", "VideoRepair, arXiv 2411.15115; GEARS, arXiv 2608.29322", "CHIEF, arXiv 2606.18591", "practitioner take selector on local H3, https://www.reddit.com/r/comfyui/comments/1vix8l9/ (2026-08)", "Walter Murch, In the Blink of an Eye, 2nd ed., 2001"]
 ---
 
 # Choosing between takes and spending rerolls
@@ -21,6 +21,7 @@ sources: ["Huyen, AI Engineering, O'Reilly 2025, on position bias in judges and 
 - Fix structure before style: positions, identity and action before light, grade and texture.
 - Every iteration can bring new faults while removing old ones: compare the new take with the previous keeper on all axes, not only the one that changed.
 - Stop when the best take has not changed for two rounds, or the card hits three strikes.
+- Rank takes blind to what they cost: reroll counts, render time and the planner's hopes stay out of the first pass. A take that took five rerolls has no claim on the cut (after Murch).
 
 ## Numbers
 

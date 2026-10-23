@@ -90,6 +90,27 @@
       ],
       "baseline": "2026-10-05, S6 matrix (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 2 of 3 passed (Haiku fail, Sonnet pass, Opus pass).",
       "runs": 3
+    },
+    {
+      "id": "action-2",
+      "kind": "action",
+      "prompt": "out/cut is a copy of examples/three-shot, rendered as separate generations. Where exactly should I cut from 1A to 1B and from 1B to 1C so the seams between the generations do not show? Use the project's notes on cutting.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace or a written file), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "kb\\s+show\\s+cut-points"
+      },
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/cut"
+        ]
+      ]
     }
   ]
 }

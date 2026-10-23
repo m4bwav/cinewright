@@ -53,3 +53,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: notes/2026-10-06-s7-install-proof.md, "Account routes"
 - Scope: all 13 public skills (same CINE line)
 - Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-07
+
+### L-007 · 2026-10-22 · A cut-in check per scene flags people the film already showed (`establish-people-film-wide`)
+- Trigger: 2026-10-22, books track 2: the first ESTABLISH check (subject of a cut-in or insert seen in no earlier card of its scene) fired on 2 of 163 cards in seven local multi-shot films, both inserts of people who had been on screen in earlier scenes
+- Hypothesis: the rule (after Mascelli) is about the viewer not knowing what the detail belongs to; a person met earlier in the film is known, a prop in a new scene may not be
+- Rule: people count as established film-wide, props per scene; after the change the check fired on 0 of the 163 real cards and still fires on the planted test
+- Evidence: tests/test_cine.py test_pov_role_protection_and_establish; the decision 2026-10-22-books-track2
+- Scope: continuity diff ESTABLISH
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-22

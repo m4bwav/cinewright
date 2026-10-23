@@ -94,6 +94,27 @@
           "{work}/out/sisters"
         ]
       ]
+    },
+    {
+      "id": "action-2",
+      "kind": "action",
+      "prompt": "out/pov is a copy of examples/three-shot. This scene belongs to Tomas: the audience should take his side. Mark on every card whose scene it serves and what job the card does in the edit, then check the cards.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace or a written file), not by the reply saying so"
+      ],
+      "evidence": {
+        "type": "file",
+        "path": "out/pov/cards/1C.json",
+        "contains": "\"pov\""
+      },
+      "runs": 3,
+      "setup": [
+        [
+          "copy",
+          "examples/three-shot",
+          "out/pov"
+        ]
+      ]
     }
   ]
 }

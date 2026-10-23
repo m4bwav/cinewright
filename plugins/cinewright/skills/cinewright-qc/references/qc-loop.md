@@ -3,7 +3,7 @@ title: The QC loop
 slug: qc-loop
 summary: How to judge a take against its card from a contact sheet, last frame and audio; verdict rules, frame sampling numbers, one change per reroll, three strikes.
 tags: [qc, review, rubric, takes, sampling]
-last_checked: 2026-10-15
+last_checked: 2026-10-22
 sources: ["https://arxiv.org/abs/2503.21755", "https://tech.ebu.ch/publications/r128", "Pat P. Miller, Script Supervising and Film Continuity, 3rd ed., 1999"]
 ---
 
@@ -21,6 +21,7 @@ sources: ["https://arxiv.org/abs/2503.21755", "https://tech.ebu.ch/publications/
 - Three failed takes of one card: re-plan the card. The card asks for something the model will not do.
 - A take that fails only on edit-stage codes is kept as `keep-fix-in-edit`.
 - Record the observed end state of every kept take; the next card starts from what is there, not what was planned.
+- A note on the whole cut is a symptom: look for the cause up to a few scenes earlier before re-rendering the scene it names (cinewright-edit, entry assembly-to-delivery).
 
 ## Numbers
 

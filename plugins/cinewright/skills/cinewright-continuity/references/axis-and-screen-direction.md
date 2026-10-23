@@ -3,8 +3,8 @@ title: Axis and screen direction (180-degree rule)
 slug: axis-and-screen-direction
 summary: The scene axis, camera side A, how positions and travel are recorded from side A, legal ways to cross the line, and why direction must be a fixed phrase.
 tags: [continuity, axis, 180-degree-rule, screen-direction]
-last_checked: 2026-10-03
-sources: ["Daniel Arijon, Grammar of the Film Language, 1976", "Pat P. Miller, Script Supervising and Film Continuity, 3rd ed., 1999", "https://en.wikipedia.org/wiki/180-degree_rule"]
+last_checked: 2026-10-22
+sources: ["Daniel Arijon, Grammar of the Film Language, 1976", "Pat P. Miller, Script Supervising and Film Continuity, 3rd ed., 1999", "https://en.wikipedia.org/wiki/180-degree_rule", "Joseph V. Mascelli, The Five C's of Cinematography, 1965", "Steven D. Katz, Film Directing Shot by Shot, 1991"]
 ---
 
 # Axis and screen direction
@@ -17,10 +17,27 @@ sources: ["Daniel Arijon, Grammar of the Film Language, 1976", "Pat P. Miller, S
 - Write direction with the fixed phrases in the screen-direction entry, the same words in every shot of the film. Story directions ("toward the enemy", "inland", "east") give each clip a random direction.
 - Cross the line only on screen: the camera moves across in the shot, a character crosses the line in frame, or a neutral shot (straight down the axis) sits between. Set `crosses_axis` and `cross_reason` on that card; every later card of the scene is then side B.
 - A chase or journey keeps one travel direction for the whole film unless the story turns it on screen.
+- A neutral shot stays neutral only while the subject is centered and shows only front or back. A head-on card states its exit side (`exits`), because that side sets the direction that follows.
 
 ## Numbers
 
 - Neutral shot: camera within about 10 degrees of the axis line (azimuth near 0 or 180), subject moving toward or away from camera.
+
+## Vocabulary
+
+Legal ways to cross the line or reverse direction. `cross_reason` opens with the token; the diff warns on any other opening:
+
+| Method | `cross_reason` |
+|---|---|
+| the turn is shown | `turn-shown` |
+| the subject crosses the line in frame | `subject-crosses` |
+| the camera crosses in one unbroken move | `camera-moves` |
+| a pivot: someone turns to a new person, new line | `pivot` |
+| a neutral head-on or tail-away shot between | `neutral` |
+| a curve or corner, exiting the other side | `curve` |
+| an observer's reaction close-up between | `reaction` |
+| a cleared frame (exit, hold empty, cut) | `cleared-frame` |
+| a doorway into a new space | `doorway` |
 
 ## Pitfalls
 

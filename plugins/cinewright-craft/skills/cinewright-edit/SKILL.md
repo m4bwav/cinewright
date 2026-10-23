@@ -34,9 +34,10 @@ With approved stills (first frames) and a scratch track, cut the film as stills 
 ## Step 3: cut
 
 1. Each cut gets a reason by the rule of six; give up the lower criteria first (`kb show rule-of-six`).
-2. Cut on action where a move continues (`kb show cutting-on-action`); match cuts only where both cards planned one (`kb show match-cuts`).
-3. Dialogue: L cut to hold a line over the reaction, J cut to lead into a speaker or a new place (`kb show j-and-l-cuts`; terms in `kb show cut-terms`).
-4. Battles: geography wides between small fights, sides on fixed screen directions (`kb show cutting-a-battle`).
+2. Pick the cut point: where an idea ends, on a look or a reaction before an action, and hide generation seams (`kb show cut-points`).
+3. Cut on action where a move continues (`kb show cutting-on-action`); match cuts only where both cards planned one (`kb show match-cuts`).
+4. Dialogue: L cut to hold a line over the reaction, J cut to lead into a speaker or a new place (`kb show j-and-l-cuts`; terms in `kb show cut-terms`).
+5. Battles: geography wides between small fights, sides on fixed screen directions (`kb show cutting-a-battle`).
 
 ## Step 4: pace and length
 
@@ -46,7 +47,8 @@ Set each scene's average shot length, then reach the target by dropping weak sho
 
 1. Write `edit/cut.md` with the columns in `kb show assembly-to-delivery`: slate, take, in, out, length, cut type, reason.
 2. Conform with ffmpeg trims and concat, re-encoding (never `-c copy`); keep the style's frame rate and size.
-3. Check: `ffprobe` duration equals the table total within one frame; quote it. Then hand the locked cut to cinewright-finish and cinewright-sound.
+3. Before picture lock, run the audience pass: a fresh context with no script, brief or cards watches the whole cut and says who is where, what happened and where it got lost (`kb show assembly-to-delivery`). Trace each note to its cause, often scenes earlier.
+4. Check: `ffprobe` duration equals the table total within one frame; quote it. Then hand the locked cut to cinewright-finish and cinewright-sound.
 
 ## Output
 

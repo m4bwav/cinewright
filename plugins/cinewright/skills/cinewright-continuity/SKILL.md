@@ -33,7 +33,7 @@ Then `CINE cards validate <project>`; fix every ERROR.
 3. Fix each ERROR in the card, or in the bible when the bible is wrong. Never silence a check. Codes and fixes: `kb show shot-checklist`.
 4. Try a change first with `--with changed-card.json`.
 
-Rules the diff cannot see (read once per film): `kb show ai-continuity`, `kb show thirty-degree-rule`, `kb show eyelines`.
+Rules the diff cannot see (read once per film): `kb show ai-continuity`, `kb show thirty-degree-rule`, `kb show eyelines`; cars and other vehicles: `kb show vehicles`.
 
 ## Step 3: hand off and close the loop
 

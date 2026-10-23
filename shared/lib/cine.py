@@ -68,6 +68,8 @@ POSITION_WORDS = {"frame-left": "on the left of the frame", "center": "in the ce
 FLIP = {"left-to-right": "right-to-left", "right-to-left": "left-to-right",
         "frame-left": "frame-right", "frame-right": "frame-left"}
 POS_INDEX = {"frame-left": 0, "center": 1, "frame-right": 2}
+CROSS_REASONS = ("turn-shown", "subject-crosses", "camera-moves", "pivot", "neutral", "curve", "reaction", "cleared-frame", "doorway")
+EDGE_WORDS = {"frame-left": "on the left", "frame-right": "on the right", "near-camera": "close past the camera"}
 SPEECH_WPS = 2.5  # words a second a generated voice speaks clearly (about 150 a minute)
 SPEECH_LEAD_S = 0.5  # breath before the first word
 # Many small figures in a wide frame: legs, faces and clones break (field lessons 020, 021)
@@ -612,7 +614,8 @@ def continuity_diff(p):
     def add(level, card, code, msg):
         issues.append({"level": level, "card": card.get("id", "?"), "code": code, "message": msg})
 
-    prev_by_scene = {}
+    prev_by_scene, blocks, seen, last, met = {}, {}, {}, {}, set()  # met: people already on screen, film-wide
+    ids = {c.get("id") for c in p.cards}
     last_stage = {}  # character id -> (card id, ref stage) on the last card that showed them
     for card in p.cards:
         sc = p.scene_map.get(card.get("scene"))
@@ -623,11 +626,23 @@ def continuity_diff(p):
         cam = card.get("camera", {})
         side = cam.get("side", "A")
         flipped = side == "B"
+        prev = prev_by_scene.get(sc["id"])
         if flipped and not cam.get("crosses_axis"):
             add("error", card, "AXIS", "camera is on side B of the %s axis (%s): it crosses the line, so every left and right flips. "
                 "Move it to side A, or set crosses_axis with a cross_reason (a neutral shot or a move seen on screen)." % (sc["id"], axis.get("line", "")))
-        if cam.get("crosses_axis") and not cam.get("cross_reason"):
+        why = cam.get("cross_reason")
+        if cam.get("crosses_axis") and not why:
             add("error", card, "AXIS", "crosses_axis is set without a cross_reason")
+        elif why and re.split(r"[\s:]", why)[0] not in CROSS_REASONS:
+            add("warning", card, "AXIS", "cross_reason opens with how the audience follows the cross: %s" % ", ".join(CROSS_REASONS))
+        pov, role = card.get("pov"), card.get("role")
+        if pov and pov != "objective" and pov not in p.chars:
+            add("error", card, "POV", "pov '%s' is neither objective nor a characters.json id" % pov)
+        elif cam.get("framing") == "pov" and pov in p.chars and not any(
+                m.get("id") == pov and m.get("eyeline") not in (None, "camera") for m in (prev or {}).get("cast", [])):
+            add("warning", card, "POV", "a POV shot reads as %s's view only after a card of them looking off screen" % pov)
+        if role == "protection" and card.get("protects") not in ids:
+            add("error", card, "ROLE", "a protection card names the card it stands in for in protects")
         if card.get("time_of_day") and card["time_of_day"] != sc["time_of_day"]:
             add("error", card, "TIME", "time of day %s, scene %s is %s" % (card["time_of_day"], sc["id"], sc["time_of_day"]))
         sun = card.get("light", {}).get("sun")
@@ -646,8 +661,9 @@ def continuity_diff(p):
         moves = p.style.get("allowed_moves")
         if moves and cam.get("move") and cam["move"] not in moves:
             add("warning", card, "MOVE", "%s is not one of the style's moves (%s)" % (cam["move"], ", ".join(moves)))
-        positions = axis.get("positions", {})
+        positions = blocks.setdefault(sc["id"], dict(axis.get("positions", {})))  # moved by position_end
         travel = axis.get("travel", {})
+        pcast = {m["id"]: m for m in (prev or {}).get("cast", [])}
         allowed_props = set(sc.get("props", [])) | set(p.locs.get(sc.get("location"), {}).get("props", [])) | set(p.props)
         on_screen = []
         for m in card.get("cast", []):
@@ -687,6 +703,16 @@ def continuity_diff(p):
                     add("error", card, "EYELINE", "%s looks %s at %s; from side %s the eyeline must be %s" % (ch["name"], eye, tname, side, exp))
             if eye == "camera" and cam.get("framing") != "pov":
                 add("warning", card, "EYELINE", "%s looks into the lens outside a POV shot" % ch["name"])
+            # a watcher's head turns against the screen travel of what it follows (Mascelli)
+            end, tt = m.get("eyeline_end"), travel.get(tgt)
+            if eye in FLIP and end in FLIP and eye != end and tt in FLIP and (end == "frame-right") == ((tt == "left-to-right") != flipped):
+                add("warning", card, "LOOK-TRACK", "%s turns %s to %s; to follow %s's travel the head turns the other way" % (ch["name"], eye, end, tgt))
+            ex = last.get(m["id"], {}).get("exits")
+            if ex in FLIP and m.get("enters") in FLIP and m["enters"] == ex and not cam.get("crosses_axis"):
+                add("error", card, "EXIT-ENTRY", "%s exits the last card %s, so enters %s" % (ch["name"], ex, FLIP[ex]))
+            pm = pcast.get(m["id"], {})
+            if positions.get(m["id"]) == "center" and {m.get("position"), pm.get("position")} == {"frame-left", "frame-right"} and len(pcast) > 1 < len(card["cast"]):
+                add("warning", card, "MIDDLE-SWAP", "%s, the middle of the group, jumps sides from %s; use a two-shot and a single" % (ch["name"], prev["id"]))
             if m.get("position") in POS_INDEX and m["id"] in positions:
                 on_screen.append(m)
             for key in ("holding", "holding_end"):
@@ -743,9 +769,12 @@ def continuity_diff(p):
         if hard and cam.get("size") in ("EWS", "WS"):
             add("warning", card, "HARD-SUBJECT", "'%s' in a %s: many small figures come out with broken legs and clones; frame 1-5 of them large and side-on, "
                 "the mass as background dust (cinewright-movement, entry hard-subjects)" % (hard.group(0), SIZE_WORDS[cam["size"]]))
-        prev = prev_by_scene.get(sc["id"])
+        names = {n for n, _ in card_props(card)} | set(in_shot)
+        if (role == "cut-in" or cam.get("framing") == "insert") and names and not names & (seen.get(sc["id"], set()) | met):
+            add("warning", card, "ESTABLISH", "%s first appears in a cut-in; show it in a wider card first, unless the mystery is the point" % ", ".join(sorted(names)))
+        seen.setdefault(sc["id"], set()).update(names)
+        met |= set(in_shot)
         if prev:
-            pcast = {m["id"]: m for m in prev.get("cast", [])}
             for m in card.get("cast", []):
                 pm = pcast.get(m.get("id"))
                 if pm and "holding" in m and ("holding" in pm or "holding_end" in pm):
@@ -765,7 +794,12 @@ def continuity_diff(p):
                     elif abs(az - paz) < 30:
                         add("error", card, "30-DEGREE", "jump cut from %s: same subject, %d size step(s) and %d degrees; change size by 2+ steps or angle by 30+ degrees" % (
                             prev["id"], step, abs(az - paz)))
-        prev_by_scene[sc["id"]] = card
+        if role != "protection":  # a stand-in for another card, never the state the next card starts from
+            prev_by_scene[sc["id"]] = card
+            last = {m.get("id"): m for m in card.get("cast", [])}
+            for m in last.values():
+                if m.get("position_end") in POS_INDEX:
+                    positions[m["id"]] = FLIP.get(m["position_end"], "center") if flipped else m["position_end"]
     return issues
 
 
@@ -914,11 +948,12 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
     sentence_moves = prof.get("move_style") == "sentence"
     parts = {}
     lens = ", %smm lens" % int(cam["lens_mm"]) if cam.get("lens_mm") else ""
-    move = "" if sentence_moves else ", " + MOVE_WORDS[cam["move"]]
+    settle = cam.get("settle") and cam["move"] != "static"  # held frames at both ends give the edit handles
+    move = "" if sentence_moves else ", " + MOVE_WORDS[cam["move"]] + (" that starts and ends on a held frame" if settle else "")
     parts["camera"] = _sentence("%s, %s%s%s" % (_cap(SIZE_WORDS[cam["size"]]), ANGLE_WORDS[cam["angle"]], lens, move))
     if sentence_moves:
-        suffix = "" if cam["move"] == "static" else prof.get("move_suffix", "")
-        parts["move"] = _sentence(MOVE_SENTENCES[cam["move"]] + suffix)
+        s = MOVE_SENTENCES[cam["move"]] + ("" if cam["move"] == "static" else prof.get("move_suffix", ""))
+        parts["move"] = _sentence("The camera holds, then %s, then holds" % s[11:] if settle else s)
     subj = []
     for m in card.get("cast", []):
         ch = p.chars[m["id"]]
@@ -965,6 +1000,10 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
             target = target or ""
             on = ", at %s" % target if target and m["eyeline"] != "camera" else ""
             act.append(_sentence("%s is %s%s" % (name, EYELINE_WORDS[m["eyeline"]], on)))
+        for key, say in (("enters", "%s enters the frame %s"), ("exits", "%s leaves the frame %s"), ("position_end", "%s ends %s"), ("eyeline_end", "%s turns, %s")):
+            w = (EDGE_WORDS if key in ("enters", "exits") else POSITION_WORDS if key == "position_end" else EYELINE_WORDS).get(m.get(key))
+            if w:
+                act.append(_sentence(say % (name, w)))
     parts["action"] = " ".join(act)
     tod = card.get("time_of_day", sc["time_of_day"]).replace("-", " ")
     where = loc["description"].rstrip(".")

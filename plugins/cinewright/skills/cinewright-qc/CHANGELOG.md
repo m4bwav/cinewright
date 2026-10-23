@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261022-2 · 2026-10-22 · Rank blind to cost, a decisive-frame board, notes as symptoms (books track 2)
+- because: books track 2 (Katz, *Shot by Shot*; Mascelli, *The Five C's*; Murch, *In the Blink of an Eye*), decision 2026-10-22-books-track2
+- files: references/take-selection.md, references/review-passes.md, references/qc-loop.md, shared vocab failures-motion (`insert-too-fast`)
+- Takes are ranked without reroll counts in view; one frame per kept take goes on a board in cut order to catch drift between shots that are not adjacent; a note on the whole cut is traced upstream before a re-render.
+
 ### C-20261022-1 · 2026-10-22 · Flicker measure; random sides for reviews; rejected takes in the label queue; drift inside a take
 - because: user request (book-learnings track 1: Huyen, *AI Engineering*; Enochs, *Video Generation with AI*); L-006
 - files: shared/lib/cine.py (`frame_motion(clip, diff)`, `measure_take` flicker per shot, MEASURE_FLICKER, MEASURE_FLICKER_RATE; `scene_cuts` and `frame_motion` through `run_tool` to stay inside the runtime budget), shared vocab failures-motion (`flicker`, `lip-lag`, two Rules lines), SKILL.md (Step 1, flicker warns), references/take-selection.md (random sides, a side-bias Verify line), references/judge-calibration.md (gate-rejected takes in the label queue), references/identity-score.md (a face against its own first face), tests/test_cine.py (a flickering clip warns, a clean one does not)

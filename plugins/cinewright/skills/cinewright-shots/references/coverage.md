@@ -3,8 +3,8 @@ title: Coverage
 slug: coverage
 summary: Which shots a scene needs (master, matched singles, an insert), the default set for a two-person scene, and why AI coverage is a cut plan, not a pile of takes.
 tags: [shots, coverage, master, reverse, insert, dialogue]
-last_checked: 2026-10-04
-sources: ["Daniel Arijon, Grammar of the Film Language, 1976", "Steven D. Katz, Film Directing Shot by Shot, 1991", "David Bordwell, The Way Hollywood Tells It, 2006"]
+last_checked: 2026-10-22
+sources: ["Daniel Arijon, Grammar of the Film Language, 1976", "Steven D. Katz, Film Directing Shot by Shot, 1991", "David Bordwell, The Way Hollywood Tells It, 2006", "Joseph V. Mascelli, The Five C's of Cinematography, 1965"]
 ---
 
 # Coverage
@@ -18,6 +18,9 @@ sources: ["Daniel Arijon, Grammar of the Film Language, 1976", "Steven D. Katz, 
 - Open each new place with a wide shot that shows where everyone stands, unless the style bible says otherwise. The master is what the singles are checked against.
 - Tighten as tension rises (wide, medium, close) and go wide again at the release.
 - The reaction carries the feeling: plan the listener's single, not only the speaker's.
+- Shot size is emotional distance. Keep a character the audience must not read (an antagonist, a mystery) at FS or wider for the whole scene (after Katz, *Shot by Shot*).
+- Vary the pattern between scenes: progressive (step in), contrasting (WS against CU, high against low) or repetitious (a row of matched reaction CUs). Never run WS, MS, CU by rote in every scene. Each change is definite: a full size step with an angle change, never a half step (after Mascelli, *The Five C's*).
+- Protection: per film, render a reaction bank for each principal, one CU looking frame-left and one frame-right, neutral face, plain receding background, same wardrobe. Per risky card (a dutch, a long move, a complex cross), plan one cheaper static card with `role: protection` and `protects: <id>`, rendered only if the risky card fails twice (after Mascelli).
 
 ## Numbers
 
@@ -43,3 +46,4 @@ sources: ["Daniel Arijon, Grammar of the Film Language, 1976", "Steven D. Katz, 
 
 - `cards list` shows a master or establishing shot before the first single of each scene, and one insert or reaction per scene.
 - Singles in a pair share size and lens (`continuity diff` checks the 30-degree rule, not this).
+- `cards list` shows at least two different size patterns across the scenes.

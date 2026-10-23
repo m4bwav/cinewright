@@ -19,6 +19,8 @@
 
 - Branch books-track1 (2026-10-22, book-learnings track 1): `qc measure` flicker per shot (warns only, L-006), vocab `flicker` and `lip-lag`, random review sides and gate-rejected takes in the label queue (take-selection, judge-calibration), identity against the take's own first face, LTX-2 stage-1 QC rule; evals action-2 and outcome-2. Runtime shared/lib is at 150 KB with about 30 bytes left before red: the next runtime addition needs a real trim (a module split or a cut feature), not a reworded comment.
 
+- Books track 2 (2026-10-22, branch books-track2): cutting and continuity from Katz, Mascelli and Murch. Card fields `pov`, `role`, `protects`, `camera.settle`, `cast[].position_end`, `eyeline_end`, `enters`, `exits`; diff codes EXIT-ENTRY, LOOK-TRACK, MIDDLE-SWAP, ESTABLISH, POV, ROLE; entries point-of-view, group-staging, vehicles, cut-points. Runtime red line raised to 200 KB by Mark (decision 2026-10-22-books-track2), so runtime additions no longer need a trim first. Left for track 4: STRAIGHT-IN, three-quarter default, camera height, `qc cutcheck`, `bg-tangent`, `ots-wrong`.
+
 ## Waiting on Mark
 - claude.ai cleanup: delete the uploaded test skill cinewright-continuity (permanent delete; switched off for now), remove the cinewright marketplace source if the UI offers it, close the VS Code window `code chat -n` opened.
 - Old commits stay reachable from PR #1-#11 pages (refs/pull); only GitHub Support can purge. Closed PRs #12-#13 show a hostname in their head branch name.

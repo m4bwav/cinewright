@@ -28,7 +28,8 @@ Pick the fewest shots the cut needs, plus one escape shot per scene (`kb show co
 2. Fill one subject, one action, one camera move, 3-8 s, and a `beat`. Tokens: `kb show shot-sizes`, `kb show camera-angles`, `kb show camera-moves`.
 3. Set `azimuth_deg` on every card. Two cuts in a row on one subject need 30 degrees or two size steps (`kb show thirty-degree-rule`).
 4. Write framing as position words, never "rule of thirds" (`kb show framing`).
-5. Hands, liquids, crowds, animals, fights: hand the action to cinewright-movement if installed; otherwise frame few subjects, large and side-on.
+5. Set `pov` (whose scene it is) and `role` (the card's job in the edit) (`kb show point-of-view`). Three or more people: `kb show group-staging`. Someone moves, enters or exits: `position_end`, `enters`, `exits` (`kb show blocking`).
+6. Hands, liquids, crowds, animals, fights: hand the action to cinewright-movement if installed; otherwise frame few subjects, large and side-on.
 
 ## Step 4: order and group
 

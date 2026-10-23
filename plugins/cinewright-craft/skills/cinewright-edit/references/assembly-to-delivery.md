@@ -3,8 +3,8 @@ title: Assembly to delivery
 slug: assembly-to-delivery
 summary: Assemble in card order from passing takes, write the cut as a table in edit/cut.md, conform it frame-accurately with ffmpeg (re-encode, never stream copy), lock picture, then hand to finish and sound.
 tags: [edit, assembly, edl, conform, ffmpeg, picture-lock]
-last_checked: 2026-10-04
-sources: ["https://ffmpeg.org/ffmpeg-filters.html", "Ken Dancyger, The Technique of Film and Video Editing, 6th ed., 2019"]
+last_checked: 2026-10-22
+sources: ["https://ffmpeg.org/ffmpeg-filters.html", "Ken Dancyger, The Technique of Film and Video Editing, 6th ed., 2019", "Walter Murch, In the Blink of an Eye, 2nd ed., 2001"]
 ---
 
 # Assembly to delivery
@@ -17,6 +17,11 @@ sources: ["https://ffmpeg.org/ffmpeg-filters.html", "Ken Dancyger, The Technique
 - Conform with a re-encode. Stream copy (`-c copy`) cuts only on keyframes and drifts by up to a second.
 - Keep one frame rate and size through the cut (the style bible's); conform mixed takes to it before joining.
 - Intermediate files: high quality (`-crf 12` or a mezzanine codec) so the grade has room; the delivery encode happens once, at the end of finish.
+- Make the first assembly picture only (muted) to judge the visual rhythm; add the sound after (after Murch).
+- Before the fine cut, look through all the passing takes of the scene once more. Better material turns up on the second look.
+- Audience pass, on the whole cut: a fresh agent context with no script, brief or cards watches it at full size and answers who is where, which way everyone is going, what happened, what it felt, and where it got lost. Compare the answers with the brief.
+- Notes from the user or the audience pass are symptoms. Look for the cause up to a few scenes earlier (a missing setup, unclear geography) before re-rendering the scene they name.
+- When a choice is open, show two concrete cut versions side by side rather than asking an open question.
 
 ## Numbers
 

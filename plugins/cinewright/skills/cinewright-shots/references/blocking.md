@@ -3,7 +3,7 @@ title: Blocking
 slug: blocking
 summary: Where each person stands and moves in a scene, written from camera side A in the scene bible before any card, with staging in depth and a reason for every move.
 tags: [shots, blocking, staging, positions, depth, proxemics]
-last_checked: 2026-10-04
+last_checked: 2026-10-22
 sources: ["Judith Weston, Directing Actors, 1996", "Steven D. Katz, Film Directing Shot by Shot, 1991", "Edward T. Hall, The Hidden Dimension, 1966"]
 ---
 
@@ -18,6 +18,10 @@ sources: ["Judith Weston, Directing Actors, 1996", "Steven D. Katz, Film Directi
 - Stage in depth: a framing element in the foreground, the subject in the midground, the place behind. Write each layer in the card's action or the location string.
 - To move the axis, let a character cross it on screen in one shot; the next cards use the new side. Record it with `crosses_axis` and a `cross_reason`.
 - Re-block only on a new master. Inside a run of singles, nobody changes sides.
+- A move in the shot changes the block: set `position_end` on that cast entry. Later cards start from it, and the diff checks them against it. Anything may change during a shot, nothing between shots (after Mascelli, *The Five C's*).
+- When the background changes between cards of a moving subject, the subject leaves card A and enters card B: set `exits` and `enters`. Leaving on the right means entering on the left. Leaving close past the camera means entering close past it.
+- A card that cuts into a close shot has the person move into it (sits into frame, steps into the CU), so the edit can cut on the move.
+- Three or more people: entry group-staging.
 
 ## Numbers
 
@@ -38,3 +42,4 @@ sources: ["Judith Weston, Directing Actors, 1996", "Steven D. Katz, Film Directi
 
 - Every on-screen person has `position` on the card and a position in the scene's axis block.
 - `continuity diff` shows no POSITION or DIRECTION errors.
+- `continuity diff` shows no EXIT-ENTRY errors and no MIDDLE-SWAP warnings.
