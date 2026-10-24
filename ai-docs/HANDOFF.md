@@ -1,7 +1,7 @@
 # Handoff
 
 ## Current state
-- Released: v0.1.0 on main fad9ec6, https://github.com/m4bwav/cinewright/releases/tag/v0.1.0 (13 skill ZIPs). Repo public since 2026-10-07.
+- Released: v0.2.0 on main 0e05a61 (2026-10-24), https://github.com/m4bwav/cinewright/releases/tag/v0.2.0 (15 skill ZIPs; cinewright-curate ships only in the dev plugin). v0.1.0 on fad9ec6. Repo public since 2026-10-07.
 - Install routes (record: [notes/2026-10-06-s7-install-proof.md](notes/2026-10-06-s7-install-proof.md)): Claude Code, Copilot CLI, `gh skill`, claude.ai skill Upload and VS Code Copilot Chat all PASS. claude.ai Add marketplace: the skill triggers, but its `cine.py` calls fail because the model guesses the plugin skill folder (`/mnt/skills/plugins/cinewright:cinewright-continuity`). LEARNINGS L-006 `claude-ai-plugin-skill-folder-unknown` in cinewright-continuity.
 - VS Code route caveat: installed with the Copilot CLI into `~/.copilot/installed-plugins/`, which VS Code reads; VS Code's own Install button was not exercised.
 
