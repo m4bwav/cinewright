@@ -30,6 +30,14 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-07
 
+### L-005 · 2026-10-24 · `caps-respelling-spelled-out`: H3 reads a short all-caps respelling as letters
+- Trigger: siege news film, 80 draft takes (2026-10-24): `pronounce` had "Hugh": "HYOO", "Godfrey": "GOD-free", "Outremer": "OO-truh-mair". Whisper heard "H.Y.O. Barrington" in all ten takes of the two lines with the name, "Duke G.O.D. Freeze Tower" in two of five, "Ootram Air News" and "Utramar News" for Outremer; "BARR-ing-tun" came through as "Barrington" every time.
+- Hypothesis: a capitalised syllable of two to four letters looks like an acronym, so the voice spells it; a longer caps syllable with lower-case syllables after it reads as a word.
+- Rule: write respellings without a short all-caps syllable: leave a common name plain ("Hugh", "Godfrey"), and mark stress with a capital first letter only ("Oo-truh-mair") or a longer caps syllable ("BARR-ing-tun"). Check every take's transcript for spelled letters, not only recall (recall read 0.89 on "H.Y.U.O.").
+- Evidence: siege_news REVIEW.md and the d1-d3 scores.json transcripts; the lower-case repair is in pass siege_r1 (result in the project README, Session 4).
+- Scope: skill (`pronounce` entries; L-003's open question: H3 does follow a respelling, letter by letter if it looks like an acronym)
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-24
+
 ### L-004 · 2026-10-16 · A card holds 8 seconds; cut a line past about 17 words at a comma across two shots
 - Trigger: the words before a stab in a rapier duel from a novel: the antagonist's 27-word line needs about 12 s at one second per 2.5 words plus a beat, and `cards validate` refused the card ("12 is above 8": the shot-card schema caps `duration_s` at 8).
 - Hypothesis: the schema keeps one action a card, so a long speech cannot be lengthened on one card; speeding it up loses the delivery, and trimming the line changes the source.
