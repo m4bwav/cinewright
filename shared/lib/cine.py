@@ -1148,6 +1148,12 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
             bits.append("holding %s" % prop_words(p, m["holding"], m.get("holding_state"), tags))
         if bits:
             stage.append(_sentence("%s is %s" % (p.chars[m["id"]]["name"], ", ".join(bits))))
+    # featured props too: the subject that carries them single-card is not in a sequence block (a held one is said above)
+    held = {m.get("holding") for m in card.get("cast", [])}
+    for x in card.get("props", []):
+        if x["name"] in held:
+            continue
+        stage.append(_sentence(_cap("%s%s" % (prop_words(p, x["name"], x.get("state"), tags), ", " + x["where"] if x.get("where") else ""))))
     parts["staging"] = " ".join(stage)
     act = [_sentence(card["action"])]
     if card.get("beats") and prof.get("beat_stamp"):
@@ -1329,7 +1335,7 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
             for i, c in enumerate(g):
                 start, end = t, t + c["duration_s"]
                 parts = card_parts(p, c, prof, tags, speakers, start)
-                if parts["sound"]:
+                if parts["sound"] and parts["sound"] not in sound:  # cards of one place often share a soundscape
                     sound.append(parts["sound"])
                 tpl = prof["timestamp"] if i == 0 else prof.get("timestamp_next", prof["timestamp"])
                 stamp = _stamp(tpl, i + 1, start, end)

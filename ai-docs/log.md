@@ -806,3 +806,7 @@ From the Blender books (van Gumster, Hess, Brito, Pearson; polywright's recipes 
 - One polywright crowd blockout rendered with inverse depth and a real Mist pass from the same Cycles render (identical depth frames, checked byte for byte), then H3 with Fun ControlNet Union 2.0 at 0.6/0.4 on seeds 11 and 23. Blind random-side pairs: the owner picked Mist both times. blender-passes.md and sets L-007 updated; track 7's K2 has the update line. Files in the owner's video output folder (depthtest).
 ## [2026-10-23] index | rebuilt (25 entries)
 - Checks: `python -m unittest discover -s tests` OK; `cine.py kb lint` 0 errors; budget YELLOW as before; `claude plugin validate` passed on the root and each plugin; scrub 13 hits, the same as main.
+
+## [2026-10-23] fix | --sequence dropped featured props
+- A film's two-card H3 generation stopped with "compiler bug: prop 'arrow' not verbatim": a card's featured props went only into the single-card subject, so a sequence shot block lost them. `card_parts` now adds them to the staging (skipping a prop a cast member already holds), and a soundscape shared by cards of one place is said once. Test `test_sequence_keeps_featured_props`.
+- Checks: `python -m unittest discover -s tests` 138 OK; `cine.py kb lint` 0 errors; budget YELLOW as before; scrub 13 hits, the same as main.
