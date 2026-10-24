@@ -817,3 +817,7 @@ From the Blender books (van Gumster, Hess, Brito, Pearson; polywright's recipes 
 - Scrub: design LEARNINGS, its CHANGELOG and two log lines cited a private skill by name; now "field lesson NNN". scrub 6 hits, all third-party GPU benchmarks (expected).
 - Checks: `python -m unittest discover -s tests` 138 OK; `cine.py kb lint` 0 errors; budget YELLOW (runtime shared/lib 186 of 200 KB); `claude plugin validate` passed on the root and each plugin.
 - Tag `v0.2.0` on main 0e05a61, pushed. Release: https://github.com/m4bwav/cinewright/releases/tag/v0.2.0, 15 ZIPs built from main with `cine.py zip` (73-115 KB); their unzipped contents scrubbed: 0 hits.
+
+## [2026-10-24] fix | private film names out of shipped lessons; L-019
+- After v0.2.0: genvideo L-017 and L-018, continuity L-009, script L-005 and a genvideo CHANGELOG line (from #57) named a private film and its pass folders. The scrub missed them: the film's names were never added to the sidecar's scrub-names.txt. Added (the film and its pass folders), lines rewritten as field lessons, release ZIPs rebuilt and replaced on v0.2.0. Older commits still hold the names (no history rewrite).
+- New: genvideo L-019 `cut-before-the-fall` (a stuck prop stays in the air when the figure falls).
