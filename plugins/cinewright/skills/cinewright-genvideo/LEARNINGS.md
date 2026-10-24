@@ -109,3 +109,19 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: a duel project's test folder (four takes of one card, frame grids, `qc judge --twice` reports); the research note's open test 2.
 - Scope: skill (fight cards, timed beats on H3); a card field for timed beats is proposed in cinewright-movement L-009's change list
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-16
+
+### L-017 · 2026-10-24 · `prop-where-spoken-line-late`: a timed beat's words are spoken, and a line after the timeline is said after it
+- Trigger: siege news film, generation 2F+2G (a question, then a knight's half-line cut off by an arrow at 6.0 s, guide frame at 6.3 s), five takes: the card's prop `where` read "only once it strikes, then stuck in the right side of Rainald's neck"; Whisper heard "Once it strikes" spoken before the line in two takes, and in all five the line (written after the `Timeline:`, as compile places it) was said at about 5.3-6.7 s, so the knight talks on with the arrow in his neck.
+- Hypothesis: a clause with a verb of action next to the speaker reads as speech to the voice (like L-015's style line), and the model speaks a sequence block's line after the timeline's ranges, not inside the range that says he starts his answer.
+- Rule: give a prop's `where` a place only ("in the right side of his neck"), never an event or a time; when a line must end before a timed beat, put the speech sentence inside the timeline range where it belongs (`[3.0s-6.0s] ... says: <d>...</d>`) and leave the beat's range without speech. Check the speech band against the beat's time on every take.
+- Evidence: siege_news d1-d3 G08 takes (speech level per 0.25 s, transcripts in scores.json); repair pass siege_r1 G08 t6-t8 (the line moved into its slot, but the arrow was in from the cut once the clause went, because the prop sentence opened the shot); siege_r2 with the prop sentence moved to the strike: the arrow held until 6.0 s in 2 of 3 takes, and every r2 transcript is clean (project README, Session 5).
+- Scope: skill (compile of timed beats in sequences; a compile change would put dialogue inside its timeline range)
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-24
+
+### L-018 · 2026-10-24 · `guide-prop-shape-copied`: a pinned guide still sets how the prop looks, so fix its shape there
+- Trigger: siege news film, generation 2F+2G, Mark (2026-10-24): "the arrow looks weird in both shots". The guide pinned at 6.3 s showed a big plume of goose feathers standing up behind the knight's helmet, and every take drew the arrow that way. Redrawing the guide from scratch with the arrow "in plain view" (Klein, three refs) put arrows through his mouth and cheek and lost the nose guard in all four takes.
+- Hypothesis: a pinned frame is copied far more strongly than the prop's text or its ref, so an odd shape in the guide comes back in every take. A from-scratch redraw puts a thin object into the face because the prompt places it next to the face.
+- Rule: check a guide still's props at full size before pinning it, as a viewer will see them. To fix one, edit the kept guide with a single change ("the arrow becomes a short thin shaft ... nothing rises above his shoulder") instead of redrawing it.
+- Evidence: siege_news `guides/_arrow/` (the failed redraw, seed 1099561, and the edit, seed 1099571, t2 kept); pass siege_r5 G08 t12-t14: no plume in any take, the arrow arrives at about 6.4 s in t12 and t14 (README Session 6).
+- Scope: skill (guide stills for timed beats; cinewright-movement's contact chain)
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-24

@@ -6,6 +6,14 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-009 · 2026-10-24 · `offscreen-look-plays-to-lens`: a single with the looked-at person off frame turns to the camera
+- Trigger: siege news film, generation 1E+1F (a reporter asks a soldier a question, then the soldier answers and nods up at a siege tower), eight takes over d1-d3 and r2: in every one the reporter faces the lens in 1E and the soldier faces the lens with his eyes rolled up in 1F. Mark (2026-10-24): "the classic problem of the person facing towards the camera instead of the thing they're looking at. Cinewright should have helped you avoid this." Both cards were `framing: single` with `looks_at` someone not in the frame; 1F also had `looks_at: reporter` with `eyeline: up`, which compiled to "Walter is looking up, at Hugh Barrington", a target that is not up.
+- Hypothesis: with nothing in the frame to look at, the video model falls back on the most common picture of a person talking, which is to the lens; a newsreader identity pulls harder still. "Looking toward frame left, at X" does not turn the body when X is absent.
+- Rule: when someone must look at a person or thing, put it in the frame: an over-the-shoulder with the other person's back at the frame edge, or the object in shot. Otherwise turn the body in words ("side-on to the camera, his body and face turned to frame left toward the wall") and add "never into the lens". Give `looks_at` the thing the `eyeline` points at, never a person in another direction. A diff check should warn on a single whose `looks_at` target is out of the frame and is not `camera`, and on `eyeline: up/down` with a person as `looks_at`.
+- Evidence: siege_news d1-d3 and r2 G04 sheets; Mark's note in `review/answers.json` q18; the repair (over-the-shoulder in 1E, side-on in 1F, `make_pass.py` FIXES "1E+1F"), pass siege_r5 G04 t12-t14: all three turned both men off the lens (README Session 6). The scorer's identity check then rejects every take, because it counts the shoulder in the foreground as a stranger.
+- Scope: skill and tool (shared/lib/cine.py continuity_diff: a proposed OFFSCREEN-LOOK warning)
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-24
+
 ### L-008 · 2026-10-22 · `straight-in-is-for-cut-ins`: a straight-in check on any size change fires on cuts back out
 - Trigger: books track 4 added STRAIGHT-IN (two or more size steps, under 10 degrees of azimuth, someone off centre); on 163 cards of seven local multi-shot films it fired on 7, two of them cuts from a medium to a wide
 - Hypothesis: Mascelli's rule is about moving in: a cut straight back out on the axis re-establishes, and nobody reads it as a jump
