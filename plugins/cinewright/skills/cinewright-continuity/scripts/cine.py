@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:22f26926186c51e0c7e73cb67803160e75194dea17535c6521ae9713321435b1; edit the source
+# copied from shared/lib/cine.py sha256:71da697bd86b3e0236afc68dd68160f5292b05b88616291154f2858505a7c9ac; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -1149,6 +1149,12 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
             bits.append("holding %s" % prop_words(p, m["holding"], m.get("holding_state"), tags))
         if bits:
             stage.append(_sentence("%s is %s" % (p.chars[m["id"]]["name"], ", ".join(bits))))
+    # featured props too: the subject that carries them single-card is not in a sequence block (a held one is said above)
+    held = {m.get("holding") for m in card.get("cast", [])}
+    for x in card.get("props", []):
+        if x["name"] in held:
+            continue
+        stage.append(_sentence(_cap("%s%s" % (prop_words(p, x["name"], x.get("state"), tags), ", " + x["where"] if x.get("where") else ""))))
     parts["staging"] = " ".join(stage)
     act = [_sentence(card["action"])]
     if card.get("beats") and prof.get("beat_stamp"):
@@ -1330,7 +1336,7 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
             for i, c in enumerate(g):
                 start, end = t, t + c["duration_s"]
                 parts = card_parts(p, c, prof, tags, speakers, start)
-                if parts["sound"]:
+                if parts["sound"] and parts["sound"] not in sound:  # cards of one place often share a soundscape
                     sound.append(parts["sound"])
                 tpl = prof["timestamp"] if i == 0 else prof.get("timestamp_next", prof["timestamp"])
                 stamp = _stamp(tpl, i + 1, start, end)

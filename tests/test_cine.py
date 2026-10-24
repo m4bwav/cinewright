@@ -966,6 +966,22 @@ class TestModelCards(Base):
         self.both(r"\[Shot 2\] At 00:\d\d\.\d{3}, the camera cuts to [a-z]", "h3", text)
         self.assertEqual(text.count("\n\n"), 2, "one description paragraph, then the two sound fields")
 
+    def test_sequence_keeps_featured_props(self):
+        proj = model_project(self.tmp)
+        for cid, change in (("1B", {"props": [{"name": "single match", "where": "in her fingers"}]}),
+                            ("1C", {"props": [{"name": "tin matchbox", "where": "on the sill"}],
+                                    "sound": "rain on the glass, muffled wind"})):
+            path = proj / "cards" / ("%s.json" % cid)
+            c = json.loads(path.read_text(encoding="utf-8"))
+            c.update(change)
+            path.write_text(json.dumps(c), encoding="utf-8")
+        _, _, res = compile_one(proj, "minimax-h3", sequence=True)
+        text = res[0][1]
+        self.assertIn("A small dented tin matchbox with a hinged lid, scratched silver, the size of a palm, on the sill.", text,
+                      "a featured prop on a later card reaches its shot block")
+        self.assertEqual(text.count("one long wooden kitchen match with a red head"), 1, "a held prop is said once")
+        self.assertEqual(text.count("rain on the glass, muffled wind".capitalize()), 1, "a shared soundscape is said once")
+
     def test_wan(self):
         _, _, res = compile_one(EXAMPLE, "wan", "1B")
         text, params = res[0][1], res[0][2]

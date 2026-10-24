@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261023-1 · 2026-10-23 · --sequence keeps a card's featured props and says a shared soundscape once
+- because: a siege film's G08 (two cards, the second with an arrow as a featured prop) stopped with "compiler bug: prop 'arrow' not verbatim": featured props were only in the single-card subject, which a sequence block does not carry
+- files: shared/lib/cine.py (card_parts staging, compile_cards sound), tests/test_cine.py (test_sequence_keeps_featured_props)
+- A sequence shot block now states each featured prop and where it is (a prop a cast member holds is said once, in the holding words), and cards of one place that share a soundscape no longer repeat it.
+
 ### C-20261022-4 · 2026-10-22 · Compile writes horizon, dutch side, view and the new moves (books track 4)
 - because: books track 4 (Mateu-Mestre, *Framed Ink* 1 and 2; Mascelli, *The Five C's*; Katz, *Shot by Shot*; Block, *The Visual Story*; Brown, *Cinematography*; Gurney), decision 2026-10-22-books-track4
 - files: SKILL.md (failure code pointer), needs.json (failures-framing), shared/lib/cine.py (card_parts: HORIZON_WORDS, dutch side, VIEW_WORDS)
