@@ -25,7 +25,7 @@
 
 - Books track 4 (2026-10-22, branch books-track4): framing and prompt vocabulary. Card `camera.horizon`, `camera.dutch`, `cast[].view`; moves push-in, arc, dolly-zoom; diff STRAIGHT-IN, HORIZON, DUTCH; rubric `framing` and vocab failures-framing; entries frame-tension, move-grammar. Runtime 185 KB of red 200, about 15 KB left for track 7. No `qc cutcheck` (decision 2026-10-22-books-track4 H8).
 
-- Books track 7 (2026-10-22, branch books-track7): the last cinewright books track. Entries blender-passes (sets) and previs-animation (movement), one line each in master-plates, animatic, blockout-control, fight-previs; the sets description names blockout control passes (L-003). No runtime change: 185 of 200 KB. Open: whether Mist depth does as well as inverse depth on H3; whether a Line Art pass beats Canny on clay; the previs animation checks against real takes.
+- Books track 7 (2026-10-22, branch books-track7): the last cinewright books track. Entries blender-passes (sets) and previs-animation (movement), one line each in master-plates, animatic, blockout-control, fight-previs; the sets description names blockout control passes (L-008 `description-names-blockout-passes`). No runtime change: 185 of 200 KB. Open: whether Mist depth does as well as inverse depth on H3; whether a Line Art pass beats Canny on clay; the previs animation checks against real takes.
 
 ## Waiting on Mark
 - claude.ai cleanup: delete the uploaded test skill cinewright-continuity (permanent delete; switched off for now), remove the cinewright marketplace source if the UI offers it, close the VS Code window `code chat -n` opened.

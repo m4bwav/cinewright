@@ -25,7 +25,7 @@ Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `f
 - `refs` may be keyed like wardrobe and a card's cast entry names its stage with `refs_stage`; the compiler sends one stage per card, continuity checks the stage names and their order.
 
 ### C-20261015-3 · 2026-10-15 · L-005 confirmed: the refs swap reaches earlier cards; wound stages need a cast-level stage
-- because: L-005 (the first scene-1b card), comfyui-gen L-124
+- because: L-005 (the first scene-1b card), field lesson 124
 - files: LEARNINGS.md (Active: L-005)
 - The swap the rule asks for re-sent the new sheets with every earlier card's compile; the workaround and the wider proposed change (a stage named on the cast entry) are recorded for a later code PR.
 

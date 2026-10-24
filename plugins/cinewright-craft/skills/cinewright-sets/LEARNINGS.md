@@ -62,10 +62,18 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-07
 
-### L-003 · 2026-10-22 · A Blender pass question does not reach this skill unless the description names blockout passes
+### L-008 · 2026-10-22 · `description-names-blockout-passes`: a Blender pass question does not reach this skill unless the description names blockout passes
 - Trigger: three runs of a Mist-pass question for H3 depth control loaded no sets skill (T-20261022-1).
 - Hypothesis: the description named sets, plates and light, nothing about blockouts or passes, so the model answered the Blender question itself.
 - Rule: keep "3D blockouts rendered as control passes (Blender depth, Mist, masks)" in the description; plain Blender scripting stays polywright-blender's.
 - Evidence: C-20261022-2; 0/3 then 3/3, triggers and decoys 12/12.
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-22
+
+### L-009 · 2026-10-23 · `bearing-is-not-a-sightline`: bearings to a landmark do not prove it is in view: check the sightline from the camera's own height
+- Trigger: research for a film set on the walls of 1099 Jerusalem put the Holy Sepulchre "over the right shoulder" from the north wall by bearing and distance (630 m, 217 degrees); the terrain blockout showed it hidden behind the roofs of the western hill from the wall-walk, and visible only from the siege tower's higher top storey.
+- Hypothesis: bearings and distances say where a landmark is, not what stands between; a 10 m wall-walk sees over near roofs but not over a hill of houses half a kilometre off.
+- Rule: for a real place, block the terrain and the buildings, render the class pass from each planned camera and count each landmark's pixels before writing it into a wall string; name a landmark only in the views where it shows, and record the ones that do not.
+- Evidence: field lesson, a terrain blockout of the north wall (walltop-south: Dome of the Rock 3551 px, citadel 61 px, Holy Sepulchre 0 px; tower-open: Holy Sepulchre 237 px).
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-23
