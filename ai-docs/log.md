@@ -699,11 +699,11 @@ scrub: 11 hits in 4 files (the same 11 as main)
 
 ## 2026-10-22: book-learnings track 1 (qc measure flicker, review sides, label queue)
 
-From Huyen, *AI Engineering* (judge and reviewer position bias, degenerate feedback loops) and Enochs, *Video Generation with AI* (temporal flicker, the 45 ms lip-sync threshold, LTX-2's two stages). Branch books-track1; the comfyui-gen side (board by gates then head to head, identity drift, the pair tool) is in that repository's PR.
+From Huyen, *AI Engineering* (judge and reviewer position bias, degenerate feedback loops) and Enochs, *Video Generation with AI* (temporal flicker, the 45 ms lip-sync threshold, LTX-2's two stages). Branch books-track1; the image-generation skill side (board by gates then head to head, identity drift, the pair tool) is in that repository's PR.
 
 - Built: `qc measure` flicker per shot (a frame's luma off its neighbours' mean by more than 2.0, more than 3 times a second, warns only; L-006 has the calibration on 152 reviewed takes: no keeper reached it); vocab `flicker` and `lip-lag`; take-selection (random sides, recorded), judge-calibration (gate-rejected takes in the label queue), identity-score (a face against its own first face in the take), ltx-2 (judge stage 1 before stage 2; LTX-2.5 still two stages, checked on its model page). Evals action-2 and outcome-2: 3/3 each on Sonnet, baselines 0/1 (T-20261022-1).
 - Budget: runtime shared/lib went to 151 KB (red) with the flicker code; `scene_cuts` and `frame_motion` now go through `run_tool` and the metadata parse is one regex, back to 150 KB (yellow, about 30 bytes left). The next runtime addition needs a real cut.
-- Skipped: CLIP prompt adherence, timestamped judge frames, the compile contradiction lint and the VACE/IC-LoRA repair rungs (not in track 1). Lip-sync lag as a measure: the cheap proxy failed on real takes (comfyui-gen L-149), so only the vocabulary rule went in.
+- Skipped: CLIP prompt adherence, timestamped judge frames, the compile contradiction lint and the VACE/IC-LoRA repair rungs (not in track 1). Lip-sync lag as a measure: the cheap proxy failed on real takes (field lesson 149), so only the vocabulary rule went in.
 
 ```
 $ python -m unittest discover -s tests
@@ -810,3 +810,9 @@ From the Blender books (van Gumster, Hess, Brito, Pearson; polywright's recipes 
 ## [2026-10-23] fix | --sequence dropped featured props
 - A film's two-card H3 generation stopped with "compiler bug: prop 'arrow' not verbatim": a card's featured props went only into the single-card subject, so a sequence shot block lost them. `card_parts` now adds them to the staging (skipping a prop a cast member already holds), and a soundscape shared by cards of one place is said once. Test `test_sequence_keeps_featured_props`.
 - Checks: `python -m unittest discover -s tests` 138 OK; `cine.py kb lint` 0 errors; budget YELLOW as before; scrub 13 hits, the same as main.
+
+## [2026-10-24] release | 0.2.0
+- Mark's go 2026-10-24 ("tag release, push all"). Versions 0.1.0 to 0.2.0 in marketplace.json (4) and each plugin's two manifests (6). Minor bump: books tracks 1-7, the voice skill, sets, sequence compile and failure codes added since 0.1.0 (PRs #15 to #57).
+- sets LEARNINGS: an uncommitted lesson from another session went in as L-009 `bearing-is-not-a-sightline`, with its private film name and drive path rewritten to a field lesson. It had reused L-004, and the 2026-10-22 entry had reused L-003; that one is now L-008 `description-names-blockout-passes` (decision K5 and HANDOFF updated).
+- Scrub: design LEARNINGS, its CHANGELOG and two log lines cited a private skill by name; now "field lesson NNN". scrub 6 hits, all third-party GPU benchmarks (expected).
+- Checks: `python -m unittest discover -s tests` 138 OK; `cine.py kb lint` 0 errors; budget YELLOW (runtime shared/lib 186 of 200 KB); `claude plugin validate` passed on the root and each plugin.
