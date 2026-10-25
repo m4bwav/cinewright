@@ -29,3 +29,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: C-20261005-1 (SKILL.md); confirmed T-20261005-1: outcome-1 Sonnet 3 of 3 (was 2 of 3), Opus 3 of 3
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-05
+
+### L-005 · 2026-10-24 · Read pauses from a speech-band envelope, not from Whisper's word ends (`pauses-from-the-envelope`)
+- Trigger: 2026-10-24, trimming a 16-generation dialogue film to length: Whisper (small.en, word timestamps) put each line's first word at 0.00 s and stretched the last word of a question up to the first word of the answer, so a 1 s pause around an internal cut read as speech
+- Hypothesis: Whisper's word timestamps fill silence between words; the start of a word is roughly right, the end is not
+- Rule: For trim points, compute a 300-3400 Hz loudness envelope in 0.1 s steps and read the pauses from it; use Whisper only to name which words fall where. Trim on both sides of an internal picture cut, never inside a shot
+- Evidence: field lesson, 2026-10-24 (envelope against word times on 16 takes; the cut came to 89.96 s against an 85-90 s target in one pass)
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-24
