@@ -953,8 +953,8 @@ def continuity_diff(p):
         people = len(in_shot) + extra
         if people > PEOPLE_PER_TAKE:
             add("warning", card, "CAST-COUNT", "about %d acting people (%d cast%s); a free video model holds about %d a take and clones, merges "
-                "or drops the rest. Block the shot out in 3D and render it once with the depth control at 0.8 and one or two reference "
-                "sheets per side (cinewright-genvideo, entry crowd-prompting); adding a few people per pass was tested and does worse. "
+                "or drops the rest. Block the shot out in 3D and render it once with the depth control at 0.6 and reference sheets "
+                "for a lifelike side (cinewright-genvideo, entry crowd-prompting); adding a few people per pass was tested and does worse. "
                 "Ask before spending the extra render time unless the plan already allows it" % (
                     people, len(in_shot), (", " + ", ".join("'%s'" % h for h in said)) if said else "", PEOPLE_PER_TAKE))
         names = {n for n, _ in card_props(card)} | set(in_shot)

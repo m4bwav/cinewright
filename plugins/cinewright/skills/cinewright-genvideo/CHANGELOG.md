@@ -4,6 +4,10 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261026-1 · 2026-10-26 · crowd-prompting: blockout depth at 0.6, refs only for a lifelike side
+- because: the owner's review of the 2026-10-25 takes and a follow-up test (ai-docs/research/2026-10-25-layered-character-passes.md, Update 2026-10-26)
+- files: references/crowd-prompting.md (Rules, Numbers, last_checked); shared/lib/cine.py CAST-COUNT message
+- At 0.8 the render paints the blockout's dummies as mannequins; the route is now 0.6/0.4 with sheets only for a side that looks like real people, the other side in words, and a start frame approved before a batch because the look varies by seed.
 ### C-20261025-1 · 2026-10-25 · crowd-prompting: blockout plus per-side refs over 5 people; layered passes ruled out
 - because: user request (layered character passes); test in ai-docs/research/2026-10-25-layered-character-passes.md
 - files: references/crowd-prompting.md (Rules, Numbers, last_checked)
