@@ -79,9 +79,9 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-22
 
 ### L-008 · 2026-10-25 · Following KEY-SIDE per shot flips the sun in an exterior (`one-sun-per-exterior`)
-- Trigger: 2026-10-25, deir_strike (a news satire): a card script set each card's key_side to the face's eyeline to clear KEY-SIDE warnings; the compiled test sequence then lit Dave from frame right and Amennakht from frame left in one sunny exterior, a sun that swaps sides at every cut
+- Trigger: 2026-10-25, a local news-satire film: a card script set each card's key_side to the face's eyeline to clear KEY-SIDE warnings; the compiled test sequence then lit the reporter from frame right and the interviewee from frame left in one sunny exterior, a sun that swaps sides at every cut
 - Hypothesis: KEY-SIDE's fix (key from the side the face turns to) assumes a movable key; an exterior has one sun, and the warning's own escape (write 'broad' in light.motivation) is the right answer for every reverse
 - Rule: Open. In an exterior keep the scene's sun side on every card and mark the broad-lit reverses 'broad'; follow KEY-SIDE only for movable keys (studio, lamps). Candidate: KEY-SIDE could skip cards whose motivation names the sun, or warn on a sun that changes side within a scene
-- Evidence: D:/ComfyUI/output/video/deir_strike/cards/_make_cards.py keyed(); compiled/test before and after
+- Evidence: the film's card script (keyed()) and its compiled test sequence before and after
 - Scope: continuity diff KEY-SIDE
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-25
