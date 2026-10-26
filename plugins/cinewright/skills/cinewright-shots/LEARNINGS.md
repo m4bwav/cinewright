@@ -15,3 +15,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Status: active · helpful 0 · harmful 0 · last_confirmed 2026-10-22
 
 
+
+### L-002 · 2026-10-25 · A split screen is two cards per window, sizes alternating by pair (`split-screen-pairs`)
+- Trigger: 2026-10-25, deir_strike: a live two-way split screen written as one card per line gave every half a same-size cut to itself (12 30-DEGREE errors) and needed separate listening clips; ids like 5bA failed the schema, which allows only digits then letters
+- Hypothesis: on a split screen each half is its own continuous camera, so a cut inside one half is a jump cut unless it changes size
+- Rule: Open. Write a split screen as windows: per window one card per half, equal duration, each half with only its own speaker's lines (it listens with closed lips through the rest); alternate the size by window (MWS, MCU) so each half's cut clears the 30-degree rule; give both halves scenes that share one number (5a, 5b) so the slate ids stay digits plus letters
+- Evidence: D:/ComfyUI/output/video/deir_strike/cards/_make_cards.py (PAIRS); continuity diff 16 errors to 0
+- Scope: skill (no split-screen guidance yet); maybe a `split` field later
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-25
