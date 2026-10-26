@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261025-1 · 2026-10-25 · CAST-COUNT warning: more than 5 acting people in one card
+- because: user request (spot a take with too many people for one pass); test in ai-docs/research/2026-10-25-layered-character-passes.md
+- files: shared/lib/cine.py (PEOPLE_PER_TAKE, counted_people, continuity_diff CAST-COUNT), tests/test_cine.py (test_cast_count), references/shot-checklist.md (CAST-COUNT row)
+- The cast plus the numbers written before a people noun in the action or subject ("ten pale creatures", "a dozen archers") above 5 warns, and points to the blockout-plus-refs route and the ask-or-run rule in genvideo crowd-prompting.
+
 ### C-20261022-3 · 2026-10-22 · STRAIGHT-IN, HORIZON and DUTCH in the diff; camera angle meanings (books track 4)
 - because: books track 4 (Mateu-Mestre, *Framed Ink* 1 and 2; Mascelli, *The Five C's*; Katz, *Shot by Shot*; Block, *The Visual Story*; Brown, *Cinematography*; Gurney), decision 2026-10-22-books-track4; L-008
 - files: shared/lib/cine.py (continuity_diff), shared/vocab/camera-angles.md, shared/vocab/thirty-degree-rule.md, references/shot-checklist.md (HARD-SUBJECT fix), evals/evals.json (outcome-2), evals/check_cutin.py
