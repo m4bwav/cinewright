@@ -821,3 +821,9 @@ From the Blender books (van Gumster, Hess, Brito, Pearson; polywright's recipes 
 ## [2026-10-24] fix | private film names out of shipped lessons; L-019
 - After v0.2.0: genvideo L-017 and L-018, continuity L-009, script L-005 and a genvideo CHANGELOG line (from #57) named a private film and its pass folders. The scrub missed them: the film's names were never added to the sidecar's scrub-names.txt. Added (the film and its pass folders), lines rewritten as field lessons, release ZIPs rebuilt and replaced on v0.2.0. Older commits still hold the names (no history rewrite).
 - New: genvideo L-019 `cut-before-the-fall` (a stuck prop stays in the air when the figure falls).
+
+## [2026-10-25] test | Layered character passes ruled out; CAST-COUNT check
+- The owner's idea: build a many-person take a few characters per pass. Research (no benchmark past 3 subjects; MiniMax H3's Fun ControlNet patch does masked video inpaint with `mask` and `source_video`) and a 10-against-10 test: four masked passes held about 5 and 6, the 3D blockout's depth at 0.8 with one or two sheets per side about 10 and 6-8 in one render. Write-up: [2026-10-25-layered-character-passes](research/2026-10-25-layered-character-passes.md).
+- Changed: `cards validate` warns CAST-COUNT above 5 acting people (cast plus numbers before a people noun; `counted_people`), continuity shot-checklist row, genvideo crowd-prompting (route, numbers, ask-or-run rule). Mid-session the owner added that the second side is a wild horde with no formation; polywright got per-side blockout flags for it (its own PR).
+- Checks: `python -m unittest discover -s tests` 139 OK; `cine.py kb lint` 0 errors; budget YELLOW as before (runtime shared/lib 189 of 200 KB, was 186); `claude plugin validate` passed on the root and each plugin; scrub 6 hits, all third-party GPU benchmarks (expected).
+## [2026-10-25] index | rebuilt (25 entries)

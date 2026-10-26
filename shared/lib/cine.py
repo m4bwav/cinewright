@@ -85,6 +85,38 @@ SPEECH_WPS = 2.5  # words a second a generated voice speaks clearly (about 150 a
 SPEECH_LEAD_S = 0.5  # breath before the first word
 # Many small figures in a wide frame: legs, faces and clones break (field lessons 020, 021)
 HARD_SUBJECT = re.compile(r"\b(crowds?|herds?|flocks?|swarms?|army|armies|troops|cavalry|caravans?|stampedes?|hordes?|columns? of|dozens|hundreds)\b", re.I)
+# Acting people a free video model holds in one take (genvideo crowd-prompting; a 10-against-10 test, 2026-10-25)
+PEOPLE_PER_TAKE = 5
+NUMBER_WORDS = {w: i for i, w in enumerate("zero one two three four five six seven eight nine ten eleven twelve thirteen "
+                                           "fourteen fifteen sixteen seventeen eighteen nineteen twenty".split())}
+NUMBER_WORDS.update({"thirty": 30, "forty": 40, "fifty": 50, "a dozen": 12})
+PEOPLE_NOUNS = {"people", "persons", "figures", "extras", "soldiers", "warriors", "fighters", "archers", "riders", "knights", "guards",
+                "children", "kids", "villagers", "sailors", "pirates", "workers", "monks", "priests", "nuns", "dancers", "players",
+                "creatures", "monsters", "beasts", "orcs", "goblins", "zombies", "ghouls", "demons", "enemies", "raiders", "bandits",
+                "hunters", "mourners", "guests", "students", "officers", "troopers", "marines", "cultists", "elves", "dwarves", "giants",
+                "girls", "boys", "ladies", "brothers", "sisters", "friends", "strangers", "attackers", "defenders", "survivors"}
+COUNTED = re.compile(r"\b(\d{1,3}|%s)(?=((?:\s+[a-z-]+){1,3}))" % "|".join(sorted(NUMBER_WORDS, key=len, reverse=True)), re.I)
+
+
+def counted_people(text):
+    """Sum of the numbers written before a people noun within three words ('ten spearmen', '5 pale white creatures');
+    objects and units are not counted."""
+    total, hits = 0, []
+    for m in COUNTED.finditer(text or ""):
+        words = m.group(2).split()
+        for i, w in enumerate(words):
+            w = w.lower()
+            if w in ("and", "or", "of", "seconds", "minutes", "metres", "meters", "feet", "steps", "times", "years"):
+                break
+            if w in PEOPLE_NOUNS or w.endswith("men"):
+                n = int(m.group(1)) if m.group(1).isdigit() else NUMBER_WORDS[m.group(1).lower()]
+                if n > 1:
+                    total += n
+                    hits.append("%s %s" % (m.group(1), " ".join(words[:i + 1])))
+                break
+    return total, hits
+
+
 SECTIONS = ["Rules", "Numbers", "Vocabulary", "Pitfalls", "Verify", "Notes", "Compile"]
 # Block's visual structure (cinewright-shots space-types, cinewright-edit attention-continuum)
 SPACE_WORDS = {
@@ -917,6 +949,14 @@ def continuity_diff(p):
         if hard and cam.get("size") in ("EWS", "WS"):
             add("warning", card, "HARD-SUBJECT", "'%s' in a %s: many small figures come out with broken legs and clones; frame 1-5 of them large and side-on, "
                 "the mass as background dust (cinewright-movement, entry hard-subjects)" % (hard.group(0), SIZE_WORDS[cam["size"]]))
+        extra, said = counted_people("%s %s" % (action, card.get("subject", "")))
+        people = len(in_shot) + extra
+        if people > PEOPLE_PER_TAKE:
+            add("warning", card, "CAST-COUNT", "about %d acting people (%d cast%s); a free video model holds about %d a take and clones, merges "
+                "or drops the rest. Block the shot out in 3D and render it once with the depth control at 0.8 and one or two reference "
+                "sheets per side (cinewright-genvideo, entry crowd-prompting); adding a few people per pass was tested and does worse. "
+                "Ask before spending the extra render time unless the plan already allows it" % (
+                    people, len(in_shot), (", " + ", ".join("'%s'" % h for h in said)) if said else "", PEOPLE_PER_TAKE))
         names = {n for n, _ in card_props(card)} | set(in_shot)
         if (role == "cut-in" or cam.get("framing") == "insert") and names and not names & (seen.get(sc["id"], set()) | met):
             add("warning", card, "ESTABLISH", "%s first appears in a cut-in; show it in a wider card first, unless the mystery is the point" % ", ".join(sorted(names)))

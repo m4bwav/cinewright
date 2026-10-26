@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261025-1 · 2026-10-25 · crowd-prompting: blockout plus per-side refs over 5 people; layered passes ruled out
+- because: user request (layered character passes); test in ai-docs/research/2026-10-25-layered-character-passes.md
+- files: references/crowd-prompting.md (Rules, Numbers, last_checked)
+- The limit drops from about 8 to about 5 acting people; above it, one render from a 3D blockout's depth at 0.8 with one or two sheets per side; adding people a few per pass was tested and does worse; the CAST-COUNT check and the ask-or-run rule.
+
 ### C-20261023-1 · 2026-10-23 · --sequence keeps a card's featured props and says a shared soundscape once
 - because: a film's G08 (field lesson; two cards, the second with an arrow as a featured prop) stopped with "compiler bug: prop 'arrow' not verbatim": featured props were only in the single-card subject, which a sequence block does not carry
 - files: shared/lib/cine.py (card_parts staging, compile_cards sound), tests/test_cine.py (test_sequence_keeps_featured_props)

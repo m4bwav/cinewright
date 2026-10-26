@@ -1318,6 +1318,16 @@ class TestPreproduction(Base):
         p.cards[0]["camera"]["size"] = "MS"
         self.assertNotIn(("1A", "HARD-SUBJECT"), self.warnings(p))
 
+    def test_cast_count(self):
+        p = self.project()
+        self.assertEqual(self.warnings(p), [])
+        p.cards[0]["action"] = "Ten spearmen brace on the left; ten pale creatures sprint in from the right."
+        self.assertIn(("1A", "CAST-COUNT"), self.warnings(p))
+        p.cards[0]["action"] = "Three fishermen haul a net for ten seconds beside two boats and five long oars."
+        self.assertNotIn(("1A", "CAST-COUNT"), self.warnings(p))
+        self.assertEqual(lib.counted_people("12 soldiers and a dozen archers, then 2 minutes of rain")[0], 24)
+        self.assertEqual(lib.counted_people("one man walks four steps")[0], 0)
+
     def test_cards_list(self):
         code, out = run("cards", "list", EXAMPLE)
         self.assertEqual(code, 0, out)
