@@ -45,6 +45,12 @@ Testing:
 
 ## Findings
 
+### R-20261029-1 · 2026-10-29 · Voxtral 3 from Mistral: hosted TTS, not a local route yet · m 0.1
+- Tracks: subject, tooling
+- Mistral released Voxtral 3 on 2026-10-20: Mini TTS 3 (35+ languages, $13 per 1M characters), Small Transcribe 3 (50+ languages, diarization, $0.004/min; vendor chart puts it near 4% WER on FLEURS, ahead of Whisper), Mini Transcribe 3 (4B) and a sub-500 ms realtime transcriber, plus a LiveKit voice-agent SDK. The page names no open weights or licence; self-hosting is "contact sales". So it is not a candidate for the local voice route; at most a hosted option for temp lines and for transcribing takes to check lip-sync text. Re-check for open weights at the next refresh.
+- Sources: https://mistral.ai/news/voxtral-3/
+- Led to: nothing yet
+
 ### R-20261007-1 · 2026-10-07 · Baseline research for a new unit · m 0.6
 - Tracks: subject, tooling, practice, testing
 - Two research passes and a local test; full notes with sources in the repository's ai-docs/research/2026-10-07-voice-consistency.md.
