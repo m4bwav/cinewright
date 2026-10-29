@@ -831,3 +831,6 @@ From the Blender books (van Gumster, Hess, Brito, Pearson; polywright's recipes 
 ## [2026-10-26] test | Crowd route: blockout depth at 0.6, not 0.8
 - The owner reviewed the layered-pass test: rerolled both pairs that held the 0.8 blockout take and picked the 0.6 take without references for the look. Follow-up, same seed, 11 drafts: 0.8 paints the blockout's dummies as mannequins whatever the references; 0.6/0.4 with the spearmen's sheets only gives skin, faces and levelled spears. Write-up: Update section of [2026-10-25-layered-character-passes](research/2026-10-25-layered-character-passes.md).
 - Changed: genvideo crowd-prompting (route at 0.6, refs only for a lifelike side, start frame first; trimmed to stay under 1,200 tokens), CAST-COUNT message (`shared/lib/cine.py`, rebuilt into the 15 skill copies).- Checks: `python -m unittest discover -s tests` 139 OK; `cine.py kb lint` 0 errors; budget YELLOW, no red (crowd-prompting trimmed; runtime shared/lib 189 of 200 KB); `claude plugin validate` passed on the root and each plugin; scrub 6 hits, all third-party GPU benchmarks (expected).
+
+
+## [2026-10-29] research | cinewright-voice R-20261029-1: Mistral Voxtral 3 (TTS and transcription) is API-only with no open weights stated; not a local voice route
