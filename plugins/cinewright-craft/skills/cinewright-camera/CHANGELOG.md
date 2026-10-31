@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261031-1 · 2026-10-31 · Who drives the camera, lens in motion, split heights, eye light (books round C)
+- because: books round C (Kenworthy, *Master Shots* 1-3; Bowen, *Grammar of the Shot*; notes in Ai/books/plugin-learnings/cinema-c-kenworthy-grammar.md section 3)
+- files: shared/vocab/camera-moves.md, shared/vocab/camera-angles.md, references/lens-choice.md, references/lighting-setups.md
+- The actor's start and stop set the camera's, a pinned eye during moves, hidden fast moves; long and short lenses in motion, chases and rack focus in place of a cut; split camera heights for imbalance; catch light and light height. All marked book rule, unverified.
+
 ### C-20261022-2 · 2026-10-22 · Move grammar, arc, push-in and dolly-zoom; lens and focus rules (books track 4)
 - because: books track 4 (Mateu-Mestre, *Framed Ink* 1 and 2; Mascelli, *The Five C's*; Katz, *Shot by Shot*; Block, *The Visual Story*; Brown, *Cinematography*; Gurney), decision 2026-10-22-books-track4
 - files: references/move-grammar.md (new), references/lens-choice.md, references/depth-of-field.md, shared/vocab/camera-moves.md, needs.json (camera-angles); shared/lib/cine.py (MOVE_WORDS, MOVE_SENTENCES, SPACE_3D); evals/evals.json (outcome-3), evals/check_arc.py

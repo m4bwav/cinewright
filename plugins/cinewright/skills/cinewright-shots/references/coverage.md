@@ -21,6 +21,10 @@ sources: ["Daniel Arijon, Grammar of the Film Language, 1976", "Steven D. Katz, 
 - Shot size is emotional distance. Keep a character the audience must not read (an antagonist, a mystery) at FS or wider for the whole scene (after Katz, *Shot by Shot*).
 - Vary the pattern between scenes: progressive (step in), contrasting (WS against CU, high against low) or repetitious (a row of matched reaction CUs). Never run WS, MS, CU by rote in every scene. Each change is definite: a full size step with an angle change, never a half step (after Mascelli, *The Five C's*).
 - Protection: per film, render a reaction bank for each principal, one CU looking frame-left and one frame-right, neutral face, plain receding background, same wardrobe. Per risky card (a dutch, a long move, a complex cross), plan one cheaper static card with `role: protection` and `protects: <id>`, rendered only if the risky card fails twice (after Mascelli).
+- Push only on the character who holds the secret; matched pushes on both bind them. (MS2 6.5, 5.4) Book rule, unverified.
+- For intense grief or shock, the establishing wide can come last. (MS2 8.5) Book rule, unverified.
+- A hidden cut inside a render needs the subject the same size on both sides. (MS3 11.8) Book rule, unverified.
+- One camera support per scene: never mix locked-off and handheld inside one exchange. (Bowen ch. 5) Book rule, unverified.
 
 ## Numbers
 
