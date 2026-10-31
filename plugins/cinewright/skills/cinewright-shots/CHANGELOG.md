@@ -2,12 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-20261031-1 · 2026-10-31 · Cut lines, glances, power by position, pushes on the secret holder (books round C)
+Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+
+### C-20261031-1 · 2026-10-31 · Cut lines, glances, power by position, pushes on the secret holder (books round C)
 - because: books round C (Kenworthy, *Master Shots* 1-3; Bowen, *Grammar of the Shot*; notes in Ai/books/plugin-learnings/cinema-c-kenworthy-grammar.md section 3)
 - files: references/framing.md, references/blocking.md, references/coverage.md, shared/vocab/camera-angles.md, camera-moves.md
 - Framing gets cut lines by size, eye height in reverse pairs, both eyes at MCU, OTS shape and power by position; blocking gets glances and tasks instead of stares, crossings when power changes and threshold talk; coverage gets the push on the secret holder, the late establishing wide and one camera support per scene. All marked book rule, unverified.
-
-### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261022-3 · 2026-10-22 · Frame tension, three-quarter view, horizon and OTS rear view (books track 4)
 - because: books track 4 (Mateu-Mestre, *Framed Ink* 1 and 2; Mascelli, *The Five C's*; Katz, *Shot by Shot*; Block, *The Visual Story*; Brown, *Cinematography*; Gurney), decision 2026-10-22-books-track4; L-001
