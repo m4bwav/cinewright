@@ -37,6 +37,9 @@ sources: ["Joseph V. Mascelli, The Five C's of Cinematography, 1965", "Steven D.
 - Meanings: a push in reads as a realization, a pull back as a reveal or isolation. Tracking slower than the subject lets them pull ahead (winning); faster passes them (losing). A circle around a group unites it or puts it on show (after Katz, *Shot by Shot*).
 - On a long lens, lateral moves look fast and moves toward the camera barely read.
 - Pan, tilt and zoom are 2D moves: calmer, and they keep space flat. Dolly, track, crane and arc are 3D moves: the near and far planes slide apart, so they add depth and intensity. Handheld adds the most (after Block, *The Visual Story*). Dolly against zoom, arcs and the punch-in: the camera entry move-grammar.
+- Who drives (book rules, unverified): the actor's start and stop set the camera's; a camera that stops while the walker goes on, or holds while someone leaves after a parting, is a statement the `beat` names (MS3 2.3, 8.9). Two people moving: lock to one body, not their middle (MS1 1.3). A pacing speaker: fixed distance and height, stop when he stops (MS2 7.10).
+- During a move one eye stays pinned in frame; compile can add "her eyes stay at the same place in frame" (MS1 5.1). Searching: rooted camera, pan and tilt only; indecision: tilt only (MS1 4.8; MS3 5.6). Book rules, unverified.
+- Hide a fast move or zoom inside a body move, a background crossing or a following pan; hold then one rush beats a constant drift (MS2 10.1; MS3 11.2, 11.3; Bowen ch. 6). Book rules, unverified. Verify: camera stop within 0.5 s of the actor's; pinned eye drift under 5 % of frame width.
 
 ## Pitfalls
 

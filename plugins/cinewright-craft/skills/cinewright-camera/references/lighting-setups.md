@@ -22,6 +22,7 @@ sources: ["Blain Brown, Motion Picture and Video Lighting, 3rd ed., 2018", "Blai
 - Name the setup only when the look calls for it: Rembrandt (drama), butterfly (glamour), split (conflict), loop (default portrait) (lighting-terms vocab).
 - Practicals, windows, exteriors and airborne matter: entry light-sources.
 - Hard light for noon sun, noir and menace; soft light for overcast, interiors with windows, faces in close-up.
+- Catch light high in both eyes for MS and closer; top light for an untrusted figure, under light for ghoulish, unfilled hard side light for mystery. (Bowen ch. 4) Book rule, unverified.
 
 ## Numbers
 

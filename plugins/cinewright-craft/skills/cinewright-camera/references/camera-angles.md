@@ -6,7 +6,7 @@ tags: [vocab, camera, angle, framing, horizon]
 last_checked: 2026-10-22
 sources: ["Daniel Arijon, Grammar of the Film Language, 1976", "Marcos Mateu-Mestre, Framed Ink, 2010", "Joseph V. Mascelli, The Five C's of Cinematography, 1965", "https://en.wikipedia.org/wiki/Camera_angle"]
 ---
-<!-- copied from shared/vocab/camera-angles.md sha256:b65da70855b77b88d63b9881e9b2e356279f0b6e641b6fc1ed03bcc6aa181c44; edit the source -->
+<!-- copied from shared/vocab/camera-angles.md sha256:4518c87b6199ba8d7537eaf297f553469ecfe9beffb1b5ef327f854ba7154ab3; edit the source -->
 
 # Camera angles
 
@@ -39,6 +39,7 @@ Framing (`camera.framing`): `single`, `two-shot`, `ots` (over the shoulder), `in
 - `eye-level` is the subject's eye level: seated people get a seated-height camera. A POV shot takes the looker's height, cheated toward it, so an adult looking at a child is slightly high (after Mascelli, *The Five C's*).
 - A person whose eyes sit below the line the other people's eyes are on reads as dominated. Use it for a power shift inside a two-shot (after *Framed Ink*).
 - Dutch angle only when the scene bible's style allows it; it reads as an error otherwise. Tilt enough to look meant, open the scene on level shots, and tilt opposing subjects in opposite directions (`dutch: left` then `right`).
+- Split heights for imbalance: just below the stronger person's eyes, just above the weaker's; both to eye level when they agree. Settling from high to eye level reads as calm. (MS3 9.3, 9.10, 9.5) Book rule, unverified.
 
 ## Verify
 

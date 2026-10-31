@@ -22,6 +22,12 @@ sources: ["Judith Weston, Directing Actors, 1996", "Steven D. Katz, Film Directi
 - When the background changes between cards of a moving subject, the subject leaves card A and enters card B: set `exits` and `enters`. Leaving on the right means entering on the left. Leaving close past the camera means entering close past it.
 - A card that cuts into a close shot has the person move into it (sits into frame, steps into the CU), so the edit can cut on the move.
 - Three or more people: entry group-staging.
+- Talking people mostly look at a task, an object or ahead; write the glance beats and one held look at the turn. Two people facing and staring for the whole card is the default failure. (Kenworthy MS2 9.3, 6.8) Book rule, unverified.
+- Give each speaker a task with a named object; an object both look at and one touches ties the pair. (MS2 6.9, 9.11) Book rule, unverified.
+- When power changes hands, the two cross and end on each other's sides; set `position_end` for both. (MS2 3.3) Book rule, unverified.
+- At a shock, one person stops while the others go on and turn back. (MS2 8.2; MS3 8.9) Book rule, unverified.
+- Secret or uneasy talk on a threshold, backlit, nobody crossing; a barrier between the two that one breaks at the turn. (MS2 3.4, 1.5) Book rule, unverified.
+- Groups of five or more are staggered in depth so every face reads. (Bowen ch. 2) Book rule, unverified.
 
 ## Numbers
 

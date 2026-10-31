@@ -21,6 +21,13 @@ sources: ["Bruce Block, The Visual Story, 2nd ed., 2008", "Gustavo Mercado, The 
 - Contrast and affinity (Block): pick the visual component that changes with the story (space, line, shape, tone, color, movement, rhythm). Keep it similar (affinity) in calm beats; push it apart (contrast) as intensity rises. Write which component in the brief.
 - Prompt form: "on the left third of the frame, looking toward frame right" beats "rule of thirds composition", which models ignore.
 - Pressure, tension, horizon and open or closed framing: entry frame-tension. Size with lens: cinewright-camera lens-choice.
+- Cut lines by size (Bowen): knee shot just above or below the knee, never on it; full shot head and feet just inside the edges; MCU across the chest at about the second button, elbows out; CU chin and a sliver of shoulder, crown may go; choker forehead and chin out, subject near still. Write the cut line beside the size word in the card (the compiler does not add it yet). Book rule, unverified.
+- An ECU card needs an earlier card where the same object reads at normal size. Book rule, unverified.
+- Reverse pairs keep the eyes at the same height in frame (within a few percent of frame height); nobody is reframed while speaking. Book rule, unverified.
+- MCU and closer show both eyes; `view: profile` needs a reason in `beat` (secrecy, aloofness, start of a pan to what they see). Book rule, unverified.
+- OTS: the near head and shoulder form an L in one bottom corner and stay there; a dirty single is a thin, motionless slice on the edge. Book rule, unverified.
+- Profile 50-50 at MCU or closer only for confrontation, romance or comedy; neutral talk stays MS or wider. Book rule, unverified.
+- Power by position: the dominant figure higher in frame or nearest the lens; a left-out character goes exactly at frame centre even when small or in shadow. Book rule, unverified.
 
 ## Numbers
 
@@ -35,3 +42,4 @@ sources: ["Bruce Block, The Visual Story, 2nd ed., 2008", "Gustavo Mercado, The 
 
 - "Cinematic composition" and "rule of thirds" alone change nothing; name the third and the facing.
 - Centering two people in a two-shot makes them overlap; give each a side.
+- Too much headroom in a talking CU: the jaw drops out of the bottom edge on open-mouth frames.

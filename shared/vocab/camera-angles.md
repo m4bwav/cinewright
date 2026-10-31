@@ -38,6 +38,7 @@ Framing (`camera.framing`): `single`, `two-shot`, `ots` (over the shoulder), `in
 - `eye-level` is the subject's eye level: seated people get a seated-height camera. A POV shot takes the looker's height, cheated toward it, so an adult looking at a child is slightly high (after Mascelli, *The Five C's*).
 - A person whose eyes sit below the line the other people's eyes are on reads as dominated. Use it for a power shift inside a two-shot (after *Framed Ink*).
 - Dutch angle only when the scene bible's style allows it; it reads as an error otherwise. Tilt enough to look meant, open the scene on level shots, and tilt opposing subjects in opposite directions (`dutch: left` then `right`).
+- Split heights for imbalance: just below the stronger person's eyes, just above the weaker's; both to eye level when they agree. Settling from high to eye level reads as calm. (MS3 9.3, 9.10, 9.5) Book rule, unverified.
 
 ## Verify
 

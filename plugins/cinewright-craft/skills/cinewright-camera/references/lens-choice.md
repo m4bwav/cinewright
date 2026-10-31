@@ -22,6 +22,10 @@ sources: ["Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "St
 - Punch-in at a scene's turn: cinewright-camera move-grammar.
 - One lens family per film in `bibles/style.json` `lens_family`, with its range in mm ("spherical primes, 24-85mm"). The diff warns LENS when a card leaves it.
 - Write the focal length in the card (`lens_mm`); the compiler says "50mm lens". Add an effect word only when the effect is the point ("wide-angle lens inches from the face, the room stretching away", "telephoto from far away, depth compressed"): a size word alone does not say what the lens does.
+- Long lens: a push needs a long run to change the frame; people walking at camera barely grow (struggle, trapped); a fixed long-lens pan with a runner and crossers close to lens reads as speed. (MS3 1.3, 1.4) Book rule, unverified.
+- Short lens: an actor brushing past close makes a near-still camera urgent; a sideways slide shows room size best with one figure at mid depth; a fast push needs a foreground walker to ride on. (MS3 1.5-1.8, 2.6) Book rule, unverified.
+- Chase: constant distance and frame position, low camera, objects flashing between. (MS3 2.2, 7.7) Book rule, unverified.
+- Rack focus can replace a cut on a locked long lens; one sharp plane at a time. When a subject exits a shallow shot, focus moves to the background. (MS3 1.3; Bowen ch. 3) Book rule, unverified.
 
 ## Numbers
 
