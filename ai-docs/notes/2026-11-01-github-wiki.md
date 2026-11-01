@@ -21,7 +21,7 @@ Not tested: `qc`, `takes` and `voice` (they need rendered media); compiling for 
 
 ## Rough edges found
 
-1. `.github/workflows/ci.yml` and AGENTS.md still describe the repository as private (manual-dispatch CI on a self-hosted runner). The workflow's own comment plans push and pull_request triggers on a hosted matrix once public. Left for Mark: it changes a workflow.
+1. CI and AGENTS.md said private; fixed in PR #70 (hosted matrix, ffmpeg, Python 3.9 except ubuntu-latest).
 2. No root CHANGELOG; release notes live only on the GitHub releases.
 3. `cine.py budget` is YELLOW at 0.2.0 (known, AGENTS.md asks for a one-line mention).
 
