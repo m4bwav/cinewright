@@ -37,3 +37,10 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Evidence: field lesson, 2026-10-24 (envelope against word times on 16 takes; the cut came to 89.96 s against an 85-90 s target in one pass)
 - Scope: skill
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-24
+
+### L-006 · 2026-10-30 · Split screen from halves rendered apart: speaker plays, listener loops (`split-screen-idle-half`)
+- Hypothesis: when each half of a split-screen dialogue was rendered alone, playing both halves at once shows the listener's lips moving with no sound
+- Rule: Cut the split screen as sequential beats: the speaker's half plays its take with the sound; the listener's half loops a silent stretch of the same person at the same size, played forward then reversed (ping-pong). A take written as a silent reaction makes the best listener loop
+- Evidence: field lesson, 2026-10-30 (ten halves, five windows; the contact sheet reads as a live two-way)
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-30

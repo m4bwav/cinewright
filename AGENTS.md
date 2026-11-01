@@ -8,7 +8,7 @@ cinewright: an evergreen plugin set that gives an agent the craft of every film 
 
 ## Rules
 
-- This repository goes public at release. Nothing that ships may hold LAN addresses, hostnames, GPU models, local drive paths, or names of the maintainer's private projects. Private notes go to the everlast vault sidecar (`--private`).
+- This repository is public. Nothing that ships may hold LAN addresses, hostnames, GPU models, local drive paths, or names of the maintainer's private projects. Private notes go to the everlast vault sidecar (`--private`).
 - Knowledge is written as rules, numbers and vocabulary a capable model lacks. One default, not a menu. Cite primary sources; mark what is unverified; date anything that changes.
 - Small files with pointers. A skill reads its generated `references/INDEX.md`, then opens only the entries it needs. Scripts are run, never read. Size budgets in PLAN.md are enforced by lint and CI.
 - Take ideas from other skill repos, never text. Anything adapted from smixs/visual-skills (CC BY 4.0) carries attribution.
@@ -17,7 +17,7 @@ cinewright: an evergreen plugin set that gives an agent the craft of every film 
 - No AI attribution anywhere: no Co-Authored-By trailers, no "generated with" lines in commits, PRs or files.
 - Prose: plain short sentences, no em dashes.
 - Edit vocabulary, schemas and the runtime library in `shared/`, never the copies inside a skill. Run `python scripts/cine.py build`, then the checks below; lint fails on drift.
-- Before a PR: `python -m unittest discover -s tests`, `python scripts/cine.py kb lint`, `python scripts/cine.py budget` (red fails; tell Mark about a yellow in one line), `claude plugin validate` on the root and each `plugins/*` folder. Then `python scripts/cine.py scrub --names <the vault sidecar's scrub-names.txt>`: kb lint catches drive paths, LAN addresses and GPU names but not private project names, and evidence lines copied from private lessons leaked film names in #30 and #31. Third-party GPU benchmarks in ai-docs are expected hits. Add a new private project's name to that file when the work starts. CI is manual-dispatch while private, so run these locally and quote the output in `ai-docs/log.md`.
+- Before a PR: `python -m unittest discover -s tests`, `python scripts/cine.py kb lint`, `python scripts/cine.py budget` (red fails; tell Mark about a yellow in one line), `claude plugin validate` on the root and each `plugins/*` folder. Then `python scripts/cine.py scrub --names <the vault sidecar's scrub-names.txt>`: kb lint catches drive paths, LAN addresses and GPU names but not private project names, and evidence lines copied from private lessons leaked film names in #30 and #31. Third-party GPU benchmarks in ai-docs are expected hits. Add a new private project's name to that file when the work starts. CI runs the same checks on push and pull requests (Linux, Windows, macOS; Python 3.9 and 3.x); still quote the local output in `ai-docs/log.md`.
 - Shipped files cite lessons from private projects as "field lesson NNN" with a title, never the project's name (see the decision in `ai-docs/decisions/`).
 
 ## everlast (session knowledge, load on demand)
