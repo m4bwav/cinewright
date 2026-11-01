@@ -21,6 +21,7 @@ sources: ["Huyen, AI Engineering, O'Reilly 2025, on position bias in judges and 
 - Fix structure before style: positions, identity and action before light, grade and texture.
 - Every iteration can bring new faults while removing old ones: compare the new take with the previous keeper on all axes, not only the one that changed.
 - Stop when the best take has not changed for two rounds, or the card hits three strikes.
+- Ask alignment (does the take match the card) and fidelity (does it look real) as two separate pairwise questions, and record the pick for each axis. One merged question lets a real-looking take that misses the card beat a faithful one (Foster, *Generative Deep Learning* 2e, ch. 13).
 - Rank takes blind to what they cost: reroll counts, render time and the planner's hopes stay out of the first pass. A take that took five rerolls has no claim on the cut (after Murch).
 
 ## Numbers
@@ -32,6 +33,7 @@ sources: ["Huyen, AI Engineering, O'Reilly 2025, on position bias in judges and 
 ## Pitfalls
 
 - Absolute scores a few points apart: noise. Rank pairwise.
+- A VLM judge sees a clip as a few frames squeezed into a fixed token budget: evenly spaced frames can skip the moment that decides the take. Sample at beat times (contact, cut points) instead (Foster, *Generative Deep Learning* 2e, ch. 13).
 - A judge used as the only selector across many samples: the search finds that judge's blind spots.
 
 ## Verify
