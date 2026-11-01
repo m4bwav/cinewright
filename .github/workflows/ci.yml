@@ -1,19 +1,39 @@
 name: ci
 
-# While the repository is private there are no paid Actions minutes (PLAN D6).
-# Manual dispatch only, on a self-hosted runner. No runner was registered on
-# 2026-10-03, so the same checks run locally before each PR (see ai-docs/log.md).
-# Once public: add push and pull_request triggers and a GitHub-hosted
-# ubuntu-latest, windows-latest, macos-latest matrix with Python 3.9 and 3.x.
+# The repository is public, so GitHub-hosted runners are free (PLAN D6).
 
 on:
+  push:
+    branches: [main]
+  pull_request:
   workflow_dispatch:
 
 jobs:
   checks:
-    runs-on: [self-hosted]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: ['3.9', '3.x']
+        exclude:
+          # ubuntu-latest (26.04) has no Python 3.9 build; Windows and macOS cover 3.9.
+          - os: ubuntu-latest
+            python: '3.9'
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: ffmpeg (qc, voice and look tests)
+        shell: bash
+        run: |
+          case "$RUNNER_OS" in
+            Linux) sudo apt-get update -q && sudo apt-get install -yq ffmpeg ;;
+            macOS) brew install ffmpeg ;;
+            Windows) choco install ffmpeg -y --no-progress ;;
+          esac
+          ffmpeg -version | head -1
       - name: Tests
         run: python -m unittest discover -s tests
       - name: Knowledge-base lint (schemas, links, copies, manifests, hygiene)

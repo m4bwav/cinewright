@@ -51,7 +51,7 @@ Edit shared vocabulary, schemas and the library in `shared/`, never the copies i
 
 Ideas (not text) from MIT-licensed skill repositories, including DirectorSKILL: response-size ceilings, the repair cost ladder, one owning reference per dimension, continuing from the previous take's observed end state, one change per reroll. Film craft from Arijon, Block, Bordwell and Thompson, Brown, Cousins, Field, Katz, Landis, LoBrutto, Mascelli, McKee, Miller, Murch, Riley, Rowlands, Snyder, Thomas and Johnston, and Weston, cited in each entry.
 
-Banner image generated locally with Z-Image Turbo in ComfyUI, seed 18210612; prompt and workflow in [assets/banner-workflow.api.json](assets/banner-workflow.api.json). The social preview, [.github/images/social-preview.jpg](.github/images/social-preview.jpg), is the same image cropped to 1280 by 640 with the title added.
+Banner image generated locally with Z-Image Turbo in ComfyUI, seed 18210612; prompt and workflow in [assets/banner-workflow.api.json](assets/banner-workflow.api.json). The social preview, [assets/social-preview.jpg](assets/social-preview.jpg), is the same image cropped to 1280 by 640 with the title added.
 
 ## License
 
