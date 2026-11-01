@@ -1386,6 +1386,14 @@ class TestSpeakers(Base):
         self.assertIn("Maren with a low, dry, unhurried voice", text, "the name stays as written outside the line")
         self.assertEqual(lib.spoken(p, "Marena and Maren."), "Marena and MAH-ren.", "whole words only")
 
+    def test_h3_lines_lose_ellipses(self):
+        p, c = self.offscreen()
+        c["dialogue"][0]["line"] = "Maren... keeps the light…"
+        _, text, _, _, _ = self.compiled(p, "minimax-h3", c)
+        self.assertIn("<d>[English] Maren, keeps the light.</d>", text)
+        self.assertEqual(lib.h3_line("Wait... what"), "Wait, what.")
+        self.assertEqual(lib.h3_line("Really?"), "Really?")
+
     def test_continuity_flags_offscreen_two_speakers_tone_and_names(self):
         p, c = self.offscreen()
         warn = lambda: sorted({i["code"] for i in lib.continuity_diff(p) if i["card"] == "1C"})
