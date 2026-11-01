@@ -841,3 +841,5 @@ From the Blender books (van Gumster, Hess, Brito, Pearson; polywright's recipes 
 - Note: ai-docs/notes/2026-11-01-github-wiki.md (rough edges: CI and AGENTS still say private; no root CHANGELOG)
 
 ## [2026-11-01] ci | Hosted CI on push and pull requests (PR #70): ubuntu/windows/macos, Python 3.9 (not on ubuntu-latest 26.04, no build) and 3.x, ffmpeg installed per runner. First hosted runs found missing ffmpeg and a kb lint break from PR #69 (README linked .github/images, which test copies skip); preview image moved to assets/. Local: 139 tests OK, kb lint 0 errors.
+
+## [2026-11-01] update | compile strips ellipses from H3 <d> lines (h3_line: mid-line ellipsis -> comma, trailing -> period, adds a closing period); only for templates with <d>. Asked by comfyui-gen L-181 (59 ellipses in past prompts). Local: 141 tests OK, kb lint 0 errors, budget yellows unchanged, scrub hits are the known GPU benchmark notes.

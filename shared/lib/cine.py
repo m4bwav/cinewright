@@ -1046,6 +1046,13 @@ def spoken(p, line):
     return re.sub(pat, lambda m: p.pronounce[m.group(1)], line)
 
 
+def h3_line(line):
+    """A line for an H3 <d> tag: the guide wants it to end in . ? or ! with no ellipses (59 in past prompts)."""
+    line = re.sub(r"\s*(\.\.\.|…)\s*$", ".", line.strip())
+    line = re.sub(r"\s*(\.\.\.|…)\s*", ", ", line).strip(" ,")
+    return line if line[-1:] in ".?!" else line + "."
+
+
 # Delivery notes are pasted after "says", so a tone that starts with a speech verb doubles it ("says mutters").
 SPEECH_VERBS = re.compile(r"^(says|said|mutters|murmurs|whispers|shouts|yells|screams|cries|calls|snaps|growls|hisses|roars|sighs|laughs|sobs|"
                           r"barks|snarls|asks|replies|answers|tells|bellows|groans|moans|grumbles|stammers)\b", re.I)
@@ -1268,7 +1275,7 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
                 continue
             quiet = [p.chars[i]["name"] for i in in_shot if i != d["character"]]
             lines.append(_sentence(tpl.format(
-                name=ch["name"], line=spoken(p, d["line"]), tone=tone or "", tone_clause=(" " + tone) if tone else "",
+                name=ch["name"], line=(h3_line if "<d>" in tpl else str)(spoken(p, d["line"])), tone=tone or "", tone_clause=(" " + tone) if tone else "",
                 tone_paren=(" (%s)" % tone) if tone else "", speaker=speakers.get(d["character"], "S1"),
                 voice_clause=(" with a %s voice" % ch["voice"]) if ch.get("voice") else "",
                 silent_clause=prof["dialogue_silent"].format(names=_and(quiet)) if quiet and prof.get("dialogue_silent") else "")))
