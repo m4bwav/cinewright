@@ -15,12 +15,25 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python: ['3.9', '3.x']
+        exclude:
+          # ubuntu-latest (26.04) has no Python 3.9 build; Windows and macOS cover 3.9.
+          - os: ubuntu-latest
+            python: '3.9'
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
+      - name: ffmpeg (qc, voice and look tests)
+        shell: bash
+        run: |
+          case "$RUNNER_OS" in
+            Linux) sudo apt-get update -q && sudo apt-get install -yq ffmpeg ;;
+            macOS) brew install ffmpeg ;;
+            Windows) choco install ffmpeg -y --no-progress ;;
+          esac
+          ffmpeg -version | head -1
       - name: Tests
         run: python -m unittest discover -s tests
       - name: Knowledge-base lint (schemas, links, copies, manifests, hygiene)
