@@ -25,7 +25,7 @@ Not tested: `qc`, `takes` and `voice` (they need rendered media); compiling for 
 2. No root CHANGELOG; release notes live only on the GitHub releases.
 3. `cine.py budget` is YELLOW at 0.2.0 (known, AGENTS.md asks for a one-line mention).
 
-Fixed this session: homepage set to the wiki, custom social preview uploaded (`.github/images/social-preview.jpg`, 1280x640 crop of the banner with the title), README links the wiki, CODEMAP's CI line no longer says private.
+Fixed this session: homepage set to the wiki, custom social preview uploaded (`assets/social-preview.jpg`, 1280x640 crop of the banner with the title), README links the wiki, CODEMAP's CI line no longer says private.
 
 ## Updating at the next release
 
