@@ -836,3 +836,6 @@ From the Blender books (van Gumster, Hess, Brito, Pearson; polywright's recipes 
 ## [2026-10-29] research | cinewright-voice R-20261029-1: Mistral Voxtral 3 (TTS and transcription) is API-only with no open weights stated; not a local voice route
 
 ## [2026-10-31] update | Books round C into cinewright (Master Shots 1-3, Grammar of the Shot): framing, blocking, coverage, camera-moves, camera-angles, lens-choice, lighting-setups; all book rule, unverified (C-20261031-1 in cinewright-shots and cinewright-camera). Checks: unittest 139 OK; kb lint 0 errors; budget YELLOW (genvideo folder 154/150 KB, shared/lib 189/100, camera-moves condensed to stay under 1200 tokens); scrub 6 hits, all GPU names in ai-docs/research benchmarks; plugin validate passed x4.
+
+## [2026-11-01] docs | GitHub wiki (9 pages, 0.2.0, verified from the v0.2.0 tag) and custom social preview; homepage set to the wiki; README links it
+- Note: ai-docs/notes/2026-11-01-github-wiki.md (rough edges: CI and AGENTS still say private; no root CHANGELOG)

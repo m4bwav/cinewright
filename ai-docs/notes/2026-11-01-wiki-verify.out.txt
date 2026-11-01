@@ -1,0 +1,85 @@
+== python scripts/cine.py cards list examples/three-shot
+| # | Slate | Size | Angle | Az | Move | Lens | Cast | Action | s |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | 1A | WS | eye-level | 90 | static | 24 | Maren, Tomas | Maren thumbs the tin matchbox open with a click and pinches out a single match, holding it still between finger and thumb. | 6 |
+| 2 | 1B | MCU | eye-level | 45 | dolly-in | 50 | Maren | Maren slowly stretches her arm out toward Tomas, off screen, the match steady in her fingers. | 4 |
+| 3 | 1C | MCU | eye-level | 135 | static | 50 | Tomas | Tomas takes the match from a hand entering frame left and closes his fist tight around it, pulling it to his chest. | 4 |
+shot list: 3 shots, 1 scene(s), 14s
+-- exit 0
+== python scripts/cine.py cards validate examples/three-shot
+cards validate: 3 cards, 0 errors
+-- exit 0
+== python scripts/cine.py continuity diff examples/three-shot
+continuity diff: 3 cards, 0 errors, 0 warnings
+-- exit 0
+== python scripts/cine.py continuity diff examples/three-shot --with examples/three-shot/planted/1C.json
+ERROR 1C AXIS: camera is on side B of the 1 axis (between Maren and Tomas, across the lens): it crosses the line, so every left and right flips. Move it to side A, or set crosses_axis with a cross_reason (a neutral shot or a move seen on screen).
+ERROR 1C EYELINE: Tomas looks frame-left at Maren; from side B the eyeline must be frame-right
+continuity diff: 3 cards, 2 errors, 0 warnings
+-- exit 1
+== python scripts/cine.py compile examples/three-shot --model veo --out /tmp/cw-veo
+== 1A  veo-3.1-generate-001  6s 16:9 720p  214 words  est. $2.40
+== 1B  veo-3.1-generate-001  4s 16:9 720p  163 words  est. $1.60
+== 1C  veo-3.1-generate-001  4s 16:9 720p  146 words  est. $1.60
+wrote 3 prompts to <tmp>/cw-veo (model card veo-3-1.md, last_checked 2026-10-03)
+est. $5.60 for one take of each (list price on 2026-10-03; a render needs the user's go)
+-- exit 0
+== cat /tmp/cw-veo/1A.txt
+Wide shot, eye-level angle, 24mm lens, static camera. Maren, a lean woman in her sixties with deep-set grey eyes, silver hair in a single braid and a thin white scar through her left eyebrow, wearing a navy wool fisherman's sweater with a frayed collar, on the left of the frame, holding a small dented tin matchbox with a hinged lid, scratched silver, the size of a palm. Tomas, a wiry boy of about twelve with a mop of curly black hair, brown eyes and a gap between his front teeth, wearing an oversized yellow oilskin coat over a grey shirt, on the right of the frame. Maren thumbs the tin matchbox open with a click and pinches out a single match, holding it still between finger and thumb. Maren is looking down, at the tin matchbox. Tomas is looking toward frame left, at Maren. The round lamp room atop a stone lighthouse, a huge dark brass-and-glass lens in the center, rain-streaked windows all around, night. Cold blue storm light through the windows from the sea side, lightning flashes, soft key light from frame right. 35mm film look, cold blue storm light against warm amber flame, deep shadows, soft film grain, naturalistic color. Ambient noise: rain lashing the windows and wind howling around the tower.
+-- exit 0
+== python scripts/cine.py kb search eyeline
+eyelines (cinewright-continuity): Which way each character must look in singles and over-the-shoulder shots so two separately generated shots read as people looking at each other.
+screen-direction (cinewright-continuity): The fixed phrases for travel, eyeline and frame position that every card and compiled prompt uses, so direction never drifts between shots.
+failures-picture (cinewright-genvideo): Failure codes for rendered takes (identity, wardrobe, props, direction, eyeline, light, look, camera, space, attention): symptom, cause, cheapest fix, rung, check.
+shot-checklist (cinewright-continuity): The script supervisor's per-shot checks, each diff code with its usual fix, and the checks a person still makes by eye.
+compile-rule (cinewright-genvideo): How a shot card and the bibles become one model's prompt: what goes in, in what order, what is pasted verbatim, and how durations and limits are handled.
+cutting-a-battle (cinewright-edit): Cut a battle as geography wides between small fights, keep each side's screen direction, cross-cut fronts by phase, and use pace changes and sound to carry scale the pictures cannot.
+cutting-around-bad-frames (cinewright-edit): Trim the settle frames at a generation's head and the drift at its tail, cover a mid-shot morph with a cutaway or reaction, and send identity or story faults back to a re-render, not the edit.
+directors-world (cinewright-history): Signature-device cards for Akerman, Kieslowski, Hou Hsiao-hsien, Claire Denis, Spike Lee, Kathryn Bigelow, Sofia Coppola and Barry Jenkins, each with one reference scene.
+-- exit 0
+== python scripts/cine.py budget
+measure                                   value  green<= yellow<=  status worst
+SKILL.md lines                               63       80      120  green  plugins/cinewright-craft/skills/cinewright-edit/SKILL.md
+SKILL.md body tokens (est.)                1283     1200     2000  yellow plugins/cinewright/skills/cinewright-qc/SKILL.md
+one description, characters                 382      350      500  yellow cinewright-sets
+all descriptions, characters               4778     4000     5500  yellow 16 skills
+core descriptions, characters              1565     1800     2500  green  plugins/cinewright
+reference entry lines                        53       60      100  green  plugins/cinewright/skills/cinewright-continuity/references/axis-and-screen-direction.md
+reference entry tokens (est.)              1199      700     1200  yellow plugins/cinewright-craft/skills/cinewright-design/references/lora-or-references.md
+model card tokens (est.)                   1176      900     1200  yellow plugins/cinewright/skills/cinewright-genvideo/references/minimax-h3.md
+references/INDEX.md tokens (est.)           860     1500     3000  green  plugins/cinewright/skills/cinewright-genvideo/references/INDEX.md
+skill folder KB (without shared/lib copies)      149      150      300  green  cinewright-genvideo
+runtime shared/lib KB, counted once         186      100      200  yellow shared/lib
+files per plugin                            309      350      450  green  cinewright-craft
+repo ZIP KB                                1870     2048     5120  green  tracked files
+duplicate paragraphs across skills            0        0     1000  green  
+budget: YELLOW (tokens are bytes / 4, an estimate)
+-- exit 0
+== python scripts/cine.py compile examples/three-shot --model nosuch --out /tmp/cw-x
+no model card for 'nosuch'. Install cinewright-genvideo, or check `kb search nosuch`.
+-- exit 1
+== python plugins/cinewright/skills/cinewright/scripts/cine.py --help
+usage: cine.py [-h] {kb,cards,compile,continuity,qc,takes,voice} ...
+
+cinewright: plan, check and compile shots.
+
+positional arguments:
+  {kb,cards,compile,continuity,qc,takes,voice}
+    kb                  knowledge base
+    cards               shot cards
+    compile             card plus bibles to one model's prompt
+    continuity          script supervisor checks
+    qc                  check rendered takes (needs ffmpeg)
+    takes               take records
+    voice               character voices: measure, reference clips, drift
+                        checks (needs ffmpeg)
+
+options:
+  -h, --help            show this help message and exit
+-- exit 0
+== python -m unittest discover -s tests -q
+----------------------------------------------------------------------
+Ran 138 tests in 44.510s
+
+OK
+-- exit 0
