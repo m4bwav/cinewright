@@ -39,3 +39,5 @@
 
 ## Next single action
 - Run [next-session-prompt.md](next-session-prompt.md) (S7d: make the skills find their own folder on claude.ai, public CI triggers, 0.1.1).
+
+- 2026-11-01: wiki live (https://github.com/m4bwav/cinewright/wiki), update steps in ai-docs/notes/2026-11-01-github-wiki.md; social preview set. Open for Mark: switch CI to hosted push/PR triggers now the repo is public.

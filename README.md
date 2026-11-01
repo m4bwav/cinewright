@@ -14,6 +14,8 @@ Status: 0.2.0. Install routes proved on Windows 11: Claude Code, GitHub Copilot 
 | `cinewright-craft` | `cinewright-script` (logline, beats, dialogue), `cinewright-design` (turnarounds, props, costume, color), `cinewright-sets` (set plans, wall strings, plates), `cinewright-movement` (weight, fights, battles, hard subjects), `cinewright-camera` (lens, light, format), `cinewright-history` (style cards), `cinewright-edit` (cutting, pacing), `cinewright-finish` (grade, crop, VFX, delivery), `cinewright-sound` (layers, mix, loudness), `cinewright-voice` (character voices that match shot to shot) | deeper craft |
 | `cinewright-dev` | `cinewright-curate` (add, verify and retire knowledge-base entries; refresh model cards; works in a clone of this repository) | maintainers |
 
+The [wiki](https://github.com/m4bwav/cinewright/wiki) has the pipeline step by step, every `cine.py` command with real output, the video models and an FAQ.
+
 A worked example lives in [examples/three-shot/](examples/three-shot/): a one-line idea taken through brief, script, shot list, bibles, design notes, a continuity diff that catches a planted error, and compiled Veo and MiniMax H3 prompts.
 
 ## Install
@@ -49,7 +51,7 @@ Edit shared vocabulary, schemas and the library in `shared/`, never the copies i
 
 Ideas (not text) from MIT-licensed skill repositories, including DirectorSKILL: response-size ceilings, the repair cost ladder, one owning reference per dimension, continuing from the previous take's observed end state, one change per reroll. Film craft from Arijon, Block, Bordwell and Thompson, Brown, Cousins, Field, Katz, Landis, LoBrutto, Mascelli, McKee, Miller, Murch, Riley, Rowlands, Snyder, Thomas and Johnston, and Weston, cited in each entry.
 
-Banner image generated locally with Z-Image Turbo in ComfyUI, seed 18210612; prompt and workflow in [assets/banner-workflow.api.json](assets/banner-workflow.api.json).
+Banner image generated locally with Z-Image Turbo in ComfyUI, seed 18210612; prompt and workflow in [assets/banner-workflow.api.json](assets/banner-workflow.api.json). The social preview, [.github/images/social-preview.jpg](.github/images/social-preview.jpg), is the same image cropped to 1280 by 640 with the title added.
 
 ## License
 
