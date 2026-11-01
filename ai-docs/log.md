@@ -839,3 +839,5 @@ From the Blender books (van Gumster, Hess, Brito, Pearson; polywright's recipes 
 
 ## [2026-11-01] docs | GitHub wiki (9 pages, 0.2.0, verified from the v0.2.0 tag) and custom social preview; homepage set to the wiki; README links it
 - Note: ai-docs/notes/2026-11-01-github-wiki.md (rough edges: CI and AGENTS still say private; no root CHANGELOG)
+
+## [2026-11-01] ci | Hosted CI on push and pull requests (PR #70): ubuntu/windows/macos, Python 3.9 (not on ubuntu-latest 26.04, no build) and 3.x, ffmpeg installed per runner. First hosted runs found missing ffmpeg and a kb lint break from PR #69 (README linked .github/images, which test copies skip); preview image moved to assets/. Local: 139 tests OK, kb lint 0 errors.
