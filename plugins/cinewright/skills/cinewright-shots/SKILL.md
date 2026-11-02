@@ -16,7 +16,7 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 
 ## Step 1: block the scene
 
-Before any card, write each person's position and travel as seen from camera side A into `bibles/scenes.json` (`kb show blocking`). The bibles must exist first (cinewright-continuity). Set the scene's `space` (deep, flat, limited, ambiguous) and stage to it (`kb show space-types`).
+Before any card, write each person's position and travel as seen from camera side A into `bibles/scenes.json` (`kb show blocking`). The bibles must exist first (cinewright-continuity). Set the scene's `space` (deep, flat, limited, ambiguous) and stage to it (`kb show space-types`). Fights, chases, car scenes and arguments: start from a recipe in `kb show scene-setups`.
 
 ## Step 2: choose coverage
 

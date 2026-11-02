@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+Entry shape: `### C-20261101-1 · 2026-11-01 · Scene setups for fights, chases, cars and arguments (MS1)
+- because: book distillation (Kenworthy, *Master Shots* Vol. 1, 2009), pre-approved
+- files: references/scene-setups.md (new), references/blocking.md, SKILL.md
+- A new entry gives book card recipes for fights, chases, car scenes and arguments; blocking gets circling, half-circle crossings and the look back on the camera side. All marked book rule, unverified.
+
+### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261031-1 · 2026-10-31 · Cut lines, glances, power by position, pushes on the secret holder (books round C)
 - because: books round C (Kenworthy, *Master Shots* 1-3; Bowen, *Grammar of the Shot*; notes in Ai/books/plugin-learnings/cinema-c-kenworthy-grammar.md section 3)

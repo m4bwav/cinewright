@@ -20,6 +20,7 @@ sources: ["Bruce Block, The Visual Story, 2nd ed., 2008, ch. 8 (Movement)", "Bla
 - Punch-in at the turn: on the beat the script marks as the scene's turn, cut from a wide straight to a much closer, longer-lens shot on the same axis. It is the one straight-in cut that is meant (the diff's STRAIGHT-IN warning can stay, with the reason in `notes`).
 - Tracking alongside a walker at the same speed holds them; slower lets them pull ahead, faster leaves them behind (camera-moves vocab).
 - A reveal moves past a foreground object or around a corner to show something new; the card's `beat` names what is revealed.
+- Dominance picks the move in a confrontation. A steady push at the one retreating makes the audience the aggressor; a slow pull back from an advancing speaker makes the listener defensive; a held tight long-lens frame the actor lunges into is the most violent and the most reliable to generate (MS1 11.2-11.4). A push that breaks into a whip pan must ride a swung gun or fist at its exact speed (MS1 11.5). Book rules, unverified.
 
 ## Pitfalls
 

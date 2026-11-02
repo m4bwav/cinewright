@@ -18,6 +18,7 @@ sources: ["Walter Murch, In the Blink of an Eye, 2nd ed., 2001", "Karel Reisz an
 - Generated motion speeds differ between takes. If the incoming take is slower or faster, cut later in the slow one so the motion speed matches at the cut.
 - Never cut on a still frame between two static shots of the same subject at similar size: that is a jump cut.
 - A cut on a look or a reaction needs no motion match, so it is often safer between generations (entry cut-points).
+- Hits generated in two halves: card A shows the strike low and close on the aggressor, card B the recoil on a long lens from low. Let A run one or two strikes, then cut to B on the next impact; the cut and the sound make the contact the model cannot (MS1 1.5). Book rule, unverified.
 
 ## Numbers
 
