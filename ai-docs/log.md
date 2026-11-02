@@ -850,3 +850,7 @@ From the Blender books (van Gumster, Hess, Brito, Pearson; polywright's recipes 
 ## 2026-11-01 MS1 scene setups
 
 Book distillation from Kenworthy, Master Shots Vol. 1: new cinewright-shots entry scene-setups, rules added to blocking, camera-moves (shared vocab), move-grammar, lens-choice, cutting-on-action. Checks: unittest 140 OK; kb lint 0 errors; budget YELLOW (pre-existing, none from this change); plugin validate passed x4; scrub 9 hits, all pre-existing GPU benchmark notes in ai-docs.
+
+## 2026-11-01: exposure as a colour choice (Color & Light)
+
+- cinewright-camera references/exposure.md gains one rule from Pickard, Color & Light (pp. 25, 56-57), from the everscout ai-video books pass, pre-approved. No version bump. Checks: unittest OK, kb lint 0 errors, budget yellow (pre-existing qc body and sets description), plugin validate passed, scrub 9 hits all expected third-party GPU benchmarks.
