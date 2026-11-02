@@ -28,6 +28,7 @@ sources: ["Judith Weston, Directing Actors, 1996", "Steven D. Katz, Film Directi
 - At a shock, one person stops while the others go on and turn back. (MS2 8.2; MS3 8.9) Book rule, unverified.
 - Secret or uneasy talk on a threshold, backlit, nobody crossing; a barrier between the two that one breaks at the turn. (MS2 3.4, 1.5) Book rule, unverified.
 - Groups of five or more are staggered in depth so every face reads. (Bowen ch. 2) Book rule, unverified.
+- Circling: the dominant one walks side-on around the other, who shuffles sideways to keep facing him and never spins on the spot (MS1 11.1). Moving arguments cross paths in half-circles with several changes of direction, never straight back-and-forth (MS1 11.8). A walking argument's leader looks back over the shoulder on the camera side, so the face reads (MS1 11.7). Book rules, unverified.
 
 ## Numbers
 

@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+Entry shape: `### C-20261101-1 · 2026-11-01 · Hits generated in two halves (MS1)
+- because: book distillation (Kenworthy, *Master Shots* Vol. 1, 2009), pre-approved
+- files: references/cutting-on-action.md
+- Strike on card A, recoil on card B, cut on the next impact. Book rule, unverified.
+
+### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261022-4 · 2026-10-22 · Animatic without ffmpeg
 - because: books track 7 (Brito, *Blender for Video Production*); polywright recipe encode-mp4, run on Blender 5.2.1

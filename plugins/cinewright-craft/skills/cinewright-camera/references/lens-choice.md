@@ -26,6 +26,7 @@ sources: ["Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "St
 - Short lens: an actor brushing past close makes a near-still camera urgent; a sideways slide shows room size best with one figure at mid depth; a fast push needs a foreground walker to ride on. (MS3 1.5-1.8, 2.6) Book rule, unverified.
 - Chase: constant distance and frame position, low camera, objects flashing between. (MS3 2.2, 7.7) Book rule, unverified.
 - Rack focus can replace a cut on a locked long lens; one sharp plane at a time. When a subject exits a shallow shot, focus moves to the background. (MS3 1.3; Bowen ch. 3) Book rule, unverified.
+- Faked contact: a long lens collapses the gap between fist and head; hide the fist behind the victim's head and write the reaction on the same instant (MS1 1.1). Gain without gain: a long lens on the fleeing hero keeps the goal from growing, a short lens on the charging pursuer makes him superhuman (MS1 2.4). A sudden switch to a much longer lens on a pursuer who vanished briefly reads as an impossible gain (MS1 2.8). Book rules, unverified.
 
 ## Numbers
 

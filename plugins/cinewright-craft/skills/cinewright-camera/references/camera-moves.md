@@ -6,7 +6,7 @@ tags: [vocab, camera, movement, shots]
 last_checked: 2026-10-22
 sources: ["Joseph V. Mascelli, The Five C's of Cinematography, 1965", "Steven D. Katz, Film Directing Shot by Shot, 1991", "Bruce Block, The Visual Story, 2nd ed., 2008", "https://en.wikipedia.org/wiki/Camera_movement"]
 ---
-<!-- copied from shared/vocab/camera-moves.md sha256:5ef59b67abdd9e0cea64b9c1c58c9d68fa59cc129ad399d36ab4c26f50b90940; edit the source -->
+<!-- copied from shared/vocab/camera-moves.md sha256:7d9e6c191de061041409b61c9d24e5a4bb3a74e5d58795a39c54013a047718ed; edit the source -->
 
 # Camera moves
 
@@ -39,6 +39,7 @@ sources: ["Joseph V. Mascelli, The Five C's of Cinematography, 1965", "Steven D.
 - On a long lens, lateral moves look fast and moves toward the camera barely read.
 - Pan, tilt and zoom are 2D moves: calmer, and they keep space flat. Dolly, track, crane and arc are 3D moves: the near and far planes slide apart, so they add depth and intensity. Handheld adds the most (after Block, *The Visual Story*). Dolly against zoom, arcs and the punch-in: the camera entry move-grammar.
 - Who drives (book rules, unverified): the actor's start and stop set the camera's; a camera that stops while the walker goes on, or holds while someone leaves after a parting, is a statement the `beat` names (MS3 2.3, 8.9). Two people moving: lock to one body, not their middle (MS1 1.3). A pacing speaker: fixed distance and height, stop when he stops (MS2 7.10).
+- Change height, angle or distance only when the movers stop: a wall hit or a fall gets the camera's change, so the stop reads as abrupt (MS1 1.3). A camera can take a blow: it eases back ahead of a lunging attacker, then halts and jolts sideways with the punch (MS1 1.2). Book rules, unverified.
 - During a move one eye stays pinned in frame; compile can add "her eyes stay at the same place in frame" (MS1 5.1). Searching: rooted camera, pan and tilt only; indecision: tilt only (MS1 4.8; MS3 5.6). Book rules, unverified.
 - Hide a fast move or zoom inside a body move, a background crossing or a following pan; hold then one rush beats a constant drift (MS2 10.1; MS3 11.2, 11.3; Bowen ch. 6). Book rules, unverified. Verify: camera stop within 0.5 s of the actor's; pinned eye drift under 5 % of frame width.
 

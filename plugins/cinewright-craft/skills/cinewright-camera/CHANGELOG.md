@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+Entry shape: `### C-20261101-1 · 2026-11-01 · Camera changes on stops, dominance picks the move, faked contact by lens (MS1)
+- because: book distillation (Kenworthy, *Master Shots* Vol. 1, 2009), pre-approved
+- files: shared/vocab/camera-moves.md (copied to references/camera-moves.md), references/move-grammar.md, references/lens-choice.md
+- Camera changes height only when movers stop and can take a blow; confrontation moves follow dominance; long lens fakes contact and gain without gain. All marked book rule, unverified.
+
+### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261031-1 · 2026-10-31 · Who drives the camera, lens in motion, split heights, eye light (books round C)
 - because: books round C (Kenworthy, *Master Shots* 1-3; Bowen, *Grammar of the Shot*; notes in Ai/books/plugin-learnings/cinema-c-kenworthy-grammar.md section 3)

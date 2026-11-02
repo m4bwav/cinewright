@@ -846,3 +846,7 @@ From the Blender books (van Gumster, Hess, Brito, Pearson; polywright's recipes 
 
 ## [2026-11-01] update | genvideo book changes (Enochs sections 98, 192): wan-2-2 Numbers gain the two-expert design and paired high/low LoRAs (checked in Comfy-Org template: 2 UNETLoader, 2 KSamplerAdvanced, 2 LoraLoaderModelOnly; LightX2V ships high_noise_model/low_noise_model); ltx-2 gains a LoRAs section (first_frame_conditioning_p is now a first_frame condition with probability). No version bump: reference text only.
 - Local: 141 tests OK, kb lint 0 errors, budget yellows unchanged, validate passed x4, scrub hits are the known GPU benchmark notes.
+
+## 2026-11-01 MS1 scene setups
+
+Book distillation from Kenworthy, Master Shots Vol. 1: new cinewright-shots entry scene-setups, rules added to blocking, camera-moves (shared vocab), move-grammar, lens-choice, cutting-on-action. Checks: unittest 140 OK; kb lint 0 errors; budget YELLOW (pre-existing, none from this change); plugin validate passed x4; scrub 9 hits, all pre-existing GPU benchmark notes in ai-docs.
