@@ -843,3 +843,6 @@ From the Blender books (van Gumster, Hess, Brito, Pearson; polywright's recipes 
 ## [2026-11-01] ci | Hosted CI on push and pull requests (PR #70): ubuntu/windows/macos, Python 3.9 (not on ubuntu-latest 26.04, no build) and 3.x, ffmpeg installed per runner. First hosted runs found missing ffmpeg and a kb lint break from PR #69 (README linked .github/images, which test copies skip); preview image moved to assets/. Local: 139 tests OK, kb lint 0 errors.
 
 ## [2026-11-01] update | compile strips ellipses from H3 <d> lines (h3_line: mid-line ellipsis -> comma, trailing -> period, adds a closing period); only for templates with <d>. Asked by comfyui-gen L-181 (59 ellipses in past prompts). Local: 141 tests OK, kb lint 0 errors, budget yellows unchanged, scrub hits are the known GPU benchmark notes.
+
+## [2026-11-01] update | genvideo book changes (Enochs sections 98, 192): wan-2-2 Numbers gain the two-expert design and paired high/low LoRAs (checked in Comfy-Org template: 2 UNETLoader, 2 KSamplerAdvanced, 2 LoraLoaderModelOnly; LightX2V ships high_noise_model/low_noise_model); ltx-2 gains a LoRAs section (first_frame_conditioning_p is now a first_frame condition with probability). No version bump: reference text only.
+- Local: 141 tests OK, kb lint 0 errors, budget yellows unchanged, validate passed x4, scrub hits are the known GPU benchmark notes.

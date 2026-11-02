@@ -30,6 +30,11 @@ volatile_claims: ["LTX-2.5 (2026-07-23) is current; LTX-2.3 and LTX-2 before it"
 - Several shots: one paragraph naming each cut ("A hard cut jumps to ..."), 2-4 shots, sound stated at each cut.
 - Judge stage 1 before paying for stage 2. Stage 1 renders at base size, then a 2x latent upsampler and a short distilled stage 2 add detail. Blocking, cuts, motion and sound timing are already fixed after stage 1 (after Enochs, *Video Generation with AI*, on LTX-2.3). Decode the stage-1 latent, run `qc measure` and the sheet on it, and reroll there. Judge the look, faces and texture on the final only.
 
+## Notes
+
+- LoRA training: to keep a text-to-video LoRA usable from a keyframe, mix image-to-video samples into training. Enochs (section 192) names this `first_frame_conditioning_p` (example 0.1); the current ltx-trainer calls it a `first_frame` condition under `training_strategy.video.conditions` with a `probability` (the docs example uses 0.5). The first latent frame stays clean and out of the loss (LTX-2 `packages/ltx-trainer/docs/configuration-reference.md`, checked 2026-11-01).
+- Short target modules `to_q`, `to_k`, `to_v`, `to_out.0` match every attention block, audio and audio-video cross attention included; for video-only training the docs suggest the explicit `attn1`/`attn2` patterns.
+
 ## Pitfalls
 
 - Camera LoRAs fit LTX-2 19B only, not 2.5: write the move in words.
