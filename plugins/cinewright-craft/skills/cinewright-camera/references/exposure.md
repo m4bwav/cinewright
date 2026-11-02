@@ -16,6 +16,7 @@ sources: ["Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "Bl
 - Expose for skin: the face of the subject stays readable in every card, even in low-key. Ask for a rim or an eye light when the face is mostly in shadow.
 - Silhouettes are a choice: say "in silhouette against the window" and accept that identity strings will not read; never put a silhouette on a card that must sell identity.
 - Highlights: a lamp, a window or the sky blow out in some models; name them as "glowing" rather than "bright white" when detail matters.
+- Exposure is also a colour choice: in clipped highlights different hues bleach to one tint, in crushed shadows they merge to one black. For a graded AI shot, keep hue separation in both ends and decide which end carries the story: key the image to the lights or to the darks (Pickard, Color & Light, pp. 25, 56-57). Book rule, unverified.
 - Day for night and underexposed looks are graded in finishing (cinewright-finish), not asked of the model; prompt a normal exposure with the night's light direction.
 
 ## Numbers

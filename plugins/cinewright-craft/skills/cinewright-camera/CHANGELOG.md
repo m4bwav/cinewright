@@ -9,6 +9,11 @@ Entry shape: `### C-20261101-1 · 2026-11-01 · Camera changes on stops, dominan
 
 ### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261101-2 · 2026-11-01 · Exposure as a colour choice (Color & Light)
+- because: book distillation (Pickard, *Artists' Master Series: Color & Light*, 3dtotal, 2021), pre-approved
+- files: references/exposure.md
+- Clipped lights bleach hues, crushed darks merge them; keep hue separation and pick which end carries the shot. Marked book rule, unverified.
+
 ### C-20261031-1 · 2026-10-31 · Who drives the camera, lens in motion, split heights, eye light (books round C)
 - because: books round C (Kenworthy, *Master Shots* 1-3; Bowen, *Grammar of the Shot*; notes in Ai/books/plugin-learnings/cinema-c-kenworthy-grammar.md section 3)
 - files: shared/vocab/camera-moves.md, shared/vocab/camera-angles.md, references/lens-choice.md, references/lighting-setups.md
