@@ -21,6 +21,8 @@ volatile_claims: ["A14B: 16 fps, 81 frames default, sizes 1280x720 and 832x480",
 - No audio. First-and-last-frame and VACE exist for Wan 2.1 only. Wan 2.5 and later: hosted, not open.
 - Default negative prompt: the Chinese `sample_neg_prompt` in the configs (copied below).
 - No cost per take (local).
+- A14B is two experts switched by denoising step: the high-noise expert lays out the scene first, then the low-noise expert refines detail (Wan-Video/Wan2.2 README; Enochs, *Video Generation with AI*, section 98). The 5B model is dense, one model.
+- ComfyUI's official 14B template loads two models (`wan2.2_t2v_high_noise_14B_fp8_scaled` and `..._low_noise_...`) into two `KSamplerAdvanced` nodes, with one `LoraLoaderModelOnly` per model. A LoRA or quant goes on both: the LightX2V Lightning LoRAs ship as `high_noise_model` and `low_noise_model` pairs (docs.comfy.org Wan 2.2 tutorial, Comfy-Org/workflow_templates `video_wan2_2_14B_t2v.json`, huggingface.co/lightx2v/Wan2.2-Lightning; checked 2026-11-01).
 
 ## Rules
 

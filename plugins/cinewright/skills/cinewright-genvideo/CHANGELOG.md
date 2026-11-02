@@ -4,6 +4,10 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261101-1 · 2026-11-01 · wan-2-2 two experts and paired LoRAs; ltx-2 LoRA training notes
+- because: book distill (Enochs, *Video Generation with AI*, sections 98 and 192), verified against the Wan2.2 README, the ComfyUI 14B template, the LightX2V Lightning repo and the ltx-trainer configuration reference on 2026-11-01
+- files: references/wan-2-2.md (Numbers), references/ltx-2.md (new Notes section on LoRA training)
+- Wan A14B needs both high- and low-noise models, each with its own LoRA; the book's `first_frame_conditioning_p` is now a `first_frame` condition with a probability in ltx-trainer.
 ### C-20261026-1 · 2026-10-26 · crowd-prompting: blockout depth at 0.6, refs only for a lifelike side
 - because: the owner's review of the 2026-10-25 takes and a follow-up test (ai-docs/research/2026-10-25-layered-character-passes.md, Update 2026-10-26)
 - files: references/crowd-prompting.md (Rules, Numbers, last_checked); shared/lib/cine.py CAST-COUNT message
