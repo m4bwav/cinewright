@@ -27,6 +27,8 @@ Write wardrobe per scene in the character bible, with each damage stage as its o
 
 Add every held, featured or close-up prop to `bibles/props.json` with a fixed description (`kb show prop-constants`). Card `holding` values use the prop's `name`; a prop nobody holds goes in the card's `props`. A hero prop gets a sheet, one per state (`kb show prop-sheets`).
 
+A screen, sign or interface in a shot: sort its text and plan it for post (`kb show on-screen-text`).
+
 ## Step 4: reference images
 
 1. Write the turnaround sheet prompt per character and costume: three views, flat light, grey backdrop, identity and wardrobe strings verbatim (`kb show turnaround-sheets`). Generating the image is the user's image tool's job; writing the prompt never starts a paid render.

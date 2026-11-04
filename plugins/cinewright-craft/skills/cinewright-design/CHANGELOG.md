@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261104-1 · 2026-11-04 · On-screen text and interfaces reference
+- because: Addey, *Typeset in the Future* (Summary and interviews); no entry covered designing screens and signs
+- files: references/on-screen-text.md (new), references/INDEX.md, SKILL.md (Step 3)
+- Sorts text into must-read and must-not-read, keeps plates blank, and gives ways to keep background text unread.
+
 ### C-20261022-1 · 2026-10-22 · Visual structure plan, story graph, colour rows (books track 3)
 - because: books track 3 (Block, *The Visual Story*; Brown, *Cinematography*; *FilmCraft: Cinematography*; Phillips on Resolve), decision 2026-10-22-books-track3
 - files: SKILL.md (Step 1), references/visual-structure.md (new), references/color-script.md, evals/evals.json (action-2); shared schemas style (`visual_structure`) and scenes (`intensity`, `space`, `color`); shared/lib/cine.py `cards graph`
