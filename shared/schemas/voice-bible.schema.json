@@ -175,15 +175,11 @@
           },
           "rights": {
             "description": "whose voice this is and the permission: 'original designed voice', or 'recorded by <actor> with written consent, <date>'; voicewright writes an object (kind, licence, consent, provenance)",
-            "oneOf": [
-              {
-                "type": "string",
-                "minLength": 10
-              },
-              {
-                "type": "object"
-              }
-            ]
+            "type": [
+              "string",
+              "object"
+            ],
+            "minLength": 10
           },
           "notes": {
             "type": "string"

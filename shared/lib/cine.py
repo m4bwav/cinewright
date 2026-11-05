@@ -2419,8 +2419,6 @@ def voice_bible_errors(p):
             errs.append("bibles/voices.json: character '%s' is not in characters.json" % cid)
         elif not p.chars[cid].get("voice"):
             errs.append("bibles/voices.json: %s has no short `voice` string in characters.json; prompts copy that string" % cid)
-        if isinstance(v.get("rights"), str) and len(v["rights"]) < 10:
-            errs.append("bibles/voices.json: %s rights is shorter than 10 characters" % cid)
         for r in v.get("refs", []):
             f = p.root / r.get("file", "")
             if not f.is_file():

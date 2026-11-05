@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/voice-bible.schema.json sha256:ba32d9f097da1372dc838a7d2537fc8131096550a0692054a3c4c1ad141b370b; edit the source",
+  "$comment": "copied from shared/schemas/voice-bible.schema.json sha256:c46313de007e0d47b2254beda8277b4a435c306c941db217fe8817f3ed8d9e3a; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Voice bible",
   "description": "bibles/voices.json (optional): one locked voice per speaking character. The short voice string stays in characters.json and is copied into prompts; this file holds the voice sheet, how the voice was made, its reference clips and its rights.",
@@ -176,15 +176,11 @@
           },
           "rights": {
             "description": "whose voice this is and the permission: 'original designed voice', or 'recorded by <actor> with written consent, <date>'; voicewright writes an object (kind, licence, consent, provenance)",
-            "oneOf": [
-              {
-                "type": "string",
-                "minLength": 10
-              },
-              {
-                "type": "object"
-              }
-            ]
+            "type": [
+              "string",
+              "object"
+            ],
+            "minLength": 10
           },
           "notes": {
             "type": "string"

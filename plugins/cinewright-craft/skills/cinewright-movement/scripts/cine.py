@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:03e1496dd7ecec4ddfbc4b8e15aaaa8e5ad15741139ccceeda7975c084f8bc30; edit the source
+# copied from shared/lib/cine.py sha256:66691038e0b74d8323627920a0033539e972ccffb16260c0a228e21c61b7279a; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -2420,8 +2420,6 @@ def voice_bible_errors(p):
             errs.append("bibles/voices.json: character '%s' is not in characters.json" % cid)
         elif not p.chars[cid].get("voice"):
             errs.append("bibles/voices.json: %s has no short `voice` string in characters.json; prompts copy that string" % cid)
-        if isinstance(v.get("rights"), str) and len(v["rights"]) < 10:
-            errs.append("bibles/voices.json: %s rights is shorter than 10 characters" % cid)
         for r in v.get("refs", []):
             f = p.root / r.get("file", "")
             if not f.is_file():
