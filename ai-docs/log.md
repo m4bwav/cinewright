@@ -854,3 +854,7 @@ Book distillation from Kenworthy, Master Shots Vol. 1: new cinewright-shots entr
 ## 2026-11-01: exposure as a colour choice (Color & Light)
 
 - cinewright-camera references/exposure.md gains one rule from Pickard, Color & Light (pp. 25, 56-57), from the everscout ai-video books pass, pre-approved. No version bump. Checks: unittest OK, kb lint 0 errors, budget yellow (pre-existing qc body and sets description), plugin validate passed, scrub 9 hits all expected third-party GPU benchmarks.
+
+## 2026-11-05: Viggle Remake smoke test
+
+Rendered on the PC; results in `D:/ComfyUI/output/video/viggle_test/` (`results.jsonl`, `HANDOFF.md`). New card `viggle-remake`. int8 first. Repair route worked once on deir_s2_p1 2G-2I; fight use still untested. The 2026-11-04 review's "not rendered here" is superseded by the card.

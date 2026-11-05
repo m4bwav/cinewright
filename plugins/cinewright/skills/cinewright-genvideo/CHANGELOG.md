@@ -4,6 +4,10 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261105-1 · 2026-11-05 · viggle-remake card from a smoke test
+- because: Mark asked for a thorough smoke test on the 16 GB PC; the render log stays on that PC.
+- files: references/viggle-remake.md, references/INDEX.md. Settings, failures and a repair route tried once; the fight use is marked untested.
+
 ### C-20261101-1 · 2026-11-01 · wan-2-2 two experts and paired LoRAs; ltx-2 LoRA training notes
 - because: book distill (Enochs, *Video Generation with AI*, sections 98 and 192), verified against the Wan2.2 README, the ComfyUI 14B template, the LightX2V Lightning repo and the ltx-trainer configuration reference on 2026-11-01
 - files: references/wan-2-2.md (Numbers), references/ltx-2.md (new Notes section on LoRA training)
