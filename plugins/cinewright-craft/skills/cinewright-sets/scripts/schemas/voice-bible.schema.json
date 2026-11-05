@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/voice-bible.schema.json sha256:db9570e9dbc23c1dc20892ae11c4cc5ec0e5f18933b6fa5b2150a6aaaa664602; edit the source",
+  "$comment": "copied from shared/schemas/voice-bible.schema.json sha256:c46313de007e0d47b2254beda8277b4a435c306c941db217fe8817f3ed8d9e3a; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Voice bible",
   "description": "bibles/voices.json (optional): one locked voice per speaking character. The short voice string stays in characters.json and is copied into prompts; this file holds the voice sheet, how the voice was made, its reference clips and its rights.",
@@ -52,6 +52,9 @@
         "end_s": {
           "type": "number",
           "minimum": 0
+        },
+        "sha256": {
+          "type": "string"
         }
       }
     }
@@ -150,6 +153,12 @@
               },
               "settings": {
                 "type": "object"
+              },
+              "model_version": {
+                "type": "string"
+              },
+              "design_prompt": {
+                "type": "string"
               }
             }
           },
@@ -166,15 +175,39 @@
             "description": "how far a line's median pitch may sit from the reference, semitones (default 2)"
           },
           "rights": {
-            "type": "string",
-            "minLength": 10,
-            "description": "whose voice this is and the permission: 'original designed voice', or 'recorded by <actor> with written consent, <date>'"
+            "description": "whose voice this is and the permission: 'original designed voice', or 'recorded by <actor> with written consent, <date>'; voicewright writes an object (kind, licence, consent, provenance)",
+            "type": [
+              "string",
+              "object"
+            ],
+            "minLength": 10
           },
           "notes": {
             "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "description": "voicewright id; equals character here"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "pronunciation": {
+            "type": "object"
+          },
+          "used_by": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }
+    },
+    "schema": {
+      "type": "integer",
+      "description": "voicewright bible schema version; absent in older files"
     }
   }
 }

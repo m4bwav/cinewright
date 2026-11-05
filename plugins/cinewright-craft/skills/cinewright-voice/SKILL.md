@@ -14,6 +14,10 @@ Give every speaking character one voice that holds across shots and sessions: a 
 
 Read `evergreen.json`. If `contradiction` is set or today is on or after `next_due`, say so in one line, do the task with the current content, then run `evergreen-refresh` if the evergreen plugin is installed. If `verify_at_use` is true, re-check the due engine claims first (`kb show voice-engines --section Notes`). If `tests.failing` is non-empty, say so and run `evergreen-tune` after the task.
 
+## Voicewright, when installed
+
+If the voicewright plugin is present, design, lock, check and finish voices with it: it adds cast variety, library and speaker-embedding checks, and its bible is this same `bibles/voices.json` (`vw.py migrate` upgrades it; both read the result). This skill keeps the film side: speakers from cards, the prompt voice string, video-model routes, lip sync. Without it, follow the steps below; they work alone.
+
 ## Step 1: who speaks, which route
 
 1. List the speakers from the cards' `dialogue` (or the script). Each needs a voice; a one-line extra can share a library voice.
