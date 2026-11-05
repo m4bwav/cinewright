@@ -17,7 +17,7 @@ A LoRA on MiniMax H3 `fl2va`, not a prompt target: `cine.py compile` does not wr
 
 ## Numbers
 
-Measured 2026-11-04 on a 16 GB consumer GPU, ComfyUI 0.41.3, nvfp4 text encoder; some timings include cold loads. Re-rendering edit int8 at 832x480, 226 frames on 0.42.0 (the pack authors' version) gave identical pixels in 783 s.
+Measured 2026-11-04 on a 16 GB consumer GPU, ComfyUI 0.41.3, nvfp4 text encoder; some timings include cold loads. Edit int8 re-rendered on 0.42.0 gave identical pixels.
 
 | File | Size, frames | Time | Peak VRAM | PSNR to published take |
 |---|---|---|---|---|
