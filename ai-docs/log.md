@@ -858,3 +858,7 @@ Book distillation from Kenworthy, Master Shots Vol. 1: new cinewright-shots entr
 ## 2026-11-05: Viggle Remake smoke test
 
 Rendered on the PC; results in `D:/ComfyUI/output/video/viggle_test/` (`results.jsonl`, `HANDOFF.md`). New card `viggle-remake`. int8 first. Repair route worked once on deir_s2_p1 2G-2I; fight use still untested. The 2026-11-04 review's "not rendered here" is superseded by the card.
+
+## 2026-11-05: Viggle Remake on ComfyUI 0.42.0
+
+PC updated from 0.41.3. Edit int8 re-render pixel-identical; card updated. Repair take is on an askwright page for the film's owner.

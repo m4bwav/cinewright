@@ -17,7 +17,7 @@ A LoRA on MiniMax H3 `fl2va`, not a prompt target: `cine.py compile` does not wr
 
 ## Numbers
 
-Measured 2026-11-04 on a 16 GB consumer GPU, ComfyUI 0.41.3 (pack tested on 0.42.0), nvfp4 text encoder; some timings include cold loads.
+Measured 2026-11-04 on a 16 GB consumer GPU, ComfyUI 0.41.3, nvfp4 text encoder; some timings include cold loads. Re-rendering edit int8 at 832x480, 226 frames on 0.42.0 (the pack authors' version) gave identical pixels in 783 s.
 
 | File | Size, frames | Time | Peak VRAM | PSNR to published take |
 |---|---|---|---|---|
@@ -45,7 +45,7 @@ Measured 2026-11-04 on a 16 GB consumer GPU, ComfyUI 0.41.3 (pack tested on 0.42
 
 ## Notes
 
-- **Repair route (tested once).** A rejected film take, three shots, 864x480, 277 frames, where the Official carried a pale bucket instead of a basket. Klein painted frame 115 (four seeds, best one kept); unpainted frames 40 and 200 pinned shots 1 and 3; int8, `edit`, 1248 s. The basket held through the shot, cuts, faces and action matched the source (30.1 dB), and the soundtrack difference was about -39 dB RMS. Try this before re-rolling a take whose only fault is one element. Not yet judged by the film's reviewer.
+- **Repair route (tested once).** A rejected film take, three shots, 864x480, 277 frames, where the Official carried a pale bucket instead of a basket. Klein painted frame 115 (four seeds, best one kept); unpainted frames 40 and 200 pinned shots 1 and 3; int8, `edit`, 1248 s. The basket held through the shot, cuts, faces and action matched the source (30.1 dB), and the soundtrack difference was about -39 dB RMS. Try this before re-rolling a take whose only fault is one element. Review by the film's owner is pending.
 - **Fight use: untested.** Recording a performer and re-shooting them for hard beats is inference from the vendor's description; no fight has been rendered.
 
 ## Pitfalls
