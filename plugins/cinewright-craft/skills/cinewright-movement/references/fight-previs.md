@@ -27,6 +27,7 @@ sources: ["Ian Failes, Stuntvis Amps Up the Action, VFX Voice, Fall 2018: https:
 ## Pitfalls
 
 - A storyboard grid as one reference for a whole fight works on hosted multi-shot models (vendor tests); on local models it is untested. Test one card before boarding a fight.
+- Recording a performer and re-shooting them with [Viggle Remake](../../../../cinewright/skills/cinewright-genvideo/references/viggle-remake.md) is a candidate for hard beats. Untested: no fight has been rendered this way.
 - A 1 m blade at full-shot distance is a few pixels in a depth or pose pass and is lost.
 
 Related: builds on [fight-plan](fight-plan.md); see also [crowd-blockout](crowd-blockout.md), [fights-and-stunts](fights-and-stunts.md), [previs-animation](previs-animation.md) (checks for keyed 3D previs).
