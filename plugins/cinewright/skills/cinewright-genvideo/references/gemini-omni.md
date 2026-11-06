@@ -1,26 +1,26 @@
 ---
 title: Gemini Omni Flash model card
 slug: gemini-omni
-summary: Google gemini-omni-1.1-flash, the Gemini API's default video model since 2026-08: 3-10 s set by the prompt, 360p-4k, 16:9 or 9:16, 24 fps, audio, image refs as tags, no seed.
+summary: Google gemini-omni-1.2-flash, the Gemini API's default video model since 2026-11: 3-15 s, 360p-4k, 16:9 or 9:16, 24 fps, audio, refs described in words, no seed; 1.1 reroutes to it 2026-12-03.
 tags: [model-card, gemini, omni, google, hosted, audio]
-last_checked: 2026-10-03
-sources: ["https://ai.google.dev/gemini-api/docs/omni", "https://ai.google.dev/gemini-api/docs/models/gemini-omni-flash", "https://ai.google.dev/gemini-api/docs/video", "https://ai.google.dev/gemini-api/docs/pricing"]
+last_checked: 2026-11-05
+sources: ["https://aistudio.google.com/docs/omni", "https://aistudio.google.com/docs/models/gemini-omni-flash", "https://aistudio.google.com/docs/deprecations", "https://aistudio.google.com/docs/pricing", "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions"]
 model: omni
 vendor: Google
-version: "1.1 Flash"
+version: "1.2 Flash"
 status: current
-volatile_claims: ["stable on the Gemini API, preview on Vertex (gemini-omni-1.1-flash-preview)", "3-10 s, no duration parameter", "$17.50 per 1M output tokens (about $0.10/s at 720p)", "no seed, no negative prompt"]
+volatile_claims: ["gemini-omni-1.2-flash stable since 2026-11-05; Vertex retirement 2027-11-05 or later", "gemini-omni-1.1-flash reroutes to 1.2 at 1.2 rates from 2026-12-03", "3-15 s through the duration parameter, default 10 s", "$12.00 per 1M video output tokens (about $0.07/s at 720p)", "control tags deprecated", "no seed, no negative prompt field"]
 ---
 
 # Gemini Omni Flash model card
 
 ## Numbers
 
-- `gemini-omni-1.1-flash`, stable on the Gemini API since 2026-08-27 (Interactions API, `POST /v1beta/interactions`). Vertex: `gemini-omni-1.1-flash-preview` only.
-- 3-10 s; no duration parameter, length follows the prompt. Extend +10 s, 40 s total.
-- 360p, 720p (default), 1080p and 4k (upscaled). 16:9 or 9:16. 24 fps. Audio always.
-- Image refs as `<IMAGE_REF_0>` tags (the guide shows 6; no stated cap); up to 3 video refs of 3 s; `<FIRST_FRAME>`, `<LAST_FRAME>`. No audio refs, no seed, no negative prompt.
-- About $0.034/s at 360p, $0.10 at 720p, $0.15 at 1080p, $0.30 at 4k.
+- `gemini-omni-1.2-flash`, stable since 2026-11-05 on the Gemini API (Interactions API) and listed on Vertex. `gemini-omni-1.1-flash` routes to it from 2026-12-03, at 1.2 rates.
+- 3-15 s: `duration` in `response_format`, `"3s"` to `"15s"`, default `"10s"`. First and last frame and each extend turn: 3-10 s. Extended total 30 s.
+- 360p, 720p (default), 1080p and 4k (upscaled). 16:9 or 9:16. 24 fps. Audio by default.
+- Up to 6 image refs, at most 3 per character for 2 characters. Video refs of 3 s: 3 for a clip up to 10 s, 1 for 11-15 s; new generations only. No audio refs, no seed, no negative prompt field.
+- About $0.023/s at 360p, $0.07 at 720p, $0.104 at 1080p, $0.209 at 4k.
 
 ## Rules
 
@@ -28,6 +28,7 @@ volatile_claims: ["stable on the Gemini API, preview on Vertex (gemini-omni-1.1-
 - Several shots: unpadded timecodes `[0-3s] ...` (`compile --sequence`).
 - Sound: `Sound design: ...`. Exclusions as plain sentences, never a field.
 - Edits: short prompt plus `Keep everything else the same.`
+- Refs: `<IMAGE_REF_0>`, `<FIRST_FRAME>` and the other control tags are deprecated; say in words what each input is. The compiler writes `(shown in reference image N)`, its own wording after Google's "the character shown in the reference image".
 
 ## Pitfalls
 
@@ -36,10 +37,14 @@ volatile_claims: ["stable on the Gemini API, preview on Vertex (gemini-omni-1.1-
 
 ## Verify
 
-- Re-check the volatile claims; the Veo card covers extend and last frame.
+- Re-check the volatile claims; the first paid take should settle the ref wording and the dialogue form.
+
+## Notes
+
+- 2026-11-05: verified against https://aistudio.google.com/docs/omni; moved to 1.2 Flash
 
 ## Compile
 
 ```json
-{"model_id": "gemini-omni-1.1-flash", "durations_s": [3, 4, 5, 6, 7, 8, 9, 10], "aspect_ratios": ["16:9", "9:16"], "resolutions": ["360p", "720p", "1080p", "4k"], "max_words": 250, "order": ["camera", "subject", "action", "context", "light", "style", "audio"], "dialogue": "{name} says{tone_clause}: \"{line}\"", "audio": "Sound design: {sound}", "timestamp": "[{start_s}-{end_s}s]", "single_shot": "In a single continuous shot.", "max_reference_images": 6, "ref_tag": "<IMAGE_REF_{n0}>", "negative_prompt": "none", "seed": false, "param_names": {"duration": null, "aspect": "aspect_ratio", "refs": "references"}, "usd_per_s": {"360p": 0.034, "720p": 0.1, "1080p": 0.15, "4k": 0.3}}
+{"model_id": "gemini-omni-1.2-flash", "durations_s": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "aspect_ratios": ["16:9", "9:16"], "resolutions": ["360p", "720p", "1080p", "4k"], "max_words": 250, "order": ["camera", "subject", "action", "context", "light", "style", "audio"], "dialogue": "{name} says{tone_clause}: \"{line}\"", "audio": "Sound design: {sound}", "timestamp": "[{start_s}-{end_s}s]", "single_shot": "In a single continuous shot.", "max_reference_images": 6, "ref_tag": "(shown in reference image {n})", "negative_prompt": "none", "seed": false, "param_names": {"duration": "duration", "aspect": "aspect_ratio", "refs": "references"}, "duration_format": "{d}s", "usd_per_s": {"360p": 0.023, "720p": 0.07, "1080p": 0.104, "4k": 0.209}}
 ```

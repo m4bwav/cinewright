@@ -885,9 +885,10 @@ class TestModelCards(Base):
         self.assertTrue(text.startswith("In a single continuous shot."))
         self.both(r"Sound design: [A-Za-z]", "omni", text)
         self.assertNotIn("seed", params)
-        self.assertEqual(info["est_usd"], 0.4)
+        self.assertEqual(info["est_usd"], 0.28)
+        self.assertEqual(params["duration"], "4s")
         _, _, res = compile_one(EXAMPLE, "omni", sequence=True)
-        self.assertEqual(res[0][0], "1A+1B", "10 s cap: 1A and 1B share a generation")
+        self.assertEqual(res[0][0], "1A+1B+1C", "15 s cap: 1A, 1B and 1C share a generation")
         self.both(r"^\[[0-9]+-[0-9]+s\] [A-Za-z]", "omni-seq", res[0][1], re.M)
 
     def test_kling(self):
@@ -1008,7 +1009,7 @@ class TestModelCards(Base):
             path, meta, prof = lib.find_model_card(repo_ctx(), model)
             self.assertEqual(meta["status"], "current", model)
             self.assertTrue(meta["volatile_claims"], model)
-            self.assertEqual(meta["last_checked"], "2026-10-03", model)
+            self.assertGreaterEqual(meta["last_checked"], "2026-10-03", model)
 
 
 @unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"), "ffmpeg not installed")

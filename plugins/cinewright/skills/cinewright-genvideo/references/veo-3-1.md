@@ -1,15 +1,15 @@
 ---
 title: Veo 3.1 model card
 slug: veo-3-1
-summary: Google Veo 3.1 on Vertex: 4/6/8 s, 720p-4k, 16:9 or 9:16, 24 fps, audio, 3 asset refs (8 s), timestamp blocks, $0.40/s; Gemini API previews end 2026-10-22.
+summary: Google Veo 3.1 on Vertex: 4/6/8 s, 720p-4k, 16:9 or 9:16, 24 fps, audio, 3 asset refs (8 s), timestamp blocks, $0.40/s; Gemini API previews listed ended 2026-10-22, Vertex to 2027-05-04 or later.
 tags: [model-card, veo, google, hosted, audio]
-last_checked: 2026-10-03
-sources: ["https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1", "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/veo/3-1-generate", "https://ai.google.dev/gemini-api/docs/veo", "https://ai.google.dev/gemini-api/docs/deprecations"]
+last_checked: 2026-11-05
+sources: ["https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1", "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/veo/3-1-generate", "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions", "https://aistudio.google.com/docs/deprecations"]
 model: veo
 vendor: Google
 version: "3.1"
 status: current
-volatile_claims: ["Vertex GA IDs retire 2026-11-17 or later", "Gemini API previews shut down 2026-10-22", "1080p, 4k and refs force 8 s", "3 asset refs", "$0.40/s with audio"]
+volatile_claims: ["Vertex GA IDs retire 2027-05-04 or later", "Gemini API previews listed with earliest shutdown 2026-10-22, replacement gemini-omni-1.2-flash", "1080p, 4k and refs force 8 s", "3 asset refs", "$0.40/s with audio"]
 ---
 
 # Veo 3.1 model card
@@ -37,7 +37,9 @@ volatile_claims: ["Vertex GA IDs retire 2026-11-17 or later", "Gemini API previe
 
 ## Notes
 
+- 2026-11-05: Vertex GA end moved to 2027-05-04 or later. Gemini API previews are past their listed date; the page gives it as the earliest shutdown, so use the Vertex IDs. Prices not re-read.
 - 2026-10-03: re-checked. Gemini API default is now `gemini-omni`; Veo keeps extend and last frame. Guides differ on dialogue quotes; the Vertex colon form stays.
+- 2026-11-05: verified against https://aistudio.google.com/docs/deprecations; Vertex end 2027-05-04 or later
 
 ## Compile
 
