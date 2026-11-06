@@ -45,7 +45,7 @@ Measured 2026-11-04 on a 16 GB consumer GPU, ComfyUI 0.41.3, nvfp4 text encoder;
 
 ## Notes
 
-- **Repair route (tested once).** A rejected film take, three shots, 864x480, 277 frames, where the Official carried a pale bucket instead of a basket. Klein painted frame 115 (four seeds, best one kept); unpainted frames 40 and 200 pinned shots 1 and 3; int8, `edit`, 1248 s. The basket held through the shot, cuts, faces and action matched the source (30.1 dB), and the soundtrack difference was about -39 dB RMS. Try this before re-rolling a take whose only fault is one element. Review by the film's owner is pending.
+- **Repair route (tested once).** A rejected film take, three shots, 864x480, 277 frames, where the Official carried a pale bucket instead of a basket. Klein painted frame 115 (four seeds, best one kept); unpainted frames 40 and 200 pinned shots 1 and 3; int8, `edit`, 1248 s. The basket held through the shot, cuts, faces and action matched the source (30.1 dB), and the soundtrack difference was about -39 dB RMS. The film's owner watched it and chose this as the first try for one wrong prop: the basket looks better. The owner also felt the take's real mistakes came later, outside this clip, so the repair does not clear a scene.
 - **Fight use: untested.** Recording a performer and re-shooting them for hard beats is inference from the vendor's description; no fight has been rendered.
 
 ## Pitfalls

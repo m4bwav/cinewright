@@ -4,6 +4,10 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261105-2 · 2026-11-05 · viggle-remake repair verdict from the owner review
+- because: Mark picked the route as first try for one wrong prop on the askwright page, and noted the take's real mistakes lie later.
+- files: references/viggle-remake.md. Pending review replaced by the verdict and its limit.
+
 ### C-20261105-1 · 2026-11-05 · viggle-remake card from a smoke test
 - because: Mark asked for a thorough smoke test on the 16 GB PC; the render log stays on that PC.
 - files: references/viggle-remake.md, references/INDEX.md. Settings, failures and a repair route tried once; the fight use is marked untested.
