@@ -2,7 +2,7 @@
 
 The wiki at https://github.com/m4bwav/cinewright/wiki was written with the wikiwright skill for cinewright 0.2.0 and pushed as wiki commit 90f13a2 on top of GitHub's placeholder (fast-forward).
 
-- Working copy: `D:\m4bwa\Claude\Projects\Ai\cinewright.wiki` (sibling of the clone), branch `master`.
+- Working copy: `cinewright.wiki`, sibling of the clone, branch `master`.
 - Pages: Home, Getting-Started, The-Skills, The-Pipeline, Commands, Video-Models, FAQ, Versions-and-Upgrading, Development, `_Sidebar`, `_Footer`.
 - Page set: wikiwright has no tested set for a plugin repository; this one follows polywright's wiki (skills page plus a pipeline page in place of a behaviour page).
 

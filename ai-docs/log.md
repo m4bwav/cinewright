@@ -842,7 +842,7 @@ From the Blender books (van Gumster, Hess, Brito, Pearson; polywright's recipes 
 
 ## [2026-11-01] ci | Hosted CI on push and pull requests (PR #70): ubuntu/windows/macos, Python 3.9 (not on ubuntu-latest 26.04, no build) and 3.x, ffmpeg installed per runner. First hosted runs found missing ffmpeg and a kb lint break from PR #69 (README linked .github/images, which test copies skip); preview image moved to assets/. Local: 139 tests OK, kb lint 0 errors.
 
-## [2026-11-01] update | compile strips ellipses from H3 <d> lines (h3_line: mid-line ellipsis -> comma, trailing -> period, adds a closing period); only for templates with <d>. Asked by comfyui-gen L-181 (59 ellipses in past prompts). Local: 141 tests OK, kb lint 0 errors, budget yellows unchanged, scrub hits are the known GPU benchmark notes.
+## [2026-11-01] update | compile strips ellipses from H3 <d> lines (h3_line: mid-line ellipsis -> comma, trailing -> period, adds a closing period); only for templates with <d>. Asked by a field lesson (59 ellipses in past prompts). Local: 141 tests OK, kb lint 0 errors, budget yellows unchanged, scrub hits are the known GPU benchmark notes.
 
 ## [2026-11-01] update | genvideo book changes (Enochs sections 98, 192): wan-2-2 Numbers gain the two-expert design and paired high/low LoRAs (checked in Comfy-Org template: 2 UNETLoader, 2 KSamplerAdvanced, 2 LoraLoaderModelOnly; LightX2V ships high_noise_model/low_noise_model); ltx-2 gains a LoRAs section (first_frame_conditioning_p is now a first_frame condition with probability). No version bump: reference text only.
 - Local: 141 tests OK, kb lint 0 errors, budget yellows unchanged, validate passed x4, scrub hits are the known GPU benchmark notes.
@@ -857,7 +857,7 @@ Book distillation from Kenworthy, Master Shots Vol. 1: new cinewright-shots entr
 
 ## 2026-11-05: Viggle Remake smoke test
 
-Rendered on the PC; results in `D:/ComfyUI/output/video/viggle_test/` (`results.jsonl`, `HANDOFF.md`). New card `viggle-remake`. int8 first. Repair route worked once on deir_s2_p1 2G-2I; fight use still untested. The 2026-11-04 review's "not rendered here" is superseded by the card.
+Rendered on the PC; results kept locally. New card `viggle-remake`. int8 first. Repair route worked once on one private film shot; fight use still untested. The 2026-11-04 review's "not rendered here" is superseded by the card.
 
 ## 2026-11-05: Viggle Remake on ComfyUI 0.42.0
 
@@ -866,3 +866,6 @@ PC updated from 0.41.3. Edit int8 re-render pixel-identical; card updated. Repai
 ## 2026-11-05: Viggle repair verdict
 
 Mark reviewed the pail repair on askwright and picked "use this route as the first try for one wrong prop". His note: the basket looks better, but he thinks the mistakes were later in the take, not in this clip. Which later faults he means was not asked; they are not repaired or tested.
+
+## [2026-11-05] release | 0.3.0
+- Minor bump, from the evergreen-upkeep owed list: Omni 1.2 Flash card (installed copies compiled gemini-omni-1.1-flash, rerouted from 2026-12-03), Viggle Remake card, voicewright caller, Master Shots and Color & Light rules, MS1 setups, on-screen text reference, H3 ellipsis strip, take-selection questions. PRs #60 to #85.
