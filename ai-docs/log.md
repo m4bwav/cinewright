@@ -862,3 +862,7 @@ Rendered on the PC; results in `D:/ComfyUI/output/video/viggle_test/` (`results.
 ## 2026-11-05: Viggle Remake on ComfyUI 0.42.0
 
 PC updated from 0.41.3. Edit int8 re-render pixel-identical; card updated. Repair take is on an askwright page for the film's owner.
+
+## 2026-11-05: Viggle repair verdict
+
+Mark reviewed the pail repair on askwright and picked "use this route as the first try for one wrong prop". His note: the basket looks better, but he thinks the mistakes were later in the take, not in this clip. Which later faults he means was not asked; they are not repaired or tested.
