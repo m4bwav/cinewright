@@ -866,3 +866,6 @@ PC updated from 0.41.3. Edit int8 re-render pixel-identical; card updated. Repai
 ## 2026-11-05: Viggle repair verdict
 
 Mark reviewed the pail repair on askwright and picked "use this route as the first try for one wrong prop". His note: the basket looks better, but he thinks the mistakes were later in the take, not in this clip. Which later faults he means was not asked; they are not repaired or tested.
+
+## [2026-11-05] release | 0.3.0
+- Minor bump, from the evergreen-upkeep owed list: Omni 1.2 Flash card (installed copies compiled gemini-omni-1.1-flash, rerouted from 2026-12-03), Viggle Remake card, voicewright caller, Master Shots and Color & Light rules, MS1 setups, on-screen text reference, H3 ellipsis strip, take-selection questions. PRs #60 to #85.
