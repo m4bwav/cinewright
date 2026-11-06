@@ -25,6 +25,7 @@ Read `evergreen.json` next to this file. If `contradiction` is set or today is o
 | New knowledge | `CINE kb new <skill> <slug> --title T --summary S --tags a,b --source URL` | search first; an existing entry gets an edit, not a twin. Then fill Rules (plus Numbers, Vocabulary, Pitfalls as needed) and Verify |
 | Re-checked a page | `CINE kb verify <slug> --source URL [--note "what changed"]` | `--source` is the page read this session; edit the body first if it changed |
 | A model card's claims moved (price, length, IDs, dates) | edit the card's Rules, Numbers and `volatile_claims`, then `kb verify` | one card per model; the Compile block changes only with a vendor example that shows the new syntax |
+| A model ended on one surface and is still served on another, or a vendor alias reroutes it to a newer model | keep `current`, record each surface's end or the reroute in `volatile_claims` and a dated note, then `kb verify` | retire only when no surface serves it; a reroute edits the card unless the newer model needs its own |
 | A model shut down | `CINE kb retire <slug> --reason R` (status `shut-down`, the default) | the card stays (old shot lists name it; compile warns) |
 | A model still served but with an announced end | the same, plus `--status deprecated` | only when the vendor still serves it |
 | Knowledge that is wrong or merged elsewhere | `CINE kb retire <slug> --reason R` | refused while another file names the slug; edit those first |
