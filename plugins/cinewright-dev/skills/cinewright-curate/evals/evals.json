@@ -94,6 +94,47 @@
       ],
       "runs": 3,
       "baseline": "2026-10-06, S7 curate suite (evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive); skills disabled), one run per model: without the skill 1 of 3 passed (Haiku fail, Sonnet fail, Opus pass)."
+    },
+    {
+      "id": "outcome-2",
+      "kind": "outcome",
+      "fixture": "repo",
+      "prompt": "Runway's changelog (https://docs.dev.runwayml.com/api/) says Gen-4.5 ends on their API on 2026-12-15, but it stays available in the web app with no end date. Put that on record in this cinewright checkout's knowledge base.",
+      "files": [],
+      "checks": [
+        [
+          "python",
+          "-c",
+          "import re,sys; t=open(sys.argv[1],encoding='utf-8').read(); sys.exit(0 if re.search(r'''(?m)^status: current$''', t) else 1)",
+          "{work}/plugins/cinewright/skills/cinewright-genvideo/references/runway-gen-4-5.md"
+        ],
+        [
+          "python",
+          "-c",
+          "import re,sys; t=open(sys.argv[1],encoding='utf-8').read(); sys.exit(0 if re.search(r'''(?s)volatile_claims.*2026-12-15''', t) else 1)",
+          "{work}/plugins/cinewright/skills/cinewright-genvideo/references/runway-gen-4-5.md"
+        ],
+        [
+          "python",
+          "-c",
+          "import re,sys; t=open(sys.argv[1],encoding='utf-8').read(); sys.exit(0 if re.search(r'''(?m)^- \\d{4}-\\d\\d-\\d\\d: .*(API|api)''', t) else 1)",
+          "{work}/plugins/cinewright/skills/cinewright-genvideo/references/runway-gen-4-5.md"
+        ],
+        [
+          "python",
+          "{work}/scripts/cine.py",
+          "kb",
+          "lint"
+        ]
+      ],
+      "expectations": [
+        "check: the Runway Gen-4.5 card stays status current, not retired or deprecated",
+        "check: volatile_claims records the 2026-12-15 API end",
+        "check: the card carries a dated note about the API end",
+        "check: kb lint passes",
+        "the reply says the model is still served in the web app, so the card stays current"
+      ],
+      "runs": 3
     }
   ]
 }

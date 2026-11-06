@@ -16,7 +16,7 @@ Topic: cinewright knowledge-base upkeep: reference entries and video model cards
 
 - Is Seedance 1.5 Pro's 2026-11-11 retirement real? Secondary source only; the BytePlus page did not render.
 - Should `kb verify` warn on a redirecting source, or store a per-source content hash so `kb due` flags changed pages (OpenWiki's idea)?
-- Owed eval: a split-surface outcome case, and `command_not_ran` for hand edits or deleting a card.
+- Owed eval: `command_not_ran` for hand edits or deleting a card.
 - Should `kb verify` refuse a source that is not already listed or that is not a primary page (vendor docs, standards body)? Today it accepts any URL the maintainer names.
 - Does a model card retired as `shut-down` need a removal date after which `compile` refuses it outright?
 
