@@ -22,7 +22,10 @@
     "Veo 3.1 Gemini API previews shut down 2026-10-22; Vertex GA retires 2026-11-17 or later",
     "Seedance 2.0 discounts end 2026-10-07"
   ],
-  "contradiction": null,
+  "contradiction": {
+    "date": "2026-11-05",
+    "note": "2026-11-05: gemini-omni and veo-3-1 cards stale: Omni 1.2 GA, 1.1 reroutes 2026-12-03, Veo Vertex end now 2027-05-04 or later, ai.google.dev sources redirect"
+  },
   "events": [],
   "streak": {
     "quiet": 0,

@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20261105-1 · 2026-11-05 · Row for a model ended on one surface or rerouted by an alias
+- because: R-20261105-1
+- files: SKILL.md (Step 2 table), RESEARCH.md
+- Veo 3.1 ended on the Gemini API while current on Vertex, and Omni 1.1 reroutes to 1.2 on 2026-12-03; the table had no answer for either.
+
 ### C-20261006-2 · 2026-10-06 · Retire row split: shut down (the default) and deprecated
 - because: T-20261006-1, L-001
 - files: SKILL.md (Step 2 table)

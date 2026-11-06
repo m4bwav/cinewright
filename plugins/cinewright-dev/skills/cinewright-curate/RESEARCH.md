@@ -14,6 +14,9 @@ Topic: cinewright knowledge-base upkeep: reference entries and video model cards
 
 ## Open questions
 
+- Is Seedance 1.5 Pro's 2026-11-11 retirement real? Secondary source only; the BytePlus page did not render.
+- Should `kb verify` warn on a redirecting source, or store a per-source content hash so `kb due` flags changed pages (OpenWiki's idea)?
+- Owed eval: a split-surface outcome case, and `command_not_ran` for hand edits or deleting a card.
 - Should `kb verify` refuse a source that is not already listed or that is not a primary page (vendor docs, standards body)? Today it accepts any URL the maintainer names.
 - Does a model card retired as `shut-down` need a removal date after which `compile` refuses it outright?
 
@@ -42,6 +45,14 @@ Testing:
 Best sources (primary first): the evergreen protocol files, this repository's schemas and `scripts/cine.py`, vendor deprecation pages linked from each model card.
 
 ## Findings log
+
+### R-20261105-2 · 2026-11-05 · Tooling, practice, testing: ideas, nothing adopted yet
+- tracks: tooling, practice, testing · magnitude 0.35 · applied: open questions
+- OpenWiki (claim-to-evidence versioning, repo wikis only): https://github.com/langchain-ai/openwiki. skill-eval-harness trace assertions: https://github.com/adewale/skill-eval-harness/wiki. ChurnBench: scheduled refresh governs staleness, not age: https://arxiv.org/abs/2609.11515. LLM-wiki practice converges on lint, and lint proves structure, not truth. Plan additions: aistudio.google.com/docs/deprecations and /changelog (ai.google.dev now redirects there), Vertex model-versions, developers.openai.com/api/docs/deprecations, BytePlus model-deprecation-notice (needs a browser), discuss.ai.google.dev.
+
+### R-20261105-1 · 2026-11-05 · Google: Omni 1.2 GA, Veo previews ended on one surface, docs moved
+- track: subject · magnitude 0.4 · applied: C-20261105-1
+- `gemini-omni-1.2-flash` GA 2026-11-05; 1.1 routes to it from 2026-12-03. Veo 3.1 Gemini API previews listed with shutdown 2026-10-22, Vertex GA IDs "May 4, 2027 or later". The genvideo cards still state the older facts: flagged on cinewright-genvideo. https://aistudio.google.com/docs/deprecations · https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions
 
 ### R-20261006-1 · 2026-10-06 · Initial research
 - Summary: read this session: the entry schema, the evergreen protocol's TESTING.md, chartwright-curate's SKILL.md, and `compile`'s status warning in the runtime. They gave the route table, the rule that a model card stays on retirement, and the evidence (`kb lint` line). No web search: the subject is this repository's own rules; the tooling track found only the sibling curate skills.

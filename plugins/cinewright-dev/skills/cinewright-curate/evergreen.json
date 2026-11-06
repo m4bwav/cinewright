@@ -13,9 +13,9 @@
   "source": null,
   "topic": "cinewright knowledge-base upkeep: reference entries and video model cards",
   "tier": "moderate",
-  "interval_days": 30,
-  "last_checked": "2026-10-06",
-  "next_due": "2026-11-05",
+  "interval_days": 20.0,
+  "last_checked": "2026-11-05",
+  "next_due": "2026-11-25",
   "verify_at_use": false,
   "volatile_claims": [],
   "contradiction": null,
@@ -32,12 +32,18 @@
       "m": null,
       "interval_after": 30,
       "note": "created"
+    },
+    {
+      "date": "2026-11-05",
+      "m": 0.4,
+      "interval_after": 20.0,
+      "note": "split-surface row; genvideo cards flagged; cost: searches 12 · fetches 14 · tool calls 47"
     }
   ],
   "counts": {
     "learnings": 0,
     "changes": 0,
-    "research": 0,
+    "research": 1,
     "tests": 1
   },
   "consolidate_every": 25,
