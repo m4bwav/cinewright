@@ -40,7 +40,7 @@ Not gated. Created 2026-10-22, last modified 2026-11-04, sha 21665fa7. ComfyUI-f
 - cinewright-qc or -edit: a repair route for a good-motion take with one wrong element, before re-rolling. Our inference, untested.
 - cinewright-movement `fight-previs.md`: recorded performer to Remake as a candidate for hard beats. Our inference, untested.
 - cinewright consent rule: real-likeness swaps need the person's consent; label output as AI.
-- comfyui-gen `references/windows-host.md`: install and 16 GB settings; a smoke test on this PC first.
+- The local render setup notes: install and 16 GB settings; a smoke test on this PC first.
 
 ## Local state checked
 
