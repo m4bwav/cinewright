@@ -13,23 +13,21 @@
   "source": null,
   "topic": "AI video model prompting and compiling (Veo, Gemini Omni, Kling, Seedance, Runway, Luma, MiniMax H3, Wan, LTX-2)",
   "tier": "fast",
-  "interval_days": 14,
-  "last_checked": "2026-10-03",
-  "next_due": "2026-10-17",
+  "interval_days": 3,
+  "last_checked": "2026-11-05",
+  "next_due": null,
   "verify_at_use": true,
   "volatile_claims": [
     "each model card's volatile_claims (frontmatter); re-check the card in use",
-    "Veo 3.1 Gemini API previews shut down 2026-10-22; Vertex GA retires 2026-11-17 or later",
+    "Veo 3.1 Gemini API previews listed ended 2026-10-22; Vertex GA retires 2027-05-04 or later",
+    "gemini-omni-1.1-flash reroutes to 1.2 on 2026-12-03",
     "Seedance 2.0 discounts end 2026-10-07"
   ],
-  "contradiction": {
-    "date": "2026-11-05",
-    "note": "2026-11-05: gemini-omni and veo-3-1 cards stale: Omni 1.2 GA, 1.1 reroutes 2026-12-03, Veo Vertex end now 2027-05-04 or later, ai.google.dev sources redirect"
-  },
+  "contradiction": null,
   "events": [],
   "streak": {
     "quiet": 0,
-    "pinned_min": 0,
+    "pinned_min": 1,
     "pinned_max": 0,
     "vau_quiet": 0
   },
@@ -45,12 +43,18 @@
       "m": null,
       "interval_after": 14,
       "note": "S2 build: nine cards verified at creation, not a refresh"
+    },
+    {
+      "date": "2026-11-05",
+      "m": 0.6,
+      "interval_after": null,
+      "note": "flagged contradiction settled: Omni 1.2, Veo Vertex dates, docs moved; subject track only; cost: searches 1 · fetches 9 · tool calls 12"
     }
   ],
   "counts": {
     "learnings": 5,
     "changes": 3,
-    "research": 2,
+    "research": 3,
     "tests": 3
   },
   "consolidate_every": 25,

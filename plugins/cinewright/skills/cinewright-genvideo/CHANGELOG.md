@@ -4,6 +4,10 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261105-3 · 2026-11-05 · gemini-omni moved to 1.2 Flash; veo-3-1 dates
+- because: R-20261105-2
+- files: references/gemini-omni.md (Numbers, Rules, Verify, Compile), references/veo-3-1.md (Notes, frontmatter), references/INDEX.md, evergreen.json (volatile_claims), tests/test_cine.py (test_omni). Omni now compiles 3-15 s with a duration parameter, new prices and worded refs in place of deprecated tags.
+
 ### C-20261105-2 · 2026-11-05 · viggle-remake repair verdict from the owner review
 - because: Mark picked the route as first try for one wrong prop on the askwright page, and noted the take's real mistakes lie later.
 - files: references/viggle-remake.md. Pending review replaced by the verdict and its limit.
