@@ -44,24 +44,22 @@
     "learnings": 0,
     "changes": 0,
     "research": 1,
-    "tests": 1
+    "tests": 2
   },
   "consolidate_every": 25,
   "tests": {
-    "last_run": "2026-10-06T20:53",
-    "harness": "evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive)",
-    "env": "windows/claude-code",
-    "cases": 6,
-    "passed": 3,
-    "failed": 3,
+    "last_run": "2026-11-05T22:44",
+    "harness": "evals/run_evals.py",
+    "env": "windows",
+    "cases": 7,
+    "passed": 6,
+    "failed": 1,
     "failing": [
-      "trigger-2",
-      "decoy-2",
-      "action-1"
+      "decoy-1"
     ],
     "last_failure": {
-      "date": "2026-10-06",
-      "note": "S7 first suite, budget week: Sonnet 3 runs per case, Haiku and Opus 1 run per case, one baseline per model; harness rev 2 with fixture repo"
+      "date": "2026-11-05",
+      "note": "after the 2026-11-05 split-surface row; Sonnet only; decoy-1 1/3 with only cinewright-dev loaded"
     },
     "research_after_days": null
   }

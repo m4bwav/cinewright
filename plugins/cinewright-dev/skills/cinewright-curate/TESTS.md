@@ -8,6 +8,15 @@ Entry shape: `### T-YYYYMMDD-n · date · harness · env · passed/total`, then 
 
 ## Runs
 
+### T-20261105-1 · 2026-11-05 · evals/run_evals.py (claude -p --restricted, dontAsk) · windows/claude-code, Sonnet only · 6/7
+- Why: the 2026-11-05 split-surface row, plus new case outcome-2. Runs: 3 with the skill, 1 baseline. Judge not calibrated (3 votes, majority). Second platform: untested elsewhere. About $3.
+- decoy-1 · trigger · overtrigger · 1 of 3 invoked curate on a compile request. The with-skill arm loads only cinewright-dev, so genvideo, the right skill, was not available; recorded, not tuned.
+- First outcome run failed kb lint in every arm: crowd-prompting.md linked to ai-docs/, which the fixture and installed copies do not have. Fixed the link to a GitHub URL, reran outcome-1 and outcome-2: 3/3 each.
+- First outcome-2 prompt named no URL; the skill asked for one, which is its rule. The prompt now names a source.
+- Baselines: action-1 fail, outcome-1 fail (summary over 200 characters in lint, claimed other changes), outcome-2 pass. outcome-2 is redundant on Sonnet as a pass/fail case: the bare agent also kept the card current.
+- not covered: Haiku and Opus; command_not_ran for hand edits or deleting a card (RESEARCH.md still owes it).
+- led to: none
+
 ### T-20261006-2 · 2026-10-06 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Claude Code 2.1.281 · 3/6 cases on all three models
 - Models: H Haiku 4.5, S Sonnet 5, O Opus 5.5; with the skill 3 runs each; trigger counts are invocations.
 - Cases: trigger-1 H 1/1 S 3/3 O 1/1; trigger-2 H 0/1 S 3/3 O 1/1; decoy-1 H 0/1 S 0/3 O 0/1; decoy-2 H 1/1 S 0/3 O 0/1; action-1 H 0/1 S 3/3 O 1/1; outcome-1 H 1/1 S 3/3 O 1/1.
