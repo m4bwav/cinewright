@@ -32,7 +32,8 @@ volatile_claims: ["gemini-omni-1.2-flash stable since 2026-11-05; Vertex retirem
 
 ## Pitfalls
 
-- Dialogue syntax is not in Google's guide (unverified): the compiler writes `Name says: "line"`. Check the first take for a burnt-in caption.
+- Dialogue: Google's page says speech "is supported when extending previously generated videos via multi-turn", and gives no line syntax. The compiler's `Name says: "line"` on a new generation is untested and may not speak: for a shot that needs a line, plan an extend turn or pick another model. No voice editing, and no adding lines to an uploaded video where someone talks.
+- Extend: each turn counts its timestamps from where the new section starts.
 - No seed: every reroll is a new take; keep the one you like.
 
 ## Verify
@@ -42,6 +43,7 @@ volatile_claims: ["gemini-omni-1.2-flash stable since 2026-11-05; Vertex retirem
 ## Notes
 
 - 2026-11-05: verified against https://aistudio.google.com/docs/omni; moved to 1.2 Flash
+- 2026-11-05: verified against https://aistudio.google.com/docs/omni; read the whole page: speech is documented only for multi-turn extends
 
 ## Compile
 
