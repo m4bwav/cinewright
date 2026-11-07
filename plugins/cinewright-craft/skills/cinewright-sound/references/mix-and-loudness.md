@@ -20,6 +20,7 @@ sources: ["https://ffmpeg.org/ffmpeg-filters.html", "https://tech.ebu.ch/docs/r/
   3. Second pass with `linear=true` and all four measured values. Without them, or without headroom, loudnorm silently switches to dynamic mode (it compresses and works at 192 kHz, so set `-ar 48000`).
   4. Run `CINE qc loud mix.wav --preset <target>` and again on the delivery file; quote both.
 - Loudness range (LRA) for web and phones: about 5-10 LU; wider ranges make quiet lines inaudible on a phone speaker.
+- Reverb places a sound: dry reads as near, diffuse as far. To keep music on through dialogue, try blurring it with room reverb as well as ducking it, then bring it back dry when the line ends (worldizing, Murch, Suddenly Something Clicked, 2025; a film practice, untested on generated audio).
 - Stems are normalised together with the mix (same gain), never each to the target (entry sound-layers).
 
 ## Numbers
