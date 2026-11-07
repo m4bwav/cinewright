@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261106-1 · 2026-11-06 · Rule of two and a half, worldizing (Murch)
+- because: book distillation (Murch, *Suddenly Something Clicked*, 2025), pre-approved
+- files: references/sound-layers.md, references/mix-and-loudness.md
+- Layers followed per moment, group footsteps, reverb to push music back. Book rules, unverified on generated audio.
+
 ### C-20261106-1 · 2026-11-06 · Sfxwright, when installed
 - because: user request
 - files: SKILL.md (sfxwright note)
