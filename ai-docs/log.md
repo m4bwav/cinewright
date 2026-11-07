@@ -869,3 +869,5 @@ Mark reviewed the pail repair on askwright and picked "use this route as the fir
 
 ## [2026-11-05] release | 0.3.0
 - Minor bump, from the evergreen-upkeep owed list: Omni 1.2 Flash card (installed copies compiled gemini-omni-1.1-flash, rerouted from 2026-12-03), Viggle Remake card, voicewright caller, Master Shots and Color & Light rules, MS1 setups, on-screen text reference, H3 ellipsis strip, take-selection questions. PRs #60 to #85.
+
+## [2026-11-06] release | 0.3.1: Sound effects go to sfxwright when it is installed (cinewright-sound). Fine cut placement and the rule of two and a half, from Murch. The gemini-omni card now says speech is documented only for multi-turn extends. Tag v0.3.1
