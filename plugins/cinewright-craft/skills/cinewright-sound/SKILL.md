@@ -14,6 +14,10 @@ Give the locked cut a full soundtrack and mix it to a stated delivery target: ev
 
 Read `evergreen.json`. If `contradiction` is set or today is on or after `next_due`, say so in one line, do the task with the current content, then run `evergreen-refresh` if the evergreen plugin is installed. If `tests.failing` is non-empty, say so and run `evergreen-tune` after the task.
 
+## Sfxwright, when installed
+
+If the sfxwright plugin is present, hand it the hard effects, foley and ambience from the layer plan. Read its `sounds.json` for the take with `picked: true`, its `at_s` and `sync_point_s`. This skill keeps the plan, dialogue, room tone, music spotting and the mix. Without it, follow the steps below; they work alone.
+
 ## Step 1: target and inputs
 
 1. State the delivery target in one line before any mixing (`kb show loudness-targets`). No target given: web (-18 ± 2 LUFS, -2 dBTP).
