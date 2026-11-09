@@ -4,7 +4,7 @@ slug: scene-turns
 summary: Every scene turns a value from positive to negative or back; how to name the value, the goal and the turning point, and place the turn in one shot.
 tags: [script, scene, turn, value, conflict]
 last_checked: 2026-11-09
-sources: ["Robert McKee, Story, 1997", "John Truby, The Anatomy of Story, 2007", "Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques and Aesthetics, 6th ed., 2020"]
+sources: ["Robert McKee, Story, 1997", "John Truby, The Anatomy of Story, 2007", "Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques and Aesthetics, 6th ed., 2020", "Nicholas T. Proferes, Film Directing Fundamentals, 4th ed., ch. 2, 7", "David Bordwell, Narration in the Fiction Film, 1985, ch. 9", "Bordwell, Staiger, Thompson, The Classical Hollywood Cinema, 1985, p. 67"]
 ---
 
 # Scene turns
@@ -17,10 +17,12 @@ sources: ["Robert McKee, Story, 1997", "John Truby, The Anatomy of Story, 2007",
 - Turn on an action or a line the camera can see: a hand opens, a door shuts, a word is said. Never on a thought.
 - Consecutive scenes alternate charge where possible (plus to minus, then minus to plus); two scenes turning the same way flatten the film.
 - In a film of one scene, the scene turn is the story's turn.
+- Scene chain: every scene but the last leaves one line open (a question, appointment, threat), and the next opens on it in its first shot or line; a dialogue hook answers or echoes the last line across the cut (Bordwell, Narration ch. 9; Classical Hollywood p. 67).
+- Mark the fulcrum card: where the scene could go either way for its owner, never its first or last card. Split the scene into dramatic blocks, each named by one owner verb (reason, seduce, threaten); consecutive blocks never share a verb (Proferes ch. 2, ch. 7). Warn only.
+- Note per scene `knowledge: restricted` (we know what the lead knows) or `unrestricted`; a goal-driven short sets a deadline in its first part (Bordwell, Narration ch. 9).
 - Write the turn as a change of awareness: "a-ha, the door is locked". A change in what someone knows gives the camera a face to hold (Rabiger ch. 4).
 - A turn the audience sees before the character is marked `turn: viewer` in the beat; that card is a reveal or an insert, not a reaction close-up (Rabiger ch. 4).
-- Each scene asks a yes or no question ("will he get the words out?"); the turn card answers it. Add a stakes line: the price of failing (Rabiger ch. 4, ch. 17).
-- The unit runs setup, development, crisis, result, and the result is the next unit's setup: at least one card after the turn shows the consequence (Rabiger ch. 4).
+- Each scene asks a yes or no question; the turn card answers it, and a stakes line names the price of failing. At least one card after the turn shows the consequence (Rabiger ch. 4, ch. 17).
 
 ## Numbers
 
