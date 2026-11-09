@@ -739,6 +739,22 @@ class TestContinuity(Base):
         self.assertIn("slow dolly in that starts and ends on a held frame", lib.compile_cards(p, [c], vprof)[0][1])
 
 
+    def test_compile_says_perform_fields_and_keeps_the_rest_out(self):
+        p, prof, _ = compile_one(EXAMPLE, "minimax-h3", "1B")
+        base = lib.compile_cards(p, [p.cards[1]], prof, False, "480p")[0][1]
+        c = json.loads(json.dumps(p.cards[1]))
+        c["cast"][0]["perform"] = {"objective": "make him admit it", "obstacle": "he is her brother", "subtext": "the key is him",
+                                   "task": "keeps polishing the lantern", "verb": "presses him for an answer",
+                                   "body": "shoulders braced", "enters_from": "still out of breath"}
+        text = lib.compile_cards(p, [c], prof, False, "480p")[0][1]
+        for s in ("Maren is still out of breath.", "Maren keeps polishing the lantern.", "Maren presses him for an answer.", "Maren, shoulders braced."):
+            self.assertIn(s, text)
+        self.assertLess(text.index("polishing"), text.index("presses"))  # task before verb
+        for hidden in ("admit", "brother", "the key is him"):
+            self.assertNotIn(hidden, text)
+        c["cast"][0]["perform"] = {}
+        self.assertEqual(lib.compile_cards(p, [c], prof, False, "480p")[0][1], base)
+
 class TestBudgetZip(Base):
     def test_budget_not_red(self):
         # PLAN 6: CI fails at red; a yellow row is reported to Mark, not failed

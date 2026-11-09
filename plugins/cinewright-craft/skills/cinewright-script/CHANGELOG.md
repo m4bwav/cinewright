@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-1 · 2026-11-09 · Performance words, beats and voice lines from Weston and Rabiger
+- because: book notes round5 (books/plugin-learnings, track 21)
+- files: references/performance-words.md (new), scene-turns.md, logline-and-beats.md, dialogue-for-generated-voices.md; vocab performance-verbs; card cast[].perform, dialogue[].intent
+- New entry: objective, playable verb, task, posture, masks, enters_from; turns as a change of awareness with question and stakes; need paired with a visible task; line intent and subtext.
+
 ### C-20261016-1 · 2026-10-16 · Lesson: a card holds 8 s, so a long line is cut at a comma across two shots
 - because: L-004
 - files: LEARNINGS.md (Active: L-004)

@@ -6,7 +6,8 @@
     "screen-direction.md",
     "failures-picture.md",
     "failures-motion.md",
-    "failures-framing.md"
+    "failures-framing.md",
+    "performance-verbs.md"
   ],
   "lib": [
     "cine.py"

@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:d11e29f154136d2519cf7868fcdd7dc73a74cc41ed42091898204bb08a98d9dc; edit the source",
+  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:ad70c8ebd35b7d14754b20173bdfebdfca796924671fdd13e42d3ee4509fa259; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Shot card",
   "description": "One shot, generator-neutral. Fields follow the shot list (slate, size, angle, move, lens, action, dialogue, duration) and the script supervisor's notes (camera side, screen direction, eyelines, wardrobe, props in hand, start and end state).",
@@ -329,6 +329,53 @@
           "holding_state": {
             "type": "string",
             "description": "One of the held prop's states in props.json; its description and refs replace the prop's."
+          },
+          "perform": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "How the person plays the card (entry performance-words). objective, obstacle and subtext stay in the card for the reviewer; verb, task, body, masks and enters_from become prompt sentences.",
+            "properties": {
+              "objective": {
+                "type": "string",
+                "maxLength": 160,
+                "description": "What they want from the other person, as verb + person + effect. Not compiled."
+              },
+              "obstacle": {
+                "type": "string",
+                "maxLength": 120,
+                "description": "What makes the objective hard. Not compiled."
+              },
+              "subtext": {
+                "type": "string",
+                "maxLength": 160,
+                "description": "What the talk is really about for them. Not compiled."
+              },
+              "verb": {
+                "type": "string",
+                "maxLength": 80,
+                "description": "One playable verb aimed at a person, as a predicate: 'begs him to stay'. Compiled after the name."
+              },
+              "task": {
+                "type": "string",
+                "maxLength": 120,
+                "description": "One physical task with a prop, as a predicate: 'keeps folding the shirt'. Compiled first, before the verb."
+              },
+              "body": {
+                "type": "string",
+                "maxLength": 80,
+                "description": "One posture or gait phrase: 'head low, shoulders braced'. Repeat on every card of the scene."
+              },
+              "masks": {
+                "type": "string",
+                "maxLength": 120,
+                "description": "The cover behaviour for a hidden feeling, as a predicate: 'tries to look casual'."
+              },
+              "enters_from": {
+                "type": "string",
+                "maxLength": 120,
+                "description": "The state they bring in from before the shot: 'still out of breath from running from the police'."
+              }
+            }
           }
         }
       }
@@ -416,6 +463,11 @@
           "tone": {
             "type": "string",
             "description": "Delivery, pasted after 'says': an adverb or phrase ('quietly', 'under his breath'), never a verb ('mutters')."
+          },
+          "intent": {
+            "type": "string",
+            "maxLength": 80,
+            "description": "What the line tries to do to the listener, as a verb phrase ('pleading with her to stay'). For voice engines that take free-text direction; not compiled into video prompts."
           }
         }
       }

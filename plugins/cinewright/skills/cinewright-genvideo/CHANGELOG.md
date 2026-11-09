@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-1 · 2026-11-09 · Compile says the card's perform fields, task before verb
+- because: book notes round5 (books/plugin-learnings, track 21)
+- files: scripts/cine.py (shared/lib), shot-card schema; vocab performance-verbs
+- cast[].perform verb, task, body, masks and enters_from become sentences; objective, obstacle and subtext stay out. Cards without perform compile byte-identically (test).
+
 ### C-20261105-4 · 2026-11-05 · gemini-omni: speech documented only for multi-turn extends
 - because: the last unread part of the Omni page, and the dialogue claim in the earlier part
 - files: references/gemini-omni.md

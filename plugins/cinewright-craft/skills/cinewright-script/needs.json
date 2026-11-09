@@ -10,5 +10,8 @@
     "location-bible.schema.json",
     "scene-axis-bible.schema.json",
     "voice-bible.schema.json"
+  ],
+  "vocab": [
+    "performance-verbs.md"
   ]
 }

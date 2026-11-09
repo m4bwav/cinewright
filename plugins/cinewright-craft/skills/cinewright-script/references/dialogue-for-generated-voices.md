@@ -3,8 +3,8 @@ title: Dialogue for generated voices
 slug: dialogue-for-generated-voices
 summary: How many words fit a shot, one speaker per shot, off-screen lines, names a voice model mispronounces, voice strings in the bible, and the dialogue checks in the continuity diff.
 tags: [script, dialogue, voice, lip-sync, speech]
-last_checked: 2026-10-07
-sources: ["Christopher Riley, The Hollywood Standard, 3rd ed., 2021", "https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/docs/VIDEO_PROMPT_WRITING_GUIDE_base_en.md", "library film test, 2026-10-07 (maintainer render)", "https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1", "https://kling.ai/quickstart/klingai-video-3-model-user-guide"]
+last_checked: 2026-11-09
+sources: ["Christopher Riley, The Hollywood Standard, 3rd ed., 2021", "https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/docs/VIDEO_PROMPT_WRITING_GUIDE_base_en.md", "library film test, 2026-10-07 (maintainer render)", "https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1", "https://kling.ai/quickstart/klingai-video-3-model-user-guide", "Judith Weston, Directing Actors, 25th anniversary ed., 2021", "Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques and Aesthetics, 6th ed., 2020"]
 ---
 
 # Dialogue for generated voices
@@ -20,6 +20,10 @@ sources: ["Christopher Riley, The Hollywood Standard, 3rd ed., 2021", "https://h
 - Each speaker gets a `voice` string in the bible ("low, dry, unhurried"); a voice that must match across shots gets a locked reference (cinewright-voice, entry voice-sheet).
 - `tone` follows "says": an adverb or phrase ("under his breath"), never a verb (TONE).
 - Silence is a line.
+- Each line tries to get something from the listener. Put that verb in the line's `intent` ("pleading with her to stay"); engines that take free-text direction get it in place of an emotion tag (Rabiger ch. 8; Weston ch. 1). Verbs: `kb show performance-verbs`.
+- One subtext sentence per scene says what the talk is really about. Voice and face direction come from it, not from the surface words (Rabiger ch. 7, ch. 17).
+- No capitals or italics to force stress: that is a line reading. Give the subtext and let the engine place the stress (Weston ch. 1). Untested on TTS.
+- Script parentheticals (wryly, voice shaking) are clues: turn them into a verb and a task before compile (Weston ch. 1 ex. 12).
 
 ## Numbers
 
