@@ -4,23 +4,23 @@ slug: lora-or-references
 summary: When a trained character, prop or style LoRA beats reference images, which model to train first, a starting recipe, updating one with new data or a costume, and testing; video LoRAs come last.
 tags: [design, lora, training, references, identity, consistency, costume, update]
 last_checked: 2026-10-15
-sources: ["kohya-ss musubi-tuner docs/minimax_h3.md, 2026-09-24", "Black Forest Labs, FLUX.2 Klein training docs and HF blog 2026-06-04", "fal, How to train a LoRA for MiniMax H3, 2026-08-10", "note.com/sepiablue, H3 Ref2VA LoRA vs references, 2026-08-16", "ostris/ai-toolkit jobs/process/BaseSDTrainProcess.py get_latest_save_path, read 2026-10-12", "field lesson: a 6B image-model LoRA timed on a 16 GB consumer GPU, 2026-10-12", "Video LoRA census and a room-LoRA report, 2026-10-15"]
+sources: ["kohya-ss musubi-tuner docs/minimax_h3.md, 2026-09-24", "Black Forest Labs, FLUX.2 Klein training docs and HF blog 2026-06-04", "fal, How to train a LoRA for MiniMax H3, 2026-08-10", "note.com/sepiablue, H3 Ref2VA LoRA vs references, 2026-08-16", "ostris/ai-toolkit jobs/process/BaseSDTrainProcess.py get_latest_save_path, read 2026-10-12", "field lesson: a 6B image-model LoRA timed on a 16 GB consumer GPU, 2026-10-12", "Video LoRA census and a room-LoRA report, 2026-10-15", "r/StableDiffusion 1xbobrr (one H3 report), 2026-11"]
 ---
 
 # LoRA or reference images
 
 ## Rules
 
-- Default to references (turnaround, prop sheet, set plate). One maker's test of a character LoRA against the same model's plain references found them "indistinguishable" in most shots.
+- Default to references (turnaround, prop sheet, set plate); they carry their light into the shot, so use candid, scene-lit photos, not studio stills. One maker's test of a character LoRA against the same model's plain references found them "indistinguishable" in most shots.
 - Train a LoRA when the subject recurs: a series, a character in more than 10 to 15 shots, a hero prop across films, text-only shots.
 - Train the image model first: a LoRA on the model that makes keyframes and reference views fixes outfit and body once, and the video model animates consistent stills.
 - Train on the base checkpoint, run on the distilled one. CFG-distilled video models break under plain LoRA training: use the trainer's adapter, guidance loss or teacher matching.
 - Captions: trigger word plus what changes (pose, angle, light, background); the trigger absorbs the fixed look. One costume per LoRA. Drop any image with a wrong detail: a LoRA learns mistakes too.
-- Captions decide what a costume change costs. Leave the clothes out and the trigger word carries that one outfit; a new costume then means a new LoRA. If the subject will change clothes, name the outfit in every caption and add a few images in other clothes before the first training run.
-- Update a LoRA by warm-starting from its best checkpoint, not by retraining from zero: same rank, a new run name, about half the learning rate, 500 to 1,000 steps, and a third to a half of the old images mixed in with the new ones so the face does not drift (starting numbers, not yet tested here). In ai-toolkit that is `network.pretrained_lora_path`; it restarts the step count at 0, and a run name that matches an old run resumes that run's last checkpoint instead of loading the path.
-- A one-off outfit for a few shots: edit the keyframe with an image-editing model instead of training. A recurring costume worn by several characters: a small costume LoRA (rank 8, 300 to 600 steps), stacked under the character LoRA at 0.7 to 0.9 (unverified starting point; test the pair for face clashes).
-- No set LoRA for one film: a 2026-10-15 census found 0 location LoRAs among 830 for an open video model, and the one room LoRA reported learned textures, not layout. Use a blockout, checked plates and one grid reference (cinewright-sets). Train one only if references lose the room in over a third of cards on a measured A/B: 3-8 GPU hours buy 25-65 rerolls.
-- Video-model LoRAs come last, for what references cannot carry (a style, a gait, a vehicle's motion); train them from clips, ideally hosted. Test on top of any turbo LoRA; combined strength past about 1.5 can break motion.
+- Captions decide what a costume change costs. Leave the clothes out and the trigger word carries that one outfit (a new costume, a new LoRA); if the subject will change clothes, name the outfit in every caption and add a few images in other clothes.
+- Update a LoRA by warm-starting from its best checkpoint, not by retraining from zero: same rank, a new run name, about half the learning rate, 500 to 1,000 steps, and a third to a half of the old images mixed in with the new ones so the face does not drift (untested starting numbers). In ai-toolkit: `network.pretrained_lora_path`; steps restart at 0, and an old run's name resumes that run instead.
+- A one-off outfit: edit the keyframe instead of training. A recurring costume worn by several characters: a small costume LoRA (rank 8, 300 to 600 steps), stacked under the character LoRA at 0.7 to 0.9 (untested; check the pair for face clashes).
+- No set LoRA for one film: a 2026-10-15 census found 0 location LoRAs among 830 for an open video model, and the one room LoRA reported learned textures, not layout. Use a blockout, plates and one grid reference (cinewright-sets); train one only if references lose the room in over a third of cards on an A/B.
+- Video-model LoRAs come last, for what references cannot carry (a style, a gait, a vehicle's motion); train them from clips, ideally hosted. Combined strength with a turbo LoRA past about 1.5 can break motion.
 
 ## Numbers
 
@@ -35,7 +35,7 @@ sources: ["kohya-ss musubi-tuner docs/minimax_h3.md, 2026-09-24", "Black Forest 
 
 ## Pitfalls
 
-- Training on a turnaround grid (panels bleed: crop each view); picking the last checkpoint (it locks pose and background); judging by the loss curve, not the samples.
+- Training on a turnaround grid (panels bleed: crop each view); picking the last checkpoint (it locks pose and background); judging by the loss curve or the trainer's previews: render each checkpoint in the real shot workflow, where late ones can look better.
 
 ## Verify
 

@@ -28,13 +28,14 @@ volatile_claims: ["4-15 s at 24 fps", "17k+5 frame grid (field notes)", "license
 - Camera as a sentence: type, `with small amplitude`, `at slow speed`; omit medium and normal.
 - Dialogue: `the baker with a calm voice (S1) says: <d>[English] Hello.</d>`; then `(S2)`. Everyone else in the shot gets `while the lips of ... remain completely closed`.
 - A speaker not in the shot: `says in an off-screen voiceover: <d>...</d>`, then the on-screen lips stay closed (the guide's exact phrase). Written as a plain `says`, H3 gave a rival's off-screen shout to the only face in frame (library test, 2026-10-07).
-- Names: H3 guesses how to say an invented name; the guide says nothing on pronunciation. `pronounce` in characters.json respells it inside `<d>` only (unverified on H3; test with a 4 s render before a long one).
+- Names: H3 guesses how to say an invented name; the guide says nothing on pronunciation. `pronounce` in characters.json respells it inside `<d>` only (unverified on H3; test a 4 s render first).
 - Several shots per render: each render restarts picture and sound (field lesson 011).
 - Bad opening: new seed, then a guide still at frame 0 (field lessons 014, 015).
 - Violence: the local weights refuse nothing; the hosted service strips blood. A stab or impalement lands when a still of the contact is pinned as a guide (field lesson 015).
 - Fight LoRAs (2026-10, conflicting): Combat Base V2 (`prfight2`; add `prfin1` for heavy finishers) at 0.9 won a same-seed test on swords and axes; a forum test on a trident fight found it morphed the weapon and preferred Weapon Combat (`BUNNY`) at 0.7. Use one fight LoRA, at the step count its speed LoRA was trained for.
 - Timed beats: a card's `beats` compile to `Timeline: [0.0s-1.2s] ...` in place of the action. One fight hit a range kept the staging and landed the hits where prose lost both, 0.3-0.9 s off their ranges (field lesson, open test 2): order and rhythm, not frames.
 - First/last frame: the end frame is forced; motion can overshoot and snap back in the last second.
+- Past one clip (one-take shots, long v2v) and known misreads: [h3-long-takes](h3-long-takes.md).
 
 ## Compile
 

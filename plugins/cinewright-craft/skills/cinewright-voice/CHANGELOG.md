@@ -4,6 +4,10 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-2 · 2026-11-09 · A refine pass can drop the cloned voice
+- because: technique harvest 2026-11 (community posts reviewed in a separate harvest workspace), each item single-source and untested here
+- files: references/video-model-voices.md (Pitfalls)
+
 ### C-20261109-1 · 2026-11-09 · Range by subtext and an intent verb for free-text engines, from Weston
 - because: book notes round5 (books/plugin-learnings, track 21)
 - files: references/voice-design.md

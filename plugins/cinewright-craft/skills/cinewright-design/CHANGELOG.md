@@ -4,6 +4,10 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-1 · 2026-11-09 · lora-or-references: candid-light refs, judge checkpoints in the shot workflow
+- because: technique harvest 2026-11 (community posts reviewed in a separate harvest workspace), each item single-source and untested here
+- files: references/lora-or-references.md (Rules, Pitfalls; trims to stay under the token budget; the H3 LoRA data point went to genvideo h3-long-takes)
+
 ### C-20261104-1 · 2026-11-04 · On-screen text and interfaces reference
 - because: Addey, *Typeset in the Future* (Summary and interviews); no entry covered designing screens and signs
 - files: references/on-screen-text.md (new), references/INDEX.md, SKILL.md (Step 3)

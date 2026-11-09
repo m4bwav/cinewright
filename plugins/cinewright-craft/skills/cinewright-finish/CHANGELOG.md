@@ -4,6 +4,10 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-1 · 2026-11-09 · crowd-multiplication: aim a whole-frame matte by inpainting the others out
+- because: technique harvest 2026-11 (community posts reviewed in a separate harvest workspace), each item single-source and untested here
+- files: references/crowd-multiplication.md (Isolate groups)
+
 ### C-20261022-1 · 2026-10-22 · grade stabilize, saturation and warmth targets, repair order (books track 3)
 - because: books track 3 (Block, *The Visual Story*; Brown, *Cinematography*; *FilmCraft: Cinematography*; Phillips on Resolve), decision 2026-10-22-books-track3; L-004, L-005
 - files: SKILL.md (Step 3), references/shot-matching.md, references/grade-order.md, evals/evals.json (action-2); shared/lib/cine_post.py (`grade stabilize`, `grade match --sat --warm`, `grade measure --plan`)
