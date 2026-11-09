@@ -22,4 +22,5 @@ volatile_claims: ["Kling 3.0 binds a voice to an Element from 5-30 s of speech",
 ## Pitfalls
 
 - Extending or continuing a clip loses the voice unless speech runs into its last second (Veo).
+- A refine or upscale pass (H3 two-stage and similar) can drop the cloned voice: keep the stage-1 audio and mux it back (one maker's report, untested).
 - Using one take's voice as the reference for the next compounds drift. Always clone from the locked bank.

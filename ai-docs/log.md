@@ -922,3 +922,12 @@ Mark reviewed the pail repair on askwright and picked "use this route as the fir
 - Checks: unittest `Ran 143 tests ... OK`; `kb lint: 16 skills, 0 errors`; budget YELLOW (runtime shared/lib 190 of 200 KB; repo ZIP 2089 of 2048 KB; reference entry tokens 1199 of 1200, unchanged entry).
 
 ## [2026-11-09] release | 0.5.0: books round 5 (tracks 23-26, #95-#98). Script structure and performance rules, coverage, eyelines and staging rules, edit, continuity and sound rules, and continuity diff warnings BEAT-REPEAT, PLANT-MISSING, INTRO and related checks. Scrub: 7 hits, all third-party GPU benchmarks (expected).
+
+## [2026-11-09] change | technique harvest: H3 long takes, misreads, face-refine, Time-to-Move (0.5.1)
+
+- From the 2026-11 technique harvest (verdicts #6-#11, #15, #17, #18 in the harvest workspace; every item one maker's report, untested here; GPL sources reworded as ideas only, MIT ones credited by name).
+- New genvideo entry `h3-long-takes`: one-take routes (last-frame chain + refine blend, or motion-latent chaining with a clip stitcher; cut per shot stays default), windowed long video-to-video, known misreads as a warn-only pre-render checklist, refine pass drops the cloned voice (mux stage-1 audio), face-refine recipe, famous settings pull identity, one H3 character LoRA data point, pointer to pixelwright for game character actions. minimax-h3 and viggle-remake point to it.
+- Vocab failures-picture `face-mush` (rung 5); video-model-voices refine-pass pitfall; lora-or-references candid-light refs and checkpoint judging in the shot workflow; blockout-control Time-to-Move (SAM 2.1, not the gated SAM 3.1); crowd-multiplication matte-aiming line.
+- Budget: lora-or-references, viggle-remake and failures-picture were at the 1,200-token red line, so each addition came with trims; the H3 material went to a new entry rather than the full minimax-h3 card (1,196 of 1,200).
+- Deferred: the misreads lint in `cine.py compile` (warnings for cut with no new subject, quality words, cuts per second, short shots, no action verb, two camera moves). shared/lib is at 190 of 200 KB and copied into 16 skills, and the rules are unmeasured; build it after one rule is confirmed on a real render. Real trials of #6/#7/#8/#9/#17 need node installs (askwright in the harvest workspace).
+- Checks: unittest `Ran 143 tests ... OK`; `kb lint: 16 skills, 0 errors`; budget YELLOW (entry tokens 1,198 of 1,200); `claude plugin validate` passed on root and three plugins; scrub 7 hits, all known third-party GPU benchmarks in ai-docs.

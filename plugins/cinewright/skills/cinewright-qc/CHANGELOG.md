@@ -7,6 +7,10 @@ Entry shape: `### C-20261101-1 · 2026-11-01 · Alignment and fidelity asked apa
 - files: references/take-selection.md (Rules, Pitfalls)
 - Pairwise review asks card match and realism as separate questions with a pick per axis; frames for a VLM judge come from beat times, not even spacing.
 
+### C-20261109-1 · 2026-11-09 · Vocab failures-picture gains `face-mush`
+- because: technique harvest 2026-11 (community posts reviewed in a separate harvest workspace), each item single-source and untested here
+- files: references/failures-picture.md (copy of shared/vocab)
+
 ### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261022-4 · 2026-10-22 · Framing failure codes and a framing rubric row (books track 4)

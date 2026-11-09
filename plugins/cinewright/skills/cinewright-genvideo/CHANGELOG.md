@@ -4,6 +4,10 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-2 · 2026-11-09 · New entry h3-long-takes; minimax-h3 and viggle-remake point to it
+- because: technique harvest 2026-11 (community posts reviewed in a separate harvest workspace), each item single-source and untested here
+- files: references/h3-long-takes.md (one-take routes incl. motion-latent chaining, windowed long v2v, known misreads as a pre-render checklist, refine pass drops cloned voice and mux stage-1 audio, face-refine recipe, one H3 LoRA data point), references/minimax-h3.md, references/viggle-remake.md (pitfall line; small trims for budget), vocab failures-picture `face-mush`. A cine.py compile lint for the misreads is in the backlog, not built.
+
 ### C-20261109-1 · 2026-11-09 · Compile says the card's perform fields, task before verb
 - because: book notes round5 (books/plugin-learnings, track 21)
 - files: scripts/cine.py (shared/lib), shot-card schema; vocab performance-verbs

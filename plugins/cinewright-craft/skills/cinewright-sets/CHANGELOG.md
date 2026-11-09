@@ -4,6 +4,10 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-1 · 2026-11-09 · blockout-control: Time-to-Move route
+- because: technique harvest 2026-11 (community posts reviewed in a separate harvest workspace), each item single-source and untested here
+- files: references/blockout-control.md (Rules, Numbers, Pitfalls: SAM 2.1 for the matte, not the gated SAM 3.1)
+
 ### C-20261023-1 · 2026-10-23 · Mist against inverse depth, tested once on H3
 - because: L-007
 - files: references/blender-passes.md (summary; Rules)

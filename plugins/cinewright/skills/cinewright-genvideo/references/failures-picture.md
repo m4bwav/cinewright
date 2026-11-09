@@ -6,7 +6,7 @@ tags: [vocab, qc, failures, taxonomy, continuity]
 last_checked: 2026-10-22
 sources: ["field lessons 005, 010-013, 017, 019 (maintainer's local renders, 2026-09)", "set field test, 2026-10-15: a rapier duel from a novel, one card three ways", "Pat P. Miller, Script Supervising and Film Continuity, 3rd ed., 1999", "Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "Bruce Block, The Visual Story, 3rd ed., 2021"]
 ---
-<!-- copied from shared/vocab/failures-picture.md sha256:16b2ca11ccf5894d27ffc696515fc0e1f57e394fb34807411e5bdb3711a65e05; edit the source -->
+<!-- copied from shared/vocab/failures-picture.md sha256:34aa8e981dd0b983b160605e8bb8fbc06983751eea0f745e47ec17baebb4d3ea; edit the source -->
 
 # Failure codes, picture and continuity
 
@@ -18,6 +18,7 @@ Rung: the repair ladder in the router's `pipeline` entry (1 prompt, 2 parameter,
 |---|---|---|---|---|---|
 | `identity-drift` | face, age, hair or mark off the bible | identity paraphrased or missing; no ref | paste the identity verbatim; add a turnaround ref | 1 | identity |
 | `identity-merge` | two people share a face | two weakly told-apart people | a sentence on who has what; one ref each | 1 | identity |
+| `face-mush` | right shot, smeared face | face too small for the model | face-refine (untested) | 5 | identity |
 | `wardrobe-drift` | costume colour, cut or layer changes | wardrobe not restated | paste the scene's wardrobe verbatim | 1 | wardrobe |
 | `prop-drift` | prop changes size or shape, appears or vanishes | prop defined loosely | one prop constant in every prompt | 1 | props |
 | `emblem-copied` | a mark from a ref shows on the subject | models copy small marks from refs | paint the mark out of the ref | 4 | wardrobe |
