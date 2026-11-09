@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:0cc0b0090f393c5a77bafc38f868f5ea6c1fe86d2475b86256aa73031582eb69; edit the source
+# copied from shared/lib/cine.py sha256:12ed020cfd049f02a22cc5adfeeffad2dda040d7b0f822139d6b8c1654ee69dc; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -754,6 +754,13 @@ def graph_lines(rows, flags):
 
 # ---------- continuity diff ----------
 
+# triangle setups that may cut together (Arijon ch. 4-5; entry dialogue-triangle); apex and axis-advance pair with any
+SETUP_PAIRS = {"external": {"external", "internal"}, "internal": {"external", "internal", "subjective"},
+               "subjective": {"internal", "subjective"}, "parallel": {"parallel"}, "right-angle": {"right-angle"}}
+RESULT_WORDS = set("angry sad scared smug desperate sexy quirky intense menacing emotional dramatic defensive sarcastic "
+                   "hostile cold vicious nervous calm friendly weak upset furious happy anxious".split())
+
+
 def continuity_diff(p):
     """Every card against the bibles and against the previous card in its scene."""
     issues = []
@@ -986,12 +993,33 @@ def continuity_diff(p):
                 elif az is not None and paz is not None and abs(az - paz) < 10 and SIZES.index(cam["size"]) > SIZES.index(pc["size"]) and any(m.get("position") in FLIP for m in card.get("cast", [])):
                     add("warning", card, "STRAIGHT-IN", "straight-in cut from %s (%d degrees) on someone off centre; move in and around: 30+ degrees "
                         "with the size step, unless the subject is centred" % (prev["id"], abs(az - paz)))
+        for m in card.get("cast", []):
+            pf = m.get("perform") or {}
+            words = re.findall(r"[a-z]+", ("%s %s" % (pf.get("verb", ""), pf.get("body", ""))).lower())
+            if words and not pf.get("task") and set(words) <= RESULT_WORDS | {"and", "very", "a", "bit", "more", "is", "looks", "feels"} and set(words) & RESULT_WORDS:
+                add("warning", card, "RESULT", "%s plays only a result (%s); write a verb aimed at someone or a physical task (entry performance-words)" % (
+                    m.get("id"), " ".join(words)))
+        su, psu = card.get("setup"), (prev or {}).get("setup")
+        if su and psu and su in SETUP_PAIRS and psu in SETUP_PAIRS and su not in SETUP_PAIRS[psu]:
+            add("warning", card, "SETUP", "%s after %s (%s): these setups belong to different triangles; external pairs with external or internal, parallel with parallel" % (
+                su, prev["id"], psu))
+        so, pso = card.get("screen_order"), (prev or {}).get("screen_order")
+        if so and pso and so != pso and len(so) >= 3 and sorted(so) == sorted(pso) and side == pc0.get("side", "A") and not card.get("pivot"):
+            ok = so[1:-1] == pso[1:-1] and so[0] == pso[-1] and so[-1] == pso[0] or len(so) == 3 and (so[0] == pso[0] or so[-1] == pso[-1])
+            if not ok:
+                add("warning", card, "GROUP-ORDER", "screen order %s after %s in %s: no legal swap; keep the centre or an end person, or name a pivot (entry group-order)" % (
+                    " ".join(so), " ".join(pso), prev["id"]))
         if role != "protection":  # a stand-in for another card, never the state the next card starts from
             prev_by_scene[sc["id"]] = card
             last = {m.get("id"): m for m in card.get("cast", [])}
             for m in last.values():
                 if m.get("position_end") in POS_INDEX:
                     positions[m["id"]] = FLIP.get(m["position_end"], "center") if flipped else m["position_end"]
+    for sid in {c.get("scene") for c in p.cards}:
+        sus = [c.get("setup") for c in p.cards if c.get("scene") == sid and c.get("setup")]
+        if sus and not set(sus) & {"apex", "external", "right-angle"}:
+            add("warning", next(c for c in p.cards if c.get("scene") == sid and c.get("setup")), "SETUP",
+                "scene %s has no master setup (apex, external or right-angle); internal, subjective and parallel cover one person and never stand alone" % sid)
     for sid, cs in flat_deep.items():
         if len(cs) > 1 and all(cs):
             add("warning", cs[-1], "SPACE", "scene %s is planned as deep space, but every card is a static eye-level frame; stage near, middle "

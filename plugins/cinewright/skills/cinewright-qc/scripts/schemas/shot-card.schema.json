@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:ad70c8ebd35b7d14754b20173bdfebdfca796924671fdd13e42d3ee4509fa259; edit the source",
+  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:29b95dde4d5492feb0163252cda81182d003053d1f318fd28819e1287d875abf; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Shot card",
   "description": "One shot, generator-neutral. Fields follow the shot list (slate, size, angle, move, lens, action, dialogue, duration) and the script supervisor's notes (camera side, screen direction, eyelines, wardrobe, props in hand, start and end state).",
@@ -74,6 +74,29 @@
     "pov": {
       "type": "string",
       "description": "Whose view the card serves: objective, or the id of the character whose scene it is (cinewright-shots point-of-view)."
+    },
+    "setup": {
+      "enum": [
+        "apex",
+        "external",
+        "internal",
+        "subjective",
+        "parallel",
+        "right-angle",
+        "axis-advance"
+      ],
+      "description": "The card's place in the dialogue triangle (cinewright-shots dialogue-triangle); continuity diff SETUP checks the pairs."
+    },
+    "screen_order": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "On-screen people, frame left to right (cinewright-shots group-order); continuity diff GROUP-ORDER checks changes."
+    },
+    "pivot": {
+      "type": "string",
+      "description": "The person or close-up that carries an order change the GROUP-ORDER check would flag."
     },
     "role": {
       "enum": [
