@@ -32,10 +32,12 @@ sources: ["Walter Murch, In the Blink of an Eye, 2nd ed., 2001", "Ken Dancyger, 
 | clearing the frame | the subject exits, the empty frame holds 1-2 s, then cut; the next shot may open empty before they enter | joins places or opposite sides of the axis, and hides identity drift at a seam |
 | foreground wipe | a large foreground object (a passer-by, a pillar, a truck) covers the whole lens and the cut falls on the covered frames | the strongest join between two generations of one move; plan it in both cards' action |
 | soft cut | a dissolve of 1-10 frames | smooths a jumpy action cut without slowing it; fast action seams only |
+| overlapping editing | the next shot repeats the end of the action | stretches an impact; keeps two takes of one hit, a bad tail in one covered by the other (*Film Art* p. 227) |
+| ellipsis | skipped time: a cut with a dissolve or fade, an exit to an empty frame then an entry from one, or a cutaway | the empty-frame route suits generations: an exit and an empty set are both easy (*Film Art* pp. 226-227) |
+| flash frames | a few frames of pure white | an impact read as violence, or a subjective shift; more than 3 frames or 3 a second goes to the photosensitivity check (*Film Art* p. 224) |
 
 ## Rules
 
-- J and L cuts are sound edits inside a picture cut: picture decides where, sound decides when the ear moves.
 - A cut needs a reason (new information, a reaction, a rhythm beat); without one, hold the shot.
 - Fades separate scenes; cuts and dissolves connect them. A dissolve needs a reason (time, place, a state of mind) and never patches a scene that will not cut.
 - At a generation seam, prefer a join that hides it: cut on a look or a reaction, clear the frame, or wipe on a foreground object (entry cut-points).

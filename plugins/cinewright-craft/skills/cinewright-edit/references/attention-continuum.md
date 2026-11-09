@@ -3,8 +3,8 @@ title: Attention continuum
 slug: attention-continuum
 summary: Where the eye is at each cut on a nine-cell grid: attention start and end, the same cell across a calm cut, a jump only at a peak, and what the eye goes to first.
 tags: [edit, attention, eye-trace, cuts, block, continuity]
-last_checked: 2026-10-22
-sources: ["Bruce Block, The Visual Story, 3rd ed., 2021, ch. 7 (Movement)", "Walter Murch, In the Blink of an Eye, 2nd ed., 2001 (eye-trace)"]
+last_checked: 2026-11-09
+sources: ["Bruce Block, The Visual Story, 3rd ed., 2021, ch. 7 (Movement)", "Walter Murch, In the Blink of an Eye, 2nd ed., 2001 (eye-trace)", "David Bordwell, Figures Traced in Light, 2005, ch. 2"]
 ---
 
 # Attention continuum
@@ -16,6 +16,7 @@ sources: ["Bruce Block, The Visual Story, 3rd ed., 2021, ch. 7 (Movement)", "Wal
 - A jump across the frame (two cells or more) jolts. Keep it for the planned peaks (card or scene `intensity` 50 or more) and for people who should feel apart. Too many jumps push the viewer out.
 - Shot and reverse that should feel close put both faces in the same cell; an uneasy pair alternates left and right cells.
 - What the eye goes to, in order: movement, then the brightest area, then faces and eyes, then a vanishing point, then whatever is newest. If the brightest area of a frame is not the subject, the eye goes there first.
+- Before adding an insert card, ask whether a turn, a look or a step aside shows the thing inside the card. Cut in only for what is tiny, peripheral or blocked, and then straight down the lens axis (Bordwell, *Figures Traced in Light* ch. 2).
 - Compile writes the start cell into the card ("her face is in the upper left of the frame"), so plan it before rendering, not in the edit.
 
 ## Numbers
