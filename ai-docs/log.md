@@ -888,3 +888,5 @@ Mark reviewed the pail repair on askwright and picked "use this route as the fir
 - Skipped: LONG-MOVE-REST (duration_s maxes at 8 s, so a moving card over 8 s cannot exist); reply-gap (needs line timings the card does not hold); tension-curve lint (the book gives no numbers and the reader marked it a prompt to look, not a gate); ARBITER and ATTN-* (need gaze targets per extra, not in the card); EMPHASIS-AXIS (info only, low value).
 - Mutations: widening the parallel pair set, disabling the result-word test, and loosening the centre-swap rule each fail test_setup_result_group_order.
 - Checks: unittest `Ran 142 tests ... OK`; `kb lint: 16 skills, 0 errors`; budget YELLOW (runtime shared/lib 192 of 200 KB; repo ZIP 2086 of 2048 KB yellow).
+
+## [2026-11-09] release | 0.4.0: books round 5 (tracks 20-22). Staging and coverage entries from Arijon, Bordwell, Katz and Rabiger; performance direction from Weston and Rabiger (optional `cast[].perform`, `dialogue[].intent`); continuity diff SETUP, GROUP-ORDER, RESULT with card fields `setup`, `screen_order`, `pivot`.
