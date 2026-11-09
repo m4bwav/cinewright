@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:12ed020cfd049f02a22cc5adfeeffad2dda040d7b0f822139d6b8c1654ee69dc; edit the source
+# copied from shared/lib/cine.py sha256:68391c4abb765fcc2f31a058b01052b11f5e8c7cbabe5cfa359f50b0fecd4e0e; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -1154,8 +1154,7 @@ def generation_refs(p, cards, prof):
                 mine = [refs.index(r) + 1 for r in look.get("refs", []) if r in refs]
                 if mine:
                     tags.setdefault("prop:" + name, " ".join(prof["ref_tag"].format(n=n, n0=n - 1, name=name) for n in mine))
-        # the set's sheet: sent with every shot but never named, so the model had no word to tie it to and drew a
-        # generic hall (a set field test, 2026-10-15: the grid ref alone lost the room until a sentence named it)
+        # name the set's sheet: unnamed, the model drew a generic hall (set field test, 2026-10-15)
         for lid, loc in p.locs.items():
             mine = [refs.index(r) + 1 for r in loc.get("refs", []) if r in refs]
             if mine:
@@ -1237,8 +1236,7 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
             t0="%.1f" % (b["t0"] + start), t1="%.1f" % (b["t1"] + start)), _sentence(_cap(b["text"]))) for b in card["beats"]]).strip()]
     for m in card.get("cast", []):
         name = p.chars[m["id"]]["name"]
-        # only the card's own travel: the scene's travel is what continuity checks against, and stating it
-        # on every card put a close-up of a seated man "walking away from the camera" (library test, 2026-10-06)
+        # the card's own travel only: the scene's travel put a seated close-up "walking away" (library test, 2026-10-06)
         t = m.get("travel")
         if t in TRAVEL_WORDS:
             act.append(_sentence("%s is %s" % (name, TRAVEL_WORDS[t])))
@@ -1301,8 +1299,7 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
         for d in card.get("dialogue", []):
             ch = p.chars[d["character"]]
             tone = d.get("tone")
-            # a speaker who is not in the shot: models lip-sync a face they can see, so a line written as plain
-            # "says" came out of the only visible mouth (library test, 2026-10-07). compile_cards warns either way.
+            # off-shot speaker: a plain "says" lip-synced the only visible mouth (library test, 2026-10-07)
             off = d["character"] not in in_shot
             tpl = prof.get("dialogue_offscreen") if off else prof["dialogue"]
             if not tpl:
@@ -1863,8 +1860,7 @@ def judge_grid(clip, start, end):
     dur = max(0.2, end - start)
     with tempfile.TemporaryDirectory() as d:
         out = Path(d) / "grid.jpg"
-        # the window starts an eighth in, so it is 7/8 long and fps fits four frames in it; at the full length the
-        # fourth frame fell past the end of a one-card clip and its tile came out black (qc L-004)
+        # start an eighth in, 7/8 long: at full length the fourth tile fell past the end, black (qc L-004)
         win = dur * 7 / 8
         run_tool([need_tool("ffmpeg"), "-v", "error", "-y", "-ss", "%.3f" % (start + dur / 8), "-t", "%.3f" % win, "-i",
                   str(clip), "-vf", "fps=4/%.3f,scale=576:-2,tile=2x2" % win, "-frames:v", "1", "-q:v", "3", str(out)])
