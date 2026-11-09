@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-2 · 2026-11-09 · Diff codes SETUP, GROUP-ORDER, RESULT (books round 5, track 22)
+- because: book distillation (round 5), pre-approved
+- files: shared/lib/cine.py, shared/schemas/shot-card.schema.json, tests/test_cine.py
+- Three warnings. Their fields are optional, and cards without them give the same output as before.
+
 ### C-20261109-1 · 2026-11-09 · Crossing the line: legal methods (Arijon)
 - because: book distillation (round 5, books/plugin-learnings/round5), pre-approved
 - files: references/crossing-the-line.md (new)

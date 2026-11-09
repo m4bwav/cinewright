@@ -882,3 +882,9 @@ Mark reviewed the pail repair on askwright and picked "use this route as the fir
 - Card: optional `cast[].perform` (objective, obstacle, subtext not compiled; task, masks, verb, body, enters_from compiled task first) and `dialogue[].intent` (voice only). Cards without them compile byte-identically (new test).
 - Checks: unittest 141 OK; kb lint 16 skills, 0 errors; budget YELLOW (runtime shared/lib 189 of 200 KB, repo ZIP 2044 of 2048 KB green, yellows as before); plugin validate passed x4; scrub 7 hits in 3 ai-docs research files (GPU benchmarks, expected).
 - Left for track 22: RESULT diff code (result words without a playable verb), reply-gap check, tension-curve lint.
+
+## [2026-11-09] books round 5, track 22 | staging checks
+- `continuity diff` codes: SETUP (Arijon triangle pairs; a scene with no apex, external or right-angle setup), GROUP-ORDER (screen_order change with no legal swap and no pivot), RESULT (perform verb or body only result words, no task). Card fields `setup`, `screen_order`, `pivot`, all optional; the example project's diff is unchanged.
+- Skipped: LONG-MOVE-REST (duration_s maxes at 8 s, so a moving card over 8 s cannot exist); reply-gap (needs line timings the card does not hold); tension-curve lint (the book gives no numbers and the reader marked it a prompt to look, not a gate); ARBITER and ATTN-* (need gaze targets per extra, not in the card); EMPHASIS-AXIS (info only, low value).
+- Mutations: widening the parallel pair set, disabling the result-word test, and loosening the centre-swap rule each fail test_setup_result_group_order.
+- Checks: unittest `Ran 142 tests ... OK`; `kb lint: 16 skills, 0 errors`; budget YELLOW (runtime shared/lib 192 of 200 KB; repo ZIP 2086 of 2048 KB yellow).

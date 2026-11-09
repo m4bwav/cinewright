@@ -703,6 +703,39 @@ class TestContinuity(Base):
         d["cast"][0]["position"] = "frame-right"
         self.assertNotIn(("1D", "MIDDLE-SWAP"), self.warns(p))
 
+    def test_setup_result_group_order(self):
+        p = self.project()
+        base = self.warns(p)
+        self.assertFalse({c for _, c in base} & {"SETUP", "RESULT", "GROUP-ORDER"}, "old cards stay quiet")
+        a, b = p.cards[0], p.cards[1]
+        a["setup"], b["setup"] = "external", "parallel"
+        self.assertIn((b["id"], "SETUP"), self.warns(p))
+        a["setup"], b["setup"] = "parallel", "external"
+        self.assertIn((b["id"], "SETUP"), self.warns(p))
+        a["setup"], b["setup"] = "external", "internal"
+        self.assertNotIn((b["id"], "SETUP"), self.warns(p))
+        for c in p.cards:
+            if c.get("scene") == a["scene"]:
+                c["setup"] = "internal"
+        self.assertIn("SETUP", {c for _, c in self.warns(p)}, "a scene of singles has no master")
+        m = b["cast"][0]
+        m["perform"] = {"verb": "angry and desperate"}
+        self.assertIn((b["id"], "RESULT"), self.warns(p))
+        m["perform"] = {"verb": "accuses him"}
+        self.assertNotIn((b["id"], "RESULT"), self.warns(p))
+        m["perform"] = {"verb": "angry", "task": "wipes the counter"}
+        self.assertNotIn((b["id"], "RESULT"), self.warns(p))
+        a["screen_order"], b["screen_order"] = ["x", "y", "z", "w"], ["y", "x", "w", "z"]
+        b["camera"]["side"] = a["camera"].get("side", "A")
+        self.assertIn((b["id"], "GROUP-ORDER"), self.warns(p))
+        b["pivot"] = "x"
+        self.assertNotIn((b["id"], "GROUP-ORDER"), self.warns(p))
+        del b["pivot"]
+        a["screen_order"], b["screen_order"] = ["x", "y", "z"], ["z", "y", "x"]
+        self.assertNotIn((b["id"], "GROUP-ORDER"), self.warns(p), "centre stays, flankers swap")
+        b["screen_order"] = ["y", "z", "x"]
+        self.assertIn((b["id"], "GROUP-ORDER"), self.warns(p))
+
     def test_pov_role_protection_and_establish(self):
         p = self.project()
         p.cards[2]["pov"] = "nobody"

@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-2 · 2026-11-09 · RESULT check for performance text (books round 5, track 22)
+- because: book distillation (round 5), pre-approved
+- files: references/performance-words.md; shared/lib/cine.py
+- `continuity diff` RESULT warns when a `perform` verb or body holds only result words and no task (Weston ch. 1). A warning, never an error.
+
 ### C-20261109-1 · 2026-11-09 · Performance words, beats and voice lines from Weston and Rabiger
 - because: book notes round5 (books/plugin-learnings, track 21)
 - files: references/performance-words.md (new), scene-turns.md, logline-and-beats.md, dialogue-for-generated-voices.md; vocab performance-verbs; card cast[].perform, dialogue[].intent

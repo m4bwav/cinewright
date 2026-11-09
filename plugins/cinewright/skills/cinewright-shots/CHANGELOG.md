@@ -9,6 +9,11 @@ Entry shape: `### C-20261101-1 · 2026-11-01 · Scene setups for fights, chases,
 
 ### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-2 · 2026-11-09 · SETUP and GROUP-ORDER checks (books round 5, track 22)
+- because: book distillation (round 5), pre-approved
+- files: references/dialogue-triangle.md, references/group-order.md; shared/lib/cine.py, shared/schemas/shot-card.schema.json
+- Card fields `setup`, `screen_order`, `pivot`. `continuity diff` SETUP warns on setups from different triangles cut together and on a scene with no master setup; GROUP-ORDER warns on an order change that keeps neither the centre nor an end person and names no pivot (Arijon ch. 4-6).
+
 ### C-20261109-1 · 2026-11-09 · Dialogue triangle, group order, attention staging, coverage plan, staging moves (books round 5)
 - because: book distillation (round 5, books/plugin-learnings/round5), pre-approved
 - files: references/dialogue-triangle.md, group-order.md, attention-staging.md, coverage-plan.md, staging-moves.md (new), frame-tension.md

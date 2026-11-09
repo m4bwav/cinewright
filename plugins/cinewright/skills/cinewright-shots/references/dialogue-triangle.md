@@ -21,7 +21,7 @@ sources: ["Daniel Arijon, Grammar of the Film Language, 1976, ch. 4-5"]
 
 ## Rules
 
-- Write the setup name in the card notes. Every rule below depends on which pair of setups two cards form (Arijon ch. 4).
+- Write the setup name in the card field `setup`. Every rule below depends on which pair of setups two cards form (Arijon ch. 4).
 - Cut only pairs on the same side of the line. External pairs with external or internal. Internal and parallel cover one person each and never serve as the master.
 - The apex two-shot is the weakest setup: both half-profile, equal space. Use it to open or close the exchange, as a pause, or before the cut pattern changes. Do not make it the only master.
 - External reverse: the person facing camera takes about two thirds of the frame and is the speaker. The back-turned shoulder takes one third (ch. 4-5).
@@ -37,7 +37,8 @@ sources: ["Daniel Arijon, Grammar of the Film Language, 1976, ch. 4-5"]
 
 ## Verify
 
-- Manual: two consecutive dialogue cards name setups on the same side; the speaker faces camera in an external.
+- `continuity diff` SETUP: a pair of consecutive setups from different triangles, or a scene with no master setup (apex, external or right-angle).
+- Manual: the speaker faces camera in an external.
 
 ## Notes
 

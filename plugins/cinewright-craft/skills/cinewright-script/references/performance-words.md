@@ -44,7 +44,7 @@ sources: ["Judith Weston, Directing Actors, 25th anniversary ed., 2021", "Michae
 ## Verify
 
 - Every two-person card has `perform.objective` and `perform.verb` for the person the shot favours.
-- No performance text is only emotion adjectives (track 22 adds a check).
+- No performance text is only emotion adjectives: `continuity diff` RESULT warns when a `perform` verb or body holds only result words and no task.
 
 ## Notes
 

@@ -11,7 +11,7 @@ sources: ["Daniel Arijon, Grammar of the Film Language, 1976, ch. 3, 6-8", "Davi
 
 ## Rules
 
-- Write each card's on-screen order, frame left to right, in the notes: `[A, B, C]`.
+- Write each card's on-screen order, frame left to right, in the card field `screen_order`: `[A, B, C]`. Name a pivot in `pivot`.
 - Three people: a straight line or an L keeps every screen side in both external reverses. A triangle cannot; pick one swap below (Arijon ch. 6).
 - Legal order changes between two cards of one exchange: nobody moves; the dominant centre person stays and the flankers swap; the silent arbiter jumps sides and the talking pair keep order; the dominant edge person stays and the other two swap; at right angles, one end person jumps to the other end (ch. 6-7). Anything else needs a pivot.
 - A pivot is a person on the same screen side in both cards, or a close-up of the dominant person between the reverses (ch. 6).
@@ -30,7 +30,7 @@ sources: ["Daniel Arijon, Grammar of the Film Language, 1976, ch. 3, 6-8", "Davi
 
 ## Verify
 
-- Existing: `continuity diff` MIDDLE-SWAP. Manual for the other order changes until a check exists.
+- `continuity diff` MIDDLE-SWAP, and GROUP-ORDER: an order change on the same side that keeps neither the centre nor an end person and names no pivot. Manual for right-angle jumps.
 
 ## Notes
 
