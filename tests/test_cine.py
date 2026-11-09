@@ -736,6 +736,53 @@ class TestContinuity(Base):
         b["screen_order"] = ["y", "z", "x"]
         self.assertIn((b["id"], "GROUP-ORDER"), self.warns(p))
 
+    def test_track26_scene_and_card_codes(self):
+        p = self.project()
+        new = {"BEAT-REPEAT", "PLANT-MISSING", "INTRO", "REESTABLISH", "REVERSE-SCALE", "SINGLES-ONLY", "PAN-BETWEEN", "EXIT-HOLD", "TRIM", "NO-HOOK"}
+        self.assertFalse({c for _, c in self.warns(p)} & (new | {"RESULT"}), "old cards stay quiet")
+        a, b, c = p.cards
+        sc = p.scene_map[a["scene"]]
+        sc["ends_when"] = b["id"]
+        self.assertIn((c["id"], "TRIM"), self.warns(p))
+        sc["ends_when"] = c["id"]
+        self.assertNotIn((c["id"], "TRIM"), self.warns(p))
+        p.scene_map["2"] = {"id": "2", "hook": "who lit it?"}
+        self.assertIn((c["id"], "NO-HOOK"), self.warns(p))
+        del p.scene_map["2"]
+        c["beat"] = b["beat"] + "!"
+        self.assertIn((c["id"], "BEAT-REPEAT"), self.warns(p))
+        c["beat"] = "Tomas accepts."
+        b["cast"][0]["perform"] = c["cast"][0]["perform"] = {"verb": "waits"}
+        c["cast"][0]["id"] = "maren"
+        self.assertIn((c["id"], "BEAT-REPEAT"), self.warns(p))
+        c["cast"][0]["id"] = "tomas"
+        del b["cast"][0]["perform"], c["cast"][0]["perform"]
+        c["camera"]["size"] = "WS"
+        self.assertIn((c["id"], "REVERSE-SCALE"), self.warns(p))
+        c["camera"]["size"] = "CU"
+        c["action"] = "Tomas, angry."
+        self.assertIn((c["id"], "RESULT"), self.warns(p))
+        c["action"] = "Tomas closes his fist."
+        a["cast"][0]["position_end"] = "center"
+        self.assertIn((a["id"], "REESTABLISH"), self.warns(p))
+        del a["cast"][0]["position_end"]
+        a["cast"] = a["cast"][:1]
+        self.assertIn((a["id"], "SINGLES-ONLY"), self.warns(p))
+        c["action"] = "He sits."
+        self.assertIn((c["id"], "INTRO"), self.warns(p), "tomas's first card is now 1C")
+        c["cast"][0]["exits"] = "frame-left"
+        self.assertIn((c["id"], "EXIT-HOLD"), self.warns(p))
+        c["action"] = "Tomas leaves; the frame stays empty."
+        self.assertNotIn((c["id"], "EXIT-HOLD"), self.warns(p))
+        c["intensity"] = 90
+        c["props"] = [{"name": "lantern"}]
+        self.assertIn((c["id"], "PLANT-MISSING"), self.warns(p))
+        a["props"] = [{"name": "lantern"}]
+        self.assertNotIn((c["id"], "PLANT-MISSING"), self.warns(p))
+        a["camera"]["move"], a["cast"] = "pan-right", a["cast"] + [{"id": "tomas"}]
+        a["dialogue"] = [{"character": "maren", "line": "Here."}]
+        self.assertIn((a["id"], "PAN-BETWEEN"), self.warns(p))
+
     def test_pov_role_protection_and_establish(self):
         p = self.project()
         p.cards[2]["pov"] = "nobody"

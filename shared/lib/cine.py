@@ -99,8 +99,6 @@ COUNTED = re.compile(r"\b(\d{1,3}|%s)(?=((?:\s+[a-z-]+){1,3}))" % "|".join(sorte
 
 
 def counted_people(text):
-    """Sum of the numbers written before a people noun within three words ('ten spearmen', '5 pale white creatures');
-    objects and units are not counted."""
     total, hits = 0, []
     for m in COUNTED.finditer(text or ""):
         words = m.group(2).split()
@@ -138,7 +136,6 @@ FIRE_LIGHT = re.compile(r"\b(fire|firelight|flames?|campfire|fireplace|bonfire|t
 # ---------- context ----------
 
 class Context:
-    """Where references, model cards and schemas live. The repo CLI builds its own."""
 
     def __init__(self, ref_dirs, model_dirs, schema_dir, index_targets=None):
         self.ref_dirs = [Path(d) for d in ref_dirs]
@@ -193,7 +190,6 @@ def _list(s):
 
 
 def parse_frontmatter(text):
-    """Return (meta, body). Supports key: value, key: [a, b] and '- item' lists."""
     if not text.startswith("---\n"):
         return {}, text
     end = text.find("\n---\n", 3)
@@ -422,7 +418,6 @@ class Project:
 
 
 def bible_entries(doc, key, idkey, fname, schema):
-    """{entry[idkey]: entry} from a bible; a bible in another shape stops with what to fix, not a traceback."""
     items = doc.get(key) if isinstance(doc, dict) else None
     if not isinstance(items, list) or not all(isinstance(x, dict) and idkey in x for x in items):
         raise SystemExit("bibles/%s: want {\"%s\": [{\"%s\": ...}, ...]}; see scripts/schemas/%s.schema.json"
@@ -434,7 +429,6 @@ MM_RANGE = re.compile(r"(\d+)\s*-\s*(\d+)\s*mm")
 
 
 def lens_range(text):
-    """(shortest, longest) focal length named by a lens family string, or None."""
     r = [(int(a), int(b)) for a, b in MM_RANGE.findall(text or "")]
     return (min(a for a, _ in r), max(b for _, b in r)) if r else None
 
@@ -445,7 +439,6 @@ def aspect_value(s):
 
 
 def frame_words(st):
-    """The composition sentence for a frame aspect other than the rendered one, else ''."""
     fa = st.get("frame_aspect")
     if not fa:
         return ""
@@ -463,9 +456,6 @@ def wardrobe_for(char, scene_id):
 
 
 def refs_for(char, scene_id=None, stage=None):
-    """A character's refs for one card. A flat list goes to every card; a dict is keyed like wardrobe
-    ("default" plus scene ids or named stages such as a wound), picked by the cast entry's refs_stage, then
-    the scene id, then "default", so a costume or wound stage that is not a scene change gets its own sheet."""
     r = char.get("refs", [])
     if isinstance(r, list):
         return r
@@ -476,7 +466,6 @@ def refs_for(char, scene_id=None, stage=None):
 
 
 def all_refs(char):
-    """Every ref a character has, across stages, in bible order."""
     r = char.get("refs", [])
     out = []
     for x in (r if isinstance(r, list) else [x for v in r.values() for x in v]):
@@ -486,7 +475,6 @@ def all_refs(char):
 
 
 def ref_stage(char, scene_id=None, stage=None):
-    """Which key of a staged refs dict a card resolves to (None for a flat list)."""
     r = char.get("refs", [])
     if isinstance(r, list):
         return None
@@ -568,8 +556,6 @@ def resolution_size(resolution, aspect):
 
 
 def film_json(p, xfade=0.16, prof=None):
-    """One shot per card, or with prof one shot per --sequence generation (name = the compile label, so
-    `compile --sequence --out <film dir>` writes the <name>.txt prompts the pipeline reads)."""
     st = p.style
     w, h = resolution_size(st["resolution"], st["aspect_ratio"])
     fps = st["fps"]
@@ -676,7 +662,6 @@ GRAPH_FLAT = 30  # a story curve whose scenes span fewer points than this reads 
 
 
 def cards_graph(p):
-    """Block's story intensity graph: (rows in cut order, flags). A row is one card with its scene's plan beside it."""
     vs = p.style.get("visual_structure", {})
     rows, flags = [], []
     for c in p.cards:
@@ -758,10 +743,15 @@ SETUP_PAIRS = {"external": {"external", "internal"}, "internal": {"external", "i
                "subjective": {"internal", "subjective"}, "parallel": {"parallel"}, "right-angle": {"right-angle"}}
 RESULT_WORDS = set("angry sad scared smug desperate sexy quirky intense menacing emotional dramatic defensive sarcastic "
                    "hostile cold vicious nervous calm friendly weak upset furious happy anxious".split())
+RESULT_FILL = {"and", "very", "a", "bit", "more", "is", "looks", "feels"}
+PLANT_LEVEL = 80  # "climax" cards for PLANT-MISSING; the reader's threshold, warn-only
+
+
+def _norm(s):
+    return re.sub(r"\W+", " ", (s or "").lower()).strip()
 
 
 def continuity_diff(p):
-    """Every card against the bibles and against the previous card in its scene."""
     issues = []
 
     def add(level, card, code, msg):
@@ -769,7 +759,7 @@ def continuity_diff(p):
 
     prev_by_scene, blocks, seen, last, met, flat_deep = {}, {}, {}, {}, set(), {}  # met: people already on screen, film-wide
     ids = {c.get("id") for c in p.cards}
-    last_stage = {}  # character id -> (card id, ref stage) on the last card that showed them
+    last_stage, shown = {}, set()  # last_stage: character id -> (card id, ref stage) on the last card that showed them
     for card in p.cards:
         sc = p.scene_map.get(card.get("scene"))
         if not sc:
@@ -968,6 +958,10 @@ def continuity_diff(p):
         if (role == "cut-in" or cam.get("framing") == "insert") and names and not names & (seen.get(sc["id"], set()) | met):
             add("warning", card, "ESTABLISH", "%s first appears in a cut-in; show it in a wider card first, unless the mystery is the point" % ", ".join(sorted(names)))
         seen.setdefault(sc["id"], set()).update(names)
+        for m in cast1[:1]:  # the card's subject
+            nm =_norm("%s %s" % (m.get("id"), p.chars.get(m.get("id"), {}).get("name"))).split()
+            if m.get("id") not in met and role != "protection" and not (m.get("perform") or {}).get("task") and not set(nm) & set(_norm(action).split()):
+                add("warning", card, "INTRO", "%s's first card shows them doing nothing; give one thing they do toward the goal (entry staging-moves)" % m.get("id"))
         met |= set(in_shot)
         if prev:
             for m in card.get("cast", []):
@@ -995,9 +989,29 @@ def continuity_diff(p):
         for m in card.get("cast", []):
             pf = m.get("perform") or {}
             words = re.findall(r"[a-z]+", ("%s %s" % (pf.get("verb", ""), pf.get("body", ""))).lower())
-            if words and not pf.get("task") and set(words) <= RESULT_WORDS | {"and", "very", "a", "bit", "more", "is", "looks", "feels"} and set(words) & RESULT_WORDS:
+            if words and not pf.get("task") and set(words) <= RESULT_WORDS | RESULT_FILL and set(words) & RESULT_WORDS:
                 add("warning", card, "RESULT", "%s plays only a result (%s); write a verb aimed at someone or a physical task (entry performance-words)" % (
                     m.get("id"), " ".join(words)))
+            if pf.get("verb") and _norm(pf["verb"]) == _norm((pcast.get(m.get("id"), {}).get("perform") or {}).get("verb")):
+                add("warning", card, "BEAT-REPEAT", "%s plays '%s' again after %s; a beat never plays twice (entry logline-and-beats)" % (m.get("id"), pf["verb"], prev["id"]))
+        sz = cam.get("size")
+        aw = set(re.findall(r"[a-z]+", action.lower())) - {w for m in cast1 for w in _norm("%s %s" % (m.get("id"), p.chars.get(m.get("id"), {}).get("name"))).split()}
+        if sz in ("CU", "ECU") and cast1 and aw and aw <= RESULT_WORDS | RESULT_FILL and aw & RESULT_WORDS:
+            add("warning", card, "RESULT", "a %s whose action is only a result (%s); give the face a verb" % (sz, " ".join(sorted(aw))))
+        if _norm(card.get("beat")) and _norm(card.get("beat")) == _norm((prev or {}).get("beat")):
+            add("warning", card, "BEAT-REPEAT", "same beat as %s; cut one or change what it tells (entry logline-and-beats)" % prev["id"])
+        pcs = (prev or {}).get("cast", [])
+        if len(cast1) == 1 == len(pcs) and cast1[0].get("id") != pcs[0].get("id") and sz in SIZES and pc0.get("size") in SIZES \
+                and abs(SIZES.index(sz) - SIZES.index(pc0["size"])) > 1 and cam.get("move") not in ("push-in", "dolly-in"):
+            add("warning", card, "REVERSE-SCALE", "%s reverses %s's %s: a reverse pair keeps size within one step unless it is a push-in (entry coverage)" % (sz, prev["id"], pc0["size"]))
+        if cam.get("move") in ("pan-left", "pan-right") and card.get("dialogue") and len(cast1) > 1:
+            add("warning", card, "PAN-BETWEEN", "a pan between speakers; cut on the change of attention (entry cut-points)")
+        if any(m.get("exits") for m in cast1) and "empty" not in action:
+            add("warning", card, "EXIT-HOLD", "an exit: hold the empty frame 0.5-1 s; write 'the frame stays empty after they leave'")
+        for n in {n for n, _ in card_props(card)} - shown:
+            if (card.get("intensity", sc.get("intensity")) or 0) >= PLANT_LEVEL:
+                add("warning", card, "PLANT-MISSING", "'%s' first appears in a climax card; plant it earlier, in passing (entry logline-and-beats)" % n)
+            shown.add(n)
         su, psu = card.get("setup"), (prev or {}).get("setup")
         if su and psu and su in SETUP_PAIRS and psu in SETUP_PAIRS and su not in SETUP_PAIRS[psu]:
             add("warning", card, "SETUP", "%s after %s (%s): these setups belong to different triangles; external pairs with external or internal, parallel with parallel" % (
@@ -1019,6 +1033,30 @@ def continuity_diff(p):
         if sus and not set(sus) & {"apex", "external", "right-angle"}:
             add("warning", next(c for c in p.cards if c.get("scene") == sid and c.get("setup")), "SETUP",
                 "scene %s has no master setup (apex, external or right-angle); internal, subjective and parallel cover one person and never stand alone" % sid)
+    order = list(p.scene_map)
+    for sid in order:
+        cs = [c for c in p.cards if c.get("scene") == sid and c.get("role") != "protection"]
+        sc, ids = p.scene_map[sid], [c.get("id") for c in cs]
+        if not cs:
+            continue
+        if sc.get("ends_when") in ids and cs[-1].get("id") != sc["ends_when"]:
+            add("warning", cs[-1], "TRIM", "scene %s ends_when %s; trim %s or move them to the next scene" % (sid, sc["ends_when"], ", ".join(ids[ids.index(sc["ends_when"]) + 1:])))
+        b1 = next((i for i, c in enumerate(cs) if c.get("beat")), 0)
+        if b1:
+            add("warning", cs[0], "TRIM", "%s come before the first beat; late in: trim them" % ", ".join(ids[:b1]))
+        if any(s.get("hook") for s in p.scene_map.values()) and sid != order[-1] and not sc.get("hook"):
+            add("warning", cs[-1], "NO-HOOK", "scene %s carries no open question into the next (hook); a dangling cause links scenes" % sid)
+        if len(cs) > 2 and len({m.get("id") for c in cs for m in c.get("cast", [])}) > 1 and all(len(c.get("cast", [])) < 2 for c in cs):
+            add("warning", cs[0], "SINGLES-ONLY", "scene %s is all singles; give the people one shared frame (entry coverage)" % sid)
+        for i, c in enumerate(cs):
+            if any(m.get("enters") or m.get("position_end") not in (None, m.get("position")) for m in c.get("cast", [])):
+                run = 0
+                for n in cs[i + 1:]:
+                    if n.get("camera", {}).get("size") not in SIZES[4:]:
+                        break
+                    run += 1
+                if run > 1:
+                    add("warning", c, "REESTABLISH", "someone enters or moves, then %d close cards with no wider one; re-establish (entry coverage)" % run)
     for sid, cs in flat_deep.items():
         if len(cs) > 1 and all(cs):
             add("warning", cs[-1], "SPACE", "scene %s is planned as deep space, but every card is a static eye-level frame; stage near, middle "
@@ -1067,7 +1105,6 @@ def _and(names):
 
 
 def spoken(p, line):
-    """The line as the voice should say it: each word in characters.json `pronounce` swapped for its respelling."""
     if not p.pronounce:
         return line
     pat = r"(?<!\w)(%s)(?!\w)" % "|".join(re.escape(w) for w in sorted(p.pronounce, key=len, reverse=True))
@@ -1075,7 +1112,6 @@ def spoken(p, line):
 
 
 def h3_line(line):
-    """A line for an H3 <d> tag: the guide wants it to end in . ? or ! with no ellipses (59 in past prompts)."""
     line = re.sub(r"\s*(\.\.\.|…)\s*$", ".", line.strip())
     line = re.sub(r"\s*(\.\.\.|…)\s*", ", ", line).strip(" ,")
     return line if line[-1:] in ".?!" else line + "."
@@ -1105,7 +1141,6 @@ DEFAULT_PARAMS = {"model": "model", "duration": "durationSeconds", "aspect": "as
 
 
 def card_props(c):
-    """(name, state) for every prop a card holds or features, in order."""
     out = []
     for m in c.get("cast", []):
         for key in ("holding", "holding_end"):
@@ -1116,7 +1151,6 @@ def card_props(c):
 
 
 def prop_look(p, name, state=None):
-    """The bible entry for a prop, or for one of its states when the card names one."""
     pr = p.props.get(name, {})
     for s in pr.get("states", []):
         if s["name"] == state:
@@ -1125,8 +1159,6 @@ def prop_look(p, name, state=None):
 
 
 def generation_refs(p, cards, prof):
-    """Ordered reference list for one generation (characters, props, sets, card refs) and the tag text
-    per character id and per "prop:<name>"."""
     refs, tags = [], {}
 
     def add(rs):
@@ -1162,8 +1194,6 @@ def generation_refs(p, cards, prof):
 
 
 def prop_words(p, name, state=None, tags=None):
-    """A prop as the prop bible's verbatim description (of the state when given), else 'the <name>',
-    with the prop sheet's ref tag when the model takes tags."""
     d = prop_look(p, name, state).get("description")
     words = d.rstrip(".") if d else "the %s" % name
     tag = (tags or {}).get("prop:" + name)
@@ -1321,7 +1351,6 @@ def snap_duration(seconds, allowed):
 
 
 def plan_length(total, prof):
-    """Rendered length in seconds and frame count (None unless the model has a frame grid)."""
     fr = prof.get("frames")
     if not fr:
         return snap_duration(total, prof["durations_s"]), None
@@ -1353,7 +1382,6 @@ def _stamp(tpl, n, start, end):
 
 
 def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
-    """Return a list of (label, prompt, params, warnings, info); info holds seconds and est_usd."""
     out = []
     st = p.style
     res = resolution or st["resolution"]
@@ -1610,7 +1638,6 @@ VERDICTS = ("pass", "fail", "na")
 
 
 def taxonomy(ctx):
-    """Failure codes from every entry tagged `failures`: code -> symptom, cause, fix, rung, check."""
     codes, seen = {}, set()
     for d in ctx.ref_dirs:
         for p, meta, body in entries(d):
@@ -1692,7 +1719,6 @@ LOUD_PRESETS = {
 
 
 def loud_target(a):
-    """--preset fills target, tolerance and true peak; explicit flags win. No preset means web."""
     base = LOUD_PRESETS[a.preset or "web"][:3]
     pick = [a.target, a.tolerance, a.true_peak]
     return tuple(base[i] if pick[i] is None else pick[i] for i in range(3))
@@ -1721,7 +1747,6 @@ def card_by_id(p, cid):
 
 
 def spec_check(info, p, card, params=None):
-    """Return a list of (status, text); status is PASS, FAIL or INFO."""
     st, out, params = p.style, [], params or {}
     want, dur = card["duration_s"], info["duration"]
     if dur + 0.05 < want:
@@ -1798,7 +1823,6 @@ def rubric_items(p, card):
 
 
 def repair_plan(rub, codes):
-    """Fails in a filled rubric -> ([(rung, item id, code, fix)] cheapest first, errors)."""
     plan, errs = [], []
     for it in rub["items"]:
         v = it.get("verdict")
@@ -1824,8 +1848,6 @@ def repair_plan(rub, codes):
 
 
 def standing_items(p, card, codes):
-    """Reviewer notes kept as claims in <project>/qc/standing.json: {"*": [rule], "<card id>": [rule]}, a rule being
-    {"id", "claim" (a statement that holds in a good take), "code" (its failure code), "why"}. They join every rubric."""
     f = p.root / "qc" / "standing.json"
     if not f.is_file():
         return []
@@ -1853,7 +1875,6 @@ JUDGE_ASK = ("You are a strict, sceptical film continuity checker. The picture i
 
 
 def judge_grid(clip, start, end):
-    """Four frames spread over [start, end], 2x2 at 576 px a frame, as base64 JPEG."""
     import base64
     import tempfile
     dur = max(0.2, end - start)
@@ -1882,7 +1903,6 @@ def judge_ask(host, model, prompt, img):
 
 
 def split_clauses(text):
-    """An action as short claims: sentences, then ';' and ':' parts longer than 12 characters."""
     out = []
     for sentence in re.split(r"(?<=[.!?])\s+", text):
         for part in re.split(r"[;:]\s+", sentence):
@@ -1902,8 +1922,6 @@ def judge_verdicts(reply, ids):
 
 
 def agree_stats(pairs):
-    """pairs of (agent, judge) with values yes/no: agreement, Cohen's kappa, and the judge's yes and no precision with
-    95 % Wilson bounds."""
     n = len(pairs)
     if not n:
         return None
@@ -1948,7 +1966,6 @@ def scene_cuts(clip, thresh=MEASURE_CUT_SCENE):
 
 
 def frame_motion(clip, diff=True):
-    """[(t, mean luma difference to the previous frame)] at 160 px wide; diff=False: each frame's own mean luma."""
     r = run_tool([need_tool("ffmpeg"), "-nostats", "-i", str(clip), "-an", "-vf", "scale=160:-2,format=gray,%ssignalstats,"
                   "metadata=print:key=lavfi.signalstats.YAVG:file=-" % ("tblend=all_mode=difference," if diff else ""), "-f", "null", "-"])
     return [(float(t), float(y)) for t, y in re.findall(r"pts_time:([\d.]+)\s+\S+YAVG=([\d.]+)", r.stdout)]
@@ -1987,7 +2004,6 @@ def longest_run(flags, step):
 
 
 def measure_plan(p, label):
-    """[(card id, start s, end s, has a visible speaker's line)] for a generation label such as 1A+1B+1C."""
     plan, t = [], 0.0
     for cid in label.split("+"):
         c = card_by_id(p, cid)
@@ -2003,7 +2019,6 @@ def measure_stills(p, label):
 
 
 def measure_take(clip, plan=None, seams=None, stills=None):
-    """stills: {card id: its sound text} for cards whose camera is static; a still picture or silence there warns, not fails."""
     info = probe(clip)
     dur = info["duration"]
     planned_cuts = bool(plan)  # without a plan, cuts are listed, never counted as unplanned
@@ -2338,7 +2353,6 @@ REF_SECONDS = (3.0, 30.0)  # most cloning engines want a clip in this range (cin
 
 
 def voice_pcm(path, start=None, end=None):
-    """Mono float samples at VOICE_RATE from any audio or video file (ffmpeg decodes it)."""
     args = [need_tool("ffmpeg"), "-v", "error"]
     if start is not None:
         args += ["-ss", "%.3f" % start]
@@ -2357,9 +2371,6 @@ def voice_pcm(path, start=None, end=None):
 
 
 def f0_track(x, frame=0.04, hop=0.02, thresh=0.3, gate_db=35.0):
-    """YIN pitch per frame (0.0 = unvoiced or silent), seconds above the energy gate, and first-to-last speech span.
-
-    thresh 0.3: steadier than 0.2 on low creaky voices and on lines with music under them (tested 2026-10-07)."""
     from operator import mul
     n, h = int(frame * VOICE_RATE), int(hop * VOICE_RATE)
     tmin, tmax = int(VOICE_RATE / F0_HI), int(VOICE_RATE / F0_LO)
@@ -2458,7 +2469,6 @@ def voice_bible_errors(p):
 
 
 def voice_baseline(p, cid):
-    """Pitch median across the character's reference clips (the neutral ones when there are any)."""
     v = p.voices.get(cid)
     if not v:
         raise SystemExit("%s has no entry in bibles/voices.json" % cid)

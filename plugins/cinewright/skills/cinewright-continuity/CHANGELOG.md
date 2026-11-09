@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-3 · 2026-11-09 · Diff codes for scene chain, beats, plants, intros and coverage (books round 5, track 26)
+- because: book distillation (round 5), pre-approved
+- files: shared/lib/cine.py, shared/schemas/scene-axis-bible.schema.json, tests/test_cine.py
+- Warnings BEAT-REPEAT, PLANT-MISSING, INTRO, REESTABLISH, REVERSE-SCALE, SINGLES-ONLY, PAN-BETWEEN, EXIT-HOLD, TRIM, NO-HOOK, and RESULT on a CU or ECU whose action is only a result. Optional scene fields `ends_when` and `hook`. The example project's diff is unchanged.
+
 ### C-20261109-2 · 2026-11-09 · Diff codes SETUP, GROUP-ORDER, RESULT (books round 5, track 22)
 - because: book distillation (round 5), pre-approved
 - files: shared/lib/cine.py, shared/schemas/shot-card.schema.json, tests/test_cine.py

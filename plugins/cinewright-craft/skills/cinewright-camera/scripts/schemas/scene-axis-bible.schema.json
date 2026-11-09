@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/scene-axis-bible.schema.json sha256:255305876c167089cf4937a489664444dc66a546b5ee60dce21508d363565b32; edit the source",
+  "$comment": "copied from shared/schemas/scene-axis-bible.schema.json sha256:877c66a04624ee85c689949ce999876c48e6507ccfbbe1f7314fb8fd2bd82d08; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Scene axis bible",
   "description": "bibles/scenes.json: per scene, the location, time, sun, the axis (line of action), which side the camera stays on, and where each character sits and travels as seen from side A.",
@@ -51,6 +51,14 @@
             "items": {
               "type": "string"
             }
+          },
+          "ends_when": {
+            "type": "string",
+            "description": "Card id where the objective is won or refused; later cards are TRIM candidates."
+          },
+          "hook": {
+            "type": "string",
+            "description": "The open question carried into the next scene (NO-HOOK)."
           },
           "intensity": {
             "type": "integer",
