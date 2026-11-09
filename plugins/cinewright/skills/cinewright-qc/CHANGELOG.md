@@ -2,7 +2,11 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-20261101-1 · 2026-11-01 · Alignment and fidelity asked apart; judge frames at beat times
+Entry shape: `### C-20261109-2 · 2026-11-09 · take-selection: relative sharpness and IV Studio ranking weights
+- because: technique harvest 2026-11 batch 2 (community posts reviewed in a separate harvest workspace), each item single-source and untested here unless stated
+- files: references/take-selection.md; vocab failures-motion `dialogue-wrong` cause. A cine.py qc rank is deferred (shared/lib size budget 193/200 KB)
+
+### C-20261101-1 · 2026-11-01 · Alignment and fidelity asked apart; judge frames at beat times
 - because: user request (book learnings, Foster, *Generative Deep Learning* 2e, ch. 13)
 - files: references/take-selection.md (Rules, Pitfalls)
 - Pairwise review asks card match and realism as separate questions with a pick per axis; frames for a VLM judge come from beat times, not even spacing.

@@ -2,7 +2,11 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+Entry shape: `### C-20261109-3 · 2026-11-09 · H3 audio refs are not a voice clone; dubbing chain
+- because: technique harvest 2026-11 batch 2 (community posts reviewed in a separate harvest workspace), each item single-source and untested here unless stated
+- files: references/video-model-voices.md (RefMods note, SAM-Audio voice extraction and line-length fitting, single report)
+
+### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261109-2 · 2026-11-09 · A refine pass can drop the cloned voice
 - because: technique harvest 2026-11 (community posts reviewed in a separate harvest workspace), each item single-source and untested here

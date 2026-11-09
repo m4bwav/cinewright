@@ -54,6 +54,13 @@ Best sources (primary first): Vendor docs and deprecation pages first (aistudio.
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261109-1 · 2026-11-09 · Tooling: IV Studio as an H3 reference app
+- Summary: IV Studio 1.0 (MIT, hollisorg/iv-studio): lint.js and ranking.js are worth reading; lint rules adapted into cine.py compile (h3_lint), ranking into take-selection.md. H3 Recast (Bambushu, MIT) rules into minimax-h3.md, untested.
+- Track: practice, tooling
+- Sources: r/StableDiffusion 1xqfux1, https://github.com/hollisorg/iv-studio, https://github.com/Bambushu/h3-recast
+- Magnitude: minor
+- Applied: C-20261109-3
+
 ### R-20261105-2 · 2026-11-05 · Omni 1.2 Flash replaces 1.1; Veo Vertex end moved; Google docs moved
 - Summary: `gemini-omni-1.2-flash` released 2026-11-05: 3-15 s by a `duration` parameter, lower prices, control tags deprecated, extended total 30 s. `gemini-omni-1.1-flash` routes to it from 2026-12-03. Veo 3.1 Vertex GA retirement is 2027-05-04 or later; `veo-3.1-lite-generate-001` is in preview with no refs. Gemini API docs now live at aistudio.google.com/docs. Web search found no third-party coverage of 1.2 yet; the vendor pages carry it. Still undocumented: Omni dialogue syntax in the part read, and whether numbered ref wording helps.
 - Track: subject. Tooling, practice, testing: not searched, this pass settled a flagged contradiction.

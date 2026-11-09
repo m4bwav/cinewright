@@ -2,7 +2,11 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+Entry shape: `### C-20261109-2 · 2026-11-09 · shot-matching: light wrap after a matte composite
+- because: technique harvest 2026-11 batch 2 (community posts reviewed in a separate harvest workspace), each item single-source and untested here unless stated
+- files: references/shot-matching.md, RESEARCH R-20261109-1 (KESHIKI, GPL, idea only)
+
+### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261109-1 · 2026-11-09 · crowd-multiplication: aim a whole-frame matte by inpainting the others out
 - because: technique harvest 2026-11 (community posts reviewed in a separate harvest workspace), each item single-source and untested here

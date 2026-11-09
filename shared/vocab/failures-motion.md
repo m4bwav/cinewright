@@ -27,7 +27,7 @@ Rungs and checks as in `failures-picture`.
 | `move-no-settle` | the camera is still moving on the last frame, so the cut lands mid-move | no held end on the move | `camera.settle` (held frames at both ends); trim to the hold | 2 | camera |
 | `pan-strobe` | the background steps or smears across a fast pan or track | the frame crosses faster than about a third of its width a second | a slower move ("slow pan") or a longer shot; cut the fast part | 1 | camera |
 | `text-artifact` | subtitles, captions, watermark, garbled signs | quoted dialogue; signs in scene | the card's dialogue syntax; negative terms | 1 | text |
-| `dialogue-wrong` | line missing, wrong mouth, lips off | two speakers, or speaker not in shot | one speaker per shot, in the cast; else the mix | 1 | audio |
+| `dialogue-wrong` | line missing, wrong mouth, lips off | two speakers, speaker not in shot, or a speaking reference video (H3 copies its lips) | one speaker per shot, in the cast; else the mix | 1 | audio |
 | `lip-lag` | the mouth moves before or after its voice | picture and sound drift apart in the render or the mix | slip the sound by the measured lag when it is steady; re-render when it wanders | 7 | audio |
 | `name-misread` | a name said wrong | spelling guessed | `pronounce` respelling | 1 | audio |
 | `sound-wrong` | silence, music, or the wrong sound | sound left to the model | name ambience and effects | 1 | audio |

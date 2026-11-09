@@ -46,6 +46,13 @@ Best sources (primary first): ACES documentation (acescentral); ITU-R BT.1886 an
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261109-1 · 2026-11-09 · Subject: depth-controlled background swap
+- Summary: KESHIKI (GPL-3.0, idea only): depth-controlled background swap with refine-details, a route to watch; its light-wrap step went into shot-matching.md.
+- Track: practice, tooling
+- Sources: r/comfyui 1xnm2tl
+- Magnitude: minor
+- Applied: C-20261109-2
+
 ### R-20261013-1 · 2026-10-13 · Subject: alpha generation, tracked masks, whole-frame unify
 - Summary: Wan-Alpha generates RGBA video in ComfyUI (text-to-video, Wan 2.1 14B); SAM 3.1 Multiplex tracks many objects with shared memory; MatAnyone 2 is the current soft-edge video matting; per-frame matting flickers. Relight the merged frame, not the layer (Beeble crowd tutorial). GenCompositor needs 40 GB+ and HarmoVid has no code: not usable on consumer cards.
 - Track: subject

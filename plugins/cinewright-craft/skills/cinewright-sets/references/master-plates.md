@@ -3,8 +3,8 @@ title: Master plates
 slug: master-plates
 summary: One wide establishing plate per set and time of day, made first and passed as a reference in every shot there; a 3D world or 360 pano is the stronger source when reverses matter.
 tags: [sets, plates, references, establishing, 3d, panorama]
-last_checked: 2026-10-15
-sources: ["https://higgsfield.ai/blog/consistent-characters-locations", "https://invideo.io/faq/how-do-you-use-seedance-20-reference-to-video-for/", "https://docs.worldlabs.ai/marble/export/gaussian-splat/index.md", "https://github.com/Tencent-Hunyuan/HY-World-2.0", "https://flick.art/blog/blender-ai-filmmaking", "https://blog.google/innovation-and-ai/technology/ai/veo-3-1-ingredients-to-video/", "Set field test, 2026-10-15: blockout painted through Canny control; reddit.com/r/StableDiffusion/comments/1wwyva2 (grid reference, 2026-10-03)"]
+last_checked: 2026-11-09
+sources: ["https://higgsfield.ai/blog/consistent-characters-locations", "https://invideo.io/faq/how-do-you-use-seedance-20-reference-to-video-for/", "https://docs.worldlabs.ai/marble/export/gaussian-splat/index.md", "https://github.com/Tencent-Hunyuan/HY-World-2.0", "https://flick.art/blog/blender-ai-filmmaking", "https://blog.google/innovation-and-ai/technology/ai/veo-3-1-ingredients-to-video/", "Set field test, 2026-10-15: blockout painted through Canny control; reddit.com/r/StableDiffusion/comments/1wwyva2 (grid reference, 2026-10-03)", "r/StableDiffusion 1xlp0kg, H3 Continuity Studio (MIT), 2026-11"]
 volatile_claims: ["reference counts per model change with releases", "World Labs Marble input and export limits", "HY-World 2.0 is the newest open 3D world model"]
 ---
 
@@ -16,6 +16,7 @@ volatile_claims: ["reference counts per model change with releases", "World Labs
 - One master per time of day. Day and night versions of a set are two plates, made from the same plan and the same words with only the light line changed.
 - Make plates at the renderer's frame (16:9 for most video models), at the image model's native size, never upscaled from a small render. No people, no readable text.
 - Pass the set's plate in every shot at that set, alongside the character references. A location left out of one call is reinvented in that clip.
+- On a model that takes reference video (H3 Ref2VA, up to 3): returning to a set after a cut away, also pass a short clip (about 1 s) of the approved establishing render, labelled with the details to keep. At a cut inside a scene the outgoing clip can go whole. Never pass a clip with someone speaking: H3 copies its lip movement onto the new shot; pass its last frames as a still instead (H3 Continuity Studio, MIT; one curated demo, unmeasured here).
 - Name plates `refs/sets/<id>/<id>_<wall-or-view>_<time>.png` and list the passed ones in the location's `refs`.
 - When reverses and moves matter more than speed, build a 3D source first and render plates from it:
   1. a box blockout in Blender (plain boxes, a camera, stand-ins) rendered as depth for a depth-guided image model, or
