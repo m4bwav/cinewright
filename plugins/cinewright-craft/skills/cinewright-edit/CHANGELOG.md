@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-1 · 2026-11-09 · Cutting after the move, first-frame motion (Arijon)
+- because: book distillation (round 5, books/plugin-learnings/round5), pre-approved
+- files: references/cutting-on-action.md
+- Cut 2-3 frames after a move for forward cuts on one lens line; match the dominant move; every card starts on some motion; rising stays in frame. Book rules, unverified.
+
 ### C-20261106-1 · 2026-11-06 · Fine cut placement (Murch)
 - because: book distillation (Murch, *Suddenly Something Clicked*, 2025), pre-approved
 - files: references/cut-points.md

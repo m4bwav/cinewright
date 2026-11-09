@@ -9,6 +9,11 @@ Entry shape: `### C-20261101-1 · 2026-11-01 · Camera changes on stops, dominan
 
 ### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-1 · 2026-11-09 · Move purposes (Katz, Cinematic Motion)
+- because: book distillation (round 5, books/plugin-learnings/round5), pre-approved
+- files: references/move-purposes.md (new)
+- Every camera move names its job (emphasise, pick one, transfer, connect); countering, retracking, the pan, hiding a reframe. Book rules, unverified.
+
 ### C-20261101-2 · 2026-11-01 · Exposure as a colour choice (Color & Light)
 - because: book distillation (Pickard, *Artists' Master Series: Color & Light*, 3dtotal, 2021), pre-approved
 - files: references/exposure.md

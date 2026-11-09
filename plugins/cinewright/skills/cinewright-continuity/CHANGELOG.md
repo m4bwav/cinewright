@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-1 · 2026-11-09 · Crossing the line: legal methods (Arijon)
+- because: book distillation (round 5, books/plugin-learnings/round5), pre-approved
+- files: references/crossing-the-line.md (new)
+- Polar shift, onlooker, diversion, vertical, same-half, vehicle close-up, split turns, converging parties. Book rules, unverified.
+
 ### C-20261025-1 · 2026-10-25 · CAST-COUNT warning: more than 5 acting people in one card
 - because: user request (spot a take with too many people for one pass); test in ai-docs/research/2026-10-25-layered-character-passes.md
 - files: shared/lib/cine.py (PEOPLE_PER_TAKE, counted_people, continuity_diff CAST-COUNT), tests/test_cine.py (test_cast_count), references/shot-checklist.md (CAST-COUNT row)

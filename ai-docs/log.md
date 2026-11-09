@@ -871,3 +871,8 @@ Mark reviewed the pail repair on askwright and picked "use this route as the fir
 - Minor bump, from the evergreen-upkeep owed list: Omni 1.2 Flash card (installed copies compiled gemini-omni-1.1-flash, rerouted from 2026-12-03), Viggle Remake card, voicewright caller, Master Shots and Color & Light rules, MS1 setups, on-screen text reference, H3 ellipsis strip, take-selection questions. PRs #60 to #85.
 
 ## [2026-11-06] release | 0.3.1: Sound effects go to sfxwright when it is installed (cinewright-sound). Fine cut placement and the rule of two and a half, from Murch. The gemini-omni card now says speech is documented only for multi-turn extends. Tag v0.3.1
+
+## [2026-11-09] books | round 5 track 20: staging and coverage
+- From Arijon, Bordwell (*Figures Traced in Light*), Katz (*Cinematic Motion*) and Rabiger 6th ed. (notes in the books/plugin-learnings round5 folder, outside this repo). New entries: shots dialogue-triangle, group-order, attention-staging, coverage-plan, staging-moves; continuity crossing-the-line; movement walk-and-talk, action-coverage; camera move-purposes. Extended: frame-tension, cutting-on-action. Card fields and diff codes the notes propose are left for track 22.
+- fight-plan went red (1293 tokens) with Arijon's action rules added, so they became action-coverage instead.
+- Checks: unittest `Ran 140 tests ... OK`; `kb lint: 16 skills, 0 errors`; budget YELLOW (largest entry lora-or-references 1199 tokens, runtime 189 KB, unchanged); plugin validate passed on root and three plugins; scrub 7 hits in 3 files, all the expected GPU names in ai-docs research.

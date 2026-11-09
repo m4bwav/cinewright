@@ -3,8 +3,8 @@ title: Cutting on action
 slug: cutting-on-action
 summary: Cut during a movement that continues in the next shot, about a third of the way into it, overlapping 2-4 frames of the motion; plan the motion into both cards so generated takes can be cut this way.
 tags: [edit, cut-on-action, match-on-action, continuity]
-last_checked: 2026-10-22
-sources: ["Walter Murch, In the Blink of an Eye, 2nd ed., 2001", "Karel Reisz and Gavin Millar, The Technique of Film Editing, 2nd ed., 1968", "Joseph V. Mascelli, The Five C's of Cinematography, 1965"]
+last_checked: 2026-11-09
+sources: ["Walter Murch, In the Blink of an Eye, 2nd ed., 2001", "Karel Reisz and Gavin Millar, The Technique of Film Editing, 2nd ed., 1968", "Joseph V. Mascelli, The Five C's of Cinematography, 1965", "Daniel Arijon, Grammar of the Film Language, 1976, ch. 9-11"]
 ---
 
 # Cutting on action
@@ -19,6 +19,11 @@ sources: ["Walter Murch, In the Blink of an Eye, 2nd ed., 2001", "Karel Reisz an
 - Never cut on a still frame between two static shots of the same subject at similar size: that is a jump cut.
 - A cut on a look or a reaction needs no motion match, so it is often safer between generations (entry cut-points).
 - Hits generated in two halves: card A shows the strike low and close on the aggressor, card B the recoil on a long lens from low. Let A run one or two strikes, then cut to B on the next impact; the cut and the sound make the contact the model cannot (MS1 1.5). Book rule, unverified.
+
+- Cutting after the move: for a forward cut on the same lens line (full shot to medium), cut 2-3 frames after a move ends. It works for moves toward camera or vertical moves, poorly across the frame, almost never for a cut backward (Arijon ch. 10).
+- Matched cuts keep the mover near centre. With two movers, match only the dominant move, in its own half (ch. 9).
+- Every card starts on some movement, even a dialogue close-up: a breath, eyes moving, a head tilt. Never a frozen face as the first frame (ch. 9).
+- Rising stays in frame when the cut goes medium to wider or medium to tighter on one lens line. The head never leaves the top of frame at the cut (ch. 11).
 
 ## Numbers
 

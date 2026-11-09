@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-1 · 2026-11-09 · Walk and talk, action coverage (Katz, Arijon)
+- because: book distillation (round 5, books/plugin-learnings/round5), pre-approved
+- files: references/walk-and-talk.md, action-coverage.md (new), fight-plan.md (link)
+- Walking dialogue and car scenes from Katz *Cinematic Motion*; split blows, depth-stacked action, expand and contract, pauses before the end from Arijon ch. 24. Kept out of fight-plan, which is at its token limit. Book rules, unverified.
+
 ### C-20261022-2 · 2026-10-22 · Entry previs-animation
 - because: books track 7 (Hess, *Tradigital Blender*); T-20261022-1
 - files: references/previs-animation.md (new), references/fight-previs.md (Related), SKILL.md (the battle paragraph), evals/evals.json (action-previs-anim)
