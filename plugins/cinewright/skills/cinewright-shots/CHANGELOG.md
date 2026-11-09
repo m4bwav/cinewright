@@ -9,6 +9,11 @@ Entry shape: `### C-20261101-1 · 2026-11-01 · Scene setups for fights, chases,
 
 ### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-1 · 2026-11-09 · Dialogue triangle, group order, attention staging, coverage plan, staging moves (books round 5)
+- because: book distillation (round 5, books/plugin-learnings/round5), pre-approved
+- files: references/dialogue-triangle.md, group-order.md, attention-staging.md, coverage-plan.md, staging-moves.md (new), frame-tension.md
+- Five new entries from Arijon, Bordwell, Katz (*Cinematic Motion*) and Rabiger: triangle setups and size pairs, legal group order changes and zones, steering attention inside one held shot, planning coverage by weight with rests and fallbacks, and reasons for moves. frame-tension gets aperture, intermittent visibility, withheld reaction, recessional and planimetric staging. Book rules, unverified on video models; checks come in a later track.
+
 ### C-20261031-1 · 2026-10-31 · Cut lines, glances, power by position, pushes on the secret holder (books round C)
 - because: books round C (Kenworthy, *Master Shots* 1-3; Bowen, *Grammar of the Shot*; notes in Ai/books/plugin-learnings/cinema-c-kenworthy-grammar.md section 3)
 - files: references/framing.md, references/blocking.md, references/coverage.md, shared/vocab/camera-angles.md, camera-moves.md

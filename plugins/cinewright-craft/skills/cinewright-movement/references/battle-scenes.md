@@ -3,7 +3,7 @@ title: Battle scenes
 slug: battle-scenes
 summary: Plan a battle as a map, two sides with fixed screen direction, three to five phases, and many small fights; build scale from a 3D blockout, tiled groups or few large figures, never a prompted mass.
 tags: [movement, battle, war, crowds, fights, geography, scale]
-last_checked: 2026-10-13
+last_checked: 2026-11-09
 sources: ["Steven D. Katz, Film Directing Shot by Shot, 1991", "Daniel Arijon, Grammar of the Film Language, 1976", "VES Handbook of Visual Effects, 3rd ed., 2020", "https://www.vp-land.com/stories/house-of-david-season-2-used-253-ai-generated-shots-here-s-how-they-did-it (2025-10-16)", "https://creativetechorbit.substack.com/p/the-making-of-house-of-david-how (2025-11-20)"]
 ---
 

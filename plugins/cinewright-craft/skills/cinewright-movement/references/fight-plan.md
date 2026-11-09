@@ -3,7 +3,7 @@ title: Fight plan
 slug: fight-plan
 summary: Choreograph a fight before its cards: question and ending first, phrases with who is ahead and why, exchanges operator first with weapons, wounds and sides tracked, then check the cards.
 tags: [movement, fights, choreography, notation, fight-plan, rhythm]
-last_checked: 2026-10-15
+last_checked: 2026-11-09
 sources: ["David McCormick (Fight Directors Canada), Recording Choreography, Academie Duello, 2015: https://web.archive.org/web/20150311201049/http://www.academieduello.com:80/news-blog/recording-choreography/", "McCormick, Plot in Choreography, 2013: https://web.archive.org/web/20131023003111/http://www.academieduello.com/news-blog/plot-in-choreography/", "McCormick, Fight Choreography: Action Logic, 2012: https://web.archive.org/web/20160815083821/http://www.academieduello.com/news-blog/fight-choreography-action-logic/", "David Bordwell, Planet Hong Kong, 2000, ch. 8 (pause, burst, pause)", "Baby Driver editors, Art of the Cut: https://www.provideocoalition.com/aotc-baby-driver/", "ai-docs/research/2026-10-15-fight-planning.md"]
 ---
 
@@ -31,6 +31,7 @@ sources: ["David McCormick (Fight Directors Canada), Recording Choreography, Aca
 
 - operator, exchange, phrase, pause, burst, ahead, margin, story decision, arrow of intention, cadence.
 
+
 ## Pitfalls
 
 - A per-second spreadsheet of cause and effect: a video model cannot hit a timestamp inside a clip, and the extra prose leaks into prompts.
@@ -41,4 +42,4 @@ sources: ["David McCormick (Fight Directors Canada), Recording Choreography, Aca
 
 - `cine_fight.py check fights/<id>.json --project .` ends with 0 errors; MARK warnings are fixed or explained in the card's notes.
 
-Related: builds on [fights-and-stunts](fights-and-stunts.md); see also [fight-from-a-book](fight-from-a-book.md), [fight-previs](fight-previs.md).
+Related: builds on [fights-and-stunts](fights-and-stunts.md); see also [action-coverage](action-coverage.md), [fight-from-a-book](fight-from-a-book.md), [fight-previs](fight-previs.md).
