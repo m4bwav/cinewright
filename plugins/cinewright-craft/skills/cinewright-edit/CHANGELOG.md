@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-2 · 2026-11-09 · Reaction timing, cut to the one acted on, splits lean to the POV, from Rabiger
+- because: book notes round5 (books/plugin-learnings, track 21)
+- files: references/reaction-timing.md (new), cut-points.md, j-and-l-cuts.md; vocab cut-terms (counterpoint, dissonance)
+- Reply gaps clipped, natural or weighted, with starting numbers marked as guesses.
+
 ### C-20261109-1 · 2026-11-09 · Cutting after the move, first-frame motion (Arijon)
 - because: book distillation (round 5, books/plugin-learnings/round5), pre-approved
 - files: references/cutting-on-action.md

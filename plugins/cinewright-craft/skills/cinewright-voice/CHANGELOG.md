@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-1 · 2026-11-09 · Range by subtext and an intent verb for free-text engines, from Weston
+- because: book notes round5 (books/plugin-learnings, track 21)
+- files: references/voice-design.md
+- One line rendered with two subtexts; the line's intent verb replaces an emotion tag where the engine takes text.
+
 ### C-20261015-1 · 2026-10-15 · Voice line checks
 - because: cinewright-qc R-20261015-1 (audio and practitioner tracks)
 - files: references/voice-qc.md

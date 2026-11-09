@@ -3,10 +3,10 @@ title: Cut terms
 slug: cut-terms
 summary: Names of cuts and transitions shared by picture and sound editors (J and L cuts, match, smash, jump, cross-cut, cutaway, insert, dissolve), with what each does and when it is the default.
 tags: [vocab, edit, sound, transitions]
-last_checked: 2026-10-22
-sources: ["Walter Murch, In the Blink of an Eye, 2nd ed., 2001", "Ken Dancyger, The Technique of Film and Video Editing, 6th ed., 2019", "David Bordwell and Kristin Thompson, Film Art: An Introduction, 12th ed., 2019", "Steven D. Katz, Film Directing Shot by Shot, 1991"]
+last_checked: 2026-11-09
+sources: ["Walter Murch, In the Blink of an Eye, 2nd ed., 2001", "Ken Dancyger, The Technique of Film and Video Editing, 6th ed., 2019", "David Bordwell and Kristin Thompson, Film Art: An Introduction, 12th ed., 2019", "Steven D. Katz, Film Directing Shot by Shot, 1991", "Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques and Aesthetics, 6th ed., 2020"]
 ---
-<!-- copied from shared/vocab/cut-terms.md sha256:b3ad0845cbc9b4aec09cf8191b4a9baa57c6c5b45bafc6f7ba429659f048b7d0; edit the source -->
+<!-- copied from shared/vocab/cut-terms.md sha256:5156bc27f2815b3bc43fc5eee786a40745399de6362e17e3bb5bdcb29052b18c; edit the source -->
 
 # Cut terms
 
@@ -19,6 +19,8 @@ sources: ["Walter Murch, In the Blink of an Eye, 2nd ed., 2001", "Ken Dancyger, 
 | L cut | the current shot's sound runs on under the next picture | hold a line over the listener's reaction |
 | cut on action | the cut falls during a movement that continues in the next shot | hides small mismatches; the eye follows the motion |
 | match cut | shape, motion, color or sound repeats across the cut | joins two times or places with a visual rhyme |
+| counterpoint | a line runs over a picture of something else (what the listener imagines) | let words and image add up to a third meaning |
+| dissonance | the behaviour on screen contradicts the words | show a lie or a hidden feeling without a reaction shot |
 | smash cut | an abrupt cut to a sharply different shot or sound level | shock or comedy; use once per scene at most |
 | jump cut | a cut inside one shot, same framing, time skipped | a style, never an accident; less than a 30-degree or one-size change reads as one |
 | cross-cut | alternate between two lines of action in different places | parallel action, chases, a battle's two fronts |

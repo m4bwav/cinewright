@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:66691038e0b74d8323627920a0033539e972ccffb16260c0a228e21c61b7279a; edit the source
+# copied from shared/lib/cine.py sha256:0cc0b0090f393c5a77bafc38f868f5ea6c1fe86d2475b86256aa73031582eb69; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -1223,6 +1223,11 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
             target = target or ""
             on = ", at %s" % target if target and m["eyeline"] != "camera" else ""
             act.append(_sentence("%s is %s%s" % (name, EYELINE_WORDS[m["eyeline"]], on)))
+        pf = m.get("perform") or {}
+        # performance as behaviour, task first: models render busy hands better than a named feeling (entry performance-words)
+        for key, say in (("enters_from", "%s is %s"), ("task", "%s %s"), ("masks", "%s %s"), ("verb", "%s %s"), ("body", "%s, %s")):
+            if pf.get(key):
+                act.append(_sentence(say % (name, pf[key].strip().rstrip("."))))
         for key, say in (("enters", "%s enters the frame %s"), ("exits", "%s leaves the frame %s"), ("position_end", "%s ends %s"), ("eyeline_end", "%s turns, %s")):
             w = (EDGE_WORDS if key in ("enters", "exits") else POSITION_WORDS if key == "position_end" else EYELINE_WORDS).get(m.get(key))
             if w:
