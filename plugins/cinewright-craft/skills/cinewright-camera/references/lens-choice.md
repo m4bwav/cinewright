@@ -12,7 +12,7 @@ sources: ["Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "St
 ## Rules
 
 - Default ladder: 24mm for wides and establishing shots, 35mm for two-shots and walking, 50mm for singles and mediums, 85mm for close-ups. Change it only with a reason written in the card's `notes`.
-- Match the lens across a reverse pair: both singles of a conversation use the same focal length and distance, or the faces change size and the cut jumps (cinewright-continuity, matched singles).
+- One lens per scene where possible: change size by distance, not focal length, so the CU face keeps the wide's proportions; reverse singles share mm and distance (Sherman ch. 5).
 - Close-ups below 35mm distort the face (nose grows, ears shrink). Use a wide close-up only on purpose: comedy, menace, a character losing control.
 - Long lenses (85mm and up) flatten the background and isolate the subject; use them for a figure in a crowd, heat shimmer, or a chase seen from far.
 - A long lens does not flatten a scene by itself; flat staging does. A flat scene needs the staging words too (cinewright-shots space-types; after Block).
@@ -30,7 +30,6 @@ sources: ["Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "St
 
 ## Numbers
 
-- Ladder: 24 / 35 / 50 / 85 mm. Matched singles: same mm, same distance.
 - A zoom card (`zoom-in`, `zoom-out`) starts and ends inside the family's range.
 
 ## Pitfalls
