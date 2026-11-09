@@ -4,7 +4,7 @@ slug: staging-moves
 summary: Why and how people move in a scene: territory (advance, yield), the five reasons for a move, regroup resets, opening and closing on movement, three-card journeys.
 tags: [shots, blocking, movement, entrances, exits, journeys]
 last_checked: 2026-11-09
-sources: ["Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques and Aesthetics, 6th ed., ch. 21, 24", "Daniel Arijon, Grammar of the Film Language, 1976, ch. 8, 11-12, 16", "Steven D. Katz, Film Directing: Cinematic Motion, 2nd ed., 2004, ch. 4"]
+sources: ["Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques and Aesthetics, 6th ed., ch. 21, 24", "Daniel Arijon, Grammar of the Film Language, 1976, ch. 8, 11-12, 16", "Steven D. Katz, Film Directing: Cinematic Motion, 2nd ed., 2004, ch. 4", "Nicholas T. Proferes, Film Directing Fundamentals, 4th ed.", "Eric Sherman, Directing the Film, 1976"]
 ---
 
 # Staging moves
@@ -23,6 +23,10 @@ sources: ["Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques 
 - A walker leaving one place and entering another makes the two read as neighbours. Use it when a model cannot draw both in one frame (ch. 12).
 - A departure can end on the one who stays: cut on the exit to the stayer's close-up on the same lens line (ch. 16).
 - Crossing the room to a new zone flips sides. Move the camera across the line at the new zone instead. If someone must cross the line in shot, make it the person nearest camera (Katz ch. 4).
+- Geographical paragraphs: each dramatic block gets its own area, height or facing. Save one unseen part of the place for the climax ("change the stage"). Tag each scene's distance curve (`together->apart`, `apart->together`, accordion) (Proferes ch. 4).
+- Facing marks a beat: sideways backs off, square-on pursues, turning away concedes (Proferes ch. 4).
+- Character introductions: build a principal's entrance: back to camera or voice first, then a turn into the lens as the camera closes; never a slide-in (Sherman ch. 5; Proferes ch. 5).
+- A new threat enters in close-up (`intro: cu`). This overrides coverage's "unreadable antagonist at FS" for the entrance card only (Sherman ch. 5).
 
 ## Verify
 

@@ -18,6 +18,7 @@ sources: ["Steven D. Katz, Film Directing Shot by Shot, 1991", "Joseph V. Mascel
 - A speaker and an audience get opposing looks, like a two-shot.
 - Five or more people: pick the two central players. Their line is the scene's axis.
 - Keep anything between two people (a lamp, a bottle) out of their opposing close-ups, or right beside one of them. A model draws it on both sides.
+- Never line a group up in a row: small groups at different distances from camera (Sherman ch. 5).
 - Re-establish a round table often: more than four to six close cards in a row lose the seating.
 
 ## Verify
