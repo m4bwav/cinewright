@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261109-3 · 2026-11-09 · Structure and performance rules from Mamet, Proferes, DeKoven and Bordwell (books round 5, track 23)
+- because: book distillation (round 5), pre-approved
+- files: references/logline-and-beats.md, scene-turns.md, performance-words.md; shared/vocab/performance-verbs.md
+- Short rules merged into existing entries: capped objective and `ends_when`, beats below the objective, Thompson's parts, midpoint knowledge flip, rule of three and plants, why-now opening, unfilmable lines; scene chain and dialogue hook, fulcrum and blocks, knowledge range and deadline; need chain, no be/look verbs, playable in silence, activity vs action, restraint card, facts not attitudes; intensity ladders, gaze and blink, eyes-only push-in. Knowledge only, no new checks; prose trimmed to stay under the entry token cap.
+
 ### C-20261109-2 · 2026-11-09 · RESULT check for performance text (books round 5, track 22)
 - because: book distillation (round 5), pre-approved
 - files: references/performance-words.md; shared/lib/cine.py
