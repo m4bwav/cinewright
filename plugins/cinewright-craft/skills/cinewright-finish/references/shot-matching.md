@@ -3,8 +3,8 @@ title: Shot matching
 slug: shot-matching
 summary: Match every shot of a scene to one hero frame with a per-shot LUT (cine_post grade match), then one look LUT and grain for the whole film; a look LUT alone never fixes mismatched shots.
 tags: [finish, grade, color, lut, matching]
-last_checked: 2026-10-22
-sources: ["Lance Phillips, Video Editing Made Easy with DaVinci Resolve 18, 2023, ch. 11", "invideo, colour grading workflow for AI-generated video, 2026-07-27", "Houbre, How to color match AI video clips, HackerNoon, 2026-07-30", "Reinhard et al., Color transfer between images, 2001", "local tests on H3 footage, 2026-10-09"]
+last_checked: 2026-11-09
+sources: ["Lance Phillips, Video Editing Made Easy with DaVinci Resolve 18, 2023, ch. 11", "invideo, colour grading workflow for AI-generated video, 2026-07-27", "Houbre, How to color match AI video clips, HackerNoon, 2026-07-30", "Reinhard et al., Color transfer between images, 2001", "local tests on H3 footage, 2026-10-09", "r/comfyui 1xnm2tl, KESHIKI (GPL-3.0, idea only), 2026-11"]
 ---
 
 # Shot matching
@@ -20,6 +20,7 @@ sources: ["Lance Phillips, Video Editing Made Easy with DaVinci Resolve 18, 2023
 - The look LUT (`--look`) is the film's one creative grade, made once in a grading tool or exported from the hero; apply it at 60 to 80% intensity when building it. Grain last (`--grain 4` to `8`).
 - Stats are pooled over the whole shot, so the correction is one fixed transform and does not flicker. Brightness pulsing inside a shot is a separate fix (deflicker); texture shimmer and identity drift are not grading problems: re-render.
 - Grade a mezzanine copy; keep the ungraded renders.
+- After a matte composite, add a light wrap before the match: blur the new background, mask it to a thin band inside the alpha edge, add it at about 0.2, with a 30% Reinhard pull of the subject toward the background (r/comfyui 1xnm2tl, idea only).
 
 ## Numbers
 

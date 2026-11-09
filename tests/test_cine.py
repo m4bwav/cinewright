@@ -2012,3 +2012,21 @@ class TestLookMeasures(Base):
         self.assertGreater(abs(was["warmth"] - 0.10), 0.08)
         self.assertLess(abs(now["chroma"] - 0.08), 0.03)
         self.assertLess(abs(now["warmth"] - 0.10), 0.03)
+
+
+class TestH3Lint(unittest.TestCase):
+    def codes(self, text, s):
+        return {w.split(":")[0] for w in lib.h3_lint(text, s)}
+
+    def test_clean_prompt(self):
+        t = ("integrated_multimodal_description: [Shot 1] A baker (S1) says: <d>[English] Hello there.</d> "
+             "[Shot 2] At 00:04.000, the camera cuts to the door.\n\noverall_soundscape: ovens hum")
+        self.assertEqual(self.codes(t, 8.7), set())
+
+    def test_misreads(self):
+        t = ("integrated_multimodal_description: [Shot 1] masterpiece, she says: \"Hi\" <d>[English] " + "word " * 20 + "</d> "
+             "[Shot 2] At 00:01.000, cut [Shot 3] At 00:04.800, cut\n\noverall_soundscape: N/A")
+        c = self.codes(t, 5.0)
+        for k in ("h3-silent", "h3-short", "h3-cut-late", "h3-shot-short", "h3-many-shots", "h3-speech-long", "h3-quoted-line", "h3-filler"):
+            self.assertIn(k, c)
+        self.assertIn("h3-no-soundscape", self.codes("no fields ___", 9))

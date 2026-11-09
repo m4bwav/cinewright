@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:64a1084413af6f4675ac4a8c41b82fa80a1a1d6784882dcbef1ab1cd3dffb7d0; edit the source
+# copied from shared/lib/cine.py sha256:10aed5cbc96ceadb18721f0a8267c576ff3999907204c651e6e4ffb0350ef30c; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -1569,6 +1569,45 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
     return out
 
 
+# H3 pre-render lint over a compiled prompt. Rules adapted from IV Studio lint.js (MIT, hollisorg/iv-studio); see minimax-h3.md.
+H3_CUT = re.compile(r"\[Shot (\d+)\] At (\d+):(\d+(?:\.\d+)?)")
+H3_FILLER = re.compile(r"\b(masterpiece|best quality|8k|4k|ultra[- ]detailed|highly detailed|trending on artstation)\b", re.I)
+
+
+def h3_lint(text, seconds):
+    out = []
+    if "integrated_multimodal_description:" not in text and "detailed_description:" not in text:
+        out.append("h3-no-description: no description field; H3 reads the prompt loosely")
+    if "___" in text:
+        out.append("h3-blank: template blank ___ left in")
+    m = re.search(r"overall_soundscape:\s*(\S*)", text)
+    if not m:
+        out.append("h3-no-soundscape: no overall_soundscape; flat sound bed")
+    elif m.group(1).startswith("N/A"):
+        out.append("h3-silent: soundscape N/A asks for silence; describe the room sound unless that is meant")
+    if seconds and round(seconds * 24) < 124:
+        out.append("h3-short: %.2fs is under 124 frames (5.17s), H3's trained floor; motion runs weak" % seconds)
+    cuts = [0.0] + [int(a) * 60 + float(b) for _, a, b in H3_CUT.findall(text)]
+    if len(cuts) > 1 and seconds:
+        if any(b <= a for a, b in zip(cuts, cuts[1:])):
+            out.append("h3-cut-order: shot times must increase")
+        if seconds - cuts[-1] < 0.5:
+            out.append("h3-cut-late: a cut within 0.5s of the end is dropped")
+        if any(0 < b - a < 1.5 for a, b in zip(cuts, cuts[1:] + [seconds])):
+            out.append("h3-shot-short: a shot under 1.5s often does not register")
+        if len(cuts) > max(1, round(seconds / 3)):
+            out.append("h3-many-shots: %d shots in %.1fs; keep about one per 3s" % (len(cuts), seconds))
+    words = sum(len(d.split()) - 1 for d in re.findall(r"<d>(.*?)</d>", text, re.S))
+    if seconds and words > 2.5 * seconds:
+        out.append("h3-speech-long: %d words in %.1fs (budget 2.5 a second); lines get cut or rushed" % (words, seconds))
+    if re.search(r"says[^<]{0,40}:\s*[\"“]", text):
+        out.append("h3-quoted-line: a line in quotes, not <d>...</d>; H3 may invent the words")
+    f = H3_FILLER.findall(text)
+    if f:
+        out.append("h3-filler: quality tokens (%s) do nothing on H3" % ", ".join(sorted(set(x.lower() for x in f))))
+    return out
+
+
 def cmd_compile(ctx, a):
     p = Project(a.project, style=a.style)
     path, meta, prof = find_model_card(ctx, a.model)
@@ -1594,6 +1633,8 @@ def cmd_compile(ctx, a):
         if not a.out:
             print(text)
             print("params: %s" % json.dumps(params, ensure_ascii=False))
+        if "H3" in prof["model_id"]:
+            warnings = list(warnings) + ["lint " + w for w in h3_lint(text, info["seconds"])]
         for w in warnings:
             print("  warning: %s" % w)
     if a.out:

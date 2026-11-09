@@ -6,7 +6,7 @@ tags: [vocab, qc, failures, taxonomy, motion, audio]
 last_checked: 2026-10-22
 sources: ["field lessons 005, 011, 014, 015, 020, 021 (maintainer's local renders, 2026-09)", "https://tech.ebu.ch/publications/r128"]
 ---
-<!-- copied from shared/vocab/failures-motion.md sha256:501d3d28d30ce4a6106183c8385d113323a379ebd923a109627d17625753818d; edit the source -->
+<!-- copied from shared/vocab/failures-motion.md sha256:7a3ef6a32fc9f7f23f9d9a119c5a805b3089a9eae0e471e92f504dc7366975bd; edit the source -->
 
 # Failure codes, motion, sound and spec
 
@@ -28,7 +28,7 @@ Rungs and checks as in `failures-picture`.
 | `move-no-settle` | the camera is still moving on the last frame, so the cut lands mid-move | no held end on the move | `camera.settle` (held frames at both ends); trim to the hold | 2 | camera |
 | `pan-strobe` | the background steps or smears across a fast pan or track | the frame crosses faster than about a third of its width a second | a slower move ("slow pan") or a longer shot; cut the fast part | 1 | camera |
 | `text-artifact` | subtitles, captions, watermark, garbled signs | quoted dialogue; signs in scene | the card's dialogue syntax; negative terms | 1 | text |
-| `dialogue-wrong` | line missing, wrong mouth, lips off | two speakers, or speaker not in shot | one speaker per shot, in the cast; else the mix | 1 | audio |
+| `dialogue-wrong` | line missing, wrong mouth, lips off | two speakers, speaker not in shot, or a speaking reference video (H3 copies its lips) | one speaker per shot, in the cast; else the mix | 1 | audio |
 | `lip-lag` | the mouth moves before or after its voice | picture and sound drift apart in the render or the mix | slip the sound by the measured lag when it is steady; re-render when it wanders | 7 | audio |
 | `name-misread` | a name said wrong | spelling guessed | `pronounce` respelling | 1 | audio |
 | `sound-wrong` | silence, music, or the wrong sound | sound left to the model | name ambience and effects | 1 | audio |
