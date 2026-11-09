@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine_fight.py sha256:9df4f7102ad78b5c59737098ad1d45c8a3b0018fe3f0367eee844512796e42aa; edit the source
+# copied from shared/lib/cine_fight.py sha256:babef215158f1db9f6899feed011168e7cd551462b69e8b15af1a521f862f63f; edit the source
 """cinewright fight plans: replay a fight, hold its cards to it, write its sheet. Run it; do not read it.
 
   python scripts/cine_fight.py check FIGHT.json [--project P] [--json]
@@ -72,7 +72,6 @@ def apply(state, ch, issues, n):
 
 
 def replay(plan):
-    """Yield (exchange, state before it, state after it) and collect plan issues."""
     issues, out = [], []
     ids = [f["id"] for f in plan["fighters"]]
     phrase_ids = [p["id"] for p in plan["phrases"]]
@@ -186,7 +185,6 @@ def cmd_check(a):
 
 
 def timeline(plan, rows, by_card, cards):
-    """Start time of each exchange: from the cut when the cards exist, else from secs and pauses."""
     times, t, prev_phrase = {}, 0.0, None
     pauses = {p["id"]: p.get("pause_secs", PAUSE_SECS) for p in plan["phrases"]}
     if by_card and cards:

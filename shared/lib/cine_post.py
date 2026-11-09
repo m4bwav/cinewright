@@ -65,7 +65,6 @@ def find_still(stills, cid):
 
 
 def segment(ff, still, card, w, h, out):
-    """One card as a clip: the still scaled to cover the frame, its move as a slow zoompan, or grey."""
     dur = float(card["duration_s"])
     n = max(1, int(round(dur * FPS)))
     if still is None:
@@ -123,7 +122,6 @@ def cmd_animatic(a):
 # ---------- grade ----------
 
 def frames_rgb(path, size=(64, 36), fps=1.0, max_frames=12):
-    """Small RGB frames from a still or a clip, as one flat byte string per frame."""
     ff = cine.need_tool("ffmpeg")
     w, h = size
     vf = "scale=%d:%d" % (w, h)
@@ -139,7 +137,6 @@ def frames_rgb(path, size=(64, 36), fps=1.0, max_frames=12):
 
 
 def stats(path):
-    """Mean and standard deviation per channel (0..1) and Rec.709 mean luma (0..255 full range)."""
     sums, sq, count = [0.0] * 3, [0.0] * 3, 0
     for fr in frames_rgb(path):
         for c in range(3):
@@ -154,8 +151,6 @@ def stats(path):
 
 
 def fit(src, ref, strength=1.0, luma=None):
-    """Per-channel gain and offset that move src's mean and spread toward ref's (Reinhard, in RGB),
-    blended by strength; then one shared gain so the mean luma lands on `luma` when given."""
     gains, offs = [], []
     for c in range(3):
         g = ref["sd"][c] / src["sd"][c] if src["sd"][c] > 1e-4 else 1.0
@@ -172,7 +167,6 @@ def fit(src, ref, strength=1.0, luma=None):
 
 
 def transform(v, gains, offs, sat=1.0, warm=0.0):
-    """One RGB triple (0..1) through the match: per-channel gain and offset, then chroma scaled around luma, then a warm shift."""
     c = [gains[i] * v[i] + offs[i] for i in range(3)]
     if sat != 1.0:
         y = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
@@ -206,8 +200,6 @@ PLAN_RHO = 0.3  # |Spearman rho| below this is "weak": the measure neither follo
 
 
 def look_stats(path):
-    """Block's measurable components of one shot: mean luma and its p5-p95 spread (tone), mean chroma (saturation),
-    mean R minus B (warmth), edge orientation shares (line), and mean frame difference (movement, clips only)."""
     w, h = 160, 90
     ys, chroma, warm, edges = [], 0.0, 0.0, [0, 0, 0]  # edges: horizontal, vertical, diagonal
     count = 0
@@ -264,7 +256,6 @@ def ranks(xs):
 
 
 def spearman(xs, ys):
-    """Spearman rank correlation (ties averaged); None when either side has no spread."""
     rx, ry = ranks(xs), ranks(ys)
     mx, my = sum(rx) / len(rx), sum(ry) / len(ry)
     sxy = sum((a - mx) * (b - my) for a, b in zip(rx, ry))
@@ -273,14 +264,12 @@ def spearman(xs, ys):
 
 
 def card_for(p, path):
-    """The card a shot file belongs to: the longest card id that appears in its name as a whole token (1A, 12B, take_3C-2)."""
     stem = Path(path).stem
     hits = [c for c in p.cards if re.search(r"(?<![0-9A-Za-z])%s(?![A-Z0-9])" % re.escape(c["id"]), stem)]
     return max(hits, key=lambda c: len(c["id"])) if hits else None
 
 
 def plan_report(p, shots):
-    """shots: [(path, card, stats)] in cut order -> report lines. Checks the measured components against the visual plan."""
     out, against = [], 0
     rows = []
     for path, c, s in shots:
@@ -337,7 +326,6 @@ def plan_report(p, shots):
 
 
 def frames_all(path, size=(64, 36)):
-    """Every frame of a clip, small, as RGB byte strings, plus the clip's fps."""
     info = cine.probe(path)
     w, h = size
     r = subprocess.run([cine.need_tool("ffmpeg"), "-v", "error", "-i", str(path), "-an", "-vf", "scale=%d:%d" % (w, h),
@@ -352,7 +340,6 @@ def channel_means(fr):
 
 
 def drift(means, fps):
-    """Range of the 1 s mean luma across a shot: slow exposure drift, which frame-to-frame deflicker does not see."""
     y = [0.2126 * m[0] + 0.7152 * m[1] + 0.0722 * m[2] for m in means]
     win = max(1, int(round(fps)))
     sm = [sum(y[i:i + win]) / win for i in range(0, max(1, len(y) - win + 1))]
@@ -360,8 +347,6 @@ def drift(means, fps):
 
 
 def stabilize_gains(means, fps, ref_t=None, window=1.0, luma_only=False):
-    """Per-frame gains that hold each channel at the reference frame's level, smoothed over `window` seconds so
-    flicker is left to deflicker; clamped to 0.6-1.6."""
     n = len(means)
     i0 = min(n - 1, max(0, int(round((ref_t if ref_t is not None else n / fps / 2) * fps))))
     near = means[max(0, i0 - int(fps / 4)):i0 + int(fps / 4) + 1]
