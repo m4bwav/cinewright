@@ -19,6 +19,7 @@ Untested here. H3 Recast (Bambushu, MIT) runs Ref2VA with NRDX's BFS character s
 - Big changes land (age, gender, hair colour, build); subtle ones fall back to the clip. Never give a colour already on that person: it bleeds.
 - Motion, hands, lips, accessories and clothes come from the clip; face and body from the reference. Want sunglasses: put them in the reference.
 - Caption: the LoRA's trained `body_swap` form (subject_definitions, summary, detailed_description), people placed as left / middle / right of `<Picture 1>`.
+- The swap LoRA is optional: Ref2VA swaps without it, but at 1.0 it helps the swap follow fast motion (one same-prompt pair, r/StableDiffusion 1wsknup; untested here).
 
 ## Numbers
 

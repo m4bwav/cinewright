@@ -13,15 +13,15 @@ Items are single makers' reports, reworded, unless marked measured. GPL sources 
 
 ## Rules
 
-- Long takes: cut per shot stays the default. Each render restarts picture and sound, and a cut hides that.
-- A one-take shot longer than one clip: carry the previous clip's motion latent into the next (H3 Motion Context, GPL node pack; 22 frames, audio 18, match_tail trim). Measured 2026-11-09, 3 x 260 frames: join motion spike 1.39/1.56 vs 5.04/5.45 for a last-frame chain, luma steps gone, audio carries, same GPU (+5%). A local `h3_video.py --save-latent/--continue-from` drives it. Last-frame chaining (H3-LongTakeNoCuts, MIT) only for hard cuts.
-- On either route: re-anchor the background with masked frames from earlier shots, replace the audio in post, and grade out the saturation that creeps up segment by segment.
+- Long takes: cut per shot by default; each render restarts picture and sound, and a cut hides that.
+- A one-take shot longer than one clip: carry the previous clip's motion latent into the next (H3 Motion Context, GPL node pack; 22 frames, audio 18, match_tail trim). 3 x 260 frames (2026-11-09): join motion spike 1.39/1.56 vs 5.04/5.45 for a last-frame chain, luma steps gone, audio carries, same GPU (+5%). Local: `h3_video.py --save-latent/--continue-from`. Last-frame chaining (H3-LongTakeNoCuts, MIT) only for hard cuts.
+- On either route: re-anchor the background with masked frames from earlier shots, replace the audio in post, and grade out saturation creeping up per segment.
 - V2V longer than ~150 frames: MiniMaxH3TemporalWindow on model + CLIP, 124/22 (local `h3_video.py --windows 124/22`). Measured 2026-11-09, 413 frames at 864x480: 2048 s vs 3673 s one pass; SSIM first/last 100 frames 0.89/0.53 vs 0.66/0.34; no seams; still drifts in the last third. Spatial tiles only in a low-denoise second stage.
-- 4K two-stage (SyncTile v5.5, MIT): stage 1 at 0.5 MP untiled in 124-frame windows with 39 overlap, latent upscale, stage 2 at 1472x896 tiles with sigmas 0.878/0.8/0.6316/0, decode streamed. SyncTile blends each window per call; its carry mode passes frames forward instead.
+- 4K two-stage (SyncTile v5.5, MIT): stage 1 at 0.5 MP untiled in 124-frame windows with 39 overlap, latent upscale, stage 2 at 1472x896 tiles with sigmas 0.878/0.8/0.6316/0, decode streamed. SyncTile blends each window per call; carry mode passes frames forward.
 - Keep a background swap from reverting: a guide still every 4-5 s, "in every frame" in the prompt, input at 24 fps.
 - A refine or upscale pass can drop a cloned voice: keep the stage-1 audio and mux it back over the refined picture.
-- Face-refine for `face-mush` (a good shot, a smeared face): crop a steady padded box round the face, resample it at 0.35-0.45 denoise with the bible face ref, feather-stitch it back; keep only if identity on the crop and Laplacian sharpness both rise. Measured 2026-11-09 (ComfyUI-H3-FaceRefine, denoise 0.4, backlit 50 px face): +21% sharpness at 311 s per 5.2 s; a rung for clearly mushy faces, not a default; front-lit retest with the ref pending.
-- A famous setting or a named character in the prompt pulls the face toward the model's prior; describe the place instead of naming it.
+- Face-refine for `face-mush` (a good shot, a smeared face): crop a steady padded box round the face, resample it at 0.35-0.45 denoise with the bible face ref, feather-stitch it back; keep only if identity on the crop and Laplacian sharpness both rise. Measured 2026-11-09 (ComfyUI-H3-FaceRefine, 0.4, backlit 50 px face): +21% sharpness, 311 s per 5.2 s; for clearly mushy faces only; front-lit retest pending.
+- A famous setting or named character pulls the face toward the model's prior; describe, don't name.
 
 ## Pitfalls
 
@@ -36,7 +36,7 @@ Known misreads, as a pre-render checklist (warnings, never blockers; the thresho
 
 ## Numbers
 
-- Drift on long chains shows from segment 5-6 (last-frame route report); Motion Context untested past 3 segments.
+- Long-chain drift shows from segment 5-6 (last-frame route report); Motion Context untested past 3 segments. Try next: a tapered overlap mask, the carried prefix fading from pinned to free (post 1wio4eg, Drift-Control, GPL idea; untested).
 - One H3 character LoRA (single report): 8 stills plus crops and 14 clips on 17n+5, rank 16, 3,520 steps, 41 min on a hosted datacenter GPU.
 - Tested 2026-11-10 (864x480 V2V, 209 frames, 4 steps, one seed): SyncTile blend and carry both lose the set in window 2 (SSIM 0.35/0.38, set props vanish); `--windows 124/22` keeps it to the last frame (0.39). Carry is 27% faster but drifts the same way. Use windows for V2V plates; SyncTile only for spatial tiling at 4K (untested).
 

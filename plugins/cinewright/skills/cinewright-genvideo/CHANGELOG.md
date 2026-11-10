@@ -2,6 +2,10 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
+### C-20261110-2 · 2026-11-10 · Bullet time entry; tapered overlap; swap LoRA optional
+- because: technique harvest 2026-11-10 (posts 1wuzyq0 GPU-tested, 1wio4eg GPL idea only, 1wsknup single report)
+- files: references/bullet-time.md (new: orbit LoRA route, 154 s vs 410 s, people hold, props morph), references/h3-long-takes.md (tapered overlap mask as the next drift fix; trims for budget), references/recast.md (swap LoRA optional, helps fast motion)
+
 ### C-20261110-1 · 2026-11-10 · Install-test numbers
 - because: install tests 2026-11-10 in the technique harvest
 - files: references/h3-long-takes.md (SyncTile open test closed)

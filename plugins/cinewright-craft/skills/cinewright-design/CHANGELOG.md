@@ -2,6 +2,10 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
+### C-20261110-2 · 2026-11-10 · RefMod prompt builder; dataset repeat rule
+- because: technique harvest 2026-11-10 (posts 1wtu82e unmeasured, 1x0imbp single maker)
+- files: references/lora-or-references.md (RefMod Text Encode for several characters; anything in over a third of the set becomes identity, check proportions; trims for budget)
+
 ### C-20261110-1 · 2026-11-10 · Install-test numbers
 - because: install tests 2026-11-10 in the technique harvest
 - files: references/lora-or-references.md (RefMods line)
