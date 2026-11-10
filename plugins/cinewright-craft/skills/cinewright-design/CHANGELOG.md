@@ -2,6 +2,10 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
+### C-20261110-1 · 2026-11-10 · Install-test numbers
+- because: install tests 2026-11-10 in the technique harvest
+- files: references/lora-or-references.md (RefMods line)
+
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261109-1 · 2026-11-09 · lora-or-references: candid-light refs, judge checkpoints in the shot workflow
