@@ -22,14 +22,14 @@ volatile_claims: ["which open video models take depth or pose control", "Fun Con
 - Pair it with a first frame or references. Control alone gives the right motion with an invented look.
 - Strength 0.6 to 1.0 for one control; two controls summed to 1.0 or less (depth 0.3 plus pose 0.4). Stop the control at about 60% of the steps so the model restores texture; lower it if the result looks flat.
 - Depth, edge and pose controls carry no light. When the blockout render is also the first frame or a guide still, light it as the plan says (key side, colour, one plan for every element) and try two or three directions before keeping one (after Gurney, *Imaginative Realism*); otherwise the light words carry it.
-- Time-to-Move (one subject on a still plate, untested): drag a cut-out of the subject along its path over the plate, render that video plus the subject's mask, hold the masked area to it for the first step or so, then let the model take over. Pick it over a full blockout when only one thing moves.
+- Time-to-Move (one subject on a still plate, measured 2026-11-09): drag a cut-out of the subject along its path over the plate, render that video plus the subject's mask, hold the masked area to it for 1 of 8 steps (2 for a tighter path), then let the model take over. Pick it over a full blockout when only one thing moves.
 - Check the control at start, middle and end against the plan: a grey render is not automatically a depth pass. Say in the prompt that the camera moves, or the model may move the subject instead.
 
 ## Numbers
 
 - Strength 0.6-1.0 (one control); end at 0.6 of the steps; guidance unchanged.
 - MiniMax H3: Fun ControlNet Union 2.0 (canny, depth, pose, inpainting with a mask), applied as a model patch; works with first frame and references. Wan VACE, LTX control LoRAs and Kling motion control are the alternatives.
-- Time-to-Move on H3 (one maker's numbers): 768p canvas, masked area held for 1 of 6 steps, mask eroded about 16 px; a subject under about 64 px is released entirely. Node pack GPL (idea only, install needs a go).
+- Time-to-Move on H3, measured 2026-11-09 (ComfyUI-vlo, GPL, installed node only), 124 frames 864x480, 8-step turbo: median error to the dragged path 41 px (hold 1 step), 62 px (hold 2), 135 px prompt only; ball found in 76% / 86% / 33% of frames; +20-28% GPU. One maker: mask eroded about 16 px, a subject under about 64 px released.
 
 ## Vocabulary
 

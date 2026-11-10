@@ -3,7 +3,7 @@ title: Upscale and interpolation
 slug: upscale-and-interpolation
 summary: Upscale and interpolate last, after the grade, crop and composites, once each; retime slow motion with motion interpolation only when the shot has simple motion, and check for warped frames.
 tags: [finish, upscale, interpolation, retime, slow-motion, delivery]
-last_checked: 2026-10-04
+last_checked: 2026-11-09
 sources: ["https://ffmpeg.org/ffmpeg-filters.html", "cinewright S2 render, 2026-10-03 (practice)"]
 ---
 
@@ -16,6 +16,7 @@ sources: ["https://ffmpeg.org/ffmpeg-filters.html", "cinewright S2 render, 2026-
 - Interpolation to raise frame rate (24 → 30 or 60) is for web delivery only; films stay at 24 (cinewright-camera, entry frame-rate-and-shutter).
 - Slow motion from a 24 fps render: motion interpolation (`minterpolate` or a learned interpolator) works on simple, slow motion; it warps hands, crossing limbs, spinning objects and fast camera moves. Check every interpolated shot frame by frame; prefer asking the model for slow motion on the card.
 - Simple retime without new frames (speed up, or slow by frame doubling) uses `setpts`; frame doubling stutters below about 70% speed.
+- Drafts and review copies: RTX VSR (2.2 s for a 3 s clip x2) sharpens edges but does not restore texture; finals: SeedVR2 (400 s, restores texture). Check faces on both.
 - Keep the source and a pre-upscale master; the upscale is a delivery step, not the archive.
 
 ## Numbers

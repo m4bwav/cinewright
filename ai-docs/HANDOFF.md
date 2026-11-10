@@ -27,7 +27,7 @@
 
 - Books track 7 (2026-10-22, branch books-track7): the last cinewright books track. Entries blender-passes (sets) and previs-animation (movement), one line each in master-plates, animatic, blockout-control, fight-previs; the sets description names blockout control passes (L-008 `description-names-blockout-passes`). No runtime change: 185 of 200 KB. Open: whether Mist depth does as well as inverse depth on H3; whether a Line Art pass beats Canny on clay; the previs animation checks against real takes.
 
-- Technique harvest (2026-11-09, 0.5.1): docs only, entry genvideo `h3-long-takes`. Batch 2 (0.5.3): H3 lint built in `compile` (warn-only, thresholds unmeasured; GPU A/B in harvest posts/1xqfux1.md). Open: `cine.py qc rank` deferred (shared/lib 193 of 200 KB).
+- Technique harvest (2026-11-09, 0.5.1): docs only, entry genvideo `h3-long-takes`. Batch 2 (0.5.3; install-test numbers 0.5.4): H3 lint built in `compile` (warn-only, thresholds unmeasured; GPU A/B in harvest posts/1xqfux1.md). Open: `cine.py qc rank` deferred (shared/lib 193 of 200 KB).
 
 ## Waiting on Mark
 - claude.ai cleanup: delete the uploaded test skill cinewright-continuity (permanent delete; switched off for now), remove the cinewright marketplace source if the UI offers it, close the VS Code window `code chat -n` opened.

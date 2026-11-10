@@ -20,7 +20,7 @@ Items are single makers' reports, reworded, unless marked measured. GPL sources 
 - 4K two-stage (SyncTile v5.5, MIT): stage 1 at 0.5 MP untiled in 124-frame windows with 39 overlap, latent upscale, stage 2 at 1472x896 tiles with sigmas 0.878/0.8/0.6316/0, decode streamed. SyncTile blends each window per call; its carry mode passes frames forward instead.
 - Keep a background swap from reverting: a guide still every 4-5 s, "in every frame" in the prompt, input at 24 fps.
 - A refine or upscale pass can drop a cloned voice: keep the stage-1 audio and mux it back over the refined picture.
-- Face-refine for `face-mush` (a good shot, a smeared face): crop a steady padded box round the face, resample it at 0.35-0.45 denoise with the bible face ref, feather-stitch it back; keep only if identity on the crop and Laplacian sharpness both rise.
+- Face-refine for `face-mush` (a good shot, a smeared face): crop a steady padded box round the face, resample it at 0.35-0.45 denoise with the bible face ref, feather-stitch it back; keep only if identity on the crop and Laplacian sharpness both rise. Measured 2026-11-09 (ComfyUI-H3-FaceRefine, denoise 0.4, backlit 50 px face): +21% sharpness at 311 s per 5.2 s; a rung for clearly mushy faces, not a default; front-lit retest with the ref pending.
 - A famous setting or a named character in the prompt pulls the face toward the model's prior; describe the place instead of naming it.
 
 ## Pitfalls
