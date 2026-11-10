@@ -53,7 +53,7 @@ Measured 2026-11-04 on a 16 GB consumer GPU, ComfyUI 0.41.3, nvfp4 text encoder;
 - Asking to remove objects can give replacement instead: buckets on the ground became baskets, not bare sand, because the carried prop's new look spread.
 - These render with no warning. A non-matching first reference is stretched into its pin (a square one squeezed and moved the farmhouse). A 30 fps source is taken frame for frame, so 7.5 s plays as 9.4 s with audio cut by seconds; sync not listened to.
 - These fail in seconds with a clear message: frames off 17n+5, a pin count that is neither zero nor one per reference, a pin past the end.
-- Vendor's known failures, unverified: non-humanoids in long takes, fine-detail artifacts, time drift in unpinned multi-shot clips. Unpinned was clean on one single-shot clip. Past 345 frames: windows, [h3-long-takes](h3-long-takes.md).
+- Vendor's known failures, unverified: non-humanoids in long takes, fine-detail artifacts, time drift in unpinned multi-shot clips. Unpinned was clean on one single-shot clip. Plates past ~345 frames: windows, [h3-long-takes](h3-long-takes.md).
 
 ## Verify
 
