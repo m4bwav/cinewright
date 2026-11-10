@@ -947,3 +947,7 @@ Mark reviewed the pail repair on askwright and picked "use this route as the fir
 ## 2026-11-09 Install-test numbers: face-refine, Time-to-Move, RTX VSR; version 0.5.4
 - From technique-harvest posts 1xhmt6x, 1xjgy2w, 1x3y8ot. h3-long-takes face-refine +21% sharpness at 311 s/5.2 s (front-lit retest pending); failures-picture face-mush rung measured; blockout-control Time-to-Move measured (41/62/135 px, +20-28% GPU); finish: RTX VSR for drafts/review only. Latent chain already marked measured in 0.5.3.
 - Checks: unittest OK; kb lint 0 errors; budget YELLOW (failures-picture kept under 1,200 tokens by moving numbers to h3-long-takes).
+
+## 2026-11-10 Install-test numbers: RefMods, SyncTile; version 0.5.5
+- From technique-harvest posts 1xnxlvv, 1xbzx5n. lora-or-references: RefMods Full Reference ties native refs (ArcFace 0.37 vs 0.36, 2 seeds, ~12% faster), Compressed loses the face (0.08); entry trimmed elsewhere to stay under 1,200 tokens. h3-long-takes: SyncTile open test closed (blend/carry lose the set in window 2; `--windows` keeps it; 209 frames, 4 steps).
+- Checks: unittest OK; kb lint 0 errors; budget YELLOW; scrub hits only known ai-docs benchmarks.

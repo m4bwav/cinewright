@@ -38,7 +38,7 @@ Known misreads, as a pre-render checklist (warnings, never blockers; the thresho
 
 - Drift on long chains shows from segment 5-6 (last-frame route report); Motion Context untested past 3 segments.
 - One H3 character LoRA (single report): 8 stills plus crops and 14 clips on 17n+5, rank 16, 3,520 steps, 41 min on a hosted datacenter GPU.
-- Open test: SyncTile per-call blend against carry against 124/22 windows, same plate and seed.
+- Tested 2026-11-10 (864x480 V2V, 209 frames, 4 steps, one seed): SyncTile blend and carry both lose the set in window 2 (SSIM 0.35/0.38, set props vanish); `--windows 124/22` keeps it to the last frame (0.39). Carry is 27% faster but drifts the same way. Use windows for V2V plates; SyncTile only for spatial tiling at 4K (untested).
 
 ## Verify
 

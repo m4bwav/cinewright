@@ -2,6 +2,10 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
+### C-20261110-1 · 2026-11-10 · Install-test numbers
+- because: install tests 2026-11-10 in the technique harvest
+- files: references/h3-long-takes.md (SyncTile open test closed)
+
 Entry shape: `### C-20261109-5 · 2026-11-09 · face-refine measured
 - because: install tests 2026-11-09 in the technique harvest (post 1xhmt6x)
 - files: references/h3-long-takes.md (+21% sharpness, 311 s per 5.2 s), vocab failures-picture `face-mush` rung marked measured
