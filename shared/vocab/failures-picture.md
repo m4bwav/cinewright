@@ -17,7 +17,7 @@ Rung: the repair ladder in the router's `pipeline` entry (1 prompt, 2 parameter,
 |---|---|---|---|---|---|
 | `identity-drift` | face, age, hair or mark off the bible | identity paraphrased or missing; no ref | paste the identity verbatim; add a turnaround ref | 1 | identity |
 | `identity-merge` | two people share a face | two weakly told-apart people | a sentence on who has what; one ref each | 1 | identity |
-| `face-mush` | right shot, smeared face | face too small for the model | face-refine (untested) | 5 | identity |
+| `face-mush` | right shot, smeared face | face too small for the model | face-refine (measured, +21%) | 5 | identity |
 | `wardrobe-drift` | costume colour, cut or layer changes | wardrobe not restated | paste the scene's wardrobe verbatim | 1 | wardrobe |
 | `prop-drift` | prop changes size or shape, appears or vanishes | prop defined loosely | one prop constant in every prompt | 1 | props |
 | `emblem-copied` | a mark from a ref shows on the subject | models copy small marks from refs | paint the mark out of the ref | 4 | wardrobe |

@@ -2,7 +2,11 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-20261109-3 · 2026-11-09 · H3 prompt lint in cine.py compile; new entries h3-prompt-lint and recast
+Entry shape: `### C-20261109-5 · 2026-11-09 · face-refine measured
+- because: install tests 2026-11-09 in the technique harvest (post 1xhmt6x)
+- files: references/h3-long-takes.md (+21% sharpness, 311 s per 5.2 s), vocab failures-picture `face-mush` rung marked measured
+
+### C-20261109-3 · 2026-11-09 · H3 prompt lint in cine.py compile; new entries h3-prompt-lint and recast
 - because: technique harvest 2026-11 batch 2 (community posts reviewed in a separate harvest workspace), each item single-source and untested here unless stated
 - files: shared/lib/cine.py `h3_lint` (rules adapted from IV Studio lint.js, MIT) with tests, references/h3-prompt-lint.md, references/recast.md (H3 Recast rules, Bambushu MIT; Viggle vendor MCP note), references/h3-long-takes.md (SyncTile 4K two-stage, swap anti-revert, third test arm), minimax-h3.md pointer, vocab failures-motion `dialogue-wrong` cause, RESEARCH R-20261109-1
 

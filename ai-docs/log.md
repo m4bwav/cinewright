@@ -943,3 +943,7 @@ Mark reviewed the pail repair on askwright and picked "use this route as the fir
 ## 2026-11-09 H3 windows and Motion Context chain measured; version 0.5.3
 - From technique-harvest install tests (posts 1xgcfk3, 1x42kt9). h3-long-takes: V2V past ~150 frames uses MiniMaxH3TemporalWindow 124/22 (2048 s vs 3673 s one pass; SSIM first/last 100 frames 0.89/0.53 vs 0.66/0.34; no seams; late drift); one-take default is the Motion Context latent chain (join spike 1.39/1.56 vs 5.04/5.45, luma steps gone, audio carries, +5% GPU); last-frame chain for hard cuts only. minimax-h3 pointer; viggle-remake pitfall: past ~345 frames go through windows. Private generator named only as a local h3_video.py (scrub).
 - Checks: unittest OK; kb lint 0 errors; budget YELLOW (no red; minimax-h3 trimmed back under 1,200 tokens); scrub hits only known ai-docs benchmarks.
+
+## 2026-11-09 Install-test numbers: face-refine, Time-to-Move, RTX VSR; version 0.5.4
+- From technique-harvest posts 1xhmt6x, 1xjgy2w, 1x3y8ot. h3-long-takes face-refine +21% sharpness at 311 s/5.2 s (front-lit retest pending); failures-picture face-mush rung measured; blockout-control Time-to-Move measured (41/62/135 px, +20-28% GPU); finish: RTX VSR for drafts/review only. Latent chain already marked measured in 0.5.3.
+- Checks: unittest OK; kb lint 0 errors; budget YELLOW (failures-picture kept under 1,200 tokens by moving numbers to h3-long-takes).
