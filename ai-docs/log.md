@@ -955,3 +955,4 @@ Mark reviewed the pail repair on askwright and picked "use this route as the fir
 ## 2026-11-10 Technique harvest: bullet time, tapered overlap, swap LoRA, RefMod builder; version 0.5.6
 - From technique-harvest posts 1wuzyq0 (orbit LoRA, GPU-tested adopt), 1wio4eg (GPL, idea only), 1wsknup, 1wtu82e, 1x0imbp. New genvideo entry bullet-time.md (model-card and camera-moves were at budget, so a new entry). h3-long-takes, lora-or-references trimmed to stay under 1,200 tokens.
 - Checks: unittest OK (145); kb lint 0 errors; budget YELLOW; plugin validate passed x4; scrub hits only known ai-docs benchmarks.
+- 2026-11-10 0.5.7: failures-framing rule for re-cameraing a kept take (CrossView-Warp, az <= 30, 8 steps). Checks: unittest 145 OK, kb lint 0 errors, budget yellow (pre-existing shared/lib 193 KB, ZIP 2120 KB), validate passed x4, scrub hits only in ai-docs research (expected).

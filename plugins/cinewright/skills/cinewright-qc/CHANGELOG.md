@@ -2,7 +2,11 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-20261109-2 · 2026-11-09 · take-selection: relative sharpness and IV Studio ranking weights
+Entry shape: `### C-20261110-1 · 2026-11-10 · failures-framing: re-camera a kept take (CrossView-Warp, az <= 30, 8 steps)
+- because: technique harvest GPU test 2026-11-10 (CrossView-Warp on MiniMax H3 REF2VA: az 20 measured 19/19/12 deg with the face held; az 40 short; 4-step turbo copied the source)
+- files: vocab failures-framing Rules (one line)
+
+### C-20261109-2 · 2026-11-09 · take-selection: relative sharpness and IV Studio ranking weights
 - because: technique harvest 2026-11 batch 2 (community posts reviewed in a separate harvest workspace), each item single-source and untested here unless stated
 - files: references/take-selection.md; vocab failures-motion `dialogue-wrong` cause. A cine.py qc rank is deferred (shared/lib size budget 193/200 KB)
 

@@ -6,7 +6,7 @@ tags: [vocab, qc, failures, taxonomy, framing, composition]
 last_checked: 2026-10-22
 sources: ["Marcos Mateu-Mestre, Framed Ink, 2010, and Framed Ink 2, 2016", "Joseph V. Mascelli, The Five C's of Cinematography, 1965", "Richard Garvey-Williams, Mastering Composition, 2014"]
 ---
-<!-- copied from shared/vocab/failures-framing.md sha256:bc7f12233d71909c45598198a77f510c5acef6d79c91eaf473ce9e63a2d18ded; edit the source -->
+<!-- copied from shared/vocab/failures-framing.md sha256:77a6ab8eb8c09ffb1938899cf1732271b1cd0768bb7c336f8d52cf15b7b5a555; edit the source -->
 
 # Failure codes, framing and composition
 
@@ -28,4 +28,5 @@ Rungs and checks as in `failures-picture`. The eye jumping across a cut is `atte
 ## Rules
 
 - Composition faults are the cheapest to prevent in the card: margins, a described background, the horizon third and the foreground named first.
+- A kept take at the wrong angle: re-camera it rather than reroll. MiniMax H3 REF2VA with the CrossView-Warp LoRA (0.8, trigger `crossview`; node cseti007/ComfyUI-CrossViewWarp) held the face at az 20 (measured 19 deg). Keep az at or under 30, use 8 steps with a DMD-style turbo LoRA (a 4-step turbo copied the source); above 30 the angle falls short and the background is reinvented. Tested 2026-11-10.
 - Log the code (`takes log --fix`) as for the picture codes; a framing fault that survives two rerolls goes to the crop or the grade (rung 7) before a re-plan.
