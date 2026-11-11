@@ -36,7 +36,7 @@ Put one film frame beside a render of the rebuild taken from a matching camera, 
 
 ## AI-made video
 
-Asked whether a video is AI: follow `kb show ai-video-tells`: provenance first, then sampled frames against the checklist, an answer in confidence bands with timestamps, never a flat yes or no.
+Asked whether a video is AI: run `AN aidetect VIDEO --out DIR` (needs opencv-python and numpy), then follow `kb show ai-video-tells`: provenance first, then sampled frames against the checklist, an answer in confidence bands with timestamps, never a flat yes or no.
 
 ## Output
 

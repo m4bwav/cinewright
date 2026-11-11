@@ -1,5 +1,9 @@
 # cinewright-analyze changelog
 
+## 2026-11-11 (0.6.1)
+
+- `aidetect`: tags, C2PA, 32 sampled frame pairs, flow-warp residual, ORB homography, FFT and Laplacian, log-odds score, report.json and contact sheet. Calibrated on 21 generated and 3 phone clips; ai-video-tells records the bands.
+
 ## 2026-11-11 (0.6.0)
 
 - New skill: film notation 0.1 and `cine_analyze.py` (probe, shots, frame, pan, scale, notate, rebuild); four entries.
