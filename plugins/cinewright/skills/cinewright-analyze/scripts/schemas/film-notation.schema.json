@@ -1,0 +1,390 @@
+{
+  "$comment": "Film notation 0.1: a written breakdown of an existing video, complete enough to rebuild its sets and shots. Lengths are in H (one standing character, head to feet) so any engine converts with its own character height. Written by cine_analyze.py shots, filled by a reviewer, read by notate and rebuild.",
+  "type": "object",
+  "required": [
+    "notation",
+    "source",
+    "unit",
+    "shots"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "notation": {
+      "enum": [
+        "0.1"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "duration_s"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "duration_s": {
+          "type": "number",
+          "minimum": 0
+        },
+        "fps": {
+          "type": "number"
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "medium": {
+          "enum": [
+            "live-action",
+            "2d-animation",
+            "3d-animation",
+            "game-capture",
+            "ai-video",
+            "mixed",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "unit": {
+      "enum": [
+        "H"
+      ]
+    },
+    "characters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "look": {
+            "type": "string"
+          },
+          "wardrobe": {
+            "type": "string"
+          },
+          "props": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "height_H": {
+            "type": "number",
+            "description": "1 for the reference character; others relative to it."
+          }
+        }
+      }
+    },
+    "props": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "look": {
+            "type": "string"
+          },
+          "size_H": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "width, height, depth in H"
+          }
+        }
+      }
+    },
+    "sets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "width_H": {
+            "type": "number",
+            "description": "back wall, left corner to right corner"
+          },
+          "height_H": {
+            "type": "number",
+            "description": "floor to ceiling at the back wall"
+          },
+          "depth_H": {
+            "type": "number",
+            "description": "floor from the back wall to the front edge the camera sees"
+          },
+          "confidence": {
+            "enum": [
+              "measured",
+              "estimated",
+              "guess"
+            ]
+          },
+          "camera": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "height_H": {
+                "type": "number"
+              },
+              "angle": {
+                "enum": [
+                  "eye-level",
+                  "high",
+                  "low",
+                  "overhead",
+                  "ground",
+                  "dutch"
+                ]
+              },
+              "hfov_deg": {
+                "type": "number"
+              },
+              "view": {
+                "enum": [
+                  "side-on",
+                  "three-quarter",
+                  "top-down",
+                  "free"
+                ]
+              }
+            }
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "kind",
+                "wall"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": "string",
+                  "description": "door, window, counter, crate, ladder, ledge, sign, light, bin ..."
+                },
+                "wall": {
+                  "enum": [
+                    "back",
+                    "left",
+                    "right",
+                    "floor",
+                    "ceiling"
+                  ]
+                },
+                "x_H": {
+                  "type": "number",
+                  "description": "left edge from the set's left corner"
+                },
+                "y_H": {
+                  "type": "number",
+                  "description": "bottom edge above the floor"
+                },
+                "w_H": {
+                  "type": "number"
+                },
+                "h_H": {
+                  "type": "number"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "light": {
+            "type": "string"
+          },
+          "palette": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "measured_from": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "measure files or timecodes the sizes came from"
+          }
+        }
+      }
+    },
+    "scenes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "start",
+          "end"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "set": {
+            "type": "string"
+          },
+          "start": {
+            "type": "number"
+          },
+          "end": {
+            "type": "number"
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "shots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "start",
+          "end"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "scene": {
+            "type": "string"
+          },
+          "start": {
+            "type": "number"
+          },
+          "end": {
+            "type": "number"
+          },
+          "size": {
+            "enum": [
+              "EWS",
+              "WS",
+              "FS",
+              "MWS",
+              "MS",
+              "MCU",
+              "CU",
+              "ECU"
+            ]
+          },
+          "angle": {
+            "enum": [
+              "eye-level",
+              "high",
+              "low",
+              "overhead",
+              "ground",
+              "dutch"
+            ]
+          },
+          "move": {
+            "type": "string",
+            "description": "a cinewright move (static, pan-left, crane-down ...)"
+          },
+          "pan_px": {
+            "type": "number",
+            "description": "horizontal camera travel in source pixels, from cine_analyze pan"
+          },
+          "cast": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "x_H": {
+                  "type": "number",
+                  "description": "floor plan: from the set's left corner"
+                },
+                "z_H": {
+                  "type": "number",
+                  "description": "floor plan: out from the back wall"
+                },
+                "facing": {
+                  "enum": [
+                    "left",
+                    "right",
+                    "camera",
+                    "away"
+                  ]
+                },
+                "holding": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "action": {
+            "type": "string"
+          },
+          "dialogue": {
+            "type": "string"
+          },
+          "music": {
+            "type": "string"
+          },
+          "sfx": {
+            "type": "string"
+          },
+          "text_on_screen": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "notation": "0.1",
+  "source": {"url": "https://www.youtube.com/watch?v=v0suvMY3GgM", "title": "Nexus Prominence fan film (first room only)", "duration_s": 862.161, "fps": 30, "width": 1280, "height": 720, "medium": "2d-animation"},
+  "unit": "H",
+  "characters": [
+    {"id": "mask-agent", "look": "white round mask head with red goggles and a headset", "wardrobe": "black tactical vest", "props": ["sniper-rifle"], "height_H": 1.05},
+    {"id": "guard", "look": "grey round head under a black helmet with a red visor slit", "wardrobe": "black tactical vest and pouches", "props": ["assault-rifle"], "height_H": 1}
+  ],
+  "props": [{"id": "bin", "look": "grey metal bin with a lid", "size_H": [0.5, 0.65, 0.5]}],
+  "sets": [{
+    "id": "street-checkpoint",
+    "name": "Room 1: street checkpoint",
+    "width_H": 6.2, "height_H": 2.63, "depth_H": 3.2, "confidence": "estimated",
+    "camera": {"height_H": 1.25, "angle": "eye-level", "hfov_deg": 52, "view": "side-on"},
+    "features": [
+      {"kind": "window", "wall": "back", "x_H": 0.6, "y_H": 0.3, "w_H": 4.9, "h_H": 2.2, "note": "red city skyline behind; low sill bar at 0.45 H"},
+      {"kind": "hanging sign", "wall": "back", "x_H": 2.3, "y_H": 1.75, "w_H": 1.2, "h_H": 0.45},
+      {"kind": "bin", "wall": "floor", "x_H": 5.95, "y_H": 0, "w_H": 0.5, "h_H": 0.65},
+      {"kind": "door", "wall": "right", "note": "dark doorway with a red Nexus mark, about 1.5 H in from the back corner"},
+      {"kind": "counter", "wall": "left", "note": "low counter at the left edge, corner off frame"}
+    ],
+    "light": "flat cel light; red glow from the window",
+    "palette": ["#1e1e1e", "#3a3a3a", "#d40000", "#ff2a2a"],
+    "measured_from": ["room1.measure.json (0:26)"]
+  }],
+  "scenes": [{"id": "street", "set": "street-checkpoint", "start": 0, "end": 40.6, "summary": "Title, crane down the skyline into the checkpoint, two guards on watch"}],
+  "shots": [
+    {"id": "S001", "scene": "street", "start": 0, "end": 40.6, "size": "WS", "angle": "eye-level", "move": "crane-down", "cast": [{"id": "mask-agent", "x_H": 1.6, "z_H": 0.4, "facing": "right", "holding": "sniper-rifle"}, {"id": "guard", "x_H": 4.0, "z_H": 0.6, "facing": "left", "holding": "assault-rifle"}], "action": "The camera cranes down a red skyline through the checkpoint window to two guards standing watch.", "text_on_screen": "SOMEWHERE IN NEVADA...; LOCATION: NEXUS PROMINENCE CITY BASE", "notes": "Pans right after 0:22; the left corner never shows."}
+  ]
+}

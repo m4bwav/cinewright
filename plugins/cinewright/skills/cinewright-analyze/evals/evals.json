@@ -1,0 +1,93 @@
+{
+  "skill": "cinewright-analyze",
+  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); rules: the evergreen protocol's TESTING.md. Prompts run from the repository root.",
+  "evals": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "prompt": "Break down this fan film into a shot list with timecodes and tell me how big each room is so I can rebuild it as a game level: https://www.youtube.com/watch?v=v0suvMY3GgM",
+      "expectations": [
+        "the cinewright-analyze skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-2",
+      "kind": "trigger",
+      "prompt": "Is this clip AI generated? It's an 8 second video of a chef flipping pancakes and the text on his apron looks weird.",
+      "expectations": [
+        "the cinewright-analyze skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "trigger-3",
+      "kind": "trigger",
+      "prompt": "I want to recreate the shots from the opening of this short film with a video model. Can you take it apart shot by shot first?",
+      "expectations": [
+        "the cinewright-analyze skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-1",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "Plan the shot list for my new three-scene short about a lighthouse keeper; nothing is shot yet.",
+      "expectations": [
+        "the cinewright-analyze skill is not invoked (planning new shots is cinewright-shots)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-2",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "I rendered shot 1B with Veo; does the take match its card, keep or reroll?",
+      "expectations": [
+        "the cinewright-analyze skill is not invoked (reviewing own takes is cinewright-qc)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "decoy-3",
+      "kind": "trigger",
+      "decoy": true,
+      "prompt": "convert my mkv to mp4 and cut the first 10 seconds with ffmpeg",
+      "expectations": [
+        "the cinewright-analyze skill is not invoked (plain ffmpeg editing)"
+      ],
+      "runs": 3
+    },
+    {
+      "id": "action-1",
+      "kind": "action",
+      "prompt": "examples/film-notation/room1.measure.json has the points I read off a frame of a fan film. How wide, tall and deep is that room in character heights?",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so",
+        "the reply gives a width of about 6.2 H and says it is a lower bound because a corner is off frame"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine_analyze\\.py\\s+scale"
+      },
+      "baseline": null,
+      "runs": 3
+    },
+    {
+      "id": "outcome-1",
+      "kind": "outcome",
+      "prompt": "I'm rebuilding the first room of a 2D animated short as a game level. I only have a frame where the camera is side-on, one character stands in front of the back wall, and the left corner is off screen. How do I get the room's size right?",
+      "files": [],
+      "expectations": [
+        "the reply uses the standing character's height as the unit, measured on a full-size frame",
+        "the reply says the width from this frame is only a lower bound (corner off screen) and how to get the rest (another frame or the pan)",
+        "the reply says floor depth needs a horizon (receding wall edges or a second character at another depth) or stays unknown",
+        "judge: the reply does not size the room as a multiple of a template or by eye (2 of 3 votes)"
+      ],
+      "baseline": null,
+      "runs": 3
+    }
+  ]
+}

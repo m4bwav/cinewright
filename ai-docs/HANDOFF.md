@@ -29,6 +29,25 @@
 
 - Technique harvest (2026-11-09, 0.5.1): docs only, entry genvideo `h3-long-takes`. Batch 2 (0.5.3; install-test numbers 0.5.4): H3 lint built in `compile` (warn-only, thresholds unmeasured; GPU A/B in harvest posts/1xqfux1.md). Open: `cine.py qc rank` deferred (shared/lib 193 of 200 KB).
 
+## Video analysis track
+
+Prompt: [plans/2026-11-11-video-analysis-continue-prompt.md](plans/2026-11-11-video-analysis-continue-prompt.md). Session 1 (2026-11-11, branch video-analysis-s1, 0.6.0).
+
+Done:
+- Diagnosis: [research/2026-11-11-room-scale-failure.md](research/2026-11-11-room-scale-failure.md). Nexus Prominence room 1 is about 16 H wide in the mod against at least 6.2 H in the film: sizes were multipliers of a sample box read off thumbnails, never measured in character heights.
+- Research: [film analysis and Gemini](research/2026-11-11-film-analysis-and-gemini-video.md), [AI-video detection](research/2026-11-11-ai-video-detection.md) (both partly unverified, marked inline), [Gemini test](research/2026-11-11-gemini-video-test.md) (gemini-3-flash-preview, 45 s, under a cent: room size close, cuts and timecodes wrong).
+- Film notation 0.1 schema (`shared/schemas/film-notation.schema.json`); new skill cinewright-analyze with `scripts/cine_analyze.py` (probe, shots, frame, pan, scale, notate, rebuild; lives in the skill, not shared/lib, which is at 193 of 200 KB) and entries film-notation, room-scale, extraction-routes, ai-video-tells. Tests TestAnalyze (7). Example: `examples/film-notation/` (room 1 measure file, notation, Markdown view, level brief).
+
+Next, in order:
+1. Prove it on the benchmark (step 7): find the Project Nexus character height in SceneTools units (the brief assumes 2.0 units, unverified), then write a madnesswright issue or brief with room 1 at about 6.2 x 3.2 H and a side-by-side render with a character at the back wall. No madnesswright code changes (stop point).
+2. `aidetect` command (ffprobe tags, c2patool if present, 32 sampled frames, flow-warp residual, ORB homography inliers, FFT and Laplacian, contact sheet) per the detection research's version-1 design; calibrate on our own renders vs phone clips.
+3. Pan on cel animation: ORB or landmark matching on the background instead of whole-frame phase correlation (L-20261111-2), so `pan_px` works on the benchmark.
+4. Measure rooms 2-10 of the benchmark and fill the notation from shots (Gemini draft plus frames).
+5. Harvest and scout targets (step 6): technique-harvest targets and everscout beats for film analysis and notation, AI-video detection, video extraction with Gemini.
+6. Run evergreen-test on cinewright-analyze's 8 cases.
+
+Waiting on Mark: nothing yet. Paid Gemini runs past a small test need his go.
+
 ## Waiting on Mark
 - claude.ai cleanup: delete the uploaded test skill cinewright-continuity (permanent delete; switched off for now), remove the cinewright marketplace source if the UI offers it, close the VS Code window `code chat -n` opened.
 - Old commits stay reachable from PR #1-#11 pages (refs/pull); only GitHub Support can purge. Closed PRs #12-#13 show a hostname in their head branch name.

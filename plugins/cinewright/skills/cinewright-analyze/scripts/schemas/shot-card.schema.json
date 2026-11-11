@@ -1,0 +1,585 @@
+{
+  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:29b95dde4d5492feb0163252cda81182d003053d1f318fd28819e1287d875abf; edit the source",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Shot card",
+  "description": "One shot, generator-neutral. Fields follow the shot list (slate, size, angle, move, lens, action, dialogue, duration) and the script supervisor's notes (camera side, screen direction, eyelines, wardrobe, props in hand, start and end state).",
+  "type": "object",
+  "required": [
+    "id",
+    "scene",
+    "order",
+    "duration_s",
+    "camera",
+    "cast",
+    "action"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9]+[A-Z]{0,2}$",
+      "description": "Slate: scene number plus shot letter, e.g. 1A."
+    },
+    "scene": {
+      "type": "string",
+      "description": "Scene id in scenes.json."
+    },
+    "order": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Position in the cut."
+    },
+    "duration_s": {
+      "type": "number",
+      "minimum": 3,
+      "maximum": 8
+    },
+    "beat": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "What the shot tells the audience: the question it raises or answers."
+    },
+    "intensity": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Story intensity of this card, for a scene graphed card by card (usually the climax)."
+    },
+    "line": {
+      "enum": [
+        "horizontal",
+        "vertical",
+        "diagonal",
+        "curved"
+      ],
+      "description": "The card's dominant line. Horizontal is calmest, diagonal strongest (Block)."
+    },
+    "attention": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Where the eye is on the nine-cell grid (1-3 top row left to right, 4-6 middle, 7-9 bottom) on the first and last frame (cinewright-edit attention-continuum).",
+      "properties": {
+        "start": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        }
+      }
+    },
+    "pov": {
+      "type": "string",
+      "description": "Whose view the card serves: objective, or the id of the character whose scene it is (cinewright-shots point-of-view)."
+    },
+    "setup": {
+      "enum": [
+        "apex",
+        "external",
+        "internal",
+        "subjective",
+        "parallel",
+        "right-angle",
+        "axis-advance"
+      ],
+      "description": "The card's place in the dialogue triangle (cinewright-shots dialogue-triangle); continuity diff SETUP checks the pairs."
+    },
+    "screen_order": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "On-screen people, frame left to right (cinewright-shots group-order); continuity diff GROUP-ORDER checks changes."
+    },
+    "pivot": {
+      "type": "string",
+      "description": "The person or close-up that carries an order change the GROUP-ORDER check would flag."
+    },
+    "role": {
+      "enum": [
+        "establishing",
+        "master",
+        "coverage",
+        "reaction",
+        "cut-in",
+        "cut-away",
+        "protection"
+      ],
+      "description": "The card's job in the edit. A cut-in shows part of what a wider card established; a protection card is a cheaper stand-in, rendered only if the card in protects fails."
+    },
+    "protects": {
+      "type": "string",
+      "description": "With role protection: the id of the risky card this one stands in for."
+    },
+    "camera": {
+      "type": "object",
+      "required": [
+        "size",
+        "angle",
+        "move",
+        "side"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "size": {
+          "enum": [
+            "EWS",
+            "WS",
+            "FS",
+            "MWS",
+            "MS",
+            "MCU",
+            "CU",
+            "ECU"
+          ]
+        },
+        "angle": {
+          "enum": [
+            "eye-level",
+            "high",
+            "low",
+            "overhead",
+            "ground",
+            "dutch"
+          ]
+        },
+        "dutch": {
+          "enum": [
+            "left",
+            "right"
+          ],
+          "description": "With angle dutch: the side the frame tilts down toward. Tilts on opposing subjects come in opposing pairs."
+        },
+        "horizon": {
+          "enum": [
+            "lower-third",
+            "middle",
+            "upper-third",
+            "above-frame",
+            "below-frame"
+          ],
+          "description": "Where the horizon sits; leave it unset indoors. Low angles put it low, high angles high or out of frame."
+        },
+        "azimuth_deg": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 180,
+          "description": "Horizontal position on the camera side: 0 and 180 lie on the axis, 90 is square to it."
+        },
+        "move": {
+          "enum": [
+            "static",
+            "pan-left",
+            "pan-right",
+            "tilt-up",
+            "tilt-down",
+            "dolly-in",
+            "dolly-out",
+            "truck-left",
+            "truck-right",
+            "track",
+            "crane-up",
+            "crane-down",
+            "handheld",
+            "zoom-in",
+            "zoom-out",
+            "push-in",
+            "arc-left",
+            "arc-right",
+            "dolly-zoom"
+          ]
+        },
+        "lens_mm": {
+          "type": "number",
+          "minimum": 8,
+          "maximum": 600
+        },
+        "faces": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$",
+          "description": "Which wall or view of the location the camera looks at: a key of the location's walls."
+        },
+        "side": {
+          "enum": [
+            "A",
+            "B"
+          ],
+          "description": "Side of the scene axis the camera stands on."
+        },
+        "crosses_axis": {
+          "type": "boolean"
+        },
+        "cross_reason": {
+          "type": "string",
+          "description": "Opens with how the audience follows the cross: turn-shown, subject-crosses, camera-moves, pivot, neutral, curve, reaction, cleared-frame or doorway."
+        },
+        "settle": {
+          "type": "boolean",
+          "description": "The move starts and ends on held frames, so the edit has handles (a move cannot be trimmed mid-move)."
+        },
+        "framing": {
+          "enum": [
+            "single",
+            "two-shot",
+            "ots",
+            "insert",
+            "pov",
+            "group"
+          ]
+        }
+      }
+    },
+    "subject": {
+      "type": "string",
+      "maxLength": 160,
+      "description": "Non-cast subject, e.g. a prop for an insert."
+    },
+    "cast": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "identity"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "identity": {
+            "type": "string",
+            "description": "Verbatim copy of the character bible's identity string."
+          },
+          "wardrobe": {
+            "type": "string",
+            "description": "Verbatim copy of the bible's wardrobe for this scene."
+          },
+          "position": {
+            "enum": [
+              "frame-left",
+              "center",
+              "frame-right"
+            ]
+          },
+          "view": {
+            "enum": [
+              "front",
+              "three-quarter",
+              "profile",
+              "back",
+              "three-quarter-back"
+            ],
+            "description": "How the camera sees the person; three-quarter by default, three-quarter-back for the near shoulder of an OTS."
+          },
+          "looks_at": {
+            "type": "string",
+            "description": "Character id or object the eyes are on."
+          },
+          "eyeline": {
+            "enum": [
+              "frame-left",
+              "frame-right",
+              "up",
+              "down",
+              "camera"
+            ]
+          },
+          "travel": {
+            "enum": [
+              "left-to-right",
+              "right-to-left",
+              "toward-camera",
+              "away-from-camera",
+              "none"
+            ]
+          },
+          "position_end": {
+            "enum": [
+              "frame-left",
+              "center",
+              "frame-right"
+            ],
+            "description": "Where they stand at the end when they move in the shot; later cards of the scene are checked against it."
+          },
+          "eyeline_end": {
+            "enum": [
+              "frame-left",
+              "frame-right",
+              "up",
+              "down",
+              "camera"
+            ],
+            "description": "Where the eyes end, for a head turn (a watcher following something)."
+          },
+          "enters": {
+            "enum": [
+              "frame-left",
+              "frame-right",
+              "near-camera"
+            ],
+            "description": "Edge they enter by. An exit on one side is followed by an entrance on the other."
+          },
+          "exits": {
+            "enum": [
+              "frame-left",
+              "frame-right",
+              "near-camera"
+            ],
+            "description": "Edge they leave by."
+          },
+          "holding": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Prop in hand at the start of the shot."
+          },
+          "holding_end": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Prop in hand at the end, when it changes."
+          },
+          "refs_stage": {
+            "type": "string",
+            "description": "Key of the character's staged refs (characters.json) this card shows, such as a wound stage; without it the scene id, then default."
+          },
+          "holding_state": {
+            "type": "string",
+            "description": "One of the held prop's states in props.json; its description and refs replace the prop's."
+          },
+          "perform": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "How the person plays the card (entry performance-words). objective, obstacle and subtext stay in the card for the reviewer; verb, task, body, masks and enters_from become prompt sentences.",
+            "properties": {
+              "objective": {
+                "type": "string",
+                "maxLength": 160,
+                "description": "What they want from the other person, as verb + person + effect. Not compiled."
+              },
+              "obstacle": {
+                "type": "string",
+                "maxLength": 120,
+                "description": "What makes the objective hard. Not compiled."
+              },
+              "subtext": {
+                "type": "string",
+                "maxLength": 160,
+                "description": "What the talk is really about for them. Not compiled."
+              },
+              "verb": {
+                "type": "string",
+                "maxLength": 80,
+                "description": "One playable verb aimed at a person, as a predicate: 'begs him to stay'. Compiled after the name."
+              },
+              "task": {
+                "type": "string",
+                "maxLength": 120,
+                "description": "One physical task with a prop, as a predicate: 'keeps folding the shirt'. Compiled first, before the verb."
+              },
+              "body": {
+                "type": "string",
+                "maxLength": 80,
+                "description": "One posture or gait phrase: 'head low, shoulders braced'. Repeat on every card of the scene."
+              },
+              "masks": {
+                "type": "string",
+                "maxLength": 120,
+                "description": "The cover behaviour for a hidden feeling, as a predicate: 'tries to look casual'."
+              },
+              "enters_from": {
+                "type": "string",
+                "maxLength": 120,
+                "description": "The state they bring in from before the shot: 'still out of breath from running from the police'."
+              }
+            }
+          }
+        }
+      }
+    },
+    "props": {
+      "type": "array",
+      "description": "Props the shot features that nobody holds (a parked car, a tank, a cart), compiled with the prop bible's description and refs.",
+      "items": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "A props.json name."
+          },
+          "state": {
+            "type": "string",
+            "description": "One of that prop's states."
+          },
+          "where": {
+            "type": "string",
+            "description": "Where it is in frame, e.g. in the foreground, frame-left."
+          }
+        }
+      }
+    },
+    "action": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 240,
+      "description": "One action, present tense."
+    },
+    "beats": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The action as timed beats on the rendered clip (seconds from its first frame), in order and not overlapping: each hit and its reaction on its own range. Models whose card has beat_stamp get them as a timeline in place of the action; other models get the action, kept as a one-sentence summary.",
+      "items": {
+        "type": "object",
+        "required": [
+          "t0",
+          "t1",
+          "text"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "t0": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 16
+          },
+          "t1": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 16
+          },
+          "text": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 160,
+            "description": "One beat, present tense."
+          }
+        }
+      }
+    },
+    "dialogue": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "character",
+          "line"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "character": {
+            "type": "string"
+          },
+          "line": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "tone": {
+            "type": "string",
+            "description": "Delivery, pasted after 'says': an adverb or phrase ('quietly', 'under his breath'), never a verb ('mutters')."
+          },
+          "intent": {
+            "type": "string",
+            "maxLength": 80,
+            "description": "What the line tries to do to the listener, as a verb phrase ('pleading with her to stay'). For voice engines that take free-text direction; not compiled into video prompts."
+          }
+        }
+      }
+    },
+    "sound": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "music": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Score under this card (non-diegetic): style, instruments, tempo, and where it starts, stops or hits. Models with a music slot get it there; other audio models get it after the sound."
+    },
+    "time_of_day": {
+      "enum": [
+        "dawn",
+        "morning",
+        "day",
+        "golden-hour",
+        "dusk",
+        "night"
+      ]
+    },
+    "light": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sun": {
+          "type": "string"
+        },
+        "key_side": {
+          "enum": [
+            "frame-left",
+            "frame-right",
+            "top",
+            "back"
+          ]
+        },
+        "quality": {
+          "enum": [
+            "hard",
+            "soft"
+          ]
+        },
+        "motivation": {
+          "type": "string"
+        },
+        "tone": {
+          "enum": [
+            "reveal",
+            "hide"
+          ],
+          "description": "reveal (default): the light shows the subject. hide: the face stays in shadow or glare on purpose, so the identity checks are na."
+        },
+        "atmosphere": {
+          "enum": [
+            "rain",
+            "snow",
+            "smoke",
+            "haze",
+            "fog",
+            "dust",
+            "steam"
+          ],
+          "description": "Airborne matter in the shot. Compiled as backlit, because it shows only with light behind it."
+        }
+      }
+    },
+    "start_state": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "end_state": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Reference image ids from the bibles, or file paths."
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

@@ -2030,3 +2030,93 @@ class TestH3Lint(unittest.TestCase):
         for k in ("h3-silent", "h3-short", "h3-cut-late", "h3-shot-short", "h3-many-shots", "h3-speech-long", "h3-quoted-line", "h3-filler"):
             self.assertIn(k, c)
         self.assertIn("h3-no-soundscape", self.codes("no fields ___", 9))
+
+
+class TestAnalyze(Base):
+    """cine_analyze.py: film notation, room scale in H, rebuild (video analysis track, 2026-11-11)."""
+    AN = REPO / "plugins" / "cinewright" / "skills" / "cinewright-analyze" / "scripts" / "cine_analyze.py"
+    EX = REPO / "examples" / "film-notation"
+
+    def an(self, *args):
+        return run(*args, script=self.AN)
+
+    def test_scale_benchmark_room(self):
+        code, out = self.an("scale", str(self.EX / "room1.measure.json"), "--json")
+        self.assertEqual(code, 0, out)
+        r = json.loads(out)
+        self.assertAlmostEqual(r["width_H"], 6.2, delta=0.1)
+        self.assertAlmostEqual(r["height_H"], 2.63, delta=0.05)
+        self.assertAlmostEqual(r["camera_height_H"], 1.25, delta=0.05)
+        self.assertEqual(r["confidence"], "estimated")  # left corner off frame
+
+    def test_scale_horizon_from_two_depths(self):
+        # a camera at 1 H: H_px = 100 * (feet_y - 300) / 100 -> characters at feet 400 (100 px) and 500 (200 px)
+        m = {"width": 1000, "characters": [{"head_y": 300, "feet_y": 400}, {"head_y": 300, "feet_y": 500}],
+             "wall": {"left_x": 100, "right_x": 700, "floor_y": 400, "ceiling_y": 150}, "floor_front_y": 500}
+        p = self.tmp / "m.json"
+        p.write_text(json.dumps(m), encoding="utf-8")
+        r = json.loads(self.an("scale", str(p), "--json")[1])
+        self.assertAlmostEqual(r["camera_height_H"], 1.0, delta=0.01)
+        self.assertAlmostEqual(r["width_H"], 6.0, delta=0.01)
+        self.assertAlmostEqual(r["height_H"], 2.5, delta=0.01)
+        self.assertGreater(r["depth_H"], 0)
+
+    def test_scale_without_horizon_warns(self):
+        m = {"width": 1000, "characters": [{"head_y": 300, "feet_y": 600}],
+             "wall": {"left_x": 0, "right_x": 600, "floor_y": 450, "ceiling_y": 0}}
+        p = self.tmp / "m.json"
+        p.write_text(json.dumps(m), encoding="utf-8")
+        r = json.loads(self.an("scale", str(p), "--json")[1])
+        self.assertEqual(r["confidence"], "estimated")
+        self.assertNotIn("depth_H", r)
+
+    def test_notate_and_rebuild(self):
+        nota = self.EX / "nexus-room1.notation.json"
+        code, out = self.an("notate", str(nota), "--out", str(self.tmp / "n.md"))
+        self.assertEqual(code, 0, out)
+        md = (self.tmp / "n.md").read_text(encoding="utf-8")
+        self.assertIn("| Room 1: street checkpoint | 6.2 |", md)
+        self.assertEqual(md, (self.EX / "nexus-room1.notation.md").read_text(encoding="utf-8"))
+        code, out = self.an("rebuild", str(nota), "--cards", str(self.tmp / "cards"), "--level", str(self.tmp / "l.md"))
+        self.assertEqual(code, 0, out)
+        self.assertIn("12.40 units", (self.tmp / "l.md").read_text(encoding="utf-8"))
+        schema = json.loads((REPO / "shared" / "schemas" / "shot-card.schema.json").read_text(encoding="utf-8"))
+        schema.pop("$comment", None)
+        spec = importlib.util.spec_from_file_location("cine_v", REPO / "shared" / "lib" / "cine.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        for card in (self.tmp / "cards").glob("*.json"):
+            self.assertEqual(mod.validate(json.loads(card.read_text(encoding="utf-8")), schema), [], card.name)
+
+    def test_notation_rejects_bad_doc(self):
+        p = self.tmp / "bad.json"
+        p.write_text(json.dumps({"notation": "0.1", "source": {"duration_s": 1}, "unit": "m", "shots": []}), encoding="utf-8")
+        code, out = self.an("notate", str(p))
+        self.assertEqual(code, 1)
+        self.assertIn("unit", out)
+
+    def test_split_shots_min_len(self):
+        spec = importlib.util.spec_from_file_location("cine_an", self.AN)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        self.assertEqual(mod.split_shots([0.2, 3.0, 3.1, 9.8], 10.0, 0.5), [(0.0, 3.0), (3.0, 10.0)])
+
+    @unittest.skipUnless(shutil.which("ffmpeg"), "ffmpeg not installed")
+    def test_shots_and_pan_on_synthetic_video(self):
+        try:
+            import numpy  # noqa: F401
+        except ImportError:
+            self.skipTest("numpy not installed")
+        v = self.tmp / "v.mp4"
+        # two shots: a test pattern scrolling left (camera pans right), then a hard cut to plain red
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "testsrc2=s=320x180:r=10:d=2",
+                        "-f", "lavfi", "-i", "color=c=red:s=320x180:r=10:d=2", "-filter_complex",
+                        "[0]crop=200:180:'t*40':0,scale=320:180,setsar=1,format=yuv420p[a];[1]setsar=1,format=yuv420p[b];[a][b]concat=n=2:v=1[v]", "-map", "[v]",
+                        "-pix_fmt", "yuv420p", str(v)], check=True)
+        code, out = self.an("shots", str(v), "--out", str(self.tmp / "n.json"))
+        self.assertEqual(code, 0, out)
+        doc = json.loads((self.tmp / "n.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(doc["shots"]), 2, out)
+        self.assertAlmostEqual(doc["shots"][1]["start"], 2.0, delta=0.15)
+        r = json.loads(self.an("pan", str(v), "--start", "0", "--end", "1.8", "--fps", "5")[1])
+        self.assertEqual(r["move"], "pan-right", r)
