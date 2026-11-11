@@ -31,7 +31,7 @@
 
 ## Video analysis track
 
-Prompt: [plans/2026-11-11-video-analysis-continue-prompt.md](plans/2026-11-11-video-analysis-continue-prompt.md). Session 1 (2026-11-11, branch video-analysis-s1, 0.6.0).
+Prompt: [plans/2026-11-11-video-analysis-continue-prompt.md](plans/2026-11-11-video-analysis-continue-prompt.md). Session 1 (2026-11-11): PR #111 merged, released v0.6.0 (https://github.com/m4bwav/cinewright/releases/tag/v0.6.0), installed plugins updated to 0.6.0.
 
 Done:
 - Diagnosis: [research/2026-11-11-room-scale-failure.md](research/2026-11-11-room-scale-failure.md). Nexus Prominence room 1 is about 16 H wide in the mod against at least 6.2 H in the film: sizes were multipliers of a sample box read off thumbnails, never measured in character heights.
