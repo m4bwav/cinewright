@@ -10,7 +10,7 @@ Status: 0.5.4. Install routes proved on Windows 11: Claude Code, GitHub Copilot 
 
 | Plugin | Skills | For |
 |---|---|---|
-| `cinewright` | `cinewright` (director and router), `cinewright-shots` (shot list and coverage), `cinewright-continuity` (script supervisor), `cinewright-genvideo` (prompt compiler for nine models), `cinewright-qc` (take review with ffmpeg) | everyone |
+| `cinewright` | `cinewright` (director and router), `cinewright-shots` (shot list and coverage), `cinewright-continuity` (script supervisor), `cinewright-genvideo` (prompt compiler for nine models), `cinewright-qc` (take review with ffmpeg), `cinewright-analyze` (take an existing video apart into notation, measure its sets, rebuild; AI-made video tells) | everyone |
 | `cinewright-craft` | `cinewright-script` (logline, beats, dialogue), `cinewright-design` (turnarounds, props, costume, color), `cinewright-sets` (set plans, wall strings, plates), `cinewright-movement` (weight, fights, battles, hard subjects), `cinewright-camera` (lens, light, format), `cinewright-history` (style cards), `cinewright-edit` (cutting, pacing), `cinewright-finish` (grade, crop, VFX, delivery), `cinewright-sound` (layers, mix, loudness), `cinewright-voice` (character voices that match shot to shot) | deeper craft |
 | `cinewright-dev` | `cinewright-curate` (add, verify and retire knowledge-base entries; refresh model cards; works in a clone of this repository) | maintainers |
 

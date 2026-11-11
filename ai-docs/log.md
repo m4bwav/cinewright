@@ -962,3 +962,14 @@ Mark reviewed the pail repair on askwright and picked "use this route as the fir
 ## 2026-11-11, works-with docs
 
 README "Works with" section and a wiki Works-With page now say what crosses each way between cinewright and its partner plugins, and why the pair helps. Taken from the partner mentions in each plugin's skills.
+
+## 2026-11-11 Video analysis track prompt
+
+- Wrote ai-docs/plans/2026-11-11-video-analysis-continue-prompt.md: film breakdown and notation, AI-video detection, Gemini video extraction research, harvest and everscout targets. Benchmark: the madnesswright fan-film level whose first room came out too big. No work started yet.
+
+## 2026-11-11 Video analysis session 1: diagnosis, research, film notation, cinewright-analyze (0.6.0)
+
+- Diagnosed the Nexus Prominence room-scale failure (research/2026-11-11-room-scale-failure.md): RoomSpec multipliers of the sample box from contact sheets; film room 1 measures at least 6.2 H wide, 2.63 H high, 2.7-3.7 H deep, camera 1.25 H (frame 0:26, horizon from the right wall's edges); mod floor 31.5 units, about 16 H at the 2-unit marker.
+- Research by two subagents (film tooling plus Gemini; AI-video detection), plus one Gemini call on the YouTube URL (gemini-3-flash-preview, 9,345 tokens). The key's model list does not show the gemini-3.8 or Gemini 4 names the pricing-page summary gave.
+- Built film notation 0.1, cinewright-analyze skill and cine_analyze.py; `shots` on the benchmark: 29 shots in 14:22, first take 0:00-0:40.6. `pan` by phase correlation is noisy on cel (L-20261111-2). Moved cine_analyze.py out of shared/lib after budget went red (212 of 200 KB).
+- Checks: unittest 152 OK; kb lint 17 skills 0 errors; budget YELLOW; claude plugin validate passed x4; scrub 7 known hits in ai-docs.

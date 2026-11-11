@@ -1,0 +1,13 @@
+{
+  "vocab": [
+    "camera-moves.md",
+    "shot-sizes.md"
+  ],
+  "lib": [
+    "cine.py"
+  ],
+  "schemas": [
+    "film-notation.schema.json",
+    "shot-card.schema.json"
+  ]
+}

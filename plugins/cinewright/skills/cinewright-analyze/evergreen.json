@@ -1,0 +1,60 @@
+{
+  "evergreen": "1.0",
+  "name": "cinewright-analyze",
+  "kind": "skill",
+  "main": "SKILL.md",
+  "files": {
+    "research": "RESEARCH.md",
+    "changelog": "CHANGELOG.md",
+    "learnings": "LEARNINGS.md",
+    "tests": "TESTS.md"
+  },
+  "protocol": "plugin",
+  "source": null,
+  "topic": "Taking existing video apart: film notation, shots, room scale in character heights, rebuild to shot cards or level briefs, AI-made video tells, Gemini video extraction",
+  "tier": "fast",
+  "interval_days": 21,
+  "last_checked": "2026-11-11",
+  "next_due": "2026-12-02",
+  "verify_at_use": false,
+  "volatile_claims": [
+    "Gemini video tokens per second, default fps, YouTube URL limits, model ids and prices",
+    "PySceneDetect version and detectors",
+    "SynthID detector access",
+    "Veo clip lengths and fps"
+  ],
+  "contradiction": null,
+  "events": [],
+  "streak": {
+    "quiet": 0,
+    "pinned_min": 0,
+    "pinned_max": 0,
+    "vau_quiet": 0
+  },
+  "history": [
+    {
+      "date": "2026-11-11",
+      "m": null,
+      "interval_after": 21,
+      "note": "created (video analysis track)"
+    }
+  ],
+  "counts": {
+    "learnings": 2,
+    "changes": 1,
+    "research": 1,
+    "tests": 0
+  },
+  "consolidate_every": 25,
+  "tests": {
+    "last_run": null,
+    "harness": "evals/run_evals.py",
+    "env": "windows",
+    "cases": 6,
+    "passed": 0,
+    "failed": 0,
+    "failing": [],
+    "last_failure": null,
+    "research_after_days": null
+  }
+}

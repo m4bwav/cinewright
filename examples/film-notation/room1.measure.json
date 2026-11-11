@@ -1,0 +1,12 @@
+{
+  "source": "v0suvMY3GgM at 0:26, 1280x720, read off a 50 px grid (cine_analyze frame --grid 50)",
+  "width": 1280,
+  "characters": [
+    {"name": "white mask agent", "head_y": 360, "feet_y": 585},
+    {"name": "helmet guard", "head_y": 388, "feet_y": 600}
+  ],
+  "wall": {"left_x": 0, "right_x": 1120, "floor_y": 545, "ceiling_y": 70, "left_open": true},
+  "horizon_y": 320,
+  "horizon_note": "right wall's ceiling and floor edges meet at about (502, 321)",
+  "floor_front_y": 720
+}
