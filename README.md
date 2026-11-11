@@ -47,6 +47,21 @@ python scripts/cine.py scrub --names FILE          # private details in tracked 
 
 Edit shared vocabulary, schemas and the library in `shared/`, never the copies inside skills; `build` copies them and `kb lint` fails on drift. The plan is [ai-docs/plans/PLAN.md](ai-docs/plans/PLAN.md).
 
+## Works with
+
+Each partner is optional. cinewright works alone, and the plugins share files, not code.
+
+- [voicewright](https://github.com/m4bwav/voicewright): `cinewright-voice` hands it the cast, and each character keeps one voice from shot to shot, read from a shared `voices.json`.
+- [sfxwright](https://github.com/m4bwav/sfxwright): the shot list becomes a sound list, and cinewright reads `sounds.json` back at the edit, so effects are planned per shot.
+- [musicwright](https://github.com/m4bwav/musicwright): `musicwright-score` fits a score to the cut, landing hits on beats and ducking under dialogue. Sound design and dialogue stay here.
+- [polywright](https://github.com/m4bwav/polywright): 3D blockouts, crowd and army passes, and MP4 encodes at an exact frame count for previs and battle shots. Shot planning stays here.
+- [askwright](https://github.com/m4bwav/askwright): take picks and route choices go on a review page instead of into chat.
+- [grindwright](https://github.com/m4bwav/grindwright): on a long film it keeps the video and edit lanes moving between other jobs.
+- [readwright](https://github.com/m4bwav/readwright): when a film adapts a book, it finds the scene's passages without loading the whole book.
+- [tokenwright](https://github.com/m4bwav/tokenwright): film sessions are long and full of reads, and tokenwright shows where the tokens went and how to cut them.
+
+More on the wiki's [Works with](https://github.com/m4bwav/cinewright/wiki/Works-With) page.
+
 ## Credits
 
 Ideas (not text) from MIT-licensed skill repositories, including DirectorSKILL: response-size ceilings, the repair cost ladder, one owning reference per dimension, continuing from the previous take's observed end state, one change per reroll. Film craft from Arijon, Block, Bordwell and Thompson, Brown, Cousins, Field, Katz, Landis, LoBrutto, Mascelli, McKee, Miller, Murch, Riley, Rowlands, Snyder, Thomas and Johnston, and Weston, cited in each entry.
