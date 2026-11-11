@@ -8,10 +8,11 @@
   python scripts/cine_analyze.py scale MEASURE.json [--json]
   python scripts/cine_analyze.py notate NOTATION.json [--out NOTATION.md]
   python scripts/cine_analyze.py rebuild NOTATION.json (--cards DIR | --level OUT.md [--char-height 2.0])
+  python scripts/cine_analyze.py aidetect VIDEO [--frames 32] [--out DIR] [--json]   (needs opencv-python, numpy)
 
 Lengths are in H: one standing character, head to feet. scale turns pixel points read off a gridded frame
 into set sizes in H (wall width and height, camera height, floor depth when a horizon is known).
-Python 3.9+, standard library plus ffmpeg; numpy only for pan; Pillow only for labelled grids.
+Python 3.9+, standard library plus ffmpeg; numpy only for pan; opencv-python and numpy for aidetect; Pillow only for labelled grids.
 """
 import argparse
 import importlib.util
@@ -333,6 +334,243 @@ def _u(v, u):
     return "?" if v is None else "%s H (%.2f)" % (v, v * u)
 
 
+# ---- aidetect: signs of AI generation (version 1; research in ai-docs/research/2026-11-11-ai-video-detection.md)
+
+CAMERA_KEYS = ("com.android.model", "com.android.manufacturer", "com.apple.quicktime.make",
+               "com.apple.quicktime.model", "make", "model", "location", "com.apple.quicktime.location.iso6709")
+# (name, durations in seconds, frame rates) for format fingerprints; weak evidence only
+GENERATOR_FORMATS = (("Veo 3", (4, 6, 8), (24,)), ("Wan 2.x", (5,), (16,)), ("Kling / Runway", (5, 10), (24, 30)),
+                     ("MiniMax / Hailuo", (6, 10), (24, 25)), ("Sora", (5, 10, 15, 20), (30,)))
+# raw value bands: lo maps to 0 (camera-like), hi to 1 (generator-like). Calibrated 2026-11-11 on 21 generated
+# clips and 3 phone clips (ai-video-tells entry): only hf_ratio separated them. warp_residual, homography_inliers
+# and jerk are reported raw but not scored until a larger phone set proves them.
+BANDS = {"hf_ratio": (0.02, 0.008)}
+WEIGHTS = {"provenance": 4.0, "camera_atoms": -1.5, "format": 0.5, "hf_ratio": 0.75}
+
+
+def ffprobe_full(video):
+    out = subprocess.run([_tool("ffprobe"), "-v", "error", "-show_format", "-show_streams", "-of", "json", str(video)],
+                         capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if out.returncode:
+        raise SystemExit("ffprobe failed: %s" % out.stderr.strip())
+    return json.loads(out.stdout)
+
+
+def metadata_signals(d):
+    """Provenance, camera atoms and format fingerprint from ffprobe json."""
+    fmt = d.get("format", {})
+    tags = {k.lower(): v for k, v in (fmt.get("tags") or {}).items()}
+    for s in d.get("streams", []):
+        for k, v in (s.get("tags") or {}).items():
+            tags.setdefault(k.lower(), v)
+    vs = next((s for s in d.get("streams", []) if s.get("codec_type") == "video" and "width" in s), {})
+    num, _, den = vs.get("r_frame_rate", "0/1").partition("/")
+    fps = float(num) / float(den or 1) if float(den or 1) else 0.0
+    dur = float(fmt.get("duration") or 0)
+    out = {"duration_s": round(dur, 3), "fps": round(fps, 3), "width": vs.get("width"), "height": vs.get("height"),
+           "audio": any(s.get("codec_type") == "audio" for s in d.get("streams", [])),
+           "encoder": tags.get("encoder", "")}
+    br = float(fmt.get("bit_rate") or 0)
+    if br and fps and vs.get("width"):
+        out["bits_per_pixel"] = round(br / (vs["width"] * vs["height"] * fps), 4)
+    gen = None
+    for k in ("prompt", "workflow", "comment", "description", "software"):
+        v = str(tags.get(k, ""))
+        if "class_type" in v or '"nodes"' in v:
+            models = sorted(set(re.findall(r'"(?:unet_name|ckpt_name|model_name)":\s*"([^"]+)"', v)))
+            gen = "ComfyUI workflow in the %s tag%s" % (k, (" (" + ", ".join(models) + ")") if models else "")
+            break
+        m = re.search(r"(sora|veo|runway|kling|hailuo|minimax|pika|luma|dream machine|firefly)", v, re.I)
+        if m:
+            gen = "%s tag names %s" % (k, m.group(1))
+            break
+    out["provenance"] = gen
+    out["camera_atoms"] = {k: tags[k] for k in CAMERA_KEYS if k in tags}
+    out["format_match"] = [name for name, durs, fpss in GENERATOR_FORMATS
+                           if any(abs(dur - x) < 0.25 for x in durs) and any(abs(fps - f) < 0.05 for f in fpss)]
+    return out
+
+
+def c2pa(video):
+    tool = shutil.which("c2patool")
+    if not tool:
+        return None
+    r = subprocess.run([tool, str(video)], capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if r.returncode:
+        return {"present": False}
+    ai = re.search(r"trainedAlgorithmicMedia|compositeWithTrainedAlgorithmicMedia", r.stdout)
+    gen = re.search(r'"claim_generator"\s*:\s*"([^"]+)"', r.stdout)
+    return {"present": True, "ai_assertion": bool(ai), "generator": gen.group(1) if gen else None}
+
+
+def sample_pairs(video, n, width=480):
+    """n evenly spaced pairs of consecutive frames, grey, scaled to width. Returns [(t, a, b, colour_a)]."""
+    import cv2
+    cap = cv2.VideoCapture(str(video))
+    total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
+    fps = cap.get(cv2.CAP_PROP_FPS) or 24.0
+    pairs = []
+    if total < 2:
+        return pairs
+    for i in sorted(set(int(k * (total - 2) / max(1, n - 1)) for k in range(n))):
+        cap.set(cv2.CAP_PROP_POS_FRAMES, i)
+        ok1, f1 = cap.read()
+        ok2, f2 = cap.read()
+        if not (ok1 and ok2):
+            continue
+        h = int(round(f1.shape[0] * width / f1.shape[1] / 2)) * 2
+        c1 = cv2.resize(f1, (width, h), interpolation=cv2.INTER_AREA)
+        c2 = cv2.resize(f2, (width, h), interpolation=cv2.INTER_AREA)
+        pairs.append((round(i / fps, 3), cv2.cvtColor(c1, cv2.COLOR_BGR2GRAY), cv2.cvtColor(c2, cv2.COLOR_BGR2GRAY), c1))
+    cap.release()
+    return pairs
+
+
+def pair_measures(a, b):
+    """Flow-warp residual in textured areas, median motion, ORB homography inlier ratio for one frame pair."""
+    import cv2
+    import numpy as np
+    flow = cv2.calcOpticalFlowFarneback(a, b, None, 0.5, 3, 15, 3, 5, 1.2, 0)
+    h, w = a.shape
+    gx, gy = np.meshgrid(np.arange(w, dtype=np.float32), np.arange(h, dtype=np.float32))
+    warped = cv2.remap(b, gx + flow[..., 0], gy + flow[..., 1], cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+    grad = cv2.magnitude(cv2.Sobel(a, cv2.CV_32F, 1, 0), cv2.Sobel(a, cv2.CV_32F, 0, 1))
+    sel = grad > np.percentile(grad, 70)
+    sel[:8, :] = sel[-8:, :] = False
+    sel[:, :8] = sel[:, -8:] = False
+    res = np.abs(warped.astype(np.float32) - a.astype(np.float32))
+    # residual relative to local contrast so sharp sources are not punished
+    resid = float(np.median(res[sel]) / (np.median(grad[sel]) + 1e-6)) if sel.any() else 0.0
+    inl = None
+    orb = cv2.ORB_create(800)
+    ka, da = orb.detectAndCompute(a, None)
+    kb, db = orb.detectAndCompute(b, None)
+    if da is not None and db is not None and len(ka) > 20 and len(kb) > 20:
+        mt = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True).match(da, db)
+        if len(mt) >= 12:
+            pa = np.float32([ka[x.queryIdx].pt for x in mt])
+            pb = np.float32([kb[x.trainIdx].pt for x in mt])
+            _, mask = cv2.findHomography(pa, pb, cv2.RANSAC, 3.0)
+            if mask is not None:
+                inl = float(mask.mean())
+    return {"residual": resid, "motion": float(np.median(np.hypot(flow[..., 0], flow[..., 1]))), "inliers": inl}
+
+
+def frame_measures(g):
+    """High-frequency share of the luma spectrum (upsampled video rolls off) and Laplacian variance."""
+    import cv2
+    import numpy as np
+    f = np.abs(np.fft.fftshift(np.fft.fft2(g.astype(np.float32) - g.mean()))) ** 2
+    h, w = f.shape
+    yy, xx = np.ogrid[:h, :w]
+    r = np.hypot((yy - h / 2) / (h / 2), (xx - w / 2) / (w / 2))
+    return {"hf_ratio": float(f[(r > 0.5) & (r <= 1)].sum() / (f[r <= 1].sum() + 1e-9)),
+            "lap_var": float(cv2.Laplacian(g, cv2.CV_64F).var())}
+
+
+def band(x, lo, hi):
+    """Map x onto [0,1] between lo (0) and hi (1); hi may be below lo for falling signals."""
+    if x is None or lo is None:
+        return None
+    return max(0.0, min(1.0, (x - lo) / (hi - lo)))
+
+
+def combine(signals, reliability=1.0):
+    """Weighted log-odds sum, prior 0. Picture signals in [0,1] are centred (0.5 neutral) and scaled by
+    reliability; provenance, camera atoms and format are present (1) or absent (None)."""
+    z, used = 0.0, []
+    for k, v in signals.items():
+        if v is None:
+            continue
+        if k in ("provenance", "camera_atoms", "format"):
+            c = WEIGHTS[k] * v
+        else:
+            c = WEIGHTS[k] * reliability * (2 * v - 1)
+        z += c
+        used.append((k, round(c, 2)))
+    return round(1 / (1 + math.exp(-z)), 3), sorted(used, key=lambda t: -abs(t[1]))
+
+
+def verdict_text(score, provenance):
+    if provenance and score >= 0.9:
+        return "Provenance states this was generated: %s." % provenance
+    if score >= 0.75:
+        return "Several independent signs consistent with AI generation."
+    if score >= 0.4:
+        return "Inconclusive; some signs present."
+    return "No strong signs found. This does not show the video is authentic."
+
+
+def contact_sheet(pairs, out, cols=4):
+    import cv2
+    import numpy as np
+    pick = pairs[:: max(1, len(pairs) // (cols * cols))][: cols * cols]
+    tiles = []
+    for t, _, _, c in pick:
+        im = c.copy()
+        cv2.putText(im, "%.2fs" % t, (6, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
+        tiles.append(im)
+    while len(tiles) % cols:
+        tiles.append(np.zeros_like(tiles[0]))
+    cv2.imwrite(str(out), np.vstack([np.hstack(tiles[i:i + cols]) for i in range(0, len(tiles), cols)]))
+
+
+def aidetect(video, n=32, out_dir=None):
+    try:
+        import cv2  # noqa: F401
+        import numpy as np
+    except ImportError:
+        raise SystemExit("aidetect needs opencv-python and numpy (pip install opencv-python numpy)")
+    meta = metadata_signals(ffprobe_full(video))
+    cp = c2pa(video)
+    if cp and cp.get("ai_assertion"):
+        meta["provenance"] = "C2PA content credentials (%s)" % (cp.get("generator") or "AI assertion")
+    pairs = sample_pairs(video, n)
+    pm = [pair_measures(a, b) for _, a, b, _ in pairs]
+    fm = [frame_measures(a) for _, a, _, _ in pairs]
+    raw = {}
+    if pm:
+        mot = [p["motion"] for p in pm]
+        moving = [p["inliers"] for p in pm if p["inliers"] is not None and p["motion"] > 0.5]
+        raw = {"warp_residual": float(np.median([p["residual"] for p in pm])),
+               "homography_inliers": float(np.median(moving)) if len(moving) >= 4 else None,
+               "motion_median_px": float(np.median(mot)),
+               "jerk": float(np.median(np.abs(np.diff(mot, 2)))) if len(mot) > 3 else None,
+               "hf_ratio": float(np.median([f["hf_ratio"] for f in fm])),
+               "lap_var": float(np.median([f["lap_var"] for f in fm]))}
+    bpp = meta.get("bits_per_pixel")
+    rel, caveats = 1.0, []
+    if bpp is not None and bpp < 0.05:
+        rel = 0.5
+        caveats.append("heavy compression (%.3f bits per pixel): picture signals down-weighted" % bpp)
+    if meta["duration_s"] and meta["duration_s"] < 2:
+        rel *= 0.7
+        caveats.append("short clip (%.1f s)" % meta["duration_s"])
+    sig = {"provenance": 1.0 if meta["provenance"] else None,
+           "camera_atoms": 1.0 if meta["camera_atoms"] else None,
+           "format": 1.0 if (meta["format_match"] and not meta["camera_atoms"]) else None}
+    for k, (lo, hi) in BANDS.items():
+        sig[k] = band(raw.get(k), lo, hi)
+    score, used = combine(sig, rel)
+    caveats += ["picture signals are calibrated on few clips; detectors miss generators they were not tuned on",
+                "animation, CGI, game capture and heavy VFX are out of scope and read as AI"]
+    rep = {"file": Path(video).name, "score": score, "verdict": verdict_text(score, meta["provenance"]),
+           "evidence": [{"signal": k, "log_odds": c} for k, c in used[:5]],
+           "metadata": meta, "c2pa": cp,
+           "raw": {k: (round(v, 4) if isinstance(v, float) else v) for k, v in raw.items()},
+           "frames_sampled": len(pairs), "reliability": rel, "caveats": caveats}
+    if pm:
+        worst = sorted(range(len(pm)), key=lambda i: -pm[i]["residual"])[:3]
+        rep["top_residual_at_s"] = [pairs[i][0] for i in worst]
+    if out_dir and pairs:
+        od = Path(out_dir)
+        od.mkdir(parents=True, exist_ok=True)
+        contact_sheet(pairs, od / "contact-sheet.jpg")
+        rep["contact_sheet"] = str(od / "contact-sheet.jpg")
+        (od / "report.json").write_bytes((json.dumps(rep, indent=2) + "\n").encode("utf-8"))
+    return rep
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="cine_analyze.py", description=__doc__.splitlines()[0])
     g = ap.add_subparsers(dest="cmd", required=True)
@@ -347,6 +585,9 @@ def main(argv=None):
     p = g.add_parser("notate"); p.add_argument("notation"); p.add_argument("--out")
     p = g.add_parser("rebuild"); p.add_argument("notation"); p.add_argument("--cards"); p.add_argument("--level")
     p.add_argument("--char-height", type=float, default=2.0)
+    p = g.add_parser("aidetect"); p.add_argument("video"); p.add_argument("--frames", type=int, default=32)
+    p.add_argument("--out", help="folder for report.json and contact-sheet.jpg")
+    p.add_argument("--json", action="store_true")
     a = ap.parse_args(argv)
 
     if a.cmd == "probe":
@@ -402,6 +643,17 @@ def main(argv=None):
         if a.level:
             Path(a.level).write_bytes((rebuild_level(doc, a.char_height)).encode("utf-8"))
             print("level brief: %s (%d sets, %s units per H)" % (a.level, len(doc.get("sets", [])), a.char_height))
+    elif a.cmd == "aidetect":
+        r = aidetect(a.video, a.frames, a.out)
+        if a.json:
+            print(json.dumps(r, indent=2))
+        else:
+            print("%s: score %.2f. %s" % (r["file"], r["score"], r["verdict"]))
+            for e in r["evidence"]:
+                print("  %s %+.2f" % (e["signal"], e["log_odds"]))
+            print("  raw: " + ", ".join("%s %s" % kv for kv in r["raw"].items()))
+            for c in r["caveats"]:
+                print("  caveat: " + c)
     return 0
 
 

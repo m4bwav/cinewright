@@ -973,3 +973,15 @@ README "Works with" section and a wiki Works-With page now say what crosses each
 - Research by two subagents (film tooling plus Gemini; AI-video detection), plus one Gemini call on the YouTube URL (gemini-3-flash-preview, 9,345 tokens). The key's model list does not show the gemini-3.8 or Gemini 4 names the pricing-page summary gave.
 - Built film notation 0.1, cinewright-analyze skill and cine_analyze.py; `shots` on the benchmark: 29 shots in 14:22, first take 0:00-0:40.6. `pan` by phase correlation is noisy on cel (L-20261111-2). Moved cine_analyze.py out of shared/lib after budget went red (212 of 200 KB).
 - Checks: unittest 152 OK; kb lint 17 skills 0 errors; budget YELLOW; claude plugin validate passed x4; scrub 7 known hits in ai-docs.
+
+## 2026-11-11 grandparent chain set up
+
+Split the video analysis continue prompt into a 3-tier chainwright run under ai-docs/chains/video-analysis/: top manager (8 sessions max) over build manager (measure, aidetect chains; 12 max) and knowledge manager (scout chain; 6 max). Report on. Chain prompts in ai-docs/plans/video-analysis-*-chain-prompt.md; all pass chain.py check. The old continue prompt stays as the goal reference.
+
+## 2026-11-11 measure chain session 1
+
+Wrote madnesswright issue #91 (room scale brief). Character height in SceneTools units unverified: samples bound it to 2.5-3.8 (door 4.32 tall, seat 0.63, NavMesh default 2). Waiting on an in-game measure. Pan step 2 not started.
+
+## 2026-11-11 aidetect chain session 1 (0.6.1)
+
+Built `aidetect` in cine_analyze.py (tags incl. ComfyUI workflow and phone atoms, c2patool when present, 32 frame pairs, Farneback warp residual, ORB homography, FFT hf share, Laplacian, log-odds score, report.json, contact sheet) with 3 tests. Calibrated on 16 of our renders, 5 Sora clips and 3 phone clips: metadata decides; only hf_ratio separates on pixels (band 0.020 to 0.008). Results in research/2026-11-11-ai-video-detection.md section 8 and the ai-video-tells entry.

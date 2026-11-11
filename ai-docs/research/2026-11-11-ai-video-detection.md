@@ -140,3 +140,17 @@ Always add the caveats: compression level, out-of-scope content (animation), and
 6. Estimate compression from bits per pixel per frame. It sets the reliability factor.
 7. Combine the scores as in section 6. Write `report.json` plus `evidence/` holding the top-k frames by signal with flow and residual heat-map overlays, and a 4x4 contact sheet for a VLM or reviewer using the checklist in section 2.
 8. Calibrate thresholds on our own renders as positives and phone footage as negatives before trusting any number.
+
+## 8. Calibration of version 1 (2026-11-11)
+
+`aidetect` built in cinewright-analyze's `cine_analyze.py`. Run on 24 clips at 32 frame pairs, 480 px wide.
+
+| Set | n | Score | hf_ratio | Notes |
+|---|---|---|---|---|
+| Our renders (MiniMax H3, LTX; D:/ComfyUI/output/video, random 16) | 16 | 0.96-0.99 with the ComfyUI `prompt` tag (13), 0.41-0.48 without (3) | 0.008-0.045 | tag names the model file |
+| Sora (Mark's downloads, 10.1 s at 30 fps) | 5 | 0.69-0.78 | 0.002-0.005 | format match (Sora 10 s at 30 fps) plus hf |
+| Pixel 7 Pro clips | 2 | 0.10-0.12 | 0.020-0.035 | `com.android.model` atom |
+| Phone .mov (5 fps, no atoms) | 1 | 0.32 | 0.064 | |
+| Pixel clip re-encoded, tags stripped (CRF 23/35, full and 640 wide) | 4 | not scored | 0.018-0.034 | compression lowers hf |
+
+Flow-warp residual (0-0.04), homography inliers (0.6-0.98) and motion jerk overlapped between sets and are left unscored. Only 3 phone clips exist on disk; a larger phone set is the next calibration step before scoring the motion signals.

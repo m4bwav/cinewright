@@ -2120,3 +2120,57 @@ class TestAnalyze(Base):
         self.assertAlmostEqual(doc["shots"][1]["start"], 2.0, delta=0.15)
         r = json.loads(self.an("pan", str(v), "--start", "0", "--end", "1.8", "--fps", "5")[1])
         self.assertEqual(r["move"], "pan-right", r)
+
+    def _mod(self):
+        spec = importlib.util.spec_from_file_location("cine_an", self.AN)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod
+
+    def test_aidetect_metadata_signals(self):
+        mod = self._mod()
+        comfy = {"format": {"duration": "4.458", "bit_rate": "1000000", "tags": {"prompt": json.dumps(
+            {"1": {"class_type": "UNETLoader", "inputs": {"unet_name": "minimax_h3.safetensors"}}})}},
+            "streams": [{"codec_type": "video", "width": 864, "height": 480, "r_frame_rate": "24/1"}]}
+        m = mod.metadata_signals(comfy)
+        self.assertIn("minimax_h3.safetensors", m["provenance"])
+        self.assertEqual(m["camera_atoms"], {})
+        phone = {"format": {"duration": "2.85", "tags": {"com.android.model": "Pixel 7 Pro"}},
+                 "streams": [{"codec_type": "video", "width": 1440, "height": 1080, "r_frame_rate": "30/1"}]}
+        m = mod.metadata_signals(phone)
+        self.assertIsNone(m["provenance"])
+        self.assertEqual(m["camera_atoms"], {"com.android.model": "Pixel 7 Pro"})
+        sora = {"format": {"duration": "10.1", "tags": {"encoder": "Lavf60.16.100"}},
+                "streams": [{"codec_type": "video", "width": 1280, "height": 704, "r_frame_rate": "30/1"}]}
+        self.assertIn("Sora", mod.metadata_signals(sora)["format_match"])
+
+    def test_aidetect_combine_and_bands(self):
+        mod = self._mod()
+        self.assertEqual(mod.band(0.02, 0.02, 0.008), 0.0)
+        self.assertEqual(mod.band(0.005, 0.02, 0.008), 1.0)
+        self.assertIsNone(mod.band(None, 0.02, 0.008))
+        hi, ev = mod.combine({"provenance": 1.0, "camera_atoms": None, "hf_ratio": 0.5})
+        self.assertGreater(hi, 0.95)
+        self.assertEqual(ev[0][0], "provenance")
+        lo, _ = mod.combine({"camera_atoms": 1.0, "hf_ratio": 0.0})
+        self.assertLess(lo, 0.4)
+        self.assertIn("does not show", mod.verdict_text(lo, None))
+
+    @unittest.skipUnless(shutil.which("ffmpeg"), "ffmpeg not installed")
+    def test_aidetect_on_synthetic_video(self):
+        try:
+            import cv2  # noqa: F401
+            import numpy  # noqa: F401
+        except ImportError:
+            self.skipTest("opencv-python or numpy not installed")
+        v = self.tmp / "v.mp4"
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "testsrc2=s=320x180:r=24:d=2",
+                        "-pix_fmt", "yuv420p", str(v)], check=True)
+        code, out = self.an("aidetect", str(v), "--frames", "8", "--out", str(self.tmp / "ad"), "--json")
+        self.assertEqual(code, 0, out)
+        r = json.loads(out)
+        self.assertTrue(0.0 <= r["score"] <= 1.0)
+        self.assertEqual(r["frames_sampled"], 8)
+        self.assertIn("hf_ratio", r["raw"])
+        self.assertTrue((self.tmp / "ad" / "contact-sheet.jpg").is_file())
+        self.assertTrue((self.tmp / "ad" / "report.json").is_file())
