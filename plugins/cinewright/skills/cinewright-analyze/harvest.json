@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "targets": [
+    {
+      "kind": "reddit",
+      "sub": "aivideo",
+      "weight": "core",
+      "keep": "is-this-AI threads where the tells or detector results are argued with evidence"
+    },
+    {
+      "kind": "reddit",
+      "sub": "LocalLLaMA",
+      "keep": "video LLMs (Gemini, Qwen-VL, open models) extracting shots, timecodes and descriptions, with settings"
+    },
+    {
+      "kind": "reddit",
+      "sub": "Filmmakers",
+      "keep": "shot breakdowns, blocking and coverage analysis of existing films"
+    },
+    {
+      "kind": "web",
+      "url": "https://ai.google.dev/gemini-api/docs/video-understanding",
+      "keep": "Gemini video limits, sampling rate and timestamp format changes"
+    },
+    {
+      "kind": "web",
+      "url": "https://arxiv.org/list/cs.CV/recent",
+      "keep": "AI-generated video detection and temporal grounding papers with measured rates"
+    }
+  ]
+}

@@ -985,3 +985,7 @@ Wrote madnesswright issue #91 (room scale brief). Character height in SceneTools
 ## 2026-11-11 aidetect chain session 1 (0.6.1)
 
 Built `aidetect` in cine_analyze.py (tags incl. ComfyUI workflow and phone atoms, c2patool when present, 32 frame pairs, Farneback warp residual, ORB homography, FFT hf share, Laplacian, log-odds score, report.json, contact sheet) with 3 tests. Calibrated on 16 of our renders, 5 Sora clips and 3 phone clips: metadata decides; only hf_ratio separates on pixels (band 0.020 to 0.008). Results in research/2026-11-11-ai-video-detection.md section 8 and the ai-video-tells entry.
+
+## 2026-11-11 scout chain session 1
+
+harvest.json for cinewright-analyze; private everscout beat video-analysis at ~/.everscout/beats/video-analysis (7 sources, all probe ok). Ran the 8 evals once each: 7/8; decoy-2 loaded analyze before qc, so the description now points own-take review to qc (rerun pending). aidetect shipped in 0.6.1, so trigger cases for it are next.
