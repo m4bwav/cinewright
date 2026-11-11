@@ -2,6 +2,10 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
+### C-20261110-3 · 2026-11-10 · recast: swap LoRA measured (9/9 vs 4/9 frames held)
+- because: technique harvest GPU test 2026-11-10b (post 1wsknup; akatz v1.5 at 0.6 and 1.0 vs none, one seed, one clip)
+- files: references/recast.md (swap LoRA line, sources)
+
 ### C-20261110-1 · 2026-11-10 · failures-framing: re-camera a kept take (CrossView-Warp, az <= 30, 8 steps)
 - because: technique harvest GPU test 2026-11-10 (CrossView-Warp on MiniMax H3 REF2VA: az 20 measured 19/19/12 deg with the face held; az 40 short; 4-step turbo copied the source)
 - files: vocab failures-framing Rules (one line)

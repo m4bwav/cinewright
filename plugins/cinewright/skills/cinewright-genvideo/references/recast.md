@@ -3,8 +3,8 @@ title: Recast an existing clip (character swap)
 slug: recast
 summary: H3 Recast prompt rules for swapping 1-3 people in an existing clip in one pass (one line per person, colour bleed, clip vs reference). Untested; Viggle swap is tested.
 tags: [minimax, h3, recast, swap, video-to-video, untested]
-last_checked: 2026-11-09
-sources: ["r/StableDiffusion 1x9n0dl, H3 Recast (Bambushu, MIT), 2026-11", "Civitai 2027766, BFS character swap LoRA (NRDX)"]
+last_checked: 2026-11-10
+sources: ["r/StableDiffusion 1x9n0dl, H3 Recast (Bambushu, MIT), 2026-11", "Civitai 2027766, BFS character swap LoRA (NRDX)", "Hugging Face akatz-ai/MiniMax-H3-Character-Swap-LoRA v1.5"]
 ---
 
 # Recast an existing clip (character swap)
@@ -19,7 +19,7 @@ Untested here. H3 Recast (Bambushu, MIT) runs Ref2VA with NRDX's BFS character s
 - Big changes land (age, gender, hair colour, build); subtle ones fall back to the clip. Never give a colour already on that person: it bleeds.
 - Motion, hands, lips, accessories and clothes come from the clip; face and body from the reference. Want sunglasses: put them in the reference.
 - Caption: the LoRA's trained `body_swap` form (subject_definitions, summary, detailed_description), people placed as left / middle / right of `<Picture 1>`.
-- The swap LoRA is optional: Ref2VA swaps without it, but at 1.0 it helps the swap follow fast motion (one same-prompt pair, r/StableDiffusion 1wsknup; untested here).
+- Use a swap LoRA. Measured 2026-11-10: plain Ref2VA with a performer clip lost the character to the performer in 5 of 9 sampled frames; stacking `h3_character_swap_v1.5.safetensors` (Hugging Face akatz-ai/MiniMax-H3-Character-Swap-LoRA, ungated, the alternative to the login-gated Civitai BFS file) as a second LoRA at 0.6-1.0 held body and face in 9 of 9. Hair and clothes still drift toward the performer, so name them in the prompt. One seed, one clip.
 
 ## Numbers
 
