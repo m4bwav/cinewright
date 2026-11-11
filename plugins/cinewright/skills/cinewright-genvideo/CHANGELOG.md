@@ -2,6 +2,10 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
+### C-20261110-4 · 2026-11-10 · h3-long-takes: end chained segments on a held still beat
+- because: technique harvest GPU test 2026-11-10c (post 1vkfb49; still vs motion ending, one seed per arm)
+- files: references/h3-long-takes.md (Rules, one line)
+
 ### C-20261110-3 · 2026-11-10 · recast: swap LoRA measured (9/9 vs 4/9 frames held)
 - because: technique harvest GPU test 2026-11-10b (post 1wsknup; akatz v1.5 at 0.6 and 1.0 vs none, one seed, one clip)
 - files: references/recast.md (swap LoRA line, sources)
