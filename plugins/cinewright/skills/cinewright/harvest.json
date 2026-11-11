@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "targets": [
+    {
+      "kind": "reddit",
+      "sub": "StableDiffusion",
+      "weight": "core",
+      "keep": "open video models, shot consistency and camera-control tricks"
+    },
+    {
+      "kind": "reddit",
+      "sub": "comfyui",
+      "weight": "core",
+      "keep": "video workflows (H3, Wan, LTX) with settings"
+    },
+    {
+      "kind": "reddit",
+      "sub": "MediaSynthesis",
+      "keep": "AI film and video technique posts"
+    },
+    {
+      "kind": "web",
+      "url": "https://huggingface.co/papers",
+      "keep": "new video generation and editing methods"
+    }
+  ]
+}
