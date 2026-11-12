@@ -11,5 +11,5 @@
 
 - decoy-2: pass (loaded cinewright-qc), confirms the session 1 tune.
 - trigger-4 (new, aidetect wording): pass.
-- action-2 (new): pass; `cine_analyze.py aidetect` ran on an H3 render, score 0.98 from provenance, reply in bands with timestamps 5.8/8.7/10.1 s.
+- action-2 (new): pass; `cine_analyze.py aidetect` ran on a local H3 render (case now names renders/s1_00001_.mp4; place any short clip there), score 0.98 from provenance, reply in bands with timestamps 5.8/8.7/10.1 s.
 - 1 run each; 3-run reruns still owed.

@@ -32,7 +32,7 @@
     {
       "id": "trigger-4",
       "kind": "trigger",
-      "prompt": "Run a check on D:/ComfyUI/output/video/arvum_hd_p4_s2/s2_00001_.mp4 and tell me how likely it is to be AI video, with timestamps for anything suspicious.",
+      "prompt": "Run a check on renders/s2_00001_.mp4 and tell me how likely it is to be AI video, with timestamps for anything suspicious.",
       "expectations": [
         "the cinewright-analyze skill is invoked"
       ],
@@ -101,7 +101,7 @@
     {
       "id": "action-2",
       "kind": "action",
-      "prompt": "Is D:/ComfyUI/output/video/arvum_hd_p1b_s2/s2_00001_.mp4 AI generated? Write whatever report you make to C:/Users/m4bwa/AppData/Local/Temp/cw-aidetect-eval.",
+      "prompt": "Is renders/s1_00001_.mp4 AI generated? Put the report in out/aidetect.",
       "expectations": [
         "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so",
         "the reply answers in confidence bands with timestamps, not a flat yes or no"
