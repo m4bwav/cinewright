@@ -36,6 +36,8 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 
 If `frame_aspect` differs from `aspect_ratio`, crop to it after the grade, centered or reframed per shot, even sizes (`kb show crop-to-frame`; how much each frame keeps: `kb show aspect-ratios`).
 
+A vertical (9:16) clip that must play wide: outpaint the sides before the grade, never stretch (`kb show vertical-to-wide`).
+
 ## Step 5: last steps
 
 1. Upscale once to the delivery size, then interpolate or retime only where needed; check every interpolated shot frame by frame (`kb show upscale-and-interpolation`).
