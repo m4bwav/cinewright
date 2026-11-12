@@ -1,0 +1,79 @@
+{
+ "project": "cinewright",
+ "manager": 1,
+ "manager_prompt": "D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/build/manager-prompt.md",
+ "parent": "chains.json",
+ "report": null,
+ "managers": [
+  {
+   "n": 1,
+   "started": "2026-11-11T17:10:28-06:00",
+   "seconds": 2527,
+   "tokens": null,
+   "usd": null
+  }
+ ],
+ "sessions_total": 2,
+ "reports_this_manager": 2,
+ "budget": {
+  "handover_after_reports": 12,
+  "max_sessions": 12,
+  "failures_before_parking": 2
+ },
+ "chains": [
+  {
+   "name": "measure",
+   "prompt": "D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/video-analysis-measure-chain-prompt.md",
+   "handoff": "D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/build/measure/HANDOFF.md",
+   "state": "waiting",
+   "sessions": 1,
+   "history": [
+    {
+     "at": "2026-11-11T17:37:48-06:00",
+     "manager": 1,
+     "outcome": "waiting",
+     "seconds": 47,
+     "tokens": 73968,
+     "usd": null,
+     "model": null,
+     "prompt_sha": "1e8085c13c39"
+    }
+   ],
+   "last": {
+    "at": "2026-11-11T17:38:43-06:00",
+    "outcome": "waiting",
+    "report": "step 1 waits on Mark measuring character height (madnesswright #91); step 2 pan not started"
+   },
+   "failures": 0
+  },
+  {
+   "name": "aidetect",
+   "prompt": "D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/video-analysis-aidetect-chain-prompt.md",
+   "handoff": "D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/build/aidetect/HANDOFF.md",
+   "state": "finished",
+   "sessions": 1,
+   "history": [
+    {
+     "at": "2026-11-11T17:38:43-06:00",
+     "manager": 1,
+     "outcome": "finished",
+     "seconds": 821,
+     "tokens": 123506,
+     "usd": null,
+     "model": null,
+     "prompt_sha": "1ee1552548bb"
+    }
+   ],
+   "last": {
+    "at": "2026-11-11T17:52:30-06:00",
+    "outcome": "finished",
+    "report": "aidetect command shipped, PR #113 merged, v0.6.1 released"
+   },
+   "failures": 0
+  }
+ ],
+ "prompts": {
+  "1e8085c13c39": "# Chain prompt: cinewright video analysis, benchmark measurement and proof\n\nThis prompt does not change between sessions. State lives in `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/build/measure/HANDOFF.md`, never here. Work in the cinewright repo (`D:/m4bwa/Claude/Projects/Ai/cinewright`).\n\n## Load state first\n\n1. Read the goal, motivating failure and stop points in `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/2026-11-11-video-analysis-continue-prompt.md` (do not run its order of work; this chain owns only the part below).\n2. Read this chain's HANDOFF.md, then the \"Video analysis track\" section of `ai-docs/HANDOFF.md`, the newest `ai-docs/log.md` entries, `AGENTS.md` and `CODEMAP.md`.\n3. Compare HANDOFF.md's age with the log and git commits; trust the newer evidence.\n\n## This chain's work, in order\n\n1. Prove it on the benchmark: find the Project Nexus character height in SceneTools units (the brief assumes 2.0, unverified), write a madnesswright issue or brief with room 1 at about 6.2 x 3.2 H, and a side-by-side render with a character at the back wall.\n2. Pan on cel animation: ORB or landmark matching on the background instead of whole-frame phase correlation (L-20261111-2), so `pan_px` works on the benchmark.\n3. Measure rooms 2-10 of the benchmark and fill the notation from shots (Gemini draft plus frames).\n\n## Stop early\n\nStop with `Status: waiting` when the next step needs Mark: paid API spend past a small test, any madnesswright change beyond a brief or issue, or a release that renames public skills. Put the question on an askwright page, name the set in HANDOFF.md, and do every other step first. After the last step, write `Status: finished`.\n\n## Hand-over\n\n- Commit on a branch, open a PR, merge it yourself once checks pass (global rules); tag and release if the version is bumped, then update installed plugins. Other chains share this repo: pull before branching, keep PRs small.\n- Log the session in `ai-docs/log.md`; research in `ai-docs/research/`.\n- Last steps, in order: run evergreen-wrapup (skip quietly if absent; report a failure, never block), update this chain's HANDOFF.md (done, next, waiting on Mark, Status), then end with only this report: outcome (worked, idle, waiting, finished, failed); one line on what changed; questions page if any; HANDOFF.md path. When run by hand, print exactly:\n\n`Execute D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/video-analysis-measure-chain-prompt.md`\n",
+  "1ee1552548bb": "# Chain prompt: cinewright video analysis, AI-video detection\n\nThis prompt does not change between sessions. State lives in `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/build/aidetect/HANDOFF.md`, never here. Work in the cinewright repo (`D:/m4bwa/Claude/Projects/Ai/cinewright`).\n\n## Load state first\n\n1. Read the goal, motivating failure and stop points in `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/2026-11-11-video-analysis-continue-prompt.md` (do not run its order of work; this chain owns only the part below).\n2. Read this chain's HANDOFF.md, then the \"Video analysis track\" section of `ai-docs/HANDOFF.md`, the newest `ai-docs/log.md` entries, `AGENTS.md` and `CODEMAP.md`.\n3. Compare HANDOFF.md's age with the log and git commits; trust the newer evidence.\n\n## This chain's work, in order\n\n1. Build the `aidetect` command in cinewright-analyze's `cine_analyze.py` (ffprobe tags, c2patool if present, 32 sampled frames, flow-warp residual, ORB homography inliers, FFT and Laplacian, contact sheet) per the version-1 design in `ai-docs/research/2026-11-11-ai-video-detection.md`. Add tests.\n2. Calibrate on our own renders against phone clips; record the scores and thresholds.\n3. Update the ai-video-tells entry with what calibration proved.\n\n## Stop early\n\nStop with `Status: waiting` when the next step needs Mark: paid API spend past a small test, any madnesswright change beyond a brief or issue, or a release that renames public skills. Put the question on an askwright page, name the set in HANDOFF.md, and do every other step first. After the last step, write `Status: finished`.\n\n## Hand-over\n\n- Commit on a branch, open a PR, merge it yourself once checks pass (global rules); tag and release if the version is bumped, then update installed plugins. Other chains share this repo: pull before branching, keep PRs small.\n- Log the session in `ai-docs/log.md`; research in `ai-docs/research/`.\n- Last steps, in order: run evergreen-wrapup (skip quietly if absent; report a failure, never block), update this chain's HANDOFF.md (done, next, waiting on Mark, Status), then end with only this report: outcome (worked, idle, waiting, finished, failed); one line on what changed; questions page if any; HANDOFF.md path. When run by hand, print exactly:\n\n`Execute D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/video-analysis-aidetect-chain-prompt.md`\n"
+ }
+}

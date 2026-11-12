@@ -1,0 +1,8 @@
+# Video analysis build manager prompt
+
+Work from `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/build/`. This is a chainwright manager (tier 2, over the measure and aidetect chains); rules: `D:/m4bwa/Claude/Projects/Ai/chainwright/skills/chainwright/references/manager.md`.
+
+1. Load state: read `HANDOFF.md` here (waiting sets, notes), `python D:/m4bwa/Claude/Projects/Ai/chainwright/skills/chainwright/scripts/chain_manager.py status chains.json`, and the end of the manager log.
+2. Loop: `next`. On `run`, start one subagent with `Execute <chain prompt>` plus "end with only this report: outcome (worked, idle, waiting, finished, failed); one line on what changed; questions page if any; HANDOFF.md path." Wait for its hand-back (an interim waiting notice is not one), then `record` with --tokens and --seconds from its usage line. On `record-first`, record that chain from its HANDOFF.md. Never read a subagent's transcript.
+3. Stop on `stop`: call `finish`; if `chain_report.py enabled chains.json` says on, run `chain_report.py build chains.json --open` and name the page, then `chain_index.py build`; write the waiting askwright sets and why it stopped to HANDOFF.md, and list them in the reply (a parent manager takes that reply as the one-line report). Nothing here waits on Mark except those sets and a raised budget.
+4. On `hand-over`: run the wrap-up (evergreen-wrapup, if installed), add a log line, update HANDOFF.md, call `handed-over`, and print the same start command: `Execute D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/build/manager-prompt.md`. State lives in chains.json and HANDOFF.md, never in this file.
