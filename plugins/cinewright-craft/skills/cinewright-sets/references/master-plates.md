@@ -3,7 +3,7 @@ title: Master plates
 slug: master-plates
 summary: One wide establishing plate per set and time of day, made first and passed as a reference in every shot there; a 3D world or 360 pano is the stronger source when reverses matter.
 tags: [sets, plates, references, establishing, 3d, panorama]
-last_checked: 2026-11-09
+last_checked: 2026-11-12
 sources: ["https://higgsfield.ai/blog/consistent-characters-locations", "https://invideo.io/faq/how-do-you-use-seedance-20-reference-to-video-for/", "https://docs.worldlabs.ai/marble/export/gaussian-splat/index.md", "https://github.com/Tencent-Hunyuan/HY-World-2.0", "https://flick.art/blog/blender-ai-filmmaking", "https://blog.google/innovation-and-ai/technology/ai/veo-3-1-ingredients-to-video/", "Set field test, 2026-10-15: blockout painted through Canny control; reddit.com/r/StableDiffusion/comments/1wwyva2 (grid reference, 2026-10-03)", "r/StableDiffusion 1xlp0kg, H3 Continuity Studio (MIT), 2026-11"]
 volatile_claims: ["reference counts per model change with releases", "World Labs Marble input and export limits", "HY-World 2.0 is the newest open 3D world model"]
 ---
@@ -21,7 +21,7 @@ volatile_claims: ["reference counts per model change with releases", "World Labs
 - When reverses and moves matter more than speed, build a 3D source first and render plates from it:
   1. a box blockout in Blender (plain boxes, a camera, stand-ins) rendered as depth for a depth-guided image model, or
   2. a generated world (World Labs Marble, HY-World 2.0) exported as splats or a mesh, or
-  3. a 360 equirectangular pano cropped to perspective views by yaw, pitch and field of view.
+  3. a 360 equirectangular pano cropped to perspective views by yaw, pitch and field of view; local recipes, seam gate and timings in [panoramas.md](panoramas.md).
 
 - From a blockout, paint with an image model's edge control (Canny of a flat clay render), strong enough that the far hero object keeps its planned size; give the prompt only materials, palette and light, plus the objects of that view. Pass all the passed plates as one grid image when the video model has few reference slots (one maker held a room this way where separate references did not; anecdotal).
 
