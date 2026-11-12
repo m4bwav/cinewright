@@ -1,0 +1,4 @@
+{"source": "v0suvMY3GgM at 6:22 (shot S011 start, 380-463 s), 1280x720, 50 px grid (cine_analyze frame --grid 50)", "width": 1280,
+ "characters": [{"name": "goggled guard, left, standing", "head_y": 345, "feet_y": 685}],
+ "wall": {"left_x": 0, "right_x": 1280, "floor_y": 545, "ceiling_y": 0, "left_open": true, "right_open": true},
+ "note": "second pass: first wide frame of the shutter-garage shot; ceiling above frame; door at x 100-300, top y 180 (about 1.07 H above the floor line)"}

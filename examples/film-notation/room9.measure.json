@@ -1,0 +1,4 @@
+{"source": "v0suvMY3GgM at 8:36 (shot S014 start, 514-522 s), 1280x720, 50 px grid", "width": 1280,
+ "characters": [{"name": "door ruler (no standing figure): door 325-640 px taken as 1.4 H", "head_y": 415, "feet_y": 640}],
+ "wall": {"left_x": 0, "right_x": 1280, "floor_y": 545, "ceiling_y": 0, "left_open": true, "right_open": true},
+ "note": "second pass: break room wide, figures crouched or down, so H comes from the door (1.4 H as in room 1); ceiling pipe at y 45 is near the top"}
