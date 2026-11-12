@@ -1008,3 +1008,7 @@ Step 3 first pass: frames for rooms 2-10, measure files for rooms 2, 3, 5, 8, 10
 
 - Confirmed PR #118 checks all green after its early merge.
 - Step 3 second pass: `shots` on the whole film (29 shots, threshold too coarse for long takes); new examples/film-notation/room6 and room9 measure files (3.8 H and 5.7 H lower bounds, room 9 via a door ruler). Rooms 4 and 7 still need a wide frame. Details in ai-docs/research/2026-11-11-rooms-2-10-first-pass.md.
+
+## 2026-11-11 measure chain, session 5
+
+Step 3 finished: shots at threshold 0.15 (51 shots), wide frames for rooms 4 (3.6 x 1.44 H) and 7 (3.6 x 1.95 H, the only measured ceiling), notation for rooms 2-10 in examples/film-notation/nexus-rooms2-10.notation.md. Doors measure about 1.1 H, not 1.4. Step 1's side-by-side render stays with whoever builds madnesswright #91.

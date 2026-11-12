@@ -37,3 +37,14 @@ Room 2: 3.3 H wide (lower bound), wall 1.13 H visible; room 3: 3.1 H, 1.07 H; ro
 | 9 break room | 8:36 | w9-516.png, no standing figure, door taken as 1.4 H (225 px) | 5.7 H wide (lower bound), wall 2.4 H visible |
 
 Rooms 4 and 7 still have no wide frame: shot starts at 4:08 and 5:54 are mid shots. Next: rerun `shots --threshold 0.15` to split the long takes, then look for wide frames for rooms 4 and 7 and a horizon for depth.
+
+## Third pass (session 5, 2026-11-11)
+
+`shots --threshold 0.15` gives 51 shots (measure/shots015.json), still long takes. Wide frames were found on 1 fps contact sheets inside the shot instead (measure/c4b.jpg, c7b.jpg). Use input seek then a second output `-ss` for exact frames: a plain `-ss T -i` with an fps filter lands seconds off on this webm.
+
+| Room | Time | Frame | Result (`scale`) |
+|---|---|---|---|
+| 4 cargo bay | 4:37 | w4-277.png, agent H 250 px, both corners in | 3.6 H wide, wall 1.44 H visible |
+| 7 spotlight corridor | 6:41 | w7-401.png, Shephard H 296 px, ceiling at y 29 | 3.6 H wide (lower bound), ceiling 1.95 H |
+
+Doors in rooms 6 and 7 measure 1.07-1.13 H, so the 1.4 H door ruler used for room 9 overstates it by about 20%. Notation for rooms 2-10: examples/film-notation/nexus-rooms2-10.notation.md. Depth stays unknown for every room.

@@ -1,0 +1,4 @@
+{"source": "v0suvMY3GgM at 6:41 (shot S026, 380.1-463.0 s, threshold 0.15), 1280x720, 50 px grid", "width": 1280,
+ "characters": [{"name": "Shephard, left, standing", "head_y": 347, "feet_y": 643}],
+ "wall": {"left_x": 0, "right_x": 1060, "floor_y": 607, "ceiling_y": 29, "left_open": true, "right_open": false},
+ "note": "third pass: side-on wide of the spotlight corridor, the only frame in the film with the ceiling line in view (lamps hang from y 29); right corner at x 1060, left wall runs off frame; door at x 727-967, top y 273 (about 1.13 H above the floor line); figure stands about 36 px in front of the wall line"}
