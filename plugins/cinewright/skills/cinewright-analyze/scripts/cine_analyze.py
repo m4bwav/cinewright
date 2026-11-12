@@ -4,7 +4,7 @@
   python scripts/cine_analyze.py probe VIDEO [--json]
   python scripts/cine_analyze.py shots VIDEO [--threshold 0.3] [--min-len 0.5] [--out NOTATION.json]
   python scripts/cine_analyze.py frame VIDEO --at SECONDS [--grid 50] --out FRAME.png
-  python scripts/cine_analyze.py pan VIDEO --start S --end S [--fps 6]         (needs numpy)
+  python scripts/cine_analyze.py pan VIDEO --start S --end S [--fps 6] [--method auto|orb|phase]   (numpy; orb needs opencv-python)
   python scripts/cine_analyze.py scale MEASURE.json [--json]
   python scripts/cine_analyze.py notate NOTATION.json [--out NOTATION.md]
   python scripts/cine_analyze.py rebuild NOTATION.json (--cards DIR | --level OUT.md [--char-height 2.0])
@@ -119,31 +119,70 @@ def frame(video, at, out, grid):
     return "grid with labels"
 
 
-def pan(video, start, end, fps, width=320):
+def pan(video, start, end, fps, width=320, method="auto"):
+    """Camera pan in source pixels. orb (default when opencv is present) matches background landmarks with RANSAC,
+    so moving characters on a flat cel background do not swamp it; phase is whole-frame phase correlation."""
     try:
         import numpy as np
     except ImportError:
         raise SystemExit("pan needs numpy (pip install numpy)")
+    cv2 = None
+    if method in ("auto", "orb"):
+        try:
+            import cv2
+        except ImportError:
+            if method == "orb":
+                raise SystemExit("pan --method orb needs opencv-python")
+    method = "orb" if cv2 is not None else "phase"
+    if method == "orb":
+        width = max(width, 640)
     info = probe(video)
     h = int(round(info["height"] * width / info["width"] / 2)) * 2
     raw = subprocess.run([_tool("ffmpeg"), "-v", "error", "-ss", str(start), "-to", str(end), "-i", str(video),
                           "-vf", "fps=%s,scale=%d:%d,format=gray" % (fps, width, h), "-f", "rawvideo", "-"],
                          capture_output=True, check=True).stdout
     n = len(raw) // (width * h)
-    frames = np.frombuffer(raw[:n * width * h], dtype=np.uint8).reshape(n, h, width).astype(np.float64)
+    frames = np.frombuffer(raw[:n * width * h], dtype=np.uint8).reshape(n, h, width)
     win = np.outer(np.hanning(h), np.hanning(width))
     dx_total = dy_total = 0.0
     steps = []
+    weak = 0
     for a, b in zip(frames, frames[1:]):
-        dx, dy = phase_shift(np, a * win, b * win)
+        if method == "orb":
+            dx, dy, ok = orb_shift(cv2, np, a, b)
+            weak += not ok
+        else:
+            dx, dy = phase_shift(np, a.astype(np.float64) * win, b.astype(np.float64) * win)
         dx_total += dx
         dy_total += dy
         steps.append(round(dx, 2))
     k = info["width"] / width
-    return {"frames": n, "pan_px": round(dx_total * k, 1), "tilt_px": round(dy_total * k, 1),
+    return {"frames": n, "method": method, "weak_steps": weak,
+            "pan_px": round(dx_total * k, 1), "tilt_px": round(dy_total * k, 1),
             "steps_px": [round(s * k, 1) for s in steps],
             "move": "static" if abs(dx_total * k) < 0.02 * info["width"] else
             ("pan-right" if dx_total > 0 else "pan-left")}
+
+
+def orb_shift(cv2, np, a, b):
+    """Shift of b against a from ORB matches and a RANSAC similarity fit, same sign as phase_shift.
+    Returns (dx, dy, ok); ok is False when too few landmarks agree and the step counts as zero."""
+    orb = cv2.ORB_create(1500)
+    ka, da = orb.detectAndCompute(a, None)
+    kb, db = orb.detectAndCompute(b, None)
+    if da is None or db is None or len(ka) < 8 or len(kb) < 8:
+        return 0.0, 0.0, False
+    matches = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True).match(da, db)
+    if len(matches) < 8:
+        return 0.0, 0.0, False
+    pa = np.float32([ka[m.queryIdx].pt for m in matches])
+    pb = np.float32([kb[m.trainIdx].pt for m in matches])
+    M, inl = cv2.estimateAffinePartial2D(pa, pb, method=cv2.RANSAC, ransacReprojThreshold=2.0)
+    if M is None or inl is None or int(inl.sum()) < 8:
+        return 0.0, 0.0, False
+    sel = inl.ravel().astype(bool)
+    d = np.median(pb[sel] - pa[sel], axis=0)
+    return -float(d[0]), -float(d[1]), True
 
 
 def phase_shift(np, a, b):
@@ -581,6 +620,7 @@ def main(argv=None):
     p.add_argument("--grid", type=int, default=50); p.add_argument("--out", required=True)
     p = g.add_parser("pan"); p.add_argument("video"); p.add_argument("--start", type=float, required=True)
     p.add_argument("--end", type=float, required=True); p.add_argument("--fps", type=float, default=6)
+    p.add_argument("--method", choices=["auto", "orb", "phase"], default="auto")
     p = g.add_parser("scale"); p.add_argument("measure"); p.add_argument("--json", action="store_true")
     p = g.add_parser("notate"); p.add_argument("notation"); p.add_argument("--out")
     p = g.add_parser("rebuild"); p.add_argument("notation"); p.add_argument("--cards"); p.add_argument("--level")
@@ -606,7 +646,7 @@ def main(argv=None):
     elif a.cmd == "frame":
         print("frame %s at %s s: %s" % (a.out, a.at, frame(a.video, a.at, a.out, a.grid)))
     elif a.cmd == "pan":
-        print(json.dumps(pan(a.video, a.start, a.end, a.fps), indent=2))
+        print(json.dumps(pan(a.video, a.start, a.end, a.fps, method=a.method), indent=2))
     elif a.cmd == "scale":
         r = scale(json.loads(cine.read_text(Path(a.measure))))
         if a.json:

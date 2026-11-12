@@ -2120,6 +2120,8 @@ class TestAnalyze(Base):
         self.assertAlmostEqual(doc["shots"][1]["start"], 2.0, delta=0.15)
         r = json.loads(self.an("pan", str(v), "--start", "0", "--end", "1.8", "--fps", "5")[1])
         self.assertEqual(r["move"], "pan-right", r)
+        r = json.loads(self.an("pan", str(v), "--start", "0", "--end", "1.8", "--fps", "5", "--method", "phase")[1])
+        self.assertEqual((r["method"], r["move"]), ("phase", "pan-right"), r)
 
     def _mod(self):
         spec = importlib.util.spec_from_file_location("cine_an", self.AN)

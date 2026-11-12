@@ -2,6 +2,7 @@
 
 ## 2026-11-11 (unreleased)
 
+- `pan --method auto|orb|phase`: ORB landmarks with a RANSAC fit by default when opencv is present (L-20261111-2); on the benchmark first shot steps are 0 when static and ramp smoothly through pans, where phase gave -256 to +384 px.
 - Description: not for judging your own take against its card (cinewright-qc); fixes decoy-2 (T-20261111-1).
 - harvest.json: technique-harvest targets (r/aivideo, r/LocalLLaMA, r/Filmmakers, Gemini video docs, arXiv cs.CV).
 
