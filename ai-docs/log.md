@@ -993,3 +993,9 @@ harvest.json for cinewright-analyze; private everscout beat video-analysis at ~/
 ## 2026-11-11 · video-analysis scout chain, session 2
 
 Added trigger-4 and action-2 for aidetect to cinewright-analyze evals; decoy-2 rerun passes; all three new runs pass (TESTS.md T-20261111-2).
+
+## 2026-11-11 measure chain, session 2
+
+- Step 1: H = 3.10 SceneTools units (manager, madnesswright #91 from the Character_Dummy rig); room 1 is about 19.2 x 9.9 units. The side-by-side render with a character at the back wall is still open: it needs a Unity build in madnesswright, which this chain may not change.
+- Step 2 done: `cine_analyze.py pan --method auto|orb|phase`, ORB + RANSAC by default when opencv is present. Benchmark 0-40 s: steps 0 when static, smooth ramps in pans (peak about 194 px/step at 6 fps); phase on the same range gave -256 to +384 px. 48 weak steps (too few landmarks, read as zero). Test covers both methods.
+- Next: step 3, rooms 2-10.

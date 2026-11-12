@@ -6,4 +6,4 @@ A Project Nexus level sized its first room as a multiple of a sample box read of
 
 ## L-20261111-2 `phase-pan-fails-on-cel` (2026-11-11)
 
-Whole-frame phase correlation gave steps of -176 to +200 px between frames on the benchmark's flat cel pan: moving characters swamp a flat background. On cel animation read pans off shared landmarks.
+Whole-frame phase correlation gave steps of -176 to +200 px between frames on the benchmark's flat cel pan: moving characters swamp a flat background. On cel animation read pans off shared landmarks. Fixed 2026-11-11: `pan` now defaults to ORB matches with a RANSAC similarity fit; the benchmark 0-40 s gives clean ramps and zeros when static. One spike pair (+408/-375 px) at about 1.6 s sits on a title or cut; split ranges at cuts from `shots`.

@@ -24,7 +24,7 @@ Fill size, angle, move, cast, action, dialogue, sfx and on-screen text per shot 
 
 ## Step 3: measure every set
 
-Never size a room by eye or as a multiple of some template. For each set pick a frame with a standing character near the back wall and both corners if possible: `AN frame VIDEO --at T --out F.png` (50 px grid), read the points into a measure file, run `AN scale MEASURE.json` (`kb show room-scale`). Walls wider than one frame: measure across the pan and add `pan_px`. Write width_H, height_H, depth_H, camera and confidence into the set, with `measured_from`.
+Never size a room by eye or as a multiple of some template. For each set pick a frame with a standing character near the back wall and both corners if possible: `AN frame VIDEO --at T --out F.png` (50 px grid), read the points into a measure file, run `AN scale MEASURE.json` (`kb show room-scale`). Walls wider than one frame: measure across the pan and add `pan_px` from `AN pan` (ORB landmarks with RANSAC when opencv-python is present; `weak_steps` counts steps with too few landmarks, read as zero). Write width_H, height_H, depth_H, camera and confidence into the set, with `measured_from`.
 
 ## Step 4: rebuild
 
