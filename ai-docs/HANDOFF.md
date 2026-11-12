@@ -31,6 +31,8 @@
 
 ## Video analysis track
 
+Since 2026-11-11 this track runs as a three-tier chainwright run: top manager [chains/video-analysis/manager-prompt.md](chains/video-analysis/manager-prompt.md) over the build manager (chains measure, aidetect) and the knowledge manager (chain scout). Each chain's state lives in its own HANDOFF.md under chains/video-analysis/; the list below is the state at the split.
+
 Prompt: [plans/2026-11-11-video-analysis-continue-prompt.md](plans/2026-11-11-video-analysis-continue-prompt.md). Session 1 (2026-11-11): PR #111 merged, released v0.6.0 (https://github.com/m4bwav/cinewright/releases/tag/v0.6.0), installed plugins updated to 0.6.0.
 
 Done:

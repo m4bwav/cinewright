@@ -11,3 +11,6 @@ Done (session 1, 2026-11-11, v0.6.1):
 
 Next (outside this chain, optional): a larger phone-clip set to decide whether warp residual, homography and jerk can be scored.
 Waiting on Mark: nothing.
+
+Released: PR #113 merged, v0.6.1 (https://github.com/m4bwav/cinewright/releases/tag/v0.6.1); installed cinewright and cinewright-craft updated to 0.6.1 (cinewright-dev not installed).
+Wrap-up: light; the lessons (metadata decides, hf_ratio the only separating pixel signal, few phone clips on disk) are in the ai-video-tells entry and research section 8.
