@@ -26,3 +26,14 @@ Room 2: 3.3 H wide (lower bound), wall 1.13 H visible; room 3: 3.1 H, 1.07 H; ro
 - Next pass must pick frames per room from `shots`: the first wide shot after the room's entry cut (largest wall area, a full standing figure), then `pan` only inside that shot. `pan` over a fixed 12 s window crossed cuts (rooms 4, 5, 7 gave 1000-1800 px, which are cut jumps, not pans).
 - Ceilings are rarely in frame; height needs either a tilt (`pan` reports tilt_px) or a door as a second ruler (door about 1.4 H in room 1).
 - Rooms 4, 6, 7, 9 need a wide frame found first; their sizes stay `guess`.
+
+## Second pass (session 4, 2026-11-11)
+
+`shots` on the whole film (threshold 0.3) found only 29 shots in 862 s: the film is mostly long takes with camera moves, so a cel cut detector at 0.3 merges rooms. Shot list in Ai/madnesswright-lab/nexus/measure/shots.json; one frame 2 s after each shot start in measure/starts.jpg.
+
+| Room | Time | Frame | Result (`scale`) |
+|---|---|---|---|
+| 6 shutter garage | 6:22 | w6-382.png, standing guard H 340 px | 3.8 H wide (lower bound), wall 1.6 H visible |
+| 9 break room | 8:36 | w9-516.png, no standing figure, door taken as 1.4 H (225 px) | 5.7 H wide (lower bound), wall 2.4 H visible |
+
+Rooms 4 and 7 still have no wide frame: shot starts at 4:08 and 5:54 are mid shots. Next: rerun `shots --threshold 0.15` to split the long takes, then look for wide frames for rooms 4 and 7 and a horizon for depth.

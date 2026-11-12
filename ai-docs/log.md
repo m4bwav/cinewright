@@ -1003,3 +1003,8 @@ Added trigger-4 and action-2 for aidetect to cinewright-analyze evals; decoy-2 r
 ## 2026-11-11 measure chain, session 3
 
 Step 3 first pass: frames for rooms 2-10, measure files for rooms 2, 3, 5, 8, 10 (examples/film-notation), all `estimated` lower bounds; rooms 4, 6, 7, 9 had no usable frame. Finding: fixed-time frames land on mid shots and fixed pan windows cross cuts; next pass picks the first wide shot per room from `shots` and pans inside it. Notes: ai-docs/research/2026-11-11-rooms-2-10-first-pass.md.
+
+## 2026-11-11 measure chain, session 4
+
+- Confirmed PR #118 checks all green after its early merge.
+- Step 3 second pass: `shots` on the whole film (29 shots, threshold too coarse for long takes); new examples/film-notation/room6 and room9 measure files (3.8 H and 5.7 H lower bounds, room 9 via a door ruler). Rooms 4 and 7 still need a wide frame. Details in ai-docs/research/2026-11-11-rooms-2-10-first-pass.md.
