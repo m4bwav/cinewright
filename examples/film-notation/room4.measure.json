@@ -1,0 +1,4 @@
+{"source": "v0suvMY3GgM at 4:37 (shot S021, 252.7-288.6 s, threshold 0.15), 1280x720, 50 px grid", "width": 1280,
+ "characters": [{"name": "masked agent, centre, standing", "head_y": 190, "feet_y": 440}],
+ "wall": {"left_x": 220, "right_x": 1120, "floor_y": 360, "ceiling_y": 0, "left_open": false, "right_open": false},
+ "note": "third pass: high three-quarter wide of the cargo bay; both back corners in frame, ceiling above frame; agent stands about 80 px in front of the wall line, so the size is a bound, not a measure (see scale note); office window in the back wall at x 370-730"}
