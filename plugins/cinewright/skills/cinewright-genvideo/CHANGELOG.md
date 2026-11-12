@@ -2,6 +2,10 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
+### C-20261111-1 · 2026-11-11 · h3-reference-mode: Ref2VA prompt syntax from the official ref guide
+- because: technique harvest 2026-11-11 (posts 1vhloyz, 1ul9iei; guide read at huggingface.co MiniMaxAI/MiniMax-H3 docs, untested here)
+- files: references/h3-reference-mode.md (new), references/minimax-h3.md (pointer; three lines trimmed for the model card budget)
+
 ### C-20261110-4 · 2026-11-10 · h3-long-takes: end chained segments on a held still beat
 - because: technique harvest GPU test 2026-11-10c (post 1vkfb49; still vs motion ending, one seed per arm)
 - files: references/h3-long-takes.md (Rules, one line)

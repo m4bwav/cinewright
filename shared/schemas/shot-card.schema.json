@@ -139,6 +139,7 @@
     "start_state": {"type": "string", "maxLength": 240},
     "end_state": {"type": "string", "maxLength": 240},
     "refs": {"type": "array", "items": {"type": "string"}, "description": "Reference image ids from the bibles, or file paths."},
+    "ref_type": {"type": "string", "enum": ["still", "board", "previs"], "description": "What drives the take: a still (default), a storyboard sketch (intent only) or a previs or blockout video (layout, camera, timing). Escalate a failed still take to previs."},
     "seed": {"type": "integer", "minimum": 0},
     "notes": {"type": "string"}
   }

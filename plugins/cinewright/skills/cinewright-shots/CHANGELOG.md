@@ -7,6 +7,10 @@ Entry shape: `### C-20261101-1 · 2026-11-01 · Scene setups for fights, chases,
 - files: references/scene-setups.md (new), references/blocking.md, SKILL.md
 - A new entry gives book card recipes for fights, chases, car scenes and arguments; blocking gets circling, half-circle crossings and the look back on the camera side. All marked book rule, unverified.
 
+### C-20261111-1 · 2026-11-11 · ref_type on shot cards and the still-to-previs ladder
+- because: technique harvest 2026-11-11 (post 1ul9iei, one maker, untested)
+- files: shared/schemas/shot-card.schema.json (`ref_type`: still, board, previs), references/coverage-plan.md (one rule)
+
 ### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261109-2 · 2026-11-09 · SETUP and GROUP-ORDER checks (books round 5, track 22)
