@@ -6,6 +6,10 @@ Entry shape: `### C-20261109-1 · 2026-11-09 · Time-to-Move measured
 - because: install tests 2026-11-09 in the technique harvest (post 1xjgy2w)
 - files: references/blockout-control.md (41/62/135 px path error, +20-28% GPU, hold 1 of 8 steps)
 
+### C-20261111-1 · 2026-11-11 · blockout-control: solve the plate camera first; unwarp, edit, rewarp
+- because: technique harvest 2026-11-11 (post 1v3da53, NKD VFX Tools, GPL: ideas only, untested)
+- files: references/blockout-control.md (one rule, source)
+
 ### C-20261109-2 · 2026-11-09 · master-plates: establishing clip as reference video on return to a set
 - because: technique harvest 2026-11 batch 2 (community posts reviewed in a separate harvest workspace), each item single-source and untested here unless stated
 - files: references/master-plates.md (H3 Continuity Studio, MIT; never a speaking clip)

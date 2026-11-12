@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:29b95dde4d5492feb0163252cda81182d003053d1f318fd28819e1287d875abf; edit the source",
+  "$comment": "copied from shared/schemas/shot-card.schema.json sha256:f6caa16dcb68045544c81d56b7f331760ee307e4a4bb582d6698a31f8f3b11b0; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Shot card",
   "description": "One shot, generator-neutral. Fields follow the shot list (slate, size, angle, move, lens, action, dialogue, duration) and the script supervisor's notes (camera side, screen direction, eyelines, wardrobe, props in hand, start and end state).",
@@ -573,6 +573,15 @@
         "type": "string"
       },
       "description": "Reference image ids from the bibles, or file paths."
+    },
+    "ref_type": {
+      "type": "string",
+      "enum": [
+        "still",
+        "board",
+        "previs"
+      ],
+      "description": "What drives the take: a still (default), a storyboard sketch (intent only) or a previs or blockout video (layout, camera, timing). Escalate a failed still take to previs."
     },
     "seed": {
       "type": "integer",

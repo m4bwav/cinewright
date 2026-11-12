@@ -1012,3 +1012,7 @@ Step 3 first pass: frames for rooms 2-10, measure files for rooms 2, 3, 5, 8, 10
 ## 2026-11-11 measure chain, session 5
 
 Step 3 finished: shots at threshold 0.15 (51 shots), wide frames for rooms 4 (3.6 x 1.44 H) and 7 (3.6 x 1.95 H, the only measured ceiling), notation for rooms 2-10 in examples/film-notation/nexus-rooms2-10.notation.md. Doors measure about 1.1 H, not 1.4. Step 1's side-by-side render stays with whoever builds madnesswright #91.
+
+## 2026-11-11 technique harvest build (0.6.2)
+
+- New genvideo entry h3-reference-mode (1vhloyz, guide read), shot card `ref_type` + ladder in coverage-plan (1ul9iei), plate camera solve in blockout-control (1v3da53). Compile source lines per element deferred (no control-video field on cards; shared/lib 193/200 KB). 1ovih09 and 1rip661 wait on GPU tests. Checks: unittest 155 OK, kb lint 0 errors, budget YELLOW (model card 1196/1200).

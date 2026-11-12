@@ -3,8 +3,8 @@ title: Coverage plan
 slug: coverage-plan
 summary: Planning a scene's cards by weight: turn card first, coverage density, relation (isolate, connect, bind), rests in long moves, cutaway hooks, a fallback staging.
 tags: [shots, coverage, planning, long-take, render-order]
-last_checked: 2026-11-09
-sources: ["Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques and Aesthetics, 6th ed., ch. 21, 24", "Steven D. Katz, Film Directing: Cinematic Motion, 2nd ed., 2004, ch. 3-6"]
+last_checked: 2026-11-11
+sources: ["Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques and Aesthetics, 6th ed., ch. 21, 24", "Steven D. Katz, Film Directing: Cinematic Motion, 2nd ed., 2004, ch. 3-6", "r/comfyui 1ul9iei, previs vs storyboard vs still as reference, 2026-06"]
 ---
 
 # Coverage plan
@@ -12,6 +12,7 @@ sources: ["Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques 
 ## Rules
 
 - Plan the scene's turn card first, then the cards leading in and out (Rabiger ch. 24).
+- Reference type per card (`ref_type`): key shots (the turn, crossings, a camera path) start from previs, a blockout video that locks layout, camera and timing; the rest start from a still; a storyboard sketch carries intent, not layout. A still take that fails on blocking twice escalates to previs (r/comfyui 1ul9iei, one maker, untested here).
 - Density follows weight. A crucial scene gets more cards; a small moment, one or two (ch. 24).
 - At the turn only, plan two or three reaction cards from different people, so the edit can pick the inflection. Elsewhere, plan only what the cut uses (ch. 24).
 - Pick a relation per exchange. Isolate: separate singles, adversarial. Connect: over-the-shoulder pairs. Bind: a held two-shot. Who shares a frame shows alliances (ch. 24).
