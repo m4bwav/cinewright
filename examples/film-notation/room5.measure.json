@@ -1,0 +1,4 @@
+{"source": "v0suvMY3GgM at 5:16, 1280x720, 50 px grid (+-10 px)", "width": 1280,
+ "characters": [{"name": "rifle agent, right", "head_y": 130, "feet_y": 410}],
+ "wall": {"left_x": 840, "right_x": 1280, "floor_y": 170, "ceiling_y": 0, "right_open": true},
+ "note": "high three-quarter view; left corner at x 840, back wall base far behind the character; ceiling above frame"}
