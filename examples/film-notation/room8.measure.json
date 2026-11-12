@@ -1,0 +1,4 @@
+{"source": "v0suvMY3GgM at 8:04, 1280x720, 50 px grid (+-10 px)", "width": 1280,
+ "characters": [{"name": "white mask agent, left", "head_y": 330, "feet_y": 630}],
+ "wall": {"left_x": 0, "right_x": 1280, "floor_y": 560, "ceiling_y": 0, "left_open": true, "right_open": true},
+ "note": "lockers top at y 230 (about 1.1 H); ceiling hidden in the spotlight cone"}
