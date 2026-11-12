@@ -4,6 +4,10 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261112-2 · 2026-11-12 · ai-continuity: sun relight with the Klein 9B sun-direction LoRA
+- because: technique harvest GPU test 2026-11-12b (post 1ulomm5; adopt-partly)
+- files: references/ai-continuity.md (one rule, one number)
+
 ### C-20261112-1 · 2026-11-12 · ai-continuity: keyframe face fix by image edit
 - because: technique harvest GPU test 2026-11-12 (post 1rcemhe; BFS LoRA not adopted on the turbo checkpoint)
 - files: references/ai-continuity.md (one rule, one number)
