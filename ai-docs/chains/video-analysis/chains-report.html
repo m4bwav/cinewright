@@ -1,0 +1,137 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>cinewright Chain Report</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231d1d1b'/%3E%3Crect x='11' y='5' width='10' height='6' rx='2' fill='%236c9bff'/%3E%3Crect x='6' y='13' width='20' height='6' rx='2' fill='%236c9bff' opacity='.8'/%3E%3Crect x='3' y='21' width='26' height='6' rx='2' fill='%23e7a64a'/%3E%3C/svg%3E"><style>
+:root{--bg:#f7f7f5;--card:#fff;--ink:#1d1d1b;--mute:#6b6b66;--line:#e2e1dc;--t:#3b6fd8;--m:#c9821f;--ok:#2f9e5a;--bad:#d04848;--wait:#8a6fd1}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#17181a;--card:#212226;--ink:#ecebe6;--mute:#9a9a94;--line:#34353a;--t:#6c9bff;--m:#e7a64a}}
+:root[data-theme=dark]{--bg:#17181a;--card:#212226;--ink:#ecebe6;--mute:#9a9a94;--line:#34353a;--t:#6c9bff;--m:#e7a64a}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,sans-serif;padding:24px 16px}
+main{max-width:1000px;margin:auto}h1{font-size:22px;margin:0 0 4px}.sub{color:var(--mute);margin-bottom:18px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}.kpi b{display:block;font-size:20px}.kpi span{color:var(--mute);font-size:12px}
+table{border-collapse:collapse;width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:18px}
+td,th{padding:6px 10px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--mute);font-weight:600;font-size:12px}
+.node{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--t);border-radius:10px;padding:10px 12px;margin:8px 0 8px 0}
+.node .node{margin-left:18px}.node.chain{border-left-color:var(--m)}
+.head{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}.tier{background:var(--ink);color:var(--bg);border-radius:6px;padding:0 6px;font-size:12px}
+.kind{color:var(--mute);font-size:12px}.meta{margin-left:auto;color:var(--mute);font-variant-numeric:tabular-nums}
+.bars{margin:6px 0 2px}.bar{display:block;height:6px;background:var(--line);border-radius:3px;margin:3px 0;overflow:hidden}
+.bar i{display:block;height:100%}.bar.t i{background:var(--t)}.bar.m i{background:var(--m)}
+.own{color:var(--mute);font-size:12px;margin:4px 0}.sessions{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;margin-top:6px}
+.sess{border:1px solid var(--line);border-top:3px solid var(--ok);border-radius:6px;padding:4px 6px;font-size:12px}
+.sess.failed{border-top-color:var(--bad)}.sess.waiting,.sess.idle{border-top-color:var(--wait)}.sess.unreported{border-top-color:var(--mute)}
+.project{display:inline-flex;gap:6px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12px;color:var(--mute);margin-bottom:8px}
+.project b{color:var(--ink);font-size:13px}.asks{font-size:12px;color:var(--mute);margin:4px 0}.ask{margin-right:10px;color:var(--ink)}.ask span{color:var(--mute)}.ask.done{opacity:.6}.chip{border:1px solid var(--line);border-radius:999px;padding:0 8px;font-size:11px;color:var(--mute)}
+details.prompt{margin:6px 0 2px;font-size:12px}details.prompt summary{cursor:pointer;color:var(--mute)}
+details.prompt pre{white-space:pre-wrap;word-break:break-word;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px;max-height:420px;overflow:auto;font:12px/1.4 ui-monospace,Consolas,monospace}
+.warn{color:var(--bad);font-weight:600;margin-top:6px}.legend{color:var(--mute);font-size:12px}.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 10px;vertical-align:middle}
+</style></head><body><main>
+<div class="project">Project <b>cinewright</b></div> <a class="chip" href="file:///C:/Users/m4bwa/.chainwright/index.html">all runs</a> <a class="chip" href="http://127.0.0.1:47630/" title="all projects">steerwright</a><h1>Chain tier report</h1><div class="sub">chains.json · 3 tiers: managers over managers, 11 agents in all</div>
+<div class="kpis"><div class="kpi"><b>3</b><span>tiers</span></div><div class="kpi"><b>11</b><span>agents</span></div><div class="kpi"><b>3h 44m</b><span>time</span></div><div class="kpi"><b>~$4.32</b><span>cost</span></div><div class="kpi"><b>719,481</b><span>tokens</span></div></div>
+<table><tr><th>Tier</th><th>Agents</th><th>Time</th><th>Cost</th></tr><tr><td>T1</td><td>1</td><td>1h 4m</td><td>~$0.00</td></tr><tr><td>T2</td><td>2</td><td>1h 46m</td><td>~$0.00</td></tr><tr><td>T3</td><td>8</td><td>54m 11s</td><td>~$4.32</td></tr></table>
+<div class="legend">Bars:<i style="background:var(--t)"></i>time<i style="background:var(--m)"></i>cost, each against the whole run. Session tops: green worked or finished, purple idle or waiting, red failed. "~" is estimated from tokens at $6.0/M tokens.</div>
+<div class="node manager"><div class="head"><span class="tier">T1</span><b>video-analysis</b><span class="kind">manager</span><span class="meta">11 agents · 3h 44m · ~$4.32 · 719,481 tok</span></div><div class="bars"><span class="bar t"><i style="width:100.0%"></i></span><span class="bar m"><i style="width:100.0%"></i></span></div><div class="own">manager itself: 1 generation · 1h 4m · ~$0.00</div><details class="prompt"><summary>Prompt: manager prompt <span class="kind">D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/manager-prompt.md</span></summary><pre># Video analysis grandparent manager prompt
+
+Work from `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/`. This is a chainwright manager (tier 1, over the build and knowledge managers); rules: `D:/m4bwa/Claude/Projects/Ai/chainwright/skills/chainwright/references/manager.md`.
+
+1. Load state: read `HANDOFF.md` here (waiting sets, notes), `python D:/m4bwa/Claude/Projects/Ai/chainwright/skills/chainwright/scripts/chain_manager.py status chains.json`, and the end of the manager log.
+2. Loop: `next`. On `run`, start one subagent with `Execute &lt;chain prompt&gt;` plus &quot;end with only this report: outcome (worked, idle, waiting, finished, failed); one line on what changed; questions page if any; HANDOFF.md path.&quot; Wait for its hand-back (an interim waiting notice is not one), then `record` with --tokens and --seconds from its usage line. On `record-first`, record that chain from its HANDOFF.md. Never read a subagent&#x27;s transcript.
+3. Stop on `stop`: call `finish`; if `chain_report.py enabled chains.json` says on, run `chain_report.py build chains.json --open` and name the page, then `chain_index.py build`; write the waiting askwright sets and why it stopped to HANDOFF.md, and list them in the reply (a parent manager takes that reply as the one-line report). Nothing here waits on Mark except those sets and a raised budget.
+4. On `hand-over`: run the wrap-up (evergreen-wrapup, if installed), add a log line, update HANDOFF.md, call `handed-over`, and print the same start command: `Execute D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/manager-prompt.md`. State lives in chains.json and HANDOFF.md, never in this file.
+</pre></details><div class="node manager"><div class="head"><span class="tier">T2</span><b>build</b><span class="kind">manager</span><span class="meta">7 agents · 1h 15m · ~$3.23 · 539,097 tok</span></div><div class="bars"><span class="bar t"><i style="width:33.4%"></i></span><span class="bar m"><i style="width:74.9%"></i></span></div><div class="own">manager itself: 1 generation · 42m 7s · ~$0.00</div><details class="prompt"><summary>Prompt: manager prompt <span class="kind">D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/build/manager-prompt.md</span></summary><pre># Video analysis build manager prompt
+
+Work from `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/build/`. This is a chainwright manager (tier 2, over the measure and aidetect chains); rules: `D:/m4bwa/Claude/Projects/Ai/chainwright/skills/chainwright/references/manager.md`.
+
+1. Load state: read `HANDOFF.md` here (waiting sets, notes), `python D:/m4bwa/Claude/Projects/Ai/chainwright/skills/chainwright/scripts/chain_manager.py status chains.json`, and the end of the manager log.
+2. Loop: `next`. On `run`, start one subagent with `Execute &lt;chain prompt&gt;` plus &quot;end with only this report: outcome (worked, idle, waiting, finished, failed); one line on what changed; questions page if any; HANDOFF.md path.&quot; Wait for its hand-back (an interim waiting notice is not one), then `record` with --tokens and --seconds from its usage line. On `record-first`, record that chain from its HANDOFF.md. Never read a subagent&#x27;s transcript.
+3. Stop on `stop`: call `finish`; if `chain_report.py enabled chains.json` says on, run `chain_report.py build chains.json --open` and name the page, then `chain_index.py build`; write the waiting askwright sets and why it stopped to HANDOFF.md, and list them in the reply (a parent manager takes that reply as the one-line report). Nothing here waits on Mark except those sets and a raised budget.
+4. On `hand-over`: run the wrap-up (evergreen-wrapup, if installed), add a log line, update HANDOFF.md, call `handed-over`, and print the same start command: `Execute D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/build/manager-prompt.md`. State lives in chains.json and HANDOFF.md, never in this file.
+</pre></details><div class="node chain"><div class="head"><span class="tier">T3</span><b>measure</b><span class="kind">chain</span><span class="meta">5 agents · 19m 18s · ~$2.49 · 415,591 tok</span></div><div class="bars"><span class="bar t"><i style="width:8.6%"></i></span><span class="bar m"><i style="width:57.8%"></i></span></div><div class="sessions"><div class="sess waiting" title="session 1: waiting, 47s, ~$0.44, 73,968 tokens "><span>#1</span><span class="bar t"><i style="width:1.5%"></i></span><span class="bar m"><i style="width:10.3%"></i></span></div><div class="sess worked" title="session 2: worked, 4m 22s, ~$0.47, 78,679 tokens "><span>#2</span><span class="bar t"><i style="width:1.9%"></i></span><span class="bar m"><i style="width:10.9%"></i></span></div><div class="sess worked" title="session 3: worked, 3m 50s, ~$0.58, 97,348 tokens "><span>#3</span><span class="bar t"><i style="width:1.7%"></i></span><span class="bar m"><i style="width:13.5%"></i></span></div><div class="sess worked" title="session 4: worked, 5m 24s, ~$0.45, 75,707 tokens "><span>#4</span><span class="bar t"><i style="width:2.4%"></i></span><span class="bar m"><i style="width:10.5%"></i></span></div><div class="sess finished" title="session 5: finished, 4m 55s, ~$0.54, 89,889 tokens "><span>#5</span><span class="bar t"><i style="width:2.2%"></i></span><span class="bar m"><i style="width:12.5%"></i></span></div></div><div class="own">state: finished</div><details class="prompt"><summary>Prompt: sessions #1-#5 <span class="kind">D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/video-analysis-measure-chain-prompt.md</span></summary><pre># Chain prompt: cinewright video analysis, benchmark measurement and proof
+
+This prompt does not change between sessions. State lives in `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/build/measure/HANDOFF.md`, never here. Work in the cinewright repo (`D:/m4bwa/Claude/Projects/Ai/cinewright`).
+
+## Load state first
+
+1. Read the goal, motivating failure and stop points in `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/2026-11-11-video-analysis-continue-prompt.md` (do not run its order of work; this chain owns only the part below).
+2. Read this chain&#x27;s HANDOFF.md, then the &quot;Video analysis track&quot; section of `ai-docs/HANDOFF.md`, the newest `ai-docs/log.md` entries, `AGENTS.md` and `CODEMAP.md`.
+3. Compare HANDOFF.md&#x27;s age with the log and git commits; trust the newer evidence.
+
+## This chain&#x27;s work, in order
+
+1. Prove it on the benchmark: find the Project Nexus character height in SceneTools units (the brief assumes 2.0, unverified), write a madnesswright issue or brief with room 1 at about 6.2 x 3.2 H, and a side-by-side render with a character at the back wall.
+2. Pan on cel animation: ORB or landmark matching on the background instead of whole-frame phase correlation (L-20261111-2), so `pan_px` works on the benchmark.
+3. Measure rooms 2-10 of the benchmark and fill the notation from shots (Gemini draft plus frames).
+
+## Stop early
+
+Stop with `Status: waiting` when the next step needs Mark: paid API spend past a small test, any madnesswright change beyond a brief or issue, or a release that renames public skills. Put the question on an askwright page, name the set in HANDOFF.md, and do every other step first. After the last step, write `Status: finished`.
+
+## Hand-over
+
+- Commit on a branch, open a PR, merge it yourself once checks pass (global rules); tag and release if the version is bumped, then update installed plugins. Other chains share this repo: pull before branching, keep PRs small.
+- Log the session in `ai-docs/log.md`; research in `ai-docs/research/`.
+- Last steps, in order: run evergreen-wrapup (skip quietly if absent; report a failure, never block), update this chain&#x27;s HANDOFF.md (done, next, waiting on Mark, Status), then end with only this report: outcome (worked, idle, waiting, finished, failed); one line on what changed; questions page if any; HANDOFF.md path. When run by hand, print exactly:
+
+`Execute D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/video-analysis-measure-chain-prompt.md`
+</pre></details></div><div class="node chain"><div class="head"><span class="tier">T3</span><b>aidetect</b><span class="kind">chain</span><span class="meta">1 agent · 13m 41s · ~$0.74 · 123,506 tok</span></div><div class="bars"><span class="bar t"><i style="width:6.1%"></i></span><span class="bar m"><i style="width:17.2%"></i></span></div><div class="sessions"><div class="sess finished" title="session 1: finished, 13m 41s, ~$0.74, 123,506 tokens "><span>#1</span><span class="bar t"><i style="width:6.1%"></i></span><span class="bar m"><i style="width:17.2%"></i></span></div></div><div class="own">state: finished</div><details class="prompt"><summary>Prompt: sessions #1 <span class="kind">D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/video-analysis-aidetect-chain-prompt.md</span></summary><pre># Chain prompt: cinewright video analysis, AI-video detection
+
+This prompt does not change between sessions. State lives in `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/build/aidetect/HANDOFF.md`, never here. Work in the cinewright repo (`D:/m4bwa/Claude/Projects/Ai/cinewright`).
+
+## Load state first
+
+1. Read the goal, motivating failure and stop points in `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/2026-11-11-video-analysis-continue-prompt.md` (do not run its order of work; this chain owns only the part below).
+2. Read this chain&#x27;s HANDOFF.md, then the &quot;Video analysis track&quot; section of `ai-docs/HANDOFF.md`, the newest `ai-docs/log.md` entries, `AGENTS.md` and `CODEMAP.md`.
+3. Compare HANDOFF.md&#x27;s age with the log and git commits; trust the newer evidence.
+
+## This chain&#x27;s work, in order
+
+1. Build the `aidetect` command in cinewright-analyze&#x27;s `cine_analyze.py` (ffprobe tags, c2patool if present, 32 sampled frames, flow-warp residual, ORB homography inliers, FFT and Laplacian, contact sheet) per the version-1 design in `ai-docs/research/2026-11-11-ai-video-detection.md`. Add tests.
+2. Calibrate on our own renders against phone clips; record the scores and thresholds.
+3. Update the ai-video-tells entry with what calibration proved.
+
+## Stop early
+
+Stop with `Status: waiting` when the next step needs Mark: paid API spend past a small test, any madnesswright change beyond a brief or issue, or a release that renames public skills. Put the question on an askwright page, name the set in HANDOFF.md, and do every other step first. After the last step, write `Status: finished`.
+
+## Hand-over
+
+- Commit on a branch, open a PR, merge it yourself once checks pass (global rules); tag and release if the version is bumped, then update installed plugins. Other chains share this repo: pull before branching, keep PRs small.
+- Log the session in `ai-docs/log.md`; research in `ai-docs/research/`.
+- Last steps, in order: run evergreen-wrapup (skip quietly if absent; report a failure, never block), update this chain&#x27;s HANDOFF.md (done, next, waiting on Mark, Status), then end with only this report: outcome (worked, idle, waiting, finished, failed); one line on what changed; questions page if any; HANDOFF.md path. When run by hand, print exactly:
+
+`Execute D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/video-analysis-aidetect-chain-prompt.md`
+</pre></details></div></div><div class="node manager"><div class="head"><span class="tier">T2</span><b>knowledge</b><span class="kind">manager</span><span class="meta">3 agents · 1h 25m · ~$1.08 · 180,384 tok</span></div><div class="bars"><span class="bar t"><i style="width:37.9%"></i></span><span class="bar m"><i style="width:25.1%"></i></span></div><div class="own">manager itself: 1 generation · 1h 3m · ~$0.00</div><details class="prompt"><summary>Prompt: manager prompt <span class="kind">D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/knowledge/manager-prompt.md</span></summary><pre># Video analysis knowledge manager prompt
+
+Work from `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/knowledge/`. This is a chainwright manager (tier 2, over the scout chain); rules: `D:/m4bwa/Claude/Projects/Ai/chainwright/skills/chainwright/references/manager.md`.
+
+1. Load state: read `HANDOFF.md` here (waiting sets, notes), `python D:/m4bwa/Claude/Projects/Ai/chainwright/skills/chainwright/scripts/chain_manager.py status chains.json`, and the end of the manager log.
+2. Loop: `next`. On `run`, start one subagent with `Execute &lt;chain prompt&gt;` plus &quot;end with only this report: outcome (worked, idle, waiting, finished, failed); one line on what changed; questions page if any; HANDOFF.md path.&quot; Wait for its hand-back (an interim waiting notice is not one), then `record` with --tokens and --seconds from its usage line. On `record-first`, record that chain from its HANDOFF.md. Never read a subagent&#x27;s transcript.
+3. Stop on `stop`: call `finish`; if `chain_report.py enabled chains.json` says on, run `chain_report.py build chains.json --open` and name the page, then `chain_index.py build`; write the waiting askwright sets and why it stopped to HANDOFF.md, and list them in the reply (a parent manager takes that reply as the one-line report). Nothing here waits on Mark except those sets and a raised budget.
+4. On `hand-over`: run the wrap-up (evergreen-wrapup, if installed), add a log line, update HANDOFF.md, call `handed-over`, and print the same start command: `Execute D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/knowledge/manager-prompt.md`. State lives in chains.json and HANDOFF.md, never in this file.
+</pre></details><div class="node chain"><div class="head"><span class="tier">T3</span><b>scout</b><span class="kind">chain</span><span class="meta">2 agents · 21m 12s · ~$1.08 · 180,384 tok</span></div><div class="bars"><span class="bar t"><i style="width:9.4%"></i></span><span class="bar m"><i style="width:25.1%"></i></span></div><div class="sessions"><div class="sess worked" title="session 1: worked, 14m 15s, ~$0.61, 101,349 tokens "><span>#1</span><span class="bar t"><i style="width:6.3%"></i></span><span class="bar m"><i style="width:14.1%"></i></span></div><div class="sess finished" title="session 2: finished, 6m 57s, ~$0.47, 79,035 tokens "><span>#2</span><span class="bar t"><i style="width:3.1%"></i></span><span class="bar m"><i style="width:11.0%"></i></span></div></div><div class="own">state: finished</div><details class="prompt"><summary>Prompt: sessions #1-#2 <span class="kind">D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/video-analysis-scout-chain-prompt.md</span></summary><pre># Chain prompt: cinewright video analysis, harvest, scout and evals
+
+This prompt does not change between sessions. State lives in `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/knowledge/scout/HANDOFF.md`, never here. Work in the cinewright repo (`D:/m4bwa/Claude/Projects/Ai/cinewright`).
+
+## Load state first
+
+1. Read the goal, motivating failure and stop points in `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/2026-11-11-video-analysis-continue-prompt.md` (do not run its order of work; this chain owns only the part below).
+2. Read this chain&#x27;s HANDOFF.md, then the &quot;Video analysis track&quot; section of `ai-docs/HANDOFF.md`, the newest `ai-docs/log.md` entries, `AGENTS.md` and `CODEMAP.md`.
+3. Compare HANDOFF.md&#x27;s age with the log and git commits; trust the newer evidence.
+
+## This chain&#x27;s work, in order
+
+1. Add technique-harvest targets (Ai/technique-harvest) and everscout beats (Ai/everscout) for film analysis and notation, AI-video detection, and video extraction with Gemini and other multimodal models, matching how existing targets and beats are written.
+2. Run evergreen-test on cinewright-analyze&#x27;s 8 cases; hand failures to evergreen-tune.
+3. Once the aidetect chain (build manager) has shipped, add trigger cases for it.
+
+## Stop early
+
+Stop with `Status: waiting` when the next step needs Mark: paid API spend past a small test, any madnesswright change beyond a brief or issue, or a release that renames public skills. Put the question on an askwright page, name the set in HANDOFF.md, and do every other step first. After the last step, write `Status: finished`.
+
+## Hand-over
+
+- Commit on a branch, open a PR, merge it yourself once checks pass (global rules); tag and release if the version is bumped, then update installed plugins. Other chains share this repo: pull before branching, keep PRs small.
+- Log the session in `ai-docs/log.md`; research in `ai-docs/research/`.
+- Last steps, in order: run evergreen-wrapup (skip quietly if absent; report a failure, never block), update this chain&#x27;s HANDOFF.md (done, next, waiting on Mark, Status), then end with only this report: outcome (worked, idle, waiting, finished, failed); one line on what changed; questions page if any; HANDOFF.md path. When run by hand, print exactly:
+
+`Execute D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/video-analysis-scout-chain-prompt.md`
+</pre></details></div></div></div>
+</main></body></html>

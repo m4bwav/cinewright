@@ -7,11 +7,14 @@
  "managers": [
   {
    "n": 1,
-   "started": "2026-11-11T17:10:28-06:00"
+   "started": "2026-11-11T17:10:28-06:00",
+   "seconds": 3838,
+   "tokens": null,
+   "usd": null
   }
  ],
- "sessions_total": 1,
- "reports_this_manager": 1,
+ "sessions_total": 2,
+ "reports_this_manager": 2,
  "budget": {
   "handover_after_reports": 12,
   "max_sessions": 6,
@@ -22,8 +25,8 @@
    "name": "scout",
    "prompt": "D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/video-analysis-scout-chain-prompt.md",
    "handoff": "D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/knowledge/scout/HANDOFF.md",
-   "state": "ready",
-   "sessions": 1,
+   "state": "finished",
+   "sessions": 2,
    "history": [
     {
      "at": "2026-11-11T17:52:53-06:00",
@@ -34,20 +37,24 @@
      "usd": null,
      "model": null,
      "prompt_sha": "9ac974324f1c"
+    },
+    {
+     "at": "2026-11-11T18:07:17-06:00",
+     "manager": 1,
+     "outcome": "finished",
+     "seconds": 417,
+     "tokens": 79035,
+     "usd": null,
+     "model": null,
+     "prompt_sha": "9ac974324f1c"
     }
    ],
    "last": {
-    "at": "2026-11-11T18:07:16-06:00",
-    "outcome": "worked",
-    "report": "harvest targets + video-analysis beat (7 sources); evals 7/8, decoy-2 tuned not re-run; PRs #114 (merged red) #115"
+    "at": "2026-11-11T18:14:21-06:00",
+    "outcome": "finished",
+    "report": "aidetect evals trigger-4/action-2 pass; decoy-2 rerun pass; PR #116"
    },
-   "failures": 0,
-   "claim": {
-    "manager": 1,
-    "at": "2026-11-11T18:07:17-06:00",
-    "fingerprint": "dc8b74cd3a180eee",
-    "prompt_sha": "9ac974324f1c"
-   }
+   "failures": 0
   }
  ],
  "prompts": {

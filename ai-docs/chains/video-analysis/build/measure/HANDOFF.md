@@ -1,6 +1,6 @@
 # HANDOFF: video analysis chain measure
 
-Status: ready
+Status: finished
 
 Split out of the "Video analysis track" in ai-docs/HANDOFF.md on 2026-11-11. Steps are in the chain prompt.
 
@@ -11,8 +11,10 @@ Done:
 - Session 4: PR #118 checks confirmed green; step 3 second pass sized rooms 6 (3.8 H) and 9 (5.7 H, door ruler); shots.json found only 29 shots.
 - Session 2: step 2 done, `pan` uses ORB landmarks + RANSAC by default (see log 2026-11-11 measure chain, session 2).
 
-Next:
-1. Step 3 continued: rerun `shots --threshold 0.15` (0.3 merged long takes), find wide frames for rooms 4 and 7, take the first wide shot after each room's entry cut (frames in Ai/madnesswright-lab/nexus/measure), `pan` only inside that shot, add a horizon or a door ruler, re-run `scale`; then write the rooms 2-10 notation (`examples/film-notation`).
-2. Step 1 remainder: side-by-side render with a character at the back wall. Needs a Unity build of the madnesswright level at the new size; this chain may not change madnesswright, so it belongs to whoever takes #91.
+- Session 5: step 3 done. shots at 0.15 (51 shots); rooms 4 (3.6 x 1.44 H) and 7 (3.6 x 1.95 H, only measured ceiling) from wide frames; notation examples/film-notation/nexus-rooms2-10.notation.md; PR #120 merged. Doors measure about 1.1 H, not 1.4.
 
-Waiting on Mark: nothing for step 3.
+Next:
+1. None for this chain. Step 1's side-by-side render (character at the back wall) needs a Unity build of the madnesswright level, which this chain may not change; it goes with whoever takes madnesswright #91.
+2. Optional later: depth for rooms 2-10 needs a frame with a horizon or two figures at different depths.
+
+Waiting on Mark: nothing.
