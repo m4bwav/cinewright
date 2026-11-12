@@ -989,3 +989,7 @@ Built `aidetect` in cine_analyze.py (tags incl. ComfyUI workflow and phone atoms
 ## 2026-11-11 scout chain session 1
 
 harvest.json for cinewright-analyze; private everscout beat video-analysis at ~/.everscout/beats/video-analysis (7 sources, all probe ok). Ran the 8 evals once each: 7/8; decoy-2 loaded analyze before qc, so the description now points own-take review to qc (rerun pending). aidetect shipped in 0.6.1, so trigger cases for it are next.
+
+## 2026-11-11 · video-analysis scout chain, session 2
+
+Added trigger-4 and action-2 for aidetect to cinewright-analyze evals; decoy-2 rerun passes; all three new runs pass (TESTS.md T-20261111-2).

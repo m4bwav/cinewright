@@ -30,6 +30,15 @@
       "runs": 3
     },
     {
+      "id": "trigger-4",
+      "kind": "trigger",
+      "prompt": "Run a check on D:/ComfyUI/output/video/arvum_hd_p4_s2/s2_00001_.mp4 and tell me how likely it is to be AI video, with timestamps for anything suspicious.",
+      "expectations": [
+        "the cinewright-analyze skill is invoked"
+      ],
+      "runs": 3
+    },
+    {
       "id": "decoy-1",
       "kind": "trigger",
       "decoy": true,
@@ -86,6 +95,22 @@
         "the reply says floor depth needs a horizon (receding wall edges or a second character at another depth) or stays unknown",
         "judge: the reply does not size the room as a multiple of a template or by eye (2 of 3 votes)"
       ],
+      "baseline": null,
+      "runs": 3
+    },
+    {
+      "id": "action-2",
+      "kind": "action",
+      "prompt": "Is D:/ComfyUI/output/video/arvum_hd_p1b_s2/s2_00001_.mp4 AI generated? Write whatever report you make to C:/Users/m4bwa/AppData/Local/Temp/cw-aidetect-eval.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so",
+        "the reply answers in confidence bands with timestamps, not a flat yes or no"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine_analyze\\.py\\s+aidetect"
+      },
       "baseline": null,
       "runs": 3
     }
