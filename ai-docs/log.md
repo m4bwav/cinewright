@@ -1016,3 +1016,4 @@ Step 3 finished: shots at threshold 0.15 (51 shots), wide frames for rooms 4 (3.
 ## 2026-11-11 technique harvest build (0.6.2)
 
 - New genvideo entry h3-reference-mode (1vhloyz, guide read), shot card `ref_type` + ladder in coverage-plan (1ul9iei), plate camera solve in blockout-control (1v3da53). Compile source lines per element deferred (no control-video field on cards; shared/lib 193/200 KB). 1ovih09 and 1rip661 wait on GPU tests. Checks: unittest 155 OK, kb lint 0 errors, budget YELLOW (model card 1196/1200).
+- 2026-11-12 0.6.3: cinewright-sets panoramas.md (Qwen 360 v2 + Klein 4B ERP routes, comfyui-gen tools/pano.py seam gate <5, strip-only fix) from harvest GPU tests 1pltzay/1rip661; ai-continuity keyframe face fix (1rcemhe). unittest OK, kb lint 0 errors, budget no red, validate passed x4, scrub no hits in changed files.
