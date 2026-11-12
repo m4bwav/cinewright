@@ -1,6 +1,6 @@
 ---
 name: cinewright-analyze
-description: "Take an existing video apart into film notation and rebuild from it: shots, camera moves, sets measured in character heights, blocking, cast, props, audio; then shot cards or a game level brief. Also judges whether a video is AI-made. Use on 'break down this film', 'shot list from this YouTube video', 'how big is this room', 'rebuild this set as a level', 'is this video AI'. Not for checking your own rendered take against its shot card (keep or reroll): that is cinewright-qc. Also 'refresh cinewright-analyze'."
+description: "Take an existing video apart into film notation and rebuild from it: shots, camera moves, sets measured in character heights, blocking, cast, props, audio; then shot cards or a game level brief. Also judges whether a video is AI-made. Use on 'break down this film', 'shot list from this YouTube video', 'how big is this room', 'is this video AI'. Own takes vs their card: cinewright-qc. Also 'refresh cinewright-analyze'."
 license: MIT
 ---
 

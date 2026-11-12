@@ -1,0 +1,38 @@
+{
+ "project": "cinewright",
+ "manager": 1,
+ "manager_prompt": "D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/knowledge/manager-prompt.md",
+ "parent": "chains.json",
+ "report": null,
+ "managers": [
+  {
+   "n": 1,
+   "started": "2026-11-11T17:10:28-06:00"
+  }
+ ],
+ "sessions_total": 0,
+ "reports_this_manager": 0,
+ "budget": {
+  "handover_after_reports": 12,
+  "max_sessions": 6,
+  "failures_before_parking": 2
+ },
+ "chains": [
+  {
+   "name": "scout",
+   "prompt": "D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/video-analysis-scout-chain-prompt.md",
+   "handoff": "D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/knowledge/scout/HANDOFF.md",
+   "state": "ready",
+   "sessions": 0,
+   "claim": {
+    "manager": 1,
+    "at": "2026-11-11T17:52:53-06:00",
+    "fingerprint": "df88447a36e03d1d",
+    "prompt_sha": "9ac974324f1c"
+   }
+  }
+ ],
+ "prompts": {
+  "9ac974324f1c": "# Chain prompt: cinewright video analysis, harvest, scout and evals\n\nThis prompt does not change between sessions. State lives in `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/knowledge/scout/HANDOFF.md`, never here. Work in the cinewright repo (`D:/m4bwa/Claude/Projects/Ai/cinewright`).\n\n## Load state first\n\n1. Read the goal, motivating failure and stop points in `D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/2026-11-11-video-analysis-continue-prompt.md` (do not run its order of work; this chain owns only the part below).\n2. Read this chain's HANDOFF.md, then the \"Video analysis track\" section of `ai-docs/HANDOFF.md`, the newest `ai-docs/log.md` entries, `AGENTS.md` and `CODEMAP.md`.\n3. Compare HANDOFF.md's age with the log and git commits; trust the newer evidence.\n\n## This chain's work, in order\n\n1. Add technique-harvest targets (Ai/technique-harvest) and everscout beats (Ai/everscout) for film analysis and notation, AI-video detection, and video extraction with Gemini and other multimodal models, matching how existing targets and beats are written.\n2. Run evergreen-test on cinewright-analyze's 8 cases; hand failures to evergreen-tune.\n3. Once the aidetect chain (build manager) has shipped, add trigger cases for it.\n\n## Stop early\n\nStop with `Status: waiting` when the next step needs Mark: paid API spend past a small test, any madnesswright change beyond a brief or issue, or a release that renames public skills. Put the question on an askwright page, name the set in HANDOFF.md, and do every other step first. After the last step, write `Status: finished`.\n\n## Hand-over\n\n- Commit on a branch, open a PR, merge it yourself once checks pass (global rules); tag and release if the version is bumped, then update installed plugins. Other chains share this repo: pull before branching, keep PRs small.\n- Log the session in `ai-docs/log.md`; research in `ai-docs/research/`.\n- Last steps, in order: run evergreen-wrapup (skip quietly if absent; report a failure, never block), update this chain's HANDOFF.md (done, next, waiting on Mark, Status), then end with only this report: outcome (worked, idle, waiting, finished, failed); one line on what changed; questions page if any; HANDOFF.md path. When run by hand, print exactly:\n\n`Execute D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/video-analysis-scout-chain-prompt.md`\n"
+ }
+}
