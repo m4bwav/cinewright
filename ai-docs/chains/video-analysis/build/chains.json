@@ -13,8 +13,8 @@
    "usd": null
   }
  ],
- "sessions_total": 2,
- "reports_this_manager": 2,
+ "sessions_total": 6,
+ "reports_this_manager": 6,
  "budget": {
   "handover_after_reports": 12,
   "max_sessions": 12,
@@ -25,8 +25,8 @@
    "name": "measure",
    "prompt": "D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/plans/video-analysis-measure-chain-prompt.md",
    "handoff": "D:/m4bwa/Claude/Projects/Ai/cinewright/ai-docs/chains/video-analysis/build/measure/HANDOFF.md",
-   "state": "waiting",
-   "sessions": 1,
+   "state": "finished",
+   "sessions": 5,
    "history": [
     {
      "at": "2026-11-11T17:37:48-06:00",
@@ -37,12 +37,52 @@
      "usd": null,
      "model": null,
      "prompt_sha": "1e8085c13c39"
+    },
+    {
+     "at": "2026-11-11T18:56:28-06:00",
+     "manager": 1,
+     "outcome": "worked",
+     "seconds": 262,
+     "tokens": 78679,
+     "usd": null,
+     "model": null,
+     "prompt_sha": "1e8085c13c39"
+    },
+    {
+     "at": "2026-11-11T19:01:01-06:00",
+     "manager": 1,
+     "outcome": "worked",
+     "seconds": 230,
+     "tokens": 97348,
+     "usd": null,
+     "model": null,
+     "prompt_sha": "1e8085c13c39"
+    },
+    {
+     "at": "2026-11-11T19:04:59-06:00",
+     "manager": 1,
+     "outcome": "worked",
+     "seconds": 324,
+     "tokens": 75707,
+     "usd": null,
+     "model": null,
+     "prompt_sha": "1e8085c13c39"
+    },
+    {
+     "at": "2026-11-11T19:10:29-06:00",
+     "manager": 1,
+     "outcome": "finished",
+     "seconds": 295,
+     "tokens": 89889,
+     "usd": null,
+     "model": null,
+     "prompt_sha": "1e8085c13c39"
     }
    ],
    "last": {
-    "at": "2026-11-11T17:38:43-06:00",
-    "outcome": "waiting",
-    "report": "step 1 waits on Mark measuring character height (madnesswright #91); step 2 pan not started"
+    "at": "2026-11-11T19:15:30-06:00",
+    "outcome": "finished",
+    "report": "rooms 4,7 measured, notation rooms 2-10 done, PR #120 merged; render moves to madnesswright #91"
    },
    "failures": 0
   },
