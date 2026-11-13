@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-20261101-1 · 2026-11-01 · Camera changes on stops, dominance picks the move, faked contact by lens (MS1)
+Entry shape: `### C-20261113-1 · 2026-11-13 · Test plate under each source colour
+- because: Bellantoni 2005, a cinematographer's practice quoted in the book; book rule, unverified here
+- files: references/color-temperature.md (Pitfalls)
+- A colour word is the colour under white light; test a two-light location once per source before locking colours.
+
+### C-20261101-1 · 2026-11-01 · Camera changes on stops, dominance picks the move, faked contact by lens (MS1)
 - because: book distillation (Kenworthy, *Master Shots* Vol. 1, 2009), pre-approved
 - files: shared/vocab/camera-moves.md (copied to references/camera-moves.md), references/move-grammar.md, references/lens-choice.md
 - Camera changes height only when movers stop and can take a blow; confrontation moves follow dominance; long lens fakes contact and gain without gain. All marked book rule, unverified.

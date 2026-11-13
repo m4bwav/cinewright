@@ -1836,6 +1836,19 @@ class TestVisualStructure(Base):
             self.assertIn(flag, out)
         self.assertIn("order,card,scene,scene_intensity", lib.read_text(self.tmp / "g.csv"))
 
+    def test_cards_graph_flags_colour_motifs(self):
+        proj = self.graph_project([(10, "flat", "blue"), (45, "limited", "blue"), (95, "deep", "red"), (30, "flat", "amber")], climax="3", peaks=["3"])
+        style = json.loads(lib.read_text(proj / "bibles/style.json"))
+        style["visual_structure"]["motifs"] = [{"hue": "red", "enters": "3", "reserved_until": "3"}, {"hue": "yellow", "reserved_until": "2"},
+                                               {"hue": "violet", "enters": "4", "reserved_until": "4"}]
+        lib.write_text(proj / "bibles/style.json", json.dumps(style))
+        code, out = run("cards", "graph", proj)
+        self.assertIn("FLAG MOTIF: yellow never enters", out)
+        self.assertIn("FLAG RESERVED: yellow is held back for scene 2 but shows in scene 1", out)
+        self.assertNotIn("red is held back", out)
+        self.assertNotIn("violet", out)
+        self.assertIn("2 flag(s)", out)
+
     def test_cards_graph_passes_a_shaped_curve(self):
         proj = self.graph_project([(10, "flat", "blue"), (45, "limited", "blue"), (95, "deep", "red"), (30, "flat", "amber")], climax="3", peaks=["3"])
         code, out = run("cards", "graph", proj)
@@ -1948,6 +1961,16 @@ class TestLookMeasures(Base):
         self.assertGreater(h["horizontal"], 0.8)
         self.assertGreater(v["vertical"], 0.8)
         self.assertGreater(d["diagonal"], 0.8)
+
+    def test_dominant_hue_and_plan_word(self):
+        for k, c, word in (("A", "0x2050c0", "blue"), ("B", "0xd08030", "orange"), ("C", "0x30a040", "green"), ("D", "0x7030a0", "purple")):
+            f = self.tmp / ("take_1%s-1.png" % k)
+            self.ffmpeg("-f", "lavfi", "-i", "color=c=%s:s=160x90" % c, "-frames:v", "1", f)
+            self.assertEqual(post.hue_word(post.look_stats(f)["hue"]), word)
+        proj = self.plan_project({"component": "hue", "mode": "progression"}, color={"hue": "blue and gold"})
+        code, out = run("grade", "measure", "--plan", proj, self.tmp / "take_1A-1.png", self.tmp / "take_1C-1.png", script=self.POST)
+        self.assertNotIn("hue blue, planned", out)
+        self.assertIn("hue green, planned blue and gold", out)
 
     def shots(self, levels, names=("1A", "1B", "1C", "1D")):
         out = []

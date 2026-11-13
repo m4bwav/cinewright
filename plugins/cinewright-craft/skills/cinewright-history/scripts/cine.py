@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:10aed5cbc96ceadb18721f0a8267c576ff3999907204c651e6e4ffb0350ef30c; edit the source
+# copied from shared/lib/cine.py sha256:32b3df0069b266f4655c5f544aa20ee9521592e0ac63e4959ff057c9c3f603e9; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -715,6 +715,16 @@ def cards_graph(p):
             if near and level[s] < max(near):
                 flags.append(("PEAK", "%s spikes at scene %s (%d), but a neighbour is more intense (%d): a contrast with no story peak under it" % (
                     pl["component"], s, level[s], max(near))))
+    for m in vs.get("motifs", []):  # colour motifs (cinewright-design color-motifs)
+        hue, held = m["hue"], m.get("reserved_until")
+        if m.get("enters") not in order:
+            flags.append(("MOTIF", "%s never enters: give it an enters scene that has cards" % hue))
+        for s in order[:order.index(held)] if held in order else []:
+            cast = {m.get("id") for c in p.cards if c.get("scene") == s for m in c.get("cast", [])}
+            txt = json.dumps([p.scene_map.get(s), [c for c in p.cards if c.get("scene") == s],
+                              [wardrobe_for(p.chars[i], s) for i in cast if i in p.chars]]).lower()
+            if re.search(r"\b%s\b" % re.escape(hue.lower()), txt):
+                flags.append(("RESERVED", "%s is held back for scene %s but shows in scene %s" % (hue, held, s)))
     return rows, flags
 
 

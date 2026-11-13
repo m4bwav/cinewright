@@ -26,6 +26,7 @@ sources: ["https://en.wikipedia.org/wiki/Color_temperature", "Blain Brown, Motio
 
 - A kelvin number alone ("3200K light") may print as text or be ignored; pair it with the source word.
 - Mixing color words between cards of one scene shifts the color of everything, like changing the look string.
+- A set or wardrobe colour word is its colour under white light; warm light browns a blue-grey wall, cool light pushes it bluer. For a location under two `sun` colours, render one test plate under each before locking colours (Bellantoni 2005, a cinematographer's practice).
 
 ## Verify
 

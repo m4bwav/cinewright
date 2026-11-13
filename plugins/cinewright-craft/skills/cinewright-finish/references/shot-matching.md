@@ -27,6 +27,7 @@ sources: ["Lance Phillips, Video Editing Made Easy with DaVinci Resolve 18, 2023
 - Strength 0.5 to 0.8; per-channel gain is clamped to 0.4 to 2.5 so a near-flat shot cannot blow up its noise.
 - Luma targets are 0 to 255 full range (Rec.709 weights), not the 16 to 235 video range scopes show.
 - `grade measure --plan` classes: brightness by thirds (under 85 dark, 170 and up bright); chroma under 0.10 muted, 0.155 and up saturated; warmth under 0.02 cool, 0.13 and up warm. Chroma and warmth bounds sit at the sixths of 354 shots from local multi-shot films (2026-10-22), which run warm. Uncalibrated: on those films the classes did not separate takes a reviewer faulted for light (in-sample, 10 faults).
+- Hue: `grade measure` names the chroma-weighted dominant hue (eight words); `--plan` flags a shot over 45 degrees from every colour word in the row's `hue`. 11 of 12 kept takes matched by eye (2026-11-13), but most read orange from skin and sand, so it catches gross drift only.
 
 ## Vocabulary
 

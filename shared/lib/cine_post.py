@@ -29,6 +29,7 @@ grade stabilize: per-frame gains toward one reference frame, smoothed over a sec
 sendcmd; fixes slow exposure and white balance drift inside a take. Order: stabilize, deflicker, match, look.
 """
 import argparse
+import colorsys
 import importlib.util
 import json
 import math
@@ -202,14 +203,17 @@ PLAN_RHO = 0.3  # |Spearman rho| below this is "weak": the measure neither follo
 def look_stats(path):
     w, h = 160, 90
     ys, chroma, warm, edges = [], 0.0, 0.0, [0, 0, 0]  # edges: horizontal, vertical, diagonal
-    count = 0
+    count, bins = 0, [0.0] * 36
     for fr in frames_rgb(path, size=(w, h), fps=2.0):
         y = [0.2126 * fr[i] + 0.7152 * fr[i + 1] + 0.0722 * fr[i + 2] for i in range(0, len(fr), 3)]
         ys.extend(y)
         for i in range(0, len(fr), 3):
             r, g, b = fr[i], fr[i + 1], fr[i + 2]
-            chroma += (max(r, g, b) - min(r, g, b)) / 255
+            c = (max(r, g, b) - min(r, g, b)) / 255
+            chroma += c
             warm += (r - b) / 255
+            if c >= 0.04:
+                bins[int(colorsys.rgb_to_hsv(r, g, b)[0] * 36) % 36] += c
         count += len(y)
         mags = []
         for yy in range(1, h - 1):
@@ -228,10 +232,25 @@ def look_stats(path):
     n = max(1, sum(edges))
     out = {"luma": sum(ys) / len(ys), "contrast": ys[int(0.95 * (len(ys) - 1))] - ys[int(0.05 * (len(ys) - 1))],
            "chroma": chroma / count, "warmth": warm / count, "horizontal": edges[0] / n, "vertical": edges[1] / n, "diagonal": edges[2] / n}
+    sm = [bins[i - 1] + bins[i] + bins[(i + 1) % 36] for i in range(36)]  # chroma-weighted, 30-degree window
+    out["hue"] = max(range(36), key=lambda i: (sm[i], bins[i])) * 10 + 5
     if Path(path).suffix.lower() not in STILL_EXT:
         mo = [m for _, m in cine.frame_motion(path)][1:]
         out["motion"] = sum(mo) / len(mo) if mo else 0.0
     return out
+
+
+HUES = {"red": 0, "crimson": 350, "rust": 20, "orange": 30, "amber": 40, "ochre": 40, "gold": 45, "yellow": 55, "lime": 80, "green": 120,
+        "teal": 175, "turquoise": 175, "cyan": 185, "blue": 220, "navy": 225, "indigo": 250, "violet": 270, "purple": 280, "magenta": 320, "pink": 335}
+HUE_OFF = 45  # degrees; 11 of 12 kept multi-shot takes read by eye matched the nearest word (2026-11-13)
+
+
+def hue_gap(a, b):
+    return min(abs(a - b) % 360, 360 - abs(a - b) % 360)
+
+
+def hue_word(deg):
+    return min(("red", "orange", "yellow", "green", "teal", "blue", "purple", "magenta"), key=lambda k: hue_gap(HUES[k], deg))
 
 
 def classify(s):
@@ -282,9 +301,12 @@ def plan_report(p, shots):
                 if gap:
                     miss.append("%s %s, planned %s" % (k, cls[k], want[k]))
                     against += gap == 2
+        named = [HUES[w] for w in re.findall(r"[a-z]+", str(want.get("hue", "")).lower()) if w in HUES]
+        if named and "hue" in s and min(hue_gap(d, s["hue"]) for d in named) > HUE_OFF:
+            miss.append("hue %s, planned %s" % (hue_word(s["hue"]), want["hue"]))
         rows.append((c, s, c.get("intensity", sc.get("intensity")), miss))
-        out.append("%-5s int %3s  luma %5.1f  contrast %5.1f  chroma %.3f  warmth %+.3f  diagonal %.2f  motion %s%s" % (
-            c["id"], "-" if rows[-1][2] is None else rows[-1][2], s["luma"], s["contrast"], s["chroma"], s["warmth"], s["diagonal"],
+        out.append("%-5s int %3s  luma %5.1f  contrast %5.1f  chroma %.3f  warmth %+.3f  hue %s  diagonal %.2f  motion %s%s" % (
+            c["id"], "-" if rows[-1][2] is None else rows[-1][2], s["luma"], s["contrast"], s["chroma"], s["warmth"], hue_word(s["hue"]), s["diagonal"],
             "%.2f" % s["motion"] if "motion" in s else "-", ("  OFF " + "; ".join(miss)) if miss else ""))
     vs = p.style.get("visual_structure", {})
     graded = [r for r in rows if r[2] is not None]

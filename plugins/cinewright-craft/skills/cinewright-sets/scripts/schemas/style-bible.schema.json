@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/style-bible.schema.json sha256:9b50536dbd5e317047aa1ec794e255ba6be61081ad26f47702f1a6ea65324fe0; edit the source",
+  "$comment": "copied from shared/schemas/style-bible.schema.json sha256:5d9d4fbb1785b0bff32c50bd48de18c52d6c2617a19f3f83048407f6f087f9fc; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Style bible",
   "description": "One per project (bibles/style.json): format and the look string every compiled prompt ends with.",
@@ -190,6 +190,39 @@
             "type": "string"
           },
           "description": "What the first use taught each value to mean, e.g. red: danger."
+        },
+        "motifs": {
+          "type": "array",
+          "description": "Colour motifs (cinewright-design color-motifs); cards graph flags one that never enters or a held-back hue seen early.",
+          "items": {
+            "type": "object",
+            "required": [
+              "hue"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "hue": {
+                "type": "string",
+                "description": "Plain colour word, as in scene color rows and wardrobe."
+              },
+              "carrier": {
+                "type": "string",
+                "description": "wardrobe, prop, set, light, atmosphere, liquid or skin."
+              },
+              "owner": {
+                "type": "string",
+                "description": "Character or faction id."
+              },
+              "enters": {
+                "type": "string",
+                "description": "Scene id where it first appears; should be a turn."
+              },
+              "reserved_until": {
+                "type": "string",
+                "description": "Scene id it is held back for; no earlier scene may show it."
+              }
+            }
+          }
         }
       }
     }

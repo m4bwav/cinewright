@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261113-1 · 2026-11-13 · Dominant hue in grade measure
+- because: book track if-its-purple (Bellantoni 2005: readings turn on the hue variant); measured on 12 kept local takes, 11 matched by eye
+- files: references/shot-matching.md (Numbers), shared/lib/cine_post.py
+- `grade measure` prints a chroma-weighted dominant hue word per shot, and `--plan` flags a shot more than 45 degrees from every hue word in the scene row.
+
 ### C-20261112-1 · 2026-11-12 · Vertical to wide with the LTX-2.3 Outpaint IC-LoRA
 - because: GPU test 2026-11-12 in the technique harvest (post 1tbuovn): centre kept at 35 dB, no seam, 70-92 s per 2 s clip
 - files: references/vertical-to-wide.md (new), SKILL.md (Step 4)
