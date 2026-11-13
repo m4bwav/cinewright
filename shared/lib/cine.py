@@ -714,6 +714,16 @@ def cards_graph(p):
             if near and level[s] < max(near):
                 flags.append(("PEAK", "%s spikes at scene %s (%d), but a neighbour is more intense (%d): a contrast with no story peak under it" % (
                     pl["component"], s, level[s], max(near))))
+    for m in vs.get("motifs", []):  # colour motifs (cinewright-design color-motifs)
+        hue, held = m["hue"], m.get("reserved_until")
+        if m.get("enters") not in order:
+            flags.append(("MOTIF", "%s never enters: give it an enters scene that has cards" % hue))
+        for s in order[:order.index(held)] if held in order else []:
+            cast = {m.get("id") for c in p.cards if c.get("scene") == s for m in c.get("cast", [])}
+            txt = json.dumps([p.scene_map.get(s), [c for c in p.cards if c.get("scene") == s],
+                              [wardrobe_for(p.chars[i], s) for i in cast if i in p.chars]]).lower()
+            if re.search(r"\b%s\b" % re.escape(hue.lower()), txt):
+                flags.append(("RESERVED", "%s is held back for scene %s but shows in scene %s" % (hue, held, s)))
     return rows, flags
 
 

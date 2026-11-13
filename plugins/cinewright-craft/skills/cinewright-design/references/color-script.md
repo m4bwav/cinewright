@@ -43,3 +43,5 @@ sources: ["Bruce Block, The Visual Story, 3rd ed., 2021, ch. 6 (Color)", "James 
 ## Verify
 
 - `style.json` has a `palette`; the design notes hold one color-script row per scene; the look string is the same in every compiled prompt.
+
+Related: see also [color-associations](color-associations.md), [color-motifs](color-motifs.md).

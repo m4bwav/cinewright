@@ -2,6 +2,11 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
+### C-20261113-1 · 2026-11-13 · Colour associations and colour motifs
+- because: R-20261113-1 (Bellantoni 2005, book rule, unverified, culture-bound); RESERVED check measured on one local film, 12 of 12 hits right by eye
+- files: references/color-associations.md, references/color-motifs.md (new), references/color-script.md (Related line), SKILL.md Step 1 item 2, shared schema `visual_structure.motifs`, `cards graph` MOTIF and RESERVED flags
+- Default hue readings written as questions to check a plan against, and motif devices with two script checks.
+
 ### C-20261110-2 · 2026-11-10 · RefMod prompt builder; dataset repeat rule
 - because: technique harvest 2026-11-10 (posts 1wtu82e unmeasured, 1x0imbp single maker)
 - files: references/lora-or-references.md (RefMod Text Encode for several characters; anything in over a third of the set becomes identity, check proportions; trims for budget)

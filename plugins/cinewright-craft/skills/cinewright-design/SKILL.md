@@ -17,7 +17,7 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 ## Step 1: visual structure, palette and color script
 
 1. Draw the story graph: `intensity` 0-100 on every scene, then `visual_structure` in `style.json` (point of view, constants, at most three changing components, the climax). Run `CINE cards graph <project>` and answer every flag (`kb show visual-structure`).
-2. Set three to five named colors in `palette` and one scheme, then each scene's `color` row (hue, brightness third, saturation, warmth) in `bibles/scenes.json`, with why in `design.md` (`kb show color-script`).
+2. Set three to five named colors in `palette` and one scheme, then each scene's `color` row (hue, brightness third, saturation, warmth) in `bibles/scenes.json`, with why in `design.md` (`kb show color-script`); check meanings against `kb show color-associations` and plan motifs (`kb show color-motifs`).
 
 ## Step 2: costumes
 
