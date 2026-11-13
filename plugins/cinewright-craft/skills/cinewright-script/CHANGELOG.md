@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261113-1 · 2026-11-13 · Narration writing, nonfiction honesty, the train (Documentary Storytelling)
+- because: book distillation (technique-harvest), R-20261113-1
+- files: references/narration-writing.md (new), nonfiction-honesty.md (new), logline-and-beats.md; SKILL.md
+- New entries narration-writing and nonfiction-honesty (the disclosure rule is ours, marked so); logline-and-beats names the train and the point of attack; SKILL.md step 3 points to both. Book rules, unverified.
+
 ### C-20261109-3 · 2026-11-09 · Structure and performance rules from Mamet, Proferes, DeKoven and Bordwell (books round 5, track 23)
 - because: book distillation (round 5), pre-approved
 - files: references/logline-and-beats.md, scene-turns.md, performance-words.md; shared/vocab/performance-verbs.md

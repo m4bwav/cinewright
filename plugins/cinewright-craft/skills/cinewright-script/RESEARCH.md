@@ -46,6 +46,13 @@ Best sources (primary first): McKee, Story; Snyder, Save the Cat!; Field, Screen
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261113-1 · 2026-11-13 · Narration writing, nonfiction honesty, the train (Documentary Storytelling)
+- Summary: New entries narration-writing and nonfiction-honesty (the disclosure rule is ours, marked so); logline-and-beats names the train and the point of attack; SKILL.md step 3 points to both. Book rules, unverified.
+- Track: subject
+- Sources: Sheila Curran Bernard, Documentary Storytelling, 5th ed. (paraphrased; no text copied)
+- Magnitude: 0.2
+- Applied: C-20261113-1
+
 ### R-20261004-1 · 2026-10-04 · Initial research
 - Summary: Built from the research brief §3 story row and §4 sources (subject), vendor dialogue guides on the genvideo cards (practice), the competitor study (tooling: competitors write scripts as prose with no length check), and TESTING.md (testing: the diff's DIALOGUE warning is the checkable part).
 - Track: subject
