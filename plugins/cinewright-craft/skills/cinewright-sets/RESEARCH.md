@@ -49,6 +49,13 @@ Best sources (primary first): vendor docs and model cards (Google, Runway, Kling
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261113-1 · 2026-11-13 · Clearance beyond logos, standing-set check, set tiers and ticks (Art Direction Handbook)
+- Summary: set-check clearance list (plates, phone numbers, addresses, business names) and a cross-scene wear and hero-dressing check; set-plan tiers (hero, story, dispensable) and signage, graphics, repaint ticks. Book rules, unverified.
+- Track: subject
+- Sources: The Art Direction Handbook for Film (paraphrased; no text copied)
+- Magnitude: 0.2
+- Applied: C-20261113-1
+
 ### R-20261017-1 · 2026-10-17 · 3D for film and AI video, from the director's side
 - Track: subject, practice · magnitude minor (new reference)
 - Previs, techvis and postvis answer different questions (The Third Floor). Detail follows the largest on-screen size, with an LOD ladder per shot size (CAVE Academy, 2020); hero status comes from screen time and story, not polish. Far scenery is a 2.5D projection or a plate card while the camera moves little. Kitbashing builds hard-surface sets fast. Productions use Gaussian splats for scouting, layout and sightlines, not final pixels (Jurassic World Rebirth, 2026-02-13). For AI video the blockout is for spatial reference, and too much detail confuses the model (flick.art, 2026-06). Matches the field tests of 2026-10-13 to 10-17. Led to entry 3d-models.

@@ -46,6 +46,13 @@ Best sources (primary first): Murch, In the Blink of an Eye; Dancyger, The Techn
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261113-1 · 2026-11-13 · Draft cut review: structure map and draft-cut failures (Documentary Storytelling)
+- Summary: New entry draft-cut-review: a structure map (section times, loudness peaks, cut times, train start) and the draft-cut failure list. The map was tried on one 148 s local cut and flagged real faults (transit as loud as the crash, even cut rhythm, train at 30 percent); failure list is book rule, unverified.
+- Track: subject
+- Sources: Sheila Curran Bernard, Documentary Storytelling, 5th ed. (paraphrased; no text copied)
+- Magnitude: 0.2
+- Applied: C-20261113-1
+
 ### R-20261004-1 · 2026-10-04 · Initial research
 - Summary: Built from the research brief §3 editing row (subject: Murch's six with his weights, J and L cuts, match and smash cuts, cut on action, average shot length), the ffmpeg filter documentation (tooling: trim, atrim, concat, scene detection; checked this session), the S5 exit check on the S2 render (practice: internal cuts at 6.000 s and 10.458 s, 336 frames conformed to 14.000 s), and TESTING.md (testing: a cut list file and a conform whose length matches it are checkable evidence).
 - Track: subject

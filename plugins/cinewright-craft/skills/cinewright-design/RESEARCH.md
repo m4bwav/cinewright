@@ -46,6 +46,13 @@ Best sources (primary first): LoBrutto, The Filmmaker's Guide to Production Desi
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261113-1 · 2026-11-13 · Dated source per period prop; visual concept and cliche check (Art Direction Handbook)
+- Summary: prop-constants: each period prop names a dated source and year, no guessed details; visual-structure: one-line visual concept and a cliche check. Book rules, unverified.
+- Track: subject
+- Sources: The Art Direction Handbook for Film (paraphrased; no text copied)
+- Magnitude: 0.2
+- Applied: C-20261113-1
+
 ### R-20261113-1 · 2026-11-13 · Bellantoni, If It's Purple, Someone's Gonna Die (2005)
 - Summary: Default readings per hue variant and motif devices (character arc, faction colour, held-back colour, entering colour, show before remove). Every reading is the author's classroom observation and hindsight on Western films: book rule, unverified, culture-bound, no measurement or controls. It disagrees with Block's taught-meaning rule; reconciled as Block's rule stands and the table marks where a taught meaning starts uphill. The held-back check (cards graph RESERVED) was measured on one local film's bibles with five trial reserved hues: 12 hits, 12 right by eye (one an off-white). The gendered and pseudoscientific claims were left out.
 - Track: subject

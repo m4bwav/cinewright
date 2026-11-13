@@ -26,7 +26,8 @@ For each scene, write its goal, its opposition and its turn, with the value and 
 
 1. Plain-text screenplay: slugline, action, character cue, parenthetical, dialogue (`kb show screenplay-format`). No camera directions.
 2. Lines: one speaker per shot and that speaker in the shot, 2.5 words a second at most, words a voice says cleanly (`kb show dialogue-for-generated-voices`). Give every speaker a `voice` string in the character bible, and every rare name that is spoken a `pronounce` respelling from the source the owner trusts.
-3. Copy each slugline into `bibles/scenes.json` as the scene's `heading`.
+3. Narration (voice-over, explainers): write it once cards exist, against the shots (`kb show narration-writing`). A film that claims to be true follows `kb show nonfiction-honesty`.
+4. Copy each slugline into `bibles/scenes.json` as the scene's `heading`.
 
 ## Step 4: hand off and check
 

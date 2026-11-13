@@ -2,6 +2,11 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
+### C-20261113-1 · 2026-11-13 · Dated source per period prop; visual concept and cliche check (Art Direction Handbook)
+- because: book distillation (technique-harvest), R-20261113-1
+- files: references/prop-constants.md, visual-structure.md
+- prop-constants: each period prop names a dated source and year, no guessed details; visual-structure: one-line visual concept and a cliche check. Book rules, unverified.
+
 ### C-20261113-1 · 2026-11-13 · Colour associations and colour motifs
 - because: R-20261113-1 (Bellantoni 2005, book rule, unverified, culture-bound); RESERVED check measured on one local film, 12 of 12 hits right by eye
 - files: references/color-associations.md, references/color-motifs.md (new), references/color-script.md (Related line), SKILL.md Step 1 item 2, shared schema `visual_structure.motifs`, `cards graph` MOTIF and RESERVED flags

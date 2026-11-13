@@ -3,8 +3,8 @@ title: Set plan
 slug: set-plan
 summary: Write each set as a plan before any image: walls by compass name and what stands on each, doors, windows, hero dressing, north arrow, sun per scene, and the walls each camera sees.
 tags: [sets, plan, floor-plan, location, research]
-last_checked: 2026-10-07
-sources: ["https://filmlocal.com/?p=1450172", "https://howtofilmschool.com/dictionary/overhead/", "https://howtofilmschool.com/dictionary/flyaway-set/", "https://www.screenskills.com/media/8415/aad-v4-final_clean.pdf", "Vincent LoBrutto, The Filmmaker's Guide to Production Design, 2002"]
+last_checked: 2026-11-13
+sources: ["https://filmlocal.com/?p=1450172", "https://howtofilmschool.com/dictionary/overhead/", "https://howtofilmschool.com/dictionary/flyaway-set/", "https://www.screenskills.com/media/8415/aad-v4-final_clean.pdf", "Vincent LoBrutto, The Filmmaker's Guide to Production Design, 2002", "The Art Direction Handbook for Film (set tiers and ticks, book rule, unverified)"]
 ---
 
 # Set plan
@@ -19,6 +19,8 @@ sources: ["https://filmlocal.com/?p=1450172", "https://howtofilmschool.com/dicti
   4. North arrow and the sun's direction for each scene's time of day.
   5. Coverage map: each planned camera, where it stands, which wall it faces. Walls no camera sees need no plate.
   6. Plate log: one line per plate, with its verdict (entry set-check).
+- Give each set a tier: hero (the story turns there; full plan, every plate), story (seen in several shots; the walls cameras see), dispensable (one shot; one plate). Spend plates by tier.
+- Tick per set whether it needs signage, graphics (screens, papers, posters) or a repaint (a state change mid-film); each tick is work for cinewright-design or cinewright-finish.
 - A real place: research its current state, not its famous state. Date every fact and tag it: confirmed by dated reporting, long-standing but not re-checked, or unverified. Buildings change; a remodel two years ago makes the classic photos wrong.
 - Draw the plan as a table or a simple text diagram. A rendered plan image is optional; the walls list is what feeds the prompts.
 - Leave people out of the set. Portraits, statues and photos of real people are dressing: describe them generically (gilt-framed portraits), never as a named likeness.

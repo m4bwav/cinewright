@@ -3,8 +3,8 @@ title: Visual structure plan
 slug: visual-structure
 summary: Block's plan: story intensity 0-100 per scene, one line of point of view, and per component a constant, a progression or peaks; cards graph and grade measure --plan check it.
 tags: [design, visual-structure, intensity, contrast, affinity, block, story-graph]
-last_checked: 2026-10-22
-sources: ["Bruce Block, The Visual Story, 3rd ed., 2021, ch. 1-2, 9-10"]
+last_checked: 2026-11-13
+sources: ["Bruce Block, The Visual Story, 3rd ed., 2021, ch. 1-2, 9-10", "The Art Direction Handbook for Film (visual concept and cliche check, book rule, unverified)"]
 ---
 
 # Visual structure plan
@@ -14,6 +14,7 @@ sources: ["Bruce Block, The Visual Story, 3rd ed., 2021, ch. 1-2, 9-10"]
 - Every frame is built from seven components: space, line, shape, tone, colour, movement and rhythm. They work on the audience whether planned or not, so plan them (after Block, *The Visual Story*).
 - Contrast in a component raises visual intensity; affinity (sameness) lowers it. This holds inside a shot, from shot to shot and from sequence to sequence.
 - Draw the story graph first: `intensity` 0-100 on each scene in `bibles/scenes.json`. Exposition sits low, the conflict climbs with dips, one scene is the climax at the top, the resolution comes back down. A one-scene film gets `intensity` per card instead.
+- Before the components, write the visual concept in one line: one core shape, image or metaphor the film is built on. Check it for cliche (sepia for the past, blue for sad, rain for grief); keep a cliche only as a choice.
 - Write the visual point of view in one line in `style.json` `visual_structure.point_of_view` ("a wary family: flat space, square shapes, cool colours").
 - For each component pick one plan: a constant (never changes), a progression (`from`, `to`, steadily across the film) or `peaks` (contrast spikes at named scenes). Most stay constant; two or three change at most. Constants are a list in `constants`.
 - Name the climax scene in `visual_structure.climax`. At the climax the changing components contrast hardest from shot to shot; the resolution returns to affinity.

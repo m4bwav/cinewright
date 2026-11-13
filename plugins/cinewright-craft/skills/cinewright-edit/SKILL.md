@@ -47,7 +47,7 @@ Set each scene's average shot length, then reach the target by dropping weak sho
 
 1. Write `edit/cut.md` with the columns in `kb show assembly-to-delivery`: slate, take, in, out, length, cut type, reason.
 2. Conform with ffmpeg trims and concat, re-encoding (never `-c copy`); keep the style's frame rate and size.
-3. Before picture lock, run the audience pass: a fresh context with no script, brief or cards watches the whole cut and says who is where, what happened and where it got lost (`kb show assembly-to-delivery`). Trace each note to its cause, often scenes earlier.
+3. Before picture lock, map the cut and check it for draft-cut failures (`kb show draft-cut-review`). Then run the audience pass: a fresh context with no script, brief or cards watches the whole cut and says who is where, what happened and where it got lost (`kb show assembly-to-delivery`). Trace each note to its cause, often scenes earlier.
 4. Check: `ffprobe` duration equals the table total within one frame; quote it. Then hand the locked cut to cinewright-finish and cinewright-sound.
 
 ## Output

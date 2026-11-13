@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261113-1 · 2026-11-13 · Draft cut review: structure map and draft-cut failures (Documentary Storytelling)
+- because: book distillation (technique-harvest), R-20261113-1
+- files: references/draft-cut-review.md (new); SKILL.md
+- New entry draft-cut-review: a structure map (section times, loudness peaks, cut times, train start) and the draft-cut failure list. The map was tried on one 148 s local cut and flagged real faults (transit as loud as the crash, even cut rhythm, train at 30 percent); failure list is book rule, unverified.
+
 ### C-20261109-2 · 2026-11-09 · Reaction timing, cut to the one acted on, splits lean to the POV, from Rabiger
 - because: book notes round5 (books/plugin-learnings, track 21)
 - files: references/reaction-timing.md (new), cut-points.md, j-and-l-cuts.md; vocab cut-terms (counterpoint, dissonance)

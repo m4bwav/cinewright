@@ -3,8 +3,8 @@ title: Prop constants
 slug: prop-constants
 summary: Give every prop that is held or seen close a fixed description in bibles/props.json; the compiler pastes it wherever a card holds the prop, and qc checks its look.
 tags: [design, props, bible, continuity]
-last_checked: 2026-10-09
-sources: ["Vincent LoBrutto, The Filmmaker's Guide to Production Design, 2002", "Field lesson 005, 2026-09-06: chained clips lose character identity and prop continuity"]
+last_checked: 2026-11-13
+sources: ["Vincent LoBrutto, The Filmmaker's Guide to Production Design, 2002", "Field lesson 005, 2026-09-06: chained clips lose character identity and prop continuity", "The Art Direction Handbook for Film (dated source per period prop, book rule, unverified)"]
 ---
 
 # Prop constants
@@ -14,7 +14,7 @@ sources: ["Vincent LoBrutto, The Filmmaker's Guide to Production Design, 2002", 
 - A prop the story turns on, or one held in any shot, gets an entry in `bibles/props.json`: `name` (the word cards use in `holding`) and `description`.
 - Description: material, size against a hand, shape, color, one wear detail. "a small dented tin matchbox with a hinged lid", not "a matchbox". 200 characters or fewer, one article, no emblems or text unless the story needs them.
 - The compiler pastes the description verbatim wherever a card's `holding` names the prop, and stops if it is missing from the prompt. `qc rubric` shows it beside the prop check.
-- Props are designed for the period and place in the location bible; a wrong-era object breaks the world faster than a wrong color.
+- Props are designed for the period and place in the location bible; a wrong-era object breaks the world faster than a wrong color. A period prop names its source and year in `design.md` (a dated photo, catalogue or museum record); a detail with no source is left plain, never guessed.
 - Hero prop: the one the scene turns on gets an insert (CU or ECU, no cast) and, if it recurs, a prop sheet in its `refs` (`kb show prop-sheets`). The compiler sends those refs with every shot that holds or features it.
 - A prop that changes (opens, breaks, burns) gets `states`, each with its whole description; cards pick one with `holding_state` or `props[].state`. A prop nobody holds but the shot features goes in the card's `props`.
 - Keep held props few: one per hand, one per person per shot. Models merge or duplicate small objects passed between hands.

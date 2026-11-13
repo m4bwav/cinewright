@@ -6,6 +6,11 @@ Entry shape: `### C-20261109-1 · 2026-11-09 · Time-to-Move measured
 - because: install tests 2026-11-09 in the technique harvest (post 1xjgy2w)
 - files: references/blockout-control.md (41/62/135 px path error, +20-28% GPU, hold 1 of 8 steps)
 
+### C-20261113-1 · 2026-11-13 · Clearance beyond logos, standing-set check, set tiers and ticks (Art Direction Handbook)
+- because: book distillation (technique-harvest), R-20261113-1
+- files: references/set-check.md, set-plan.md
+- set-check clearance list (plates, phone numbers, addresses, business names) and a cross-scene wear and hero-dressing check; set-plan tiers (hero, story, dispensable) and signage, graphics, repaint ticks. Book rules, unverified.
+
 ### C-20261112-2 · 2026-11-12 · coverage-angles: exact new angles from blockout depth + master + crop
 - because: technique harvest GPU test 2026-11-12 (post 1ovih09): layout error 1.5 px chamfer against 2.8 for the Multiple-Angles LoRA and 2.7 for the unchanged master, 60 s against 30 s; one room, one seed, box-room blockout
 - files: references/coverage-angles.md (new section, two sources)
