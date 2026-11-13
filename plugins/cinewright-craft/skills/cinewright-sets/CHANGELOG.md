@@ -6,6 +6,10 @@ Entry shape: `### C-20261109-1 · 2026-11-09 · Time-to-Move measured
 - because: install tests 2026-11-09 in the technique harvest (post 1xjgy2w)
 - files: references/blockout-control.md (41/62/135 px path error, +20-28% GPU, hold 1 of 8 steps)
 
+### C-20261112-2 · 2026-11-12 · coverage-angles: exact new angles from blockout depth + master + crop
+- because: technique harvest GPU test 2026-11-12 (post 1ovih09): layout error 1.5 px chamfer against 2.8 for the Multiple-Angles LoRA and 2.7 for the unchanged master, 60 s against 30 s; one room, one seed, box-room blockout
+- files: references/coverage-angles.md (new section, two sources)
+
 ### C-20261112-1 · 2026-11-12 · master-plates: two measured local pano routes, seam gate, strip-only fix
 - because: technique harvest GPU tests 2026-11-12 (posts 1pltzay Qwen 360 Diffusion v2, MIT; 1rip661 nomadoor Klein 4B ERP outpaint LoRA, Apache-2.0)
 - files: references/panoramas.md (new: recipes, comfyui-gen tools/pano.py crop and seam gate < 5, timings, 8-bit pitfall); references/master-plates.md (route 3 points to it)
