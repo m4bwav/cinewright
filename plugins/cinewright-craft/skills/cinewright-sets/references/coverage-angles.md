@@ -4,7 +4,7 @@ slug: coverage-angles
 summary: A plate for every wall a camera sees: small moves may come from the master with an angle-edit model, reverses come from their own wall string or a 3D source, never a 180-degree turn of the master.
 tags: [sets, coverage, reverse-angle, multi-angle, lora]
 last_checked: 2026-10-07
-sources: ["https://huggingface.co/fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA", "https://github.com/jtydhr88/ComfyUI-qwenmultiangle", "https://fal.ai/models/fal-ai/flux-2-lora-gallery/multiple-angles", "https://www.atlabs.ai/blog/master-cinematic-ai-video-how-to-control-camera-angles-consistency-with-nano-banana-pro", "Set field test, 2026-10-07"]
+sources: ["https://huggingface.co/fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA", "https://github.com/jtydhr88/ComfyUI-qwenmultiangle", "https://fal.ai/models/fal-ai/flux-2-lora-gallery/multiple-angles", "https://www.atlabs.ai/blog/master-cinematic-ai-video-how-to-control-camera-angles-consistency-with-nano-banana-pro", "Set field test, 2026-10-07", "https://www.reddit.com/r/comfyui/comments/1ovih09/", "Technique harvest GPU test, 2026-11-12"]
 volatile_claims: ["Qwen-Image-Edit-2511 Multiple-Angles LoRA parameters", "over-the-shoulder is a weak point of image-edit angle changes"]
 ---
 
@@ -18,11 +18,16 @@ volatile_claims: ["Qwen-Image-Edit-2511 Multiple-Angles LoRA parameters", "over-
 - Keep the scene's axis: the reverse in a dialogue scene is on the same side of the line, so it looks across the room at the far wall, not back through the first camera (cinewright-continuity, entry axis-and-screen-direction).
 - Change the angle by at least 30 degrees between cuts at a set, or the cut reads as a jump (cinewright-continuity, entry thirty-degree-rule).
 - Regenerate an angle plate from its wall string with the master as a reference where the image model takes one, so materials match.
+- Exact new angles of an approved plate: when furniture must sit where the plan says, render the blockout's depth from the new camera (entries blockout-control, blender-passes; a screenshot of a splat works the same way). Give Qwen-Image-Edit-2511 three reference images: the master, that depth, and a crop of the part of the master the new camera sees. Name each picture in the prompt.
+- Keep the Multiple-Angles LoRA for loose coverage. It turns the camera and keeps the materials, but it guesses where the furniture goes.
 
 ## Numbers
 
 - Qwen-Image-Edit-2511 Multiple-Angles LoRA: 8 azimuths, elevations -30, 0, 30, 60 degrees, distances x0.6, x1.0, x1.8, strength 0.8-1.0. Trained on renders of subjects; its card does not claim whole rooms.
 - Field test: 2 of 2 off-wall shots written as framing words on a whole-room description came back as the establishing view.
+- Exact new angles, measured 2026-11-12: three angles (right 45, left 45, high 45) at 1024x768. Layout error is the mean chamfer distance in px from the blockout's edges to the output's edges. Depth + master + crop: 1.5, which is this metric's floor. Angles LoRA: 2.8. The master left unchanged: 2.7. So the LoRA put furniture no closer to the plan than not moving the camera, and it added windows and changed the walls.
+- Cost: 60 s per plate against 30 s for the LoRA, with the 4-step Lightning LoRA, peak 15.5 GB for both.
+- Limits of that test: one room, one seed. A numpy raycast box room (table, cabinet, sofa, shelf) stood in for a polywright blockout render. Depth went in as a reference image at 1K; no ControlNet was used. The source post uses a depth ControlNet above 1K, which is untested here.
 
 ## Vocabulary
 
