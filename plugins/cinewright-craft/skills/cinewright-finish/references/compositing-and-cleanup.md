@@ -17,6 +17,10 @@ sources: ["VES Handbook of Visual Effects, 3rd ed., 2020", "Ron Brinkmann, The A
 - Grain last over the whole composite, so plates from different generations share one texture.
 - Cleanup of AI artifacts: an extra finger, a melting background object, a flash of text. Paint out with a clean patch from a neighbouring frame (frame hold on a region), or crop the region out when the frame allows. Longer than about 12 frames or on a face: re-render (cinewright-qc).
 - Identity faults (a scar on the wrong side) are not cleanup: re-render, unless one still frame is held.
+- Matching card for a shot built from parts (plate plus character, start frame plus insert): write lens or field of view, camera height and tilt, key direction and softness, bounce colour from nearby surfaces, time of day once; every part's prompt carries the same values. A part made for another shot rarely marries.
+- Join layers on a natural edge where tone changes anyway (a road meeting a curb, a wall corner, a horizon), not across an even surface.
+- Whatever the subject touches (floor, chair, ground under the feet) is generated with the subject, not taken from the plate; a pasted contact gives floating or doubled shadows.
+- Move or rotate a generated element in post only when its key is soft or still agrees with the plate's sun.
 - Composite before the grade's look, after correct and balance of each plate (entry grade-order). Upscale after compositing.
 
 ## Vocabulary

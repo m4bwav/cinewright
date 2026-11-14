@@ -18,6 +18,8 @@ sources: ["https://www.reddigitalcinema.com/red-101/shutter-angle-tutorial", "AS
 - Wide shutter (360 degrees): smeared, dreamy motion. Ask for "heavy motion blur".
 - Keep one shutter feel per scene; a mix reads as a fault.
 
+- Full-size read for something meant to be huge (a ship, a giant, a collapsing tower): slow its motion by the square root of the scale gap (a thing 16 times the size of a toy moves 4 times slower), keep deep focus with no soft background, and give its surfaces wear and texture at the right grain size. Fast motion, shallow focus or clean surfaces read as a toy (cinewright-qc `toy-scale`). Book rule, unverified on our models; ask in words or retime.
+
 ## Numbers
 
 - Shutter speed = 1 / (fps x 360 / angle): 24 fps at 180 degrees = 1/48 s; at 90 = 1/96 s; at 45 = 1/192 s.

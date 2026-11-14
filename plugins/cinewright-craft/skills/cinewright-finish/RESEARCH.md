@@ -46,6 +46,13 @@ Best sources (primary first): ACES documentation (acescentral); ITU-R BT.1886 an
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261113-1 · 2026-11-13 · Matching card, natural-edge joins, contact surfaces (Filming the Fantastic)
+- Summary: Four lines: one matching card shared by every part, joins on natural edges, contact surfaces generated with the subject, post rotation only under a soft or agreeing key. Book rule, unverified.
+- Track: subject
+- Sources: Filming the Fantastic: A Guide to Visual Effects Cinematography (Mark Sawicki, 2nd ed.) (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261113-2
+
 ### R-20261109-1 · 2026-11-09 · Subject: depth-controlled background swap
 - Summary: KESHIKI (GPL-3.0, idea only): depth-controlled background swap with refine-details, a route to watch; its light-wrap step went into shot-matching.md.
 - Track: practice, tooling
