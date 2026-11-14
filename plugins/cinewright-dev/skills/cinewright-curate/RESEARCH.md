@@ -32,7 +32,7 @@ Subject:
 Tooling:
 
 - `path:SKILL.md "knowledge base" curate OR upkeep` on GitHub code search, sorted by recently updated
-- chartwright-curate and sitewright-curate changelogs (sibling curate skills)
+- chartwright-curate and a sibling site-curate changelog (sibling curate skills)
 
 Practice:
 

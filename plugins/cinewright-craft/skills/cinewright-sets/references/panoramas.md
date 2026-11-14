@@ -15,7 +15,7 @@ volatile_claims: ["best open 360 pano model", "LoRA licences"]
 - Size 2048x1024 (2:1). Smaller 2:1 sizes break the horizon.
 - From words: Qwen-Image-2512 (Apache-2.0) + Qwen 360 Diffusion v2 LoRA (ProGamerGov, MIT) at 1.0, prompt starting "equirectangular 360 panorama of". Without the LoRA the base draws an ordinary wide photo.
 - Around plates you already have: FLUX.2 Klein 4B base, not distilled, + nomadoor's 4B ERP outpaint LoRA (Apache-2.0) at 0.9. Paste the reference photos at their yaw on a green 2:1 canvas, pass it as the reference latent; the LoRA fills the green. The 9B LoRA sits on non-commercial Klein 9B: never in a sellable project.
-- Crop and gate with comfyui-gen `tools/pano.py`: `crop` (yaw, pitch, fov) and `seam` (mean wrap-edge step over mean neighbour step). Ratio under 5 passes.
+- Crop and gate with a `pano.py` helper: `crop` (yaw, pitch, fov) and `seam` (mean wrap-edge step over mean neighbour step). Ratio under 5 passes.
 - Over 5: roll the pano by half its width, refill a ~96 px strip over the old seam, then paste back only that strip.
 
 ## Numbers
