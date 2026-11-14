@@ -2,6 +2,11 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
+### C-20261114-1 · 2026-11-14 · Artwork props, changing artworks, palette break (Felleman)
+- because: book distillation (technique-harvest), R-20261114-1
+- files: references/prop-constants.md, prop-sheets.md, color-script.md
+- Artwork prop fields and verbatim identity string for portraits; one state per stage for a changing artwork; a named palette-break reveal. Book rules, unverified. Lines trimmed to hold size.
+
 ### C-20261113-1 · 2026-11-13 · Dated source per period prop; visual concept and cliche check (Art Direction Handbook)
 - because: book distillation (technique-harvest), R-20261113-1
 - files: references/prop-constants.md, visual-structure.md

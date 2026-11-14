@@ -46,6 +46,13 @@ Best sources (primary first): LoBrutto, The Filmmaker's Guide to Production Desi
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261114-1 · 2026-11-14 · Felleman, Art in the Cinematic Imagination (2006)
+- Summary: artwork props carry medium, colour, size, period, maker, and a portrait must match its sitter's identity string; an ageing artwork changes by stated stages; a one-time palette break marks a reveal. Noted, no change: show a fragment of a great in-story artwork and reactions, not the whole. Book rules, unverified.
+- Track: subject
+- Sources: Susan Felleman, Art in the Cinematic Imagination, University of Texas Press 2006 (paraphrased; no text copied)
+- Magnitude: minor
+- Applied: C-20261114-1
+
 ### R-20261113-1 · 2026-11-13 · Dated source per period prop; visual concept and cliche check (Art Direction Handbook)
 - Summary: prop-constants: each period prop names a dated source and year, no guessed details; visual-structure: one-line visual concept and a cliche check. Book rules, unverified.
 - Track: subject
