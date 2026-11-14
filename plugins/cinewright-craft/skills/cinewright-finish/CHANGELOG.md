@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261114-1 · 2026-11-14 · Wan 16 fps conform: interpolate, not duplicate
+- because: book harvest (Murch, In the Blink of an Eye); measured on a Wan pan and walk, FILM and mci cut cadence jerk from 1.26 to about 0.57 with no warping on the contact sheets
+- files: references/upscale-and-interpolation.md
+- One rule: conform Wan 16 fps to 24 with motion interpolation before the cut; duplication stays the fallback for warping shots.
+
 ### C-20261113-2 · 2026-11-13 · Matching card, natural-edge joins, contact surfaces (Filming the Fantastic)
 - because: book distillation (Filming the Fantastic: A Guide to Visual Effects Cinematography (Mark Sawicki, 2nd ed.)), R-20261113-1
 - files: references/compositing-and-cleanup.md

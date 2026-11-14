@@ -3,8 +3,8 @@ title: Upscale and interpolation
 slug: upscale-and-interpolation
 summary: Upscale and interpolate last, after the grade, crop and composites, once each; retime slow motion with motion interpolation only when the shot has simple motion, and check for warped frames.
 tags: [finish, upscale, interpolation, retime, slow-motion, delivery]
-last_checked: 2026-11-09
-sources: ["https://ffmpeg.org/ffmpeg-filters.html", "cinewright S2 render, 2026-10-03 (practice)"]
+last_checked: 2026-11-14
+sources: ["https://ffmpeg.org/ffmpeg-filters.html", "cinewright S2 render, 2026-10-03 (practice)", "Wan 16 to 24 fps test, 2026-11-14 (practice)"]
 ---
 
 # Upscale and interpolation
@@ -15,6 +15,7 @@ sources: ["https://ffmpeg.org/ffmpeg-filters.html", "cinewright S2 render, 2026-
 - Upscale once, straight to the delivery size; two passes double the invented detail. Check faces at 100%: an upscaler can change a face's features (identity) or add texture that flickers.
 - Interpolation to raise frame rate (24 → 30 or 60) is for web delivery only; films stay at 24 (cinewright-camera, entry frame-rate-and-shutter).
 - Slow motion from a 24 fps render: motion interpolation (`minterpolate` or a learned interpolator) works on simple, slow motion; it warps hands, crossing limbs, spinning objects and fast camera moves. Check every interpolated shot frame by frame; prefer asking the model for slow motion on the card.
+- Wan renders at 16 fps: conform to 24 with motion interpolation (FILM, or `minterpolate=fps=24:mi_mode=mci`) before the cut, not `fps=24`. Duplication holds every third output frame and staggers pans (measured: cadence jerk 1.26 duplicated vs 0.56 FILM, 0.58 mci). Fall back to duplication on shots that warp (hands, crossing limbs, fast action).
 - Simple retime without new frames (speed up, or slow by frame doubling) uses `setpts`; frame doubling stutters below about 70% speed.
 - Drafts and review copies: RTX VSR (2.2 s for a 3 s clip x2) sharpens edges but does not restore texture; finals: SeedVR2 (400 s, restores texture). Check faces on both.
 - Keep the source and a pre-upscale master; the upscale is a delivery step, not the archive.
