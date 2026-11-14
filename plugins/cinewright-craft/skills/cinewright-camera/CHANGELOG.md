@@ -7,6 +7,11 @@ Entry shape: `### C-20261113-1 · 2026-11-13 · Test plate under each source col
 - files: references/color-temperature.md (Pitfalls)
 - A colour word is the colour under white light; test a two-light location once per source before locking colours.
 
+### C-20261113-2 · 2026-11-13 · Full-size read cues for huge things (Filming the Fantastic)
+- because: book distillation (Filming the Fantastic: A Guide to Visual Effects Cinematography (Mark Sawicki, 2nd ed.)), R-20261113-1
+- files: references/frame-rate-and-shutter.md
+- One line: slow motion by the square root of scale, deep focus, wear at the right grain size; else it reads as a toy. Book rule, unverified on our models.
+
 ### C-20261101-1 · 2026-11-01 · Camera changes on stops, dominance picks the move, faked contact by lens (MS1)
 - because: book distillation (Kenworthy, *Master Shots* Vol. 1, 2009), pre-approved
 - files: shared/vocab/camera-moves.md (copied to references/camera-moves.md), references/move-grammar.md, references/lens-choice.md

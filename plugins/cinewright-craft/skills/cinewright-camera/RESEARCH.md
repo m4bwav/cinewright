@@ -46,6 +46,13 @@ Best sources (primary first): ASC Manual; Brown, Cinematography and Motion Pictu
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261113-1 · 2026-11-13 · Full-size read cues for huge things (Filming the Fantastic)
+- Summary: One line: slow motion by the square root of scale, deep focus, wear at the right grain size; else it reads as a toy. Book rule, unverified on our models.
+- Track: subject
+- Sources: Filming the Fantastic: A Guide to Visual Effects Cinematography (Mark Sawicki, 2nd ed.) (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261113-2
+
 ### R-20261004-1 · 2026-10-04 · Initial research
 - Summary: Built from the research brief §3 cinematography and lighting rows (subject), the RED shutter tutorial and Wikipedia pages on aspect ratio, color temperature and anamorphic format (checked this session), the S2 render's prompts (practice: the look string is the only style carrier, so new style fields join it), and TESTING.md (testing: verbatim guard and LENS and MOVE warnings are checkable).
 - Track: subject

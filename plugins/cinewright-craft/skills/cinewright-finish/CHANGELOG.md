@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261113-2 · 2026-11-13 · Matching card, natural-edge joins, contact surfaces (Filming the Fantastic)
+- because: book distillation (Filming the Fantastic: A Guide to Visual Effects Cinematography (Mark Sawicki, 2nd ed.)), R-20261113-1
+- files: references/compositing-and-cleanup.md
+- Four lines: one matching card shared by every part, joins on natural edges, contact surfaces generated with the subject, post rotation only under a soft or agreeing key. Book rule, unverified.
+
 ### C-20261113-1 · 2026-11-13 · Dominant hue in grade measure
 - because: book track if-its-purple (Bellantoni 2005: readings turn on the hue variant); measured on 12 kept local takes, 11 matched by eye
 - files: references/shot-matching.md (Numbers), shared/lib/cine_post.py

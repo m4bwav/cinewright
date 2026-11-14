@@ -47,6 +47,13 @@ Best sources (primary first): ffmpeg filter docs, EBU R128 and Tech 3341, benchm
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261113-1 · 2026-11-13 · Failure codes shadow-mismatch, toy-scale, clipped-fire, visible-rig (Filming the Fantastic)
+- Summary: Four codes with cheapest fixes routed to finish and camera. Book rule, unverified; no script check.
+- Track: subject
+- Sources: Filming the Fantastic: A Guide to Visual Effects Cinematography (Mark Sawicki, 2nd ed.) (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261113-1
+
 ### R-20261015-1 · 2026-10-15 · How people and machines critique AI video, images, voices and sound
 - Summary: five tracks (human review practice, vision judges, audio and voice judges, agentic critic loops, practitioner forums) and a field test of a vision judge on 624 labelled claims; full note ai-docs/research/2026-10-15-critic-research.md.
 - Track: practice, testing, tooling
