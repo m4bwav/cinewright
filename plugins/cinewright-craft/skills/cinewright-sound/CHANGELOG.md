@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261113-2 · 2026-11-13 · Speech-to-music tags per layer, same-tag warning, film-level density (Murch)
+- because: book distillation (Walter Murch, Suddenly Something Clicked, 2025, leftovers after C-20261106-1), R-20261113-2
+- files: references/sound-layers.md
+- Each layer tagged speech, middle or music; flag a moment whose two loudest layers share a tag; plan density over the whole film. Book rules, unverified; no sound-plan script exists, so the warning is a manual check.
+
 ### C-20261106-1 · 2026-11-06 · Rule of two and a half, worldizing (Murch)
 - because: book distillation (Murch, *Suddenly Something Clicked*, 2025), pre-approved
 - files: references/sound-layers.md, references/mix-and-loudness.md

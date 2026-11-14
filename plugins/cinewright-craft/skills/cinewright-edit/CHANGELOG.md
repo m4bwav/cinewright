@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261113-2 · 2026-11-13 · Early pick-up of a move as a tension beside cut-on-action (Murch)
+- because: book distillation (Walter Murch, Suddenly Something Clicked, 2025, leftovers after C-20261106-1), R-20261113-2
+- files: references/cutting-on-action.md
+- One line: an early pick-up from a new angle can jar, to be judged by watching, not a rule. Book view, unverified.
+
 ### C-20261113-1 · 2026-11-13 · Draft cut review: structure map and draft-cut failures (Documentary Storytelling)
 - because: book distillation (technique-harvest), R-20261113-1
 - files: references/draft-cut-review.md (new); SKILL.md
