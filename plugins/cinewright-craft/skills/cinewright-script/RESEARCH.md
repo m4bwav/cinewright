@@ -46,6 +46,13 @@ Best sources (primary first): McKee, Story; Snyder, Save the Cat!; Field, Screen
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261113-2 · 2026-11-13 · Clip start and tail, cheat-out (Acting for Film)
+- Summary: Set practice carried to clips: start mid-moment, keep the end position alive, cheat out toward camera with the eyeline on the partner. The rest of the book is actor training that does not carry. Book rules, unverified.
+- Track: subject
+- Sources: Cathy Haase, Acting for Film, 2003, ch. 6 and 14 (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261113-2
+
 ### R-20261113-1 · 2026-11-13 · Narration writing, nonfiction honesty, the train (Documentary Storytelling)
 - Summary: New entries narration-writing and nonfiction-honesty (the disclosure rule is ours, marked so); logline-and-beats names the train and the point of attack; SKILL.md step 3 points to both. Book rules, unverified.
 - Track: subject
