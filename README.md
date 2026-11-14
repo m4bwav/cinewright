@@ -59,6 +59,7 @@ Each partner is optional. cinewright works alone, and the plugins share files, n
 - [grindwright](https://github.com/m4bwav/grindwright): on a long film it keeps the video and edit lanes moving between other jobs.
 - [readwright](https://github.com/m4bwav/readwright): when a film adapts a book, it finds the scene's passages without loading the whole book.
 - [tokenwright](https://github.com/m4bwav/tokenwright): film sessions are long and full of reads, and tokenwright shows where the tokens went and how to cut them.
+- [fractalwright](https://github.com/m4bwav/fractalwright): fractalwright renders fractal zooms and stills; cinewright encodes, cuts and delivers them as finished video.
 
 More on the wiki's [Works with](https://github.com/m4bwav/cinewright/wiki/Works-With) page.
 
