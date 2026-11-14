@@ -46,6 +46,13 @@ Best sources (primary first): Murch, In the Blink of an Eye; Dancyger, The Techn
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261113-2 · 2026-11-13 · Early pick-up of a move as a tension beside cut-on-action (Murch)
+- Summary: One line: an early pick-up from a new angle can jar, to be judged by watching, not a rule. Book view, unverified.
+- Track: subject
+- Sources: Walter Murch, Suddenly Something Clicked, 2025 (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261113-2
+
 ### R-20261113-1 · 2026-11-13 · Draft cut review: structure map and draft-cut failures (Documentary Storytelling)
 - Summary: New entry draft-cut-review: a structure map (section times, loudness peaks, cut times, train start) and the draft-cut failure list. The map was tried on one 148 s local cut and flagged real faults (transit as loud as the crash, even cut rhythm, train at 30 percent); failure list is book rule, unverified.
 - Track: subject

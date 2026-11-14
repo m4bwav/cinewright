@@ -46,6 +46,13 @@ Best sources (primary first): EBU R128 and its supplements (tech.ebu.ch); ATSC A
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261113-2 · 2026-11-13 · Speech-to-music tags per layer, same-tag warning, film-level density (Murch)
+- Summary: Each layer tagged speech, middle or music; flag a moment whose two loudest layers share a tag; plan density over the whole film. Book rules, unverified; no sound-plan script exists, so the warning is a manual check.
+- Track: subject
+- Sources: Walter Murch, Suddenly Something Clicked, 2025 (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261113-2
+
 ### R-20261006-1 · 2026-10-06 · Recorded effects conformed to a music grid
 - Summary: Field notes from recorded game sound effects fitted to a 90 BPM grid (2026-10-04 to 2026-10-06): text-to-audio clips could not hold a tempo and were all rejected; the lightest edit (one section re-tempoed, often at 1.0) was preferred over per-gap warps and cuts; Rubber Band with crisp transients and the percussive detector, ratios kept within 0.75-1.35; spacing fitted against beats, eighths and triplets (one recording: 16%, 7%, 0%); grace notes ride the main hit; edit points where the recording is already quiet; a mono average of channels correlated at 0.13 dropped the ambience about 3 dB; levels matched by active RMS. The options were checked against the ffmpeg filter documentation. Applies to film when effects or foley sit on a cue's beat.
 - Track: practice

@@ -3,7 +3,7 @@ title: Cutting on action
 slug: cutting-on-action
 summary: Cut during a movement that continues in the next shot, about a third of the way into it, overlapping 2-4 frames of the motion; plan the motion into both cards so generated takes can be cut this way.
 tags: [edit, cut-on-action, match-on-action, continuity]
-last_checked: 2026-11-09
+last_checked: 2026-11-13
 sources: ["Walter Murch, In the Blink of an Eye, 2nd ed., 2001", "Karel Reisz and Gavin Millar, The Technique of Film Editing, 2nd ed., 1968", "Joseph V. Mascelli, The Five C's of Cinematography, 1965", "Daniel Arijon, Grammar of the Film Language, 1976, ch. 9-11"]
 ---
 
@@ -21,6 +21,8 @@ sources: ["Walter Murch, In the Blink of an Eye, 2nd ed., 2001", "Karel Reisz an
 - Matched cuts keep the mover near centre. With two movers, match only the dominant move, in its own half (ch. 9).
 - Every card starts on some movement, even a dialogue close-up: a breath, eyes moving, a head tilt. Never a frozen face as the first frame (ch. 9).
 - Rising stays in frame when the cut goes medium to wider or medium to tighter on one lens line. The head never leaves the top of frame at the cut (ch. 11).
+
+- Tension to judge, not a rule: Murch found that picking a move up from a new angle just after it begins can feel early and jarring, beside the third-of-the-way rule above. Watch both versions of such a cut. Book view, unverified.
 
 ## Numbers
 
