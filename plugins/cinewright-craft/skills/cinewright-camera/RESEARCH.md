@@ -46,6 +46,13 @@ Best sources (primary first): ASC Manual; Brown, Cinematography and Motion Pictu
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261114-2 · 2026-11-14 · Filtration looks (American Cinematographer Manual)
+- Summary: Mist halos stay near the source, fog spreads, double fog drops contrast and keeps near objects sharp; effect scales with light; match diffusion across adjacent shots; do not stack cancelling filters; leave a trace of reflection. Book rules, unverified on video models.
+- Track: subject
+- Sources: ASC, American Cinematographer Manual, 7th ed., 1993, Filters chapter, pp. 201-224 (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261114-2
+
 ### R-20261114-1 · 2026-11-14 · Barely noticeable slow motion (Sculpting in Time)
 - Summary: Slow motion kept slight; obvious peak slow motion is qc readable-device. Book rule, unverified.
 - Track: subject
