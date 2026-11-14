@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261113-2 · 2026-11-13 · Clip start and tail, cheat-out (Acting for Film)
+- because: book distillation (technique-harvest), R-20261113-2
+- files: references/performance-words.md
+- Two rules: frame one mid-moment and a live, not frozen, last second; cheat-out with the eyeline held on the partner. Book rules, unverified.
+
 ### C-20261113-1 · 2026-11-13 · Narration writing, nonfiction honesty, the train (Documentary Storytelling)
 - because: book distillation (technique-harvest), R-20261113-1
 - files: references/narration-writing.md (new), nonfiction-honesty.md (new), logline-and-beats.md; SKILL.md
