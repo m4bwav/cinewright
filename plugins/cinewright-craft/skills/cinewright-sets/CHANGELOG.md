@@ -17,7 +17,7 @@ Entry shape: `### C-20261109-1 · 2026-11-09 · Time-to-Move measured
 
 ### C-20261112-1 · 2026-11-12 · master-plates: two measured local pano routes, seam gate, strip-only fix
 - because: technique harvest GPU tests 2026-11-12 (posts 1pltzay Qwen 360 Diffusion v2, MIT; 1rip661 nomadoor Klein 4B ERP outpaint LoRA, Apache-2.0)
-- files: references/panoramas.md (new: recipes, comfyui-gen tools/pano.py crop and seam gate < 5, timings, 8-bit pitfall); references/master-plates.md (route 3 points to it)
+- files: references/panoramas.md (new: recipes, a pano.py crop and seam gate < 5, timings, 8-bit pitfall); references/master-plates.md (route 3 points to it)
 
 ### C-20261111-1 · 2026-11-11 · blockout-control: solve the plate camera first; unwarp, edit, rewarp
 - because: technique harvest 2026-11-11 (post 1v3da53, NKD VFX Tools, GPL: ideas only, untested)

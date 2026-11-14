@@ -12,7 +12,7 @@ sources: ["https://huggingface.co/oumoumad/LTX-2.3-22b-IC-LoRA-Outpaint", "https
 ## Rules
 
 - Wide to vertical needs no model: crop (entry crop-to-frame). Vertical to wide: outpaint, never stretch or blur-fill.
-- Route: LTX-2.3 22B distilled with oumoumad/LTX-2.3-22b-IC-LoRA-Outpaint at 1.0, the padded clip as the whole IC guide at frame 0, one distilled stage, cfg 1. comfyui-gen's `ltx23_ic.py` runs it (`pad`, then `run --lora ...Outpaint...:1.0`).
+- Route: LTX-2.3 22B distilled with oumoumad/LTX-2.3-22b-IC-LoRA-Outpaint at 1.0, the padded clip as the whole IC guide at frame 0, one distilled stage, cfg 1. An IC-LoRA runner script (for example `ltx23_ic.py`) runs it (`pad`, then `run --lora ...Outpaint...:1.0`).
 - Pad the vertical clip to the wide frame with black sides, centred. Prompt the whole wide scene (set, light, what stands at the sides), not only the centre; cfg 1 means a negative prompt does nothing.
 - Work in 49-frame (2 s at 24 fps) chunks and cut on the clip's own cuts where you can. The sides are new content: check them against the set bible like any generated plate.
 - Do it before the grade, so the grade sees the finished frame.
