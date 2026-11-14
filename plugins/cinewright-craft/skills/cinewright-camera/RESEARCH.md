@@ -46,6 +46,13 @@ Best sources (primary first): ASC Manual; Brown, Cinematography and Motion Pictu
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261114-1 · 2026-11-14 · Barely noticeable slow motion (Sculpting in Time)
+- Summary: Slow motion kept slight; obvious peak slow motion is qc readable-device. Book rule, unverified.
+- Track: subject
+- Sources: Andrey Tarkovsky, Sculpting in Time, 1986, ch. I and V (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261114-1
+
 ### R-20261113-1 · 2026-11-13 · Full-size read cues for huge things (Filming the Fantastic)
 - Summary: One line: slow motion by the square root of scale, deep focus, wear at the right grain size; else it reads as a toy. Book rule, unverified on our models.
 - Track: subject

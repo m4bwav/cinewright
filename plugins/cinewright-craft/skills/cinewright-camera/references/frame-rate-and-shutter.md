@@ -19,6 +19,7 @@ sources: ["https://www.reddigitalcinema.com/red-101/shutter-angle-tutorial", "AS
 - Keep one shutter feel per scene; a mix reads as a fault.
 
 - Full-size read for something meant to be huge (a ship, a giant, a collapsing tower): slow its motion by the square root of the scale gap (a thing 16 times the size of a toy moves 4 times slower), keep deep focus with no soft background, and give its surfaces wear and texture at the right grain size. Fast motion, shallow focus or clean surfaces read as a toy (cinewright-qc `toy-scale`). Book rule, unverified on our models; ask in words or retime.
+- Slow motion for weight, not spectacle: keep it barely noticeable (a slight slowdown on an ordinary moment). Obvious peak-moment slow motion reads as a device (qc `readable-device`). Book rule, unverified (after Tarkovsky).
 
 ## Numbers
 

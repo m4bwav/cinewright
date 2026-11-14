@@ -18,6 +18,7 @@ sources: ["Fred Karlin and Rayburn Wright, On the Track, 2nd ed., 2004", "David 
 - Temp music is a guide for mood and tempo, never the final cue unless licensed.
 - Generated music (cinewright pairs with a local music generator when one is installed): generate to the cue's exact length and tempo, then edit the ending on a bar.
 - Rights: record the license of every cue, generated or library, before release.
+- Music as refrain: let a cue return the viewer to a feeling already earned, never prop up a scene the picture has not carried. A weak scene is fixed in the cut, not scored over. Book rule, unverified (after Tarkovsky).
 
 ## Numbers
 

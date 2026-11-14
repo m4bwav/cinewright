@@ -7,6 +7,11 @@ Entry shape: `### C-20261101-1 · 2026-11-01 · Scene setups for fights, chases,
 - files: references/scene-setups.md (new), references/blocking.md, SKILL.md
 - A new entry gives book card recipes for fights, chases, car scenes and arguments; blocking gets circling, half-circle crossings and the look back on the camera side. All marked book rule, unverified.
 
+### C-20261114-1 · 2026-11-14 · No theme staging, odd practical action, caused look-backs (Sculpting in Time)
+- because: book distillation (technique-harvest), R-20261114-1
+- files: references/plain-action-staging.md (new; blocking.md was at its token budget)
+- New entry; it also carries the script action-line rule, left out of performance-words for its token budget. Book rules, unverified.
+
 ### C-20261111-1 · 2026-11-11 · ref_type on shot cards and the still-to-previs ladder
 - because: technique harvest 2026-11-11 (post 1ul9iei, one maker, untested)
 - files: shared/schemas/shot-card.schema.json (`ref_type`: still, board, previs), references/coverage-plan.md (one rule)

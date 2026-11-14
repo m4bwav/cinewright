@@ -46,6 +46,13 @@ Best sources (primary first): EBU R128 and its supplements (tech.ebu.ch); ATSC A
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261114-1 · 2026-11-14 · Reduced sound, music as refrain (Sculpting in Time)
+- Summary: One real source for a quiet sequence; a cue returns an earned feeling and never rescues a weak scene. Book rules, unverified.
+- Track: subject
+- Sources: Andrey Tarkovsky, Sculpting in Time, 1986, ch. I and V (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261114-1
+
 ### R-20261113-2 · 2026-11-13 · Speech-to-music tags per layer, same-tag warning, film-level density (Murch)
 - Summary: Each layer tagged speech, middle or music; flag a moment whose two loudest layers share a tag; plan density over the whole film. Book rules, unverified; no sound-plan script exists, so the warning is a manual check.
 - Track: subject

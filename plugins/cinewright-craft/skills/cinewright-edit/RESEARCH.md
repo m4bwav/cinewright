@@ -46,6 +46,13 @@ Best sources (primary first): Murch, In the Blink of an Eye; Dancyger, The Techn
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261114-1 · 2026-11-14 · Time-pressure tags (Sculpting in Time)
+- Summary: New entry: still/flowing/rushing tag per shot, flag fast cuts of still frames, regenerate a shot that will not cut. Long takes marked partly applicable to 5-15 s clips. Motion-measure script skipped. Book rules, unverified.
+- Track: subject
+- Sources: Andrey Tarkovsky, Sculpting in Time, 1986, ch. I and V (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261114-1
+
 ### R-20261113-2 · 2026-11-13 · Early pick-up of a move as a tension beside cut-on-action (Murch)
 - Summary: One line: an early pick-up from a new angle can jar, to be judged by watching, not a rule. Book view, unverified.
 - Track: subject

@@ -45,6 +45,13 @@ Best sources (primary first): Bordwell and Thompson, Film History and Film Art; 
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261114-1 · 2026-11-14 · Tarkovsky card additions (Sculpting in Time)
+- Summary: Card gains something-moves, one plain sound and slight slow motion; the book added to sources.
+- Track: subject
+- Sources: Andrey Tarkovsky, Sculpting in Time, 1986, ch. I and V (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261114-1
+
 ### R-20261004-1 · 2026-10-04 · Initial research
 - Summary: Built from the research brief §5 card list (subject: 12 movements, 8 eras, 10 genres, 40 directors and cinematographers), format dates checked this session (Wikipedia, Film and Digital Times), PLAN §10's exit check (practice: a style request must change compiled prompts in checkable ways), and TESTING.md (testing: the compile and diff checks prove it).
 - Track: subject
