@@ -3,7 +3,7 @@ title: Color script
 slug: color-script
 summary: Three to five named colors, one named scheme, a scene color row (hue, brightness third, saturation, warmth) that moves with the story, taught meanings, successive contrast.
 tags: [design, color, palette, color-script, look]
-last_checked: 2026-10-22
+last_checked: 2026-11-14
 sources: ["Bruce Block, The Visual Story, 3rd ed., 2021, ch. 6 (Color)", "James Gurney, Color and Light, 2010, pp. 132-133", "Vincent LoBrutto, The Filmmaker's Guide to Production Design, 2002", "Amid Amidi, The Art of Pixar, 2011"]
 ---
 
@@ -18,8 +18,7 @@ sources: ["Bruce Block, The Visual Story, 3rd ed., 2021, ch. 6 (Color)", "James 
 - The colour script is the gamut changing with the story: each scene is a slice of the wheel, and the turn brings in what the earlier slices left out (after Gurney, *Color and Light*).
 - The first scene that uses a colour teaches its meaning; keep it (`visual_structure.meanings`). Tie each character to a color by costume or light for the whole film unless the costume arc changes it on purpose.
 - Successive contrast: a cool scene makes the warm scene after it look warmer, and complementaries cut together look more saturated. Put the cool scene before the one that must glow.
-- One saturated object in a muted scene pulls the eye: give it to the subject.
-- Audiences forget exact colour, so saturation can climb slowly across a film instead of jumping.
+- One saturated object in a muted scene pulls the eye: give it to the subject. A palette break is one shot leaving the palette on a reveal beat over a muted base; use it once (book rule, unverified).
 - Use plain color words a model knows ("navy", "amber", "rust", "bone white"), never codes or brand names. Hex values go in the design notes for the grade, not in prompts.
 - Put scene color where it compiles: the scene bible's `sun` for the main light color and direction, the location description for set colors, wardrobe strings for costume colors.
 - Warm against cool is the strongest contrast a prompt carries reliably; saturation and value contrast come next.

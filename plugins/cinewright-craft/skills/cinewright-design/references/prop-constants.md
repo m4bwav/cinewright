@@ -3,7 +3,7 @@ title: Prop constants
 slug: prop-constants
 summary: Give every prop that is held or seen close a fixed description in bibles/props.json; the compiler pastes it wherever a card holds the prop, and qc checks its look.
 tags: [design, props, bible, continuity]
-last_checked: 2026-11-13
+last_checked: 2026-11-14
 sources: ["Vincent LoBrutto, The Filmmaker's Guide to Production Design, 2002", "Field lesson 005, 2026-09-06: chained clips lose character identity and prop continuity", "The Art Direction Handbook for Film (dated source per period prop, book rule, unverified)"]
 ---
 
@@ -17,7 +17,8 @@ sources: ["Vincent LoBrutto, The Filmmaker's Guide to Production Design, 2002", 
 - Props are designed for the period and place in the location bible; a wrong-era object breaks the world faster than a wrong color. A period prop names its source and year in `design.md` (a dated photo, catalogue or museum record); a detail with no source is left plain, never guessed.
 - Hero prop: the one the scene turns on gets an insert (CU or ECU, no cast) and, if it recurs, a prop sheet in its `refs` (`kb show prop-sheets`). The compiler sends those refs with every shot that holds or features it.
 - A prop that changes (opens, breaks, burns) gets `states`, each with its whole description; cards pick one with `holding_state` or `props[].state`. A prop nobody holds but the shot features goes in the card's `props`.
-- Keep held props few: one per hand, one per person per shot. Models merge or duplicate small objects passed between hands.
+- Keep held props few: one per hand, one per person per shot; models merge small objects passed between hands.
+- An artwork prop names medium, dominant colour, size, period and maker. A portrait of a character repeats that character's identity string verbatim (book rule, unverified).
 - When a prop changes hands, the giver's `holding_end` and the taker's next `holding` name the same prop; the diff checks it.
 
 ## Numbers
@@ -31,7 +32,6 @@ sources: ["Vincent LoBrutto, The Filmmaker's Guide to Production Design, 2002", 
 ## Pitfalls
 
 - A one-word prop name leaves the model to invent its look each shot: the first render of the example drew a cardboard box where the story meant a tin one.
-- "The same box as before" means nothing to a separate generation; paste the description.
 
 ## Verify
 
