@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-20261113-1 · 2026-11-13 · Test plate under each source colour
+Entry shape: `### C-20261114-2 · 2026-11-14 · Filtration looks (American Cinematographer Manual)
+- because: book distillation (technique-harvest round 13), R-20261114-2
+- files: references/filtration.md (new), SKILL.md (Step 3 pointer)
+- Filter looks as visible traits, mist vs fog vs double fog, one grade per scene with neighbours matched, eyes sharp, no cancelling stacks, partial polarizing. Book rules, unverified.
+
+### C-20261113-1 · 2026-11-13 · Test plate under each source colour
 - because: Bellantoni 2005, a cinematographer's practice quoted in the book; book rule, unverified here
 - files: references/color-temperature.md (Pitfalls)
 - A colour word is the colour under white light; test a two-light location once per source before locking colours.
