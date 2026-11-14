@@ -6,6 +6,11 @@ Entry shape: `### C-20261110-1 · 2026-11-10 · failures-framing: re-camera a ke
 - because: technique harvest GPU test 2026-11-10 (CrossView-Warp on MiniMax H3 REF2VA: az 20 measured 19/19/12 deg with the face held; az 40 short; 4-step turbo copied the source)
 - files: vocab failures-framing Rules (one line)
 
+### C-20261114-1 · 2026-11-14 · readable-device failure code (Sculpting in Time)
+- because: book distillation (technique-harvest), R-20261114-1
+- files: references/failures-framing.md (from shared/vocab)
+- New code for obvious peak slow motion, theme props and uncaused look-backs; fix by softening or an in-world cause. Book rule, unverified.
+
 ### C-20261113-1 · 2026-11-13 · Failure codes shadow-mismatch, toy-scale, clipped-fire, visible-rig (Filming the Fantastic)
 - because: book distillation (Filming the Fantastic: A Guide to Visual Effects Cinematography (Mark Sawicki, 2nd ed.)), R-20261113-1
 - files: shared vocab failures-composite (new), needs.json of qc and genvideo

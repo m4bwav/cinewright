@@ -47,6 +47,13 @@ Best sources (primary first): ffmpeg filter docs, EBU R128 and Tech 3341, benchm
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261114-1 · 2026-11-14 · readable-device failure code (Sculpting in Time)
+- Summary: New code for obvious peak slow motion, theme props and uncaused look-backs; fix by softening or an in-world cause. Book rule, unverified.
+- Track: subject
+- Sources: Andrey Tarkovsky, Sculpting in Time, 1986, ch. I and V (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261114-1
+
 ### R-20261113-1 · 2026-11-13 · Failure codes shadow-mismatch, toy-scale, clipped-fire, visible-rig (Filming the Fantastic)
 - Summary: Four codes with cheapest fixes routed to finish and camera. Book rule, unverified; no script check.
 - Track: subject

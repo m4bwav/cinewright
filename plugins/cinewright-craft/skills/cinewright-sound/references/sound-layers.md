@@ -24,6 +24,7 @@ sources: ["David Sonnenschein, Sound Design, 2001", "Tomlinson Holman, Sound for
 - Plan density across the whole film, not one level throughout: mark where it thins and where it peaks, and let a sparse stretch come before each peak so the peak reads. Book rule, unverified.
 - One or two walkers need steps in sync. With three or more, get the pace and the surface right and stop syncing each step.
 - Stems: deliver D (dialogue), M (music) and E (effects, with foley and ambience) as separate files, each the length of the cut, which sum to the full mix. A dubbed or re-edited version needs them.
+- Reduced sound: for a quiet or inward sequence keep one real source (a clock, wind, a tap) and drop the rest; a single sound carries more than a full bed. Book rule, unverified (after Tarkovsky).
 
 ## Numbers
 

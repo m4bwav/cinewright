@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261114-1 · 2026-11-14 · Time-pressure tags (Sculpting in Time)
+- because: book distillation (technique-harvest), R-20261114-1
+- files: references/time-pressure.md (new)
+- New entry: still/flowing/rushing tag per shot, flag fast cuts of still frames, regenerate a shot that will not cut. Long takes marked partly applicable to 5-15 s clips. Motion-measure script skipped. Book rules, unverified.
+
 ### C-20261113-2 · 2026-11-13 · Early pick-up of a move as a tension beside cut-on-action (Murch)
 - because: book distillation (Walter Murch, Suddenly Something Clicked, 2025, leftovers after C-20261106-1), R-20261113-2
 - files: references/cutting-on-action.md

@@ -7,6 +7,11 @@ Entry shape: `### C-20261113-1 · 2026-11-13 · Test plate under each source col
 - files: references/color-temperature.md (Pitfalls)
 - A colour word is the colour under white light; test a two-light location once per source before locking colours.
 
+### C-20261114-1 · 2026-11-14 · Barely noticeable slow motion (Sculpting in Time)
+- because: book distillation (technique-harvest), R-20261114-1
+- files: references/frame-rate-and-shutter.md
+- Slow motion kept slight; obvious peak slow motion is qc readable-device. Book rule, unverified.
+
 ### C-20261113-2 · 2026-11-13 · Full-size read cues for huge things (Filming the Fantastic)
 - because: book distillation (Filming the Fantastic: A Guide to Visual Effects Cinematography (Mark Sawicki, 2nd ed.)), R-20261113-1
 - files: references/frame-rate-and-shutter.md

@@ -46,6 +46,13 @@ Best sources (primary first): Arijon, Grammar of the Film Language; Katz, Film D
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261114-1 · 2026-11-14 · No theme staging, odd practical action, caused look-backs (Sculpting in Time)
+- Summary: New entry; also covers the script action-line rule (performance-words was at its token budget). Book rules, unverified.
+- Track: subject
+- Sources: Andrey Tarkovsky, Sculpting in Time, 1986, ch. I and V (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261114-1
+
 ### R-20261004-1 · 2026-10-04 · Initial research
 - Summary: Built from the research brief §3 shot-design and direction rows and §4 sources (subject), the competitor study (tooling: no competitor prints a shot list from structured cards), the first local render (practice: one generation held three shots), and TESTING.md (testing: the `cards list` last line is the evidence).
 - Track: subject

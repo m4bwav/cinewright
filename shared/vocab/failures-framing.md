@@ -4,7 +4,7 @@ slug: failures-framing
 summary: Failure codes for rendered takes whose composition breaks: edge and background tangents, a competing focal point, horizon faults, floating feet, missing depth, a wrong OTS.
 tags: [vocab, qc, failures, taxonomy, framing, composition]
 last_checked: 2026-10-22
-sources: ["Marcos Mateu-Mestre, Framed Ink, 2010, and Framed Ink 2, 2016", "Joseph V. Mascelli, The Five C's of Cinematography, 1965", "Richard Garvey-Williams, Mastering Composition, 2014"]
+sources: ["Marcos Mateu-Mestre, Framed Ink, 2010, and Framed Ink 2, 2016", "Joseph V. Mascelli, The Five C's of Cinematography, 1965", "Richard Garvey-Williams, Mastering Composition, 2014", "Andrey Tarkovsky, Sculpting in Time, 1986 (readable-device; paraphrased)"]
 ---
 
 # Failure codes, framing and composition
@@ -23,6 +23,7 @@ Rungs and checks as in `failures-picture`. The eye jumping across a cut is `atte
 | `floating-feet` | feet miss the ground plane, or a figure's scale jumps against its neighbours | no contact or depth cue | ground-contact words ("both feet planted on the flagstones"); depth or pose control | 4 | framing |
 | `flat-depth` | no foreground layer where the card named one | the foreground object named late | name the foreground layer first in the subject line | 1 | space |
 | `ots-wrong` | the near person's nose or eye shows past the cheek, so the OTS reads as a two-shot, or their hair or costume drifts | the near person's view unstated | `view: three-quarter-back` on the near person (compiles to "only the cheek line showing"); restate the wardrobe | 1 | framing |
+| `readable-device` | the viewer sees the trick: obvious slow motion at the peak, a prop placed to state the theme, a look back with no cause | the card asks for meaning instead of an action | soften (barely visible slow motion, drop the symbol prop) or give it an in-world cause (a sound, a call); book rule, unverified (after Tarkovsky) | 1 | framing |
 
 ## Rules
 

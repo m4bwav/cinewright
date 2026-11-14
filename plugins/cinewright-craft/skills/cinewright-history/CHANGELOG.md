@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261114-1 · 2026-11-14 · Tarkovsky card additions (Sculpting in Time)
+- because: book distillation (technique-harvest), R-20261114-1
+- files: references/directors-auteurs.md
+- Card gains something-moves, one plain sound and slight slow motion; the book added to sources.
+
 ### C-20261004-2 · 2026-10-04 · Description tuned (S6)
 - because: T-20261004-2, L-003
 - files: SKILL.md

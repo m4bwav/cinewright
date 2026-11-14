@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261114-1 · 2026-11-14 · Reduced sound, music as refrain (Sculpting in Time)
+- because: book distillation (technique-harvest), R-20261114-1
+- files: references/sound-layers.md, music-spotting.md
+- One real source for a quiet sequence; a cue returns an earned feeling and never rescues a weak scene. Book rules, unverified.
+
 ### C-20261113-2 · 2026-11-13 · Speech-to-music tags per layer, same-tag warning, film-level density (Murch)
 - because: book distillation (Walter Murch, Suddenly Something Clicked, 2025, leftovers after C-20261106-1), R-20261113-2
 - files: references/sound-layers.md
