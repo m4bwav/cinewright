@@ -17,6 +17,7 @@ sources: ["Joseph V. Mascelli, The Five C's of Cinematography, 1965", "Steven D.
 - Scenery through a side window moves the way the exterior travel implies for that side.
 - Cutting between tracking shots on both sides of a vehicle reverses the background. Allow it for dialogue in tight framings; avoid it in wides (after Katz, *Shot by Shot*).
 - A journey keeps map direction: east to frame right, west to frame left, north rising from lower left to upper right. The return trip runs the other way every time (after Mascelli, *The Five C's*).
+- A moving car at night or under trees: let light pass across the faces now and then so the interior reads as moving (book rule, unverified).
 - Record which side the driver sits on in the prop or location bible, and state it in every interior prompt ("the driver sits on the left").
 
 ## Pitfalls

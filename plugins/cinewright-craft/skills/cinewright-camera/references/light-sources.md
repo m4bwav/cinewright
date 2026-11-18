@@ -18,6 +18,7 @@ sources: ["Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016, Ligh
 - Firelight is several flickering sources with shadows that jump, never one steady glow. Compile adds "the firelight flickers and the shadows jump" when `light.motivation` names fire, flames, a torch or a brazier. Lightning flashes from more than one direction.
 - Two worlds can carry two colour temperatures (a cool house, a warm outside), and mixed practicals (tungsten, sodium, fluorescent) give a place its colour (after Lachman in *FilmCraft*).
 - One room over a long scene: let the light change with time (late sun, dusk, then lamps and candles) and split the scene by light state, each with its own `sun` string (after Deschanel in *FilmCraft*).
+- Low-key interior: one or two weak warm practicals in frame with a slight flicker, light diffused through paper or cloth, and gold or lacquer catching light only in places; the rest of the room falls to shadow (after Tanizaki, *In Praise of Shadows*; book rule, unverified).
 - People walking in and out of pools of hard light add depth (after Zsigmond in *FilmCraft*).
 
 ## Numbers

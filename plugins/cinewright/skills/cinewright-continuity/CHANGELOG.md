@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261117-1 · 2026-11-17 · Period anachronism check and moving car-interior light (The Godfather Journal)
+- because: book distillation (technique-harvest round 20), R-20261117-1
+- files: references/shot-checklist.md, references/vehicles.md (one rule each)
+- shot-checklist: check takes for lamps, cars, signs, hair newer than the story; vehicles: light passing across faces sells motion. Book rules, unverified.
+
 ### C-20261112-2 · 2026-11-12 · ai-continuity: sun relight with the Klein 9B sun-direction LoRA
 - because: technique harvest GPU test 2026-11-12b (post 1ulomm5; adopt-partly)
 - files: references/ai-continuity.md (one rule, one number)

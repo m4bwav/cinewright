@@ -39,6 +39,7 @@ Diff codes, what each means and the usual fix:
 ## Rules
 
 - Each card records the start and end state; the next card's start state is the previous take's observed end state, written after the render.
+- Period films: check every take for things newer than the story's date: lamps and street lights, cars and signs, hairstyles, glasses and watches (book rule, unverified).
 - Props in hand, hand used, glass levels, cigarette length, wet or dry: record in `start_state` or `end_state` when the story touches them.
 - A card's positions are checked against the block as it stands after the previous card: the scene's `axis.positions`, moved by every `position_end` before it. A `role: protection` card is checked but never becomes the state the next card starts from.
 
