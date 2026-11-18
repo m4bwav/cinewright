@@ -20,6 +20,7 @@ sources: ["https://arxiv.org/abs/2503.21755", "https://tech.ebu.ch/publications/
 - Keep the seed when only the end is wrong; change it when the opening is wrong (the seed fixes the opening).
 - Three failed takes of one card: re-plan the card. The card asks for something the model will not do.
 - A take that fails only on edit-stage codes is kept as `keep-fix-in-edit`.
+- A take that is not the keeper but has a usable part (a reaction, a cutaway, a better end) is logged `hold`, not deleted; the edit may need it (book rule, unverified).
 - Record the observed end state of every kept take; the next card starts from what is there, not what was planned.
 - A note on the whole cut is a symptom: look for the cause up to a few scenes earlier before re-rendering the scene it names (cinewright-edit, entry assembly-to-delivery).
 

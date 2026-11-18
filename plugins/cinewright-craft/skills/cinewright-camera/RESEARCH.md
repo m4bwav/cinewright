@@ -46,6 +46,13 @@ Best sources (primary first): ASC Manual; Brown, Cinematography and Motion Pictu
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261117-1 · 2026-11-17 · Low-key practical recipe (In Praise of Shadows)
+- Summary: One or two weak warm practicals with flicker, paper diffusion, gold or lacquer catching light in places. Book rule, unverified.
+- Track: subject
+- Sources: Junichiro Tanizaki, In Praise of Shadows, 1933 (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261117-1
+
 ### R-20261114-2 · 2026-11-14 · Filtration looks (American Cinematographer Manual)
 - Summary: Mist halos stay near the source, fog spreads, double fog drops contrast and keeps near objects sharp; effect scales with light; match diffusion across adjacent shots; do not stack cancelling filters; leave a trace of reflection. Book rules, unverified on video models.
 - Track: subject

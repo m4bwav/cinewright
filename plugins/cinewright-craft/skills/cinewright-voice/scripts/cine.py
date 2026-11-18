@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:32b3df0069b266f4655c5f544aa20ee9521592e0ac63e4959ff057c9c3f603e9; edit the source
+# copied from shared/lib/cine.py sha256:ecd9a6c8cba97a21f5c0a0e40ac098aac205720ca8a66b55d2e719f61721f13b; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -2705,7 +2705,7 @@ def build_parser(prog="cine.py"):
     s.add_argument("project")
     s.add_argument("--card", required=True)
     s.add_argument("--model", required=True)
-    s.add_argument("--verdict", required=True, choices=["pending", "pass", "fail", "keep-fix-in-edit"])
+    s.add_argument("--verdict", required=True, choices=["pending", "pass", "fail", "keep-fix-in-edit", "hold"])
     s.add_argument("--file")
     s.add_argument("--seed", type=int)
     s.add_argument("--fix", help="failure code")

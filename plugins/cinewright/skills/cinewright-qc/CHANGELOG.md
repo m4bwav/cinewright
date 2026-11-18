@@ -6,6 +6,11 @@ Entry shape: `### C-20261110-1 · 2026-11-10 · failures-framing: re-camera a ke
 - because: technique harvest GPU test 2026-11-10 (CrossView-Warp on MiniMax H3 REF2VA: az 20 measured 19/19/12 deg with the face held; az 40 short; 4-step turbo copied the source)
 - files: vocab failures-framing Rules (one line)
 
+### C-20261117-1 · 2026-11-17 · hold take state (The Godfather Journal)
+- because: book distillation (technique-harvest round 20), R-20261117-1
+- files: shared/lib/cine.py (takes log choices), references/qc-loop.md (one rule)
+- Take log verdict `hold` for a non-keeper with a usable part; qc-loop rule. Book rule, unverified.
+
 ### C-20261114-1 · 2026-11-14 · readable-device failure code (Sculpting in Time)
 - because: book distillation (technique-harvest), R-20261114-1
 - files: references/failures-framing.md (from shared/vocab)

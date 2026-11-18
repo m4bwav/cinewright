@@ -47,6 +47,13 @@ Best sources (primary first): ffmpeg filter docs, EBU R128 and Tech 3341, benchm
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261117-1 · 2026-11-17 · hold take state (The Godfather Journal)
+- Summary: Take log verdict `hold` for a non-keeper with a usable part; qc-loop rule. Book rule, unverified.
+- Track: subject
+- Sources: Ira Zuckerman, The Godfather Journal, 1972 (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261117-1
+
 ### R-20261114-1 · 2026-11-14 · readable-device failure code (Sculpting in Time)
 - Summary: New code for obvious peak slow motion, theme props and uncaused look-backs; fix by softening or an in-world cause. Book rule, unverified.
 - Track: subject

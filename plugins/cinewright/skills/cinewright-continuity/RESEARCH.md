@@ -48,6 +48,13 @@ Best sources (primary first): Miller, Script Supervising and Film Continuity; Ar
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261117-1 · 2026-11-17 · Period anachronism check and moving car-interior light (The Godfather Journal)
+- Summary: shot-checklist: check takes for lamps, cars, signs, hair newer than the story; vehicles: light passing across faces sells motion. Book rules, unverified.
+- Track: subject
+- Sources: Ira Zuckerman, The Godfather Journal, 1972 (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261117-1
+
 ### R-20261003-1 · 2026-10-03 · Initial research
 - Summary: Built from film continuity practice (subject: Arijon, Miller, Rowlands), four field lessons from the maintainer's local renders (practice), the competitor study (tooling: no competitor ships a scripted continuity diff), and TESTING.md (testing: the diff's summary line is the evidence).
 - Track: subject

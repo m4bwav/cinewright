@@ -2704,7 +2704,7 @@ def build_parser(prog="cine.py"):
     s.add_argument("project")
     s.add_argument("--card", required=True)
     s.add_argument("--model", required=True)
-    s.add_argument("--verdict", required=True, choices=["pending", "pass", "fail", "keep-fix-in-edit"])
+    s.add_argument("--verdict", required=True, choices=["pending", "pass", "fail", "keep-fix-in-edit", "hold"])
     s.add_argument("--file")
     s.add_argument("--seed", type=int)
     s.add_argument("--fix", help="failure code")
