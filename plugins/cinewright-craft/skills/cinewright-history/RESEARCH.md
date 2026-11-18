@@ -45,6 +45,13 @@ Best sources (primary first): Bordwell and Thompson, Film History and Film Art; 
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261118-1 · 2026-11-18 · Bresson and Antonioni cards
+- Summary: Kovacs splits modernist minimalism into Bresson's (partial framing, offscreen action, elliptical cuts, flat acting), Antonioni's (geometric frames, figures detached from empty settings, inverted dramatic curve, holding past the action) and Bergman's (close-ups on bare backgrounds); the first two became cards, Bergman's card already covers his. Antonioni's own writings back dead time and painted color. Book rules, unverified by a render.
+- Track: subject
+- Sources: Andras Balint Kovacs, Screening Modernism, 2007, ch. 7; Michelangelo Antonioni, The Architecture of Vision, 2007 ed., introduction and Red Desert pieces (paraphrased; no text copied)
+- Magnitude: 0.1
+- Applied: C-20261118-1
+
 ### R-20261114-1 · 2026-11-14 · Tarkovsky card additions (Sculpting in Time)
 - Summary: Card gains something-moves, one plain sound and slight slow motion; the book added to sources.
 - Track: subject
