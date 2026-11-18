@@ -1031,3 +1031,4 @@ Step 3 finished: shots at threshold 0.15 (51 shots), wide frames for rooms 4 (3.
 - 2026-11-14 0.6.15: cinewright-finish upscale-and-interpolation, Wan 16 fps conform to 24 by FILM/mci before the cut (technique-harvest wan16-interp test: jerk 1.26 dup vs 0.56 FILM). unittest OK, kb lint 0 errors, budget 0 red, validate passed x4, scrub 251 hits = baseline.
 
 ## [2026-11-14] update | README Works with: fractalwright (new public plugin), mirroring its own section
+- 2026-11-18 0.6.20: cinewright-history Bresson and Antonioni cards (book harvest round 21: Kovacs, Screening Modernism; Antonioni, Architecture of Vision). unittest OK, kb lint 0 errors, budget yellow (repo zip, unchanged), scrub 248 hits = baseline, 0 in diff.

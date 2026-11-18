@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261118-1 · 2026-11-18 · Bresson and Antonioni cards (Screening Modernism, Architecture of Vision)
+- because: book distillation (technique-harvest round 21), R-20261118-1
+- files: references/directors-auteurs.md
+- Two new cards: metonymic minimalism (Bresson) and analytical minimalism (Antonioni); both books added to sources.
+
 ### C-20261114-1 · 2026-11-14 · Tarkovsky card additions (Sculpting in Time)
 - because: book distillation (technique-harvest), R-20261114-1
 - files: references/directors-auteurs.md
