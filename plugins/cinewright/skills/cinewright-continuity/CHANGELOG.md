@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261118-1 · 2026-11-18 · Asymmetric-feature check
+- because: user request (technique harvest 2026-11-18, Reddit post 1xum86v)
+- files: references/shot-checklist.md (ASYMMETRY row)
+- Bible strings and prompts name each asymmetric feature with side and count; every view is checked for flips.
+
 ### C-20261117-1 · 2026-11-17 · Period anachronism check and moving car-interior light (The Godfather Journal)
 - because: book distillation (technique-harvest round 20), R-20261117-1
 - files: references/shot-checklist.md, references/vehicles.md (one rule each)

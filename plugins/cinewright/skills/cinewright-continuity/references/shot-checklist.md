@@ -21,6 +21,7 @@ Diff codes, what each means and the usual fix:
 | POSITION | two people swapped frame sides | restore the scene's positions |
 | IDENTITY | identity text differs from the bible | paste the bible string again (`cards new` does it) |
 | WARDROBE | clothes differ from the bible for this scene | paste the bible string, or add a scene key to the bible |
+| ASYMMETRY | an asymmetric feature (hair parting, mane side, scar, weapon hand, exhaust count) is on the wrong side or count | name each one with side and count in the bible string and the prompt, then check it in every view; per-view renders flip them |
 | PROP | prop in hand differs from the previous shot's end, or has no description in props.json | fix `holding` or `holding_end`; add the prop to props.json |
 | 30-DEGREE | jump cut on the same subject | 30+ degrees or 2+ size steps, or cut away |
 | TIME, SUN | time of day or sun differs from the scene | use the scene's values |
