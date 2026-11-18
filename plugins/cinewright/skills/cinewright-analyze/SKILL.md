@@ -41,3 +41,7 @@ Asked whether a video is AI: run `AN aidetect VIDEO --out DIR` (needs opencv-pyt
 ## Output
 
 The notation path, the sets table (sizes in H with confidence), files written, and the comparison result.
+
+## YouTube videos
+
+For a YouTube video, add the spoken track and chapters to the frame breakdown. Use fetchwright's `yt.py read URL` (captions, chapters, `&t=` links; opt-in route) and `yt.py clip URL A-B "question"` (Gemini reads the screen for spans of 2 minutes or less). Cite the `&t=` link and check numbers against a written source: auto-captions drop decimals.
