@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261118-2 · 2026-11-18 · One-sided features: per-view renders, showing side, mirror wrong views
+- because: user request (technique-harvest GPU test 2026-11-18, post 1xum86v: sheet 10/24 vs per-view 6/24 wrong views)
+- files: references/shot-checklist.md (ASYMMETRY row)
+- Extends the asymmetric-feature check with the measured route and the mirror fix.
+
 ### C-20261118-1 · 2026-11-18 · Asymmetric-feature check
 - because: user request (technique harvest 2026-11-18, Reddit post 1xum86v)
 - files: references/shot-checklist.md (ASYMMETRY row)
