@@ -22,6 +22,26 @@
       "kind": "web",
       "url": "https://huggingface.co/papers",
       "keep": "new video generation and editing methods"
+    },
+    {
+      "kind": "github",
+      "query": "comfyui video",
+      "keep": "top 10 by stars; new entries and their owners' repos become harvest targets"
+    },
+    {
+      "kind": "github",
+      "url": "https://github.com/kijai/ComfyUI-WanVideoWrapper",
+      "keep": "comfyui-top10 harvest seed O2; new nodes, releases and the owner's (kijai) other repos"
+    },
+    {
+      "kind": "github",
+      "url": "https://github.com/Lightricks/ComfyUI-LTXVideo",
+      "keep": "comfyui-top10 harvest seed O7; new nodes, releases and the owner's (Lightricks) other repos"
+    },
+    {
+      "kind": "github",
+      "url": "https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved",
+      "keep": "comfyui-top10 harvest seed O10; new nodes, releases and the owner's (Kosinkadink) other repos"
     }
   ]
 }
