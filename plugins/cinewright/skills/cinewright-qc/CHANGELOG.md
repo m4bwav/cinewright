@@ -6,6 +6,15 @@ Entry shape: `### C-20261110-1 · 2026-11-10 · failures-framing: re-camera a ke
 - because: technique harvest GPU test 2026-11-10 (CrossView-Warp on MiniMax H3 REF2VA: az 20 measured 19/19/12 deg with the face held; az 40 short; 4-step turbo copied the source)
 - files: vocab failures-framing Rules (one line)
 
+### C-20261119-1 · 2026-11-19 · qc seam: join and framing checks for chained segments (0.6.22)
+- because: R-20261119-1
+- files: scripts/cine_seam.py (new, not a shared/lib copy: the runtime budget has under 5 KB left), SKILL.md Step 1 (one item), evals action-3, tests TestSeam
+- `python scripts/cine_seam.py A B [...] | film --at/--every [--json]`: spike, colour step, settle, scale at +1 s (warn above 5% and 1.5x the rate before), segment drift; exit 1 on a FAIL. SKILL.md: run it on continued segments, rank competing takes by the join first, colour-match only at 3 dE or more.
+
+### C-20261119-2 · 2026-11-19 · locked scene state reaches the rubric (sc40 S22)
+- because: technique-harvest sc40 S22 (script-supervisor log)
+- files: shared/lib/cine.py (rubric check `locked`), shared/vocab/failures-composite.md (`locked-drift`, the smallest failures table)
+
 ### C-20261117-1 · 2026-11-17 · hold take state (The Godfather Journal)
 - because: book distillation (technique-harvest round 20), R-20261117-1
 - files: shared/lib/cine.py (takes log choices), references/qc-loop.md (one rule)

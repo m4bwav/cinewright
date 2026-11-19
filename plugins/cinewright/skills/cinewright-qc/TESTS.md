@@ -8,6 +8,12 @@ Entry shape: `### T-YYYYMMDD-n · date · harness · env · passed/total`, one l
 
 ## Runs
 
+### T-20261119-1 · 2026-11-19 · unittest + calibration on real renders · windows/claude-code · 4/4 seam tests
+- TestSeam: testsrc2 split into two clips PASS (step under 1 dE, zoom within 3%); seg2 with eq brightness 0.12 FAIL (step over 6 dE, exit 1); a 1.1x crop measured 1.1 +/- 0.03; one concatenated film with `--at 3` FAIL with two segments. TestQc: the locked list reaches cards new and the rubric.
+- Calibration (local H3 renders): push-in that speeds up at the join scale 1.063 at +1 s vs 1.005 before, WARN; still ending 1.000 PASS; --continue-from join 0.978 PASS; two chained joins 0.931 and 0.938 at rates 1.1x and 0.8x PASS. About 1-2 s per join.
+- action-3 (new eval: two synthetic segments with a brightness step): not run yet.
+- led to: C-20261119-1
+
 ### T-20261022-1 · 2026-10-22 · evals/run_evals.py (claude -p --restricted, dontAsk, fresh folder on another drive) · windows/claude-code, Sonnet · 2/2 new cases
 - action-2 (new: a flickering synthetic take made in setup): with the skill 3/3, each run called `qc measure` on take_1b.mp4 and got `WARN flicker whole: brightness jumps 23.4 times a second`; without 0/1.
 - outcome-2 (new: which take goes on which side): with 3/3 (random order, sides recorded, the keeper not named), without 0/1 (judged 1 of 3).

@@ -543,6 +543,7 @@ def new_card(p, cid, scene, cast_ids, order=None):
         "cast": cast,
         "action": "TODO: one action, present tense",
         "time_of_day": p.scene_map[scene]["time_of_day"],
+        **({"start_state": "Locked: %s." % "; ".join(p.scene_map[scene]["locked"])} if p.scene_map[scene].get("locked") else {}),
     }
 
 
@@ -1672,6 +1673,7 @@ RUBRIC = [
     ("space", "sheet", "Does the space read as planned? {space_words}."),
     ("attention", "the previous take's last frame and this take's first frame", "Is the face or moving subject in the {cell} of the first frame{from_cell}?"),
     ("action", "sheet", "Does the action happen and finish at normal speed, already moving at frame 1: {action}"),
+    ("locked", "sheet", "Does this stay as the scene locked it, in every frame: {item}?"),
     ("opening", "first frame", "Does the first frame match the start state: {start_state}"),
     ("end-state", "last frame", "Does the last frame match the end state: {end_state} Write what it shows."),
     ("framing", "sheet", "Are heads, hands and key objects clear of the frame edges, with nothing growing out of a head and feet on the ground?"),
@@ -1862,6 +1864,8 @@ def rubric_items(p, card):
                 need = {"props": "holding", "position": "position_words", "direction": "travel_words", "eyeline": "eyeline_words"}.get(check)
                 if not need or v[need]:
                     rows.append(("%s:%s" % (check, m["id"]), ask.format(**v)))
+        elif check == "locked":  # one item per entry of the scene's locked list (sc40 S22)
+            rows += [("locked:%d" % i, ask.format(item=t.rstrip("."))) for i, t in enumerate(sc.get("locked", []), 1)]
         else:
             need = {"opening": "start_state", "end-state": "end_state", "audio": "audio", "seam": "prev", "set": "wall", "space": "space_words", "attention": "cell"}.get(check)
             if not need or base[need]:

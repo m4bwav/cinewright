@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/scene-axis-bible.schema.json sha256:877c66a04624ee85c689949ce999876c48e6507ccfbbe1f7314fb8fd2bd82d08; edit the source",
+  "$comment": "copied from shared/schemas/scene-axis-bible.schema.json sha256:079ffd298f675ab44e108e1c8594bace858c7e81c0c86b5af10b765b7ad93662; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Scene axis bible",
   "description": "bibles/scenes.json: per scene, the location, time, sun, the axis (line of action), which side the camera stays on, and where each character sits and travels as seen from side A.",
@@ -51,6 +51,14 @@
             "items": {
               "type": "string"
             }
+          },
+          "locked": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "description": "Script-supervisor state that must stay the same in every card of the scene (a glass half full, the door open). cards new copies it into start_state; qc rubric asks one yes/no item per entry."
           },
           "ends_when": {
             "type": "string",

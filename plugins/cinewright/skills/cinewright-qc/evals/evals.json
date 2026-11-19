@@ -133,6 +133,56 @@
       ],
       "baseline": "2026-10-22, evals/run_evals.py, skills disabled, Sonnet: 0/1 (judged 1 of 3 expectations)",
       "runs": 3
+    },
+    {
+      "id": "action-3",
+      "kind": "action",
+      "prompt": "seg2.mp4 continues seg1.mp4 in this folder. Before I chain a third segment onto them, check whether the join between the two holds up.",
+      "expectations": [
+        "the action happened, proven by the evidence below (a tool call in the trace), not by the reply saying so",
+        "the reply reports the join as a FAIL with its colour step (6 dE or more) and suggests a colour match or a reroll, not a guess from watching"
+      ],
+      "evidence": {
+        "type": "trace",
+        "tool": "Bash",
+        "input_match": "cine_seam\\.py\\s+\\S*seg1\\S*\\s+\\S*seg2"
+      },
+      "baseline": "not run yet",
+      "runs": 3,
+      "setup": [
+        [
+          "ffmpeg",
+          "-v",
+          "error",
+          "-y",
+          "-f",
+          "lavfi",
+          "-i",
+          "testsrc2=size=320x180:rate=24:duration=3",
+          "-c:v",
+          "mpeg4",
+          "-q:v",
+          "2",
+          "seg1.mp4"
+        ],
+        [
+          "ffmpeg",
+          "-v",
+          "error",
+          "-y",
+          "-f",
+          "lavfi",
+          "-i",
+          "testsrc2=size=320x180:rate=24:duration=3",
+          "-vf",
+          "eq=brightness=0.12",
+          "-c:v",
+          "mpeg4",
+          "-q:v",
+          "2",
+          "seg2.mp4"
+        ]
+      ]
     }
   ]
 }
