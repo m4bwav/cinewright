@@ -17,6 +17,7 @@ sources: ["https://cloud.google.com/blog/products/ai-machine-learning/ultimate-p
 - Durations snap up to the nearest length the model offers; trim the extra in the edit. Some settings force a length (refs, high resolutions): the settings file shows the result.
 - Over the word guide: shorten the action or the location, never the identity string.
 - Several cards of one scene that fit one generation: `--sequence` writes the people, place, sun and look once, then one timestamp block per card.
+- Timed segments in one prompt: segment 1 is a static anchor (who, where, look, light). Each later beat names only what changes (the action, the move, the line). Restating the person or place in a later beat invites the model to redraw them. Idea after kijai's ComfyUI-PromptRelay (no licence; own words).
 - The settings file holds the model's parameters (duration, aspect, resolution, seed, refs, negative terms). Keep it with the prompt; a take record points to both.
 - Card fields that become sentences: `enters` and `exits` ("enters the frame on the left"), `position_end` ("ends on the right of the frame"), `eyeline_end` ("turns, looking toward frame left") and `camera.settle` ("the camera holds, then pushes in, then holds").
 - Visual structure fields that become sentences: the scene's `space` (one sentence of staging words, in the context), the card's `line` ("strong diagonal lines cut across the frame") and `attention.start` ("her face is in the upper left of the frame"), both after the camera words.

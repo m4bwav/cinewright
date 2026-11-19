@@ -2,6 +2,10 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
+### C-20261118-1 · 2026-11-18 · compile-rule: timed segments anchor first, then changes only
+- because: technique harvest 2026-11-18 (ct10 O2-1, kijai/ComfyUI-PromptRelay, no licence: idea only, own words)
+- files: references/compile-rule.md (Rules, one line)
+
 ### C-20261113-1 · 2026-11-13 · h3-long-takes: two-stage latent upscale measured, not adopted
 - because: technique harvest GPU test 2026-11-12d (post 1wio4eg; two schedules vs windows vs motion-latent chain, one seed)
 - files: references/h3-long-takes.md (Rules, one line; Numbers, the table)
