@@ -1032,3 +1032,4 @@ Step 3 finished: shots at threshold 0.15 (51 shots), wide frames for rooms 4 (3.
 
 ## [2026-11-14] update | README Works with: fractalwright (new public plugin), mirroring its own section
 - 2026-11-18 0.6.20: cinewright-history Bresson and Antonioni cards (book harvest round 21: Kovacs, Screening Modernism; Antonioni, Architecture of Vision). unittest OK, kb lint 0 errors, budget yellow (repo zip, unchanged), scrub 248 hits = baseline, 0 in diff.
+- 2026-11-18 0.6.21: cinewright-genvideo compile-rule timed segments anchor-then-changes (technique-harvest ct10 O2-1, kijai PromptRelay idea, no licence). unittest OK, kb lint 0 errors, budget yellow (repo zip, unchanged), scrub 248 hits = baseline.
