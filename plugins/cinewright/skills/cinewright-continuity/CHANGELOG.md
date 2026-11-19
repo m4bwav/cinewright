@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261119-1 · 2026-11-19 · locked scene state, one sound bed across a chain, extension and multi-shot notes (0.6.22)
+- because: technique-harvest sc40 chain-join study (S22, S25, S19, S8, S10, S49, S50, S9)
+- files: SKILL.md (bibles: `locked`), shared/schemas/scene-axis-bible.schema.json (`locked`), shared/lib/cine.py (cards new copies it into start_state), references/ai-continuity.md (one Numbers line), references/chain-models.md (new)
+- A scene's locked list is inherited by new cards and checked per entry by `qc rubric`. One ambience bed over a chained film, dialogue offset 4-8 frames across each join. Wan VACE extend vs H3 latent continuation; HoloCine, LCT, MultiShotMaster, StoryMem, StoryDiffusion noted with licences, none run.
+
 ### C-20261118-2 · 2026-11-18 · One-sided features: per-view renders, showing side, mirror wrong views
 - because: user request (technique-harvest GPU test 2026-11-18, post 1xum86v: sheet 10/24 vs per-view 6/24 wrong views)
 - files: references/shot-checklist.md (ASYMMETRY row)

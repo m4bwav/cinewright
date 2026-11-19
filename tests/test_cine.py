@@ -1230,6 +1230,24 @@ class TestQc(Base):
         self.assertEqual(code, 1)
         self.assertIn("does not belong", text)
 
+    def test_locked_scene_state_reaches_card_and_rubric(self):
+        # sc40 S22: a scene's locked list is inherited by new cards and asked once per entry
+        sp = self.proj / "bibles" / "scenes.json"
+        scenes = json.loads(sp.read_text(encoding="utf-8"))
+        scenes["scenes"][0]["locked"] = ["the lantern lit on the crate", "the door open behind her"]
+        lib.write_text(sp, json.dumps(scenes))
+        code, out = run("cards", "new", self.proj, "--id", "1D", "--scene", scenes["scenes"][0]["id"], "--cast", "maren")
+        self.assertEqual(code, 0, out)
+        card = json.loads((self.proj / "cards" / "1D.json").read_text(encoding="utf-8"))
+        self.assertEqual(card["start_state"], "Locked: the lantern lit on the crate; the door open behind her.")
+        code, text = run("qc", "rubric", self.proj, "--card", "1B")
+        self.assertEqual(code, 0, text)
+        rub = json.loads((self.proj / "qc" / "1B.rubric.json").read_text(encoding="utf-8"))
+        locked = [i for i in rub["items"] if i["check"] == "locked"]
+        self.assertEqual([i["id"] for i in locked], ["locked:1", "locked:2"])
+        self.assertIn("the door open behind her", locked[1]["ask"])
+        self.assertIn("locked-drift", locked[0]["codes"])
+
     def test_rubric_carries_the_faced_wall(self):
         locs = json.loads((self.proj / "bibles" / "locations.json").read_text(encoding="utf-8"))
         locs["locations"][0]["walls"] = {"east": "facing a solid panelled wall under a gallery"}
@@ -2053,6 +2071,58 @@ class TestH3Lint(unittest.TestCase):
         for k in ("h3-silent", "h3-short", "h3-cut-late", "h3-shot-short", "h3-many-shots", "h3-speech-long", "h3-quoted-line", "h3-filler"):
             self.assertIn(k, c)
         self.assertIn("h3-no-soundscape", self.codes("no fields ___", 9))
+
+
+@unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"), "ffmpeg not installed")
+class TestSeam(Base):
+    """cine_seam.py: picture checks at a join between chained segments (sc40 S28 seam metric, S30 framing)."""
+    SEAM = SKILLS / "cinewright-qc" / "scripts" / "cine_seam.py"
+
+    def clip(self, name, start, vf=None):
+        out = self.tmp / name
+        args = ["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=24:duration=6",
+                "-ss", str(start), "-t", "3"] + (["-vf", vf] if vf else []) + ["-c:v", "mpeg4", "-q:v", "2", str(out)]
+        subprocess.run(args, check=True)
+        return out
+
+    def seam(self, *clips):
+        code, out = run(*clips, "--json", script=self.SEAM)
+        return code, json.loads(out)
+
+    def test_split_clip_passes(self):
+        code, r = self.seam(self.clip("a.mp4", 0), self.clip("b.mp4", 3))
+        self.assertEqual(code, 0)
+        j = r["joins"][0]
+        self.assertEqual(j["status"], "PASS", j)
+        self.assertLess(j["colour_step"], 1.0)
+        self.assertLess(abs(j["scale"]["after"] - 1), 0.03)
+
+    def test_brightness_step_fails(self):
+        code, r = self.seam(self.clip("a.mp4", 0), self.clip("b.mp4", 3, "eq=brightness=0.12"))
+        self.assertEqual(code, 1)
+        self.assertEqual(r["joins"][0]["status"], "FAIL")
+        self.assertGreater(r["joins"][0]["colour_step"], 6)
+
+    def test_zoom_estimate(self):
+        a = self.clip("a.mp4", 0)
+        b = self.clip("b.mp4", 0, "crop=iw/1.1:ih/1.1,scale=320:180")
+        sys.path.insert(0, str(self.SEAM.parent))
+        try:
+            import cine_seam
+        finally:
+            sys.path.pop(0)
+        s = cine_seam.zoom(cine_seam.gray(str(a))[24], cine_seam.gray(str(b))[24])
+        self.assertAlmostEqual(s, 1.1, delta=0.03)
+
+    def test_one_film_at_times(self):
+        a, b = self.clip("a.mp4", 0), self.clip("b.mp4", 3, "eq=brightness=0.12")
+        lst = self.tmp / "l.txt"
+        lst.write_text("file '%s'\nfile '%s'\n" % (a.name, b.name), encoding="utf-8")
+        film = self.tmp / "film.mp4"
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-c", "copy", str(film)], check=True)
+        code, r = self.seam(film, "--at", "3")
+        self.assertEqual(r["joins"][0]["status"], "FAIL")
+        self.assertEqual(len(r["segments"]), 2)
 
 
 class TestAnalyze(Base):

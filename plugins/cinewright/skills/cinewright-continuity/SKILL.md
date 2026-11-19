@@ -20,7 +20,7 @@ Write these in the project folder (shapes in `scripts/schemas/`; layout in cinew
 
 - `bibles/characters.json`: one identity string per character, wardrobe by scene. Rules: `kb show identity-strings`.
 - `bibles/locations.json`: one description string per place.
-- `bibles/scenes.json`: per scene the axis line, camera side A, where each character sits and travels as seen from side A, time of day, sun. Rules: `kb show axis-and-screen-direction`.
+- `bibles/scenes.json`: per scene the axis line, camera side A, where each character sits and travels as seen from side A, time of day, sun. Rules: `kb show axis-and-screen-direction`. Optional `locked`: state that must hold through the whole scene (a glass half full, the door open); `cards new` copies it into `start_state` and `qc rubric` asks each entry.
 - `bibles/style.json`: format and one look string.
 - `bibles/props.json` (optional): one description per held prop; compiled verbatim (cinewright-design, entry prop-constants).
 

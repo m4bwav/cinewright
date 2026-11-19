@@ -19,6 +19,7 @@ Columns as in failures-picture (rung = the repair ladder, check = the `qc rubric
 | `toy-scale` | something huge reads small: shallow focus, clean surfaces, fast motion | no full-size cues on the card | deep focus, wear, slower motion (camera frame-rate-and-shutter) | 1 | camera |
 | `clipped-fire` | a fireball, flash or lamp is a flat white blob | exposed for the scene, not the brightest source | ask for the flame's texture and a set lit by it; pull highlights in the grade | 1 | light |
 | `visible-rig` | a flying or hanging figure looks held by a cable: stiff hips, clothes bunched at a harness point | pose of a suspended body | name a free pose (arms loose, clothes flowing); new seed | 1 | camera |
+| `locked-drift` | a state the scene locked changes (the glass refills, the door swings shut) | the locked state not restated | paste the scene's `locked` list into start_state and the prompt | 1 | locked |
 
 ## Rules
 

@@ -20,6 +20,7 @@
           "time_of_day": {"enum": ["dawn", "morning", "day", "golden-hour", "dusk", "night"]},
           "sun": {"type": "string", "description": "World direction and height of the sun or main source, verbatim."},
           "props": {"type": "array", "items": {"type": "string"}},
+          "locked": {"type": "array", "items": {"type": "string", "maxLength": 80}, "description": "Script-supervisor state that must stay the same in every card of the scene (a glass half full, the door open). cards new copies it into start_state; qc rubric asks one yes/no item per entry."},
           "ends_when": {"type": "string", "description": "Card id where the objective is won or refused; later cards are TRIM candidates."},
           "hook": {"type": "string", "description": "The open question carried into the next scene (NO-HOOK)."},
           "intensity": {"type": "integer", "minimum": 0, "maximum": 100, "description": "Story intensity, 0 (calm exposition) to 100 (the climax), from the story graph."},

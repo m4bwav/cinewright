@@ -47,6 +47,20 @@ Best sources (primary first): ffmpeg filter docs, EBU R128 and Tech 3341, benchm
 
 Newest first. `Track` is subject, tooling, practice, or testing.
 
+### R-20261119-1 · 2026-11-19 · seam metric and framing check at chained joins (sc40 S28, S30, S39, S27, S12)
+- Summary: stdlib seam score (luma spike over the local median, CIE76 colour step of 6 frames each side, settle dE at 0.5/1/2 s, segment drift) separates chained joins (spike 1.4-2.1x, step 0.4-1.6 dE) from scene cuts (spike 25-53x, step about 20 dE). Spike and step miss a push-in that speeds up at the join; a block-matching zoom estimate (192x108, median distance ratio) catches it: A's last frame to B at +1 s 1.063 against 1.005 over the second before (warn), still ending 1.000, a --continue-from join 0.978, steady pull-out chains 0.93 at a 1.1x rate (pass). Global colour transfer (MKL, Reinhard) removes a step (8.6 to 0.12 dE on a synthetic join) but real H3 joins sit under 2 dE already, and a ramp brings the offset back as creep: match only at 3 dE or more, constant. Rank competing takes of a continuation by the join before the rubric (S39, an unreleased pipeline, idea only).
+- Track: tooling
+- Sources: maintainer chain-join study 2026-11-19 (own code, stdlib + ffmpeg; ORB similarity fits with opencv as the reference); Reinhard et al. 2001; Pitie and Kokaram 2007; https://www.reddit.com/r/StableDiffusion/comments/1sdn1ga/ (S39)
+- Magnitude: 0.3
+- Applied: C-20261119-1
+
+### R-20261119-2 · 2026-11-19 · background drift by DINOv2 embeddings (sc40 S29), noted
+- Summary: masked background crops compared with the scene plate by DINOv2 embeddings (facebookresearch/dinov2, Apache-2.0 code and weights) would measure set drift that colour and thumbnail checks miss. Not installed or run. Worth it only once a film has scene plates and a person mask in its pipeline; cine_seam's struct and zoom checks cover the cheap part. Face embedders such as ArcFace have non-commercial weights.
+- Track: tooling
+- Sources: https://github.com/facebookresearch/dinov2
+- Magnitude: 0.05
+- Applied: none (note)
+
 ### R-20261117-1 · 2026-11-17 · hold take state (The Godfather Journal)
 - Summary: Take log verdict `hold` for a non-keeper with a usable part; qc-loop rule. Book rule, unverified.
 - Track: subject

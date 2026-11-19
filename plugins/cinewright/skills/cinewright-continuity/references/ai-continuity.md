@@ -3,8 +3,8 @@ title: Continuity rules specific to AI video
 slug: ai-continuity
 summary: What separately generated clips lose between shots (identity, props, sound, direction) and the planning rules that carry it across.
 tags: [continuity, ai-video, seams, identity, seeds]
-last_checked: 2026-11-12
-sources: ["https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1", "Maintainer's local-render field notes, 2026-09 (private; lessons 005, 011, 012, 013)", "Joseph V. Mascelli, The Five C's of Cinematography, 1965", "David Bordwell, Janet Staiger and Kristin Thompson, The Classical Hollywood Cinema, 1985", "David Bordwell, A Labyrinth of Linkages, 2013", "David Bordwell, Narration in the Fiction Film, 1985", "r/comfyui 1rcemhe (BFS head_swap prompt, MIT); maintainer GPU test 2026-11-12"]
+last_checked: 2026-11-19
+sources: ["https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1", "Maintainer's local-render field notes, 2026-09 (private; lessons 005, 011, 012, 013)", "Joseph V. Mascelli, The Five C's of Cinematography, 1965", "David Bordwell, Janet Staiger and Kristin Thompson, The Classical Hollywood Cinema, 1985", "David Bordwell, A Labyrinth of Linkages, 2013", "David Bordwell, Narration in the Fiction Film, 1985", "r/comfyui 1rcemhe (BFS head_swap prompt, MIT); maintainer GPU test 2026-11-12", "Maintainer chain-join study 2026-11-19"]
 ---
 
 # Continuity rules specific to AI video
@@ -29,6 +29,7 @@ sources: ["https://cloud.google.com/blog/products/ai-machine-learning/ultimate-p
 
 - Trim about 9 frames (at 24 fps, under 0.4 s) from the head of each continued clip; the model eases in over that span.
 - Overlap the sound at a remaining seam by a fraction of a second (0.1-0.2 s) so it does not cut dead.
+- A chain of renders: one ambience bed over the whole film, each segment's own ambience ducked; dialogue offset 4-8 frames across each join (J and L cuts).
 - Violation budget, warn only: classical studio films broke spatial continuity on under 2% of cuts (*Classical Hollywood* p. 58). Over 1 AXIS or EYELINE error in 50 cuts reads as deliberately disorienting.
 - Keyframe face fix (6 drifted frames, 2026-11-12): SFace to the bible 0.34-0.50 before, 0.73-0.86 after, about 20 s a frame on 16 GB; the BFS LoRA on the turbo checkpoint scored lower (0.31-0.71).
 - Sun relight (2026-11-12b): 4 of 6 at +-90 degrees lit the asked side; street plates flipped 2/2.
