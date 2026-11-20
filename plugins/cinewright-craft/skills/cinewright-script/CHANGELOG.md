@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261119-1 · 2026-11-19 · McKee and Truby scene and line rules (0.6.23)
+- because: book distillation round 6 (McKee, Story ch. 12-23; Truby, Anatomy of Story ch. 10)
+- files: references/screenplay-format.md, scene-turns.md, logline-and-beats.md, dialogue-for-generated-voices.md, narration-writing.md; shared/lib cine.py
+- Short rules merged into existing lines: name the thing and photographable action, mood never replaces a turn, three same-charge scenes, transition hinge, enter late and key line last, crisis held on screen with no cutaway, no late coincidence, inciting incident on screen, silent first, key word last and read aloud, break long speeches with a silent reaction, no "as you know", strip-the-voice-over test. `continuity diff` warns UNPHOTOGRAPHABLE on card action ("as if", "we see", "there is", "seems", "for a long time").
+
 ### C-20261113-2 · 2026-11-13 · Clip start and tail, cheat-out (Acting for Film)
 - because: book distillation (technique-harvest), R-20261113-2
 - files: references/performance-words.md

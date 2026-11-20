@@ -56,8 +56,7 @@ MOVE_WORDS = {
     "arc-right": "the camera arcs slowly right around the subject, the background sliding behind",
     "dolly-zoom": "dolly zoom, the background stretching away while the subject keeps the same size",
 }
-# Camera height and horizon together pin the angle (after Mateu-Mestre, Framed Ink). Out-of-frame values name no
-# horizon: every noun gets drawn, so an interior card leaves horizon unset.
+# Height and horizon pin the angle (Mateu-Mestre, Framed Ink). Interiors leave horizon unset: every noun gets drawn.
 HORIZON_WORDS = {"lower-third": "the horizon on the lower third of the frame", "middle": "the horizon across the middle of the frame",
                  "upper-third": "the horizon on the upper third of the frame", "above-frame": "the ground fills the frame to the top edge",
                  "below-frame": "only sky behind, the ground below the frame"}
@@ -755,6 +754,7 @@ SETUP_PAIRS = {"external": {"external", "internal"}, "internal": {"external", "i
 RESULT_WORDS = set("angry sad scared smug desperate sexy quirky intense menacing emotional dramatic defensive sarcastic "
                    "hostile cold vicious nervous calm friendly weak upset furious happy anxious".split())
 RESULT_FILL = {"and", "very", "a", "bit", "more", "is", "looks", "feels"}
+UNPHOTO = re.compile(r"\b(as if|as though|we (?:see|hear)|there (?:is|are)|seems?|for a long time)\b", re.I)  # McKee, Story ch. 23
 PLANT_LEVEL = 80  # "climax" cards for PLANT-MISSING; the reader's threshold, warn-only
 
 
@@ -1009,6 +1009,9 @@ def continuity_diff(p):
         aw = set(re.findall(r"[a-z]+", action.lower())) - {w for m in cast1 for w in _norm("%s %s" % (m.get("id"), p.chars.get(m.get("id"), {}).get("name"))).split()}
         if sz in ("CU", "ECU") and cast1 and aw and aw <= RESULT_WORDS | RESULT_FILL and aw & RESULT_WORDS:
             add("warning", card, "RESULT", "a %s whose action is only a result (%s); give the face a verb" % (sz, " ".join(sorted(aw))))
+        hit = UNPHOTO.search(action)
+        if hit:
+            add("warning", card, "UNPHOTOGRAPHABLE", "'%s' in the action: write what the camera sees or hears (entry screenplay-format)" % hit.group(0))
         if _norm(card.get("beat")) and _norm(card.get("beat")) == _norm((prev or {}).get("beat")):
             add("warning", card, "BEAT-REPEAT", "same beat as %s; cut one or change what it tells (entry logline-and-beats)" % prev["id"])
         pcs = (prev or {}).get("cast", [])
@@ -1994,9 +1997,8 @@ def agree_stats(pairs):
     return res
 
 
-# Machine measures of a take (qc measure). They find technical faults a reviewer misses at contact-sheet
-# resolution; they never judge acting, look or story (that is the rubric). Thresholds were set on 2026-10-07
-# against reviewed takes of three local multi-shot films (keepers and rejects).
+# qc measure: technical faults a contact sheet misses, never acting, look or story (the rubric).
+# Thresholds set 2026-10-07 on reviewed keepers and rejects of three local films.
 MEASURE_CUT_SCENE = 0.30     # ffmpeg scene score that counts as a cut
 MEASURE_CUT_EARLY_S = 1.0    # H3 cuts 0.1-0.8 s before the stamped time (24 reviewed takes), so allow early
 MEASURE_CUT_LATE_S = 0.6     # ... and less late
