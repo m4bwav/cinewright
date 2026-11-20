@@ -34,7 +34,8 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 1. `CINE takes log <p> --card <id> --model <m> --verdict <v> --fix <code> --file <clip> --change "<one change from the last take>"`. It finds the compiled prompt and settings and hashes the prompt.
 2. Apply the printed fix (cinewright-genvideo recompiles; cinewright-continuity fixes cards). One change per reroll; a multi-shot generation gets one change across all its cards, the cheapest rung among them.
 3. Three failed takes of one card: stop and re-plan the card (it prints when).
-4. A pass: write what the last frame shows (`takes lastframe ... --take <record> --observed "..."`) and copy it into the next card's `start_state`.
+4. Track cost per kept shot, not per generation: count the logged takes (and GPU minutes or credits) behind each passed card, and report the film's total and per-card average at picture lock. It is the number that prices the next film; per-clip prices do not.
+5. A pass: write what the last frame shows (`takes lastframe ... --take <record> --observed "..."`) and copy it into the next card's `start_state`.
 
 A hosted re-render costs money: show the prompt, settings and cost, and ask first.
 

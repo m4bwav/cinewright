@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261120-1 · 2026-11-20 · Animatic: still-or-clip decision per card, trim placeholders before rendering
+- because: technique harvest of an r/aivideomaking thread on daily AI video cost (technique-harvest/ai-docs/notes/2026-11-20-reddit-aivideomaking-cost-thread.md)
+- files: references/animatic.md
+- Practitioner reports, unverified by a local test.
+
 ### C-20261114-1 · 2026-11-14 · Time-pressure tags (Sculpting in Time)
 - because: book distillation (technique-harvest), R-20261114-1
 - files: references/time-pressure.md (new)

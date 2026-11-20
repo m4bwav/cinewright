@@ -3,8 +3,8 @@ title: Animatic
 slug: animatic
 summary: Cut approved stills to the cards' durations over scratch audio before any video render; the timing sheet locks each card's length and the stills become first frames.
 tags: [edit, animatic, previs, timing, storyboard]
-last_checked: 2026-10-22
-sources: ["invideo FAQ, How do you make an AI animatic, 2026-08-10", "flick.art, Blender for AI filmmaking, 2026-06", "Boords, MP4 animatics", "local test, ffmpeg concat timing, 2026-10-09", "James Gurney, Imaginative Realism, 2009"]
+last_checked: 2026-11-20
+sources: ["invideo FAQ, How do you make an AI animatic, 2026-08-10", "flick.art, Blender for AI filmmaking, 2026-06", "Boords, MP4 animatics", "local test, ffmpeg concat timing, 2026-10-09", "James Gurney, Imaginative Realism, 2009", "r/aivideomaking thread on daily AI video cost, 2026-11-20"]
 ---
 
 # Animatic
@@ -18,6 +18,8 @@ sources: ["invideo FAQ, How do you make an AI animatic, 2026-08-10", "flick.art,
 - The approved still becomes the shot's first frame (or its keyframe guide) and the locked duration becomes its render length, snapped up to the model's frame grid and trimmed in the conform.
 - A card with no still shows a grey frame: the animatic still plays, so missing art never blocks timing.
 - Camera moves show as a slow push or drift on the still, enough to judge pace, not framing.
+- Decide per card from the animatic: a still with a slow push or drift, or a generated clip. Generate only the cards that must move to read (the reveal, the action); a held still covers establishing, reaction and atmosphere beats, often with a sound cue carrying the change. Mark it on the card.
+- Trim the placeholder before rendering: a card that plays as 5 s in the animatic often needs 2 s of motion. Cut when the viewer has seen what they need, before the model drifts.
 - Keep the animatic and its timing sheet beside the project; the edit compares the first assembly against it.
 
 ## Numbers
@@ -35,6 +37,8 @@ sources: ["invideo FAQ, How do you make an AI animatic, 2026-08-10", "flick.art,
 - Treating the animatic's push-ins as camera direction: write the move on the card.
 - Joining stills with ffmpeg's concat demuxer and `duration` lines drifts by a second or more; encode each card to its exact frame count first (the tool does).
 - No ffmpeg on the machine: Blender's sequencer encodes image sequences or scene strips to an MP4 at an exact frame count; set the scene's frame rate to the video model's first (polywright recipe `encode-mp4`).
+
+- Rendering every card because the film is "an AI video": most of a short's runtime can be stills, sound and cuts.
 
 ## Verify
 

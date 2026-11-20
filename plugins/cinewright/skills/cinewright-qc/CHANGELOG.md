@@ -6,6 +6,11 @@ Entry shape: `### C-20261110-1 · 2026-11-10 · failures-framing: re-camera a ke
 - because: technique harvest GPU test 2026-11-10 (CrossView-Warp on MiniMax H3 REF2VA: az 20 measured 19/19/12 deg with the face held; az 40 short; 4-step turbo copied the source)
 - files: vocab failures-framing Rules (one line)
 
+### C-20261120-1 · 2026-11-20 · Track cost per kept shot at picture lock
+- because: technique harvest of an r/aivideomaking thread on daily AI video cost (technique-harvest/ai-docs/notes/2026-11-20-reddit-aivideomaking-cost-thread.md)
+- files: SKILL.md
+- Practitioner reports, unverified by a local test.
+
 ### C-20261119-2 · 2026-11-19 · Williams lip and impact codes, McKee look item (0.6.23)
 - because: book distillation round 6 (Williams, Animator's Survival Kit pp. 86, 294, 309; McKee, Story ch. 14)
 - files: vocab failures-motion (bilabial-miss, impact-sync; rows tightened to stay under the entry budget), references/look-pass.md (pretty-no-turn, no-turn-blink, both warn)
