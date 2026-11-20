@@ -2135,16 +2135,16 @@ class TestSetReturn(Base):
         params = json.loads((self.tmp / "h3" / "1C.params.json").read_text(encoding="utf-8"))
         self.assertEqual(params["ref_videos"], ["refs/sets/lamp-room/lamp-room_est_1s.mp4"])
         self.assertNotIn("ref_videos", json.loads((self.tmp / "h3" / "1A.params.json").read_text(encoding="utf-8")))
-        self.assertIn("1C returns to Lamp room after a cut away: passed", out)
+        self.assertIn("1C returns to Lamp room: passed", out)
 
     def test_names_approved_take_without_clip(self):
         code, out = run("compile", self.project(), "--model", "minimax-h3", "--resolution", "480p")
         self.assertEqual(code, 0, out)
-        self.assertIn("pass about 1 s of renders/1A_t2.mp4 (take 2) as a reference video", out)
+        self.assertIn("pass 1 s of renders/1A_t2.mp4 of 1A as ref video", out)
         code, out = run("compile", self.project_again(speak=True), "--model", "veo")
         self.assertEqual(code, 0, out)
-        self.assertIn("takes no reference video: pass its frame as a still reference", out)
-        self.assertIn("someone speaks in 1A", out)
+        self.assertIn("as a still (no ref video)", out)
+        self.assertIn("1A has speech", out)
 
     def project_again(self, **kw):
         shutil.rmtree(self.tmp / "p")
