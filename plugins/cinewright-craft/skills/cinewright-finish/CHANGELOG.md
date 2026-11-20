@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261120-1 · 2026-11-20 · Double exposure recipe for split character and environment motion
+- because: technique harvest of an r/aivideomaking thread on daily AI video cost (technique-harvest/ai-docs/notes/2026-11-20-reddit-aivideomaking-cost-thread.md)
+- files: references/compositing-and-cleanup.md
+- Practitioner reports, unverified by a local test.
+
 ### C-20261114-1 · 2026-11-14 · Wan 16 fps conform: interpolate, not duplicate
 - because: book harvest (Murch, In the Blink of an Eye); measured on a Wan pan and walk, FILM and mci cut cadence jerk from 1.26 to about 0.57 with no warping on the contact sheets
 - files: references/upscale-and-interpolation.md

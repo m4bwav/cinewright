@@ -21,6 +21,7 @@ sources: ["VES Handbook of Visual Effects, 3rd ed., 2020", "Ron Brinkmann, The A
 - Join layers on a natural edge where tone changes anyway (a road meeting a curb, a wall corner, a horizon), not across an even surface.
 - Whatever the subject touches (floor, chair, ground under the feet) is generated with the subject, not taken from the plate; a pasted contact gives floating or doubled shadows.
 - Move or rotate a generated element in post only when its key is soft or still agrees with the plate's sun.
+- Double exposure for motion the model will not give in one take: render the character's movement and the environment's movement as two takes from the same start frame, then blend them (opacity, screen or a soft matte) in post. Lock the camera in both; a move in either breaks the blend. Different from adding people per render pass, which failed (2026-10-25).
 - Composite before the grade's look, after correct and balance of each plate (entry grade-order). Upscale after compositing.
 
 ## Vocabulary
