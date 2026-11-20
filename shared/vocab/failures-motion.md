@@ -3,8 +3,8 @@ title: Failure codes, motion, sound and spec
 slug: failures-motion
 summary: Failure codes for rendered takes (action, opening, end state, anatomy, flicker, physics, text, dialogue, lip lag, sound, seams, spec, loudness): symptom, cause, cheapest fix, rung, check.
 tags: [vocab, qc, failures, taxonomy, motion, audio]
-last_checked: 2026-10-22
-sources: ["field lessons 005, 011, 014, 015, 020, 021 (maintainer's local renders, 2026-09)", "https://tech.ebu.ch/publications/r128"]
+last_checked: 2026-11-19
+sources: ["field lessons 005, 011, 014, 015, 020, 021 (maintainer's local renders, 2026-09)", "https://tech.ebu.ch/publications/r128", "Richard Williams, The Animator's Survival Kit, 2001"]
 ---
 
 # Failure codes, motion, sound and spec
@@ -17,18 +17,20 @@ Rungs and checks as in `failures-picture`.
 |---|---|---|---|---|---|
 | `action-incomplete` | action stops short or plays in slow motion | too much action for the length | one action; longer, or split the card | 2 | action |
 | `frozen-start` | picture holds still for the first frames | image-to-video eases in | write "already moving"; trim the head | 7 | action |
-| `insert-too-fast` | hands or tools flick through an insert or ECU | magnified motion reads as sped up | write "slowly, deliberately" in the insert's action and match that tempo in the wide | 1 | action |
+| `insert-too-fast` | hands or tools flick through an insert or ECU | magnified motion reads sped up | "slowly, deliberately" in the insert, same tempo in the wide | 1 | action |
 | `bad-opening` | wrong opening, the same on every reroll | the seed fixes the opening | new seed; then a guide still at frame 0 | 2 | opening |
 | `end-state-wrong` | last frame differs from the card | model ran its own course | next card starts from the observed end | 6 | end-state |
 | `anatomy` | hands, limbs or faces melt or multiply | small, fast or hidden subject | larger, slower, side-on; cut around it | 6 | anatomy |
 | `flicker` | brightness pulses frame to frame inside one shot | the model's exposure wavers between frames | `deflicker` in the grade; re-render when it stays | 7 | light |
 | `physics-morph` | objects merge, pass through or slide | contact and weight unstated | name contact and weight; fewer subjects | 1 | physics |
-| `air-steps` | a flying figure takes walking steps on the air, as if on a floor | flight mode unstated; body pose left to the model | state the flight pose: legs together and trailing, body leaning into the flight; stepping only for air-walkers | 1 | action |
-| `move-no-settle` | the camera is still moving on the last frame, so the cut lands mid-move | no held end on the move | `camera.settle` (held frames at both ends); trim to the hold | 2 | camera |
-| `pan-strobe` | the background steps or smears across a fast pan or track | the frame crosses faster than about a third of its width a second | a slower move ("slow pan") or a longer shot; cut the fast part | 1 | camera |
+| `air-steps` | a flying figure walks on the air | flight pose unstated | legs together and trailing, body leaning into the flight; steps only for air-walkers | 1 | action |
+| `move-no-settle` | still moving on the last frame, so the cut lands mid-move | no held end | `camera.settle` (held frames at both ends); trim to the hold | 2 | camera |
+| `pan-strobe` | the background steps or smears across a fast pan or track | crossing faster than a third of the frame a second | "slow pan" or a longer shot; cut the fast part | 1 | camera |
 | `text-artifact` | subtitles, captions, watermark, garbled signs | quoted dialogue; signs in scene | the card's dialogue syntax; negative terms | 1 | text |
 | `dialogue-wrong` | line missing, wrong mouth, lips off | two speakers, speaker not in shot, or a speaking reference video (H3 copies its lips) | one speaker per shot, in the cast; else the mix | 1 | audio |
-| `lip-lag` | the mouth moves before or after its voice | picture and sound drift apart in the render or the mix | slip the sound by the measured lag when it is steady; re-render when it wanders | 7 | audio |
+| `lip-lag` | the mouth moves before or after its voice | picture and sound drift in the render or mix | slip the sound by a steady measured lag; re-render when it wanders | 7 | audio |
+| `bilabial-miss` | lips not closed 2 frames on M, B, P (Williams p. 309) | loose lip sync | re-render; cut away on the word | 6 | audio |
+| `impact-sync` | hit sound before contact or 2+ frames after (p. 294) | placed by ear | slip to contact + 1 frame | 7 | audio |
 | `name-misread` | a name said wrong | spelling guessed | `pronounce` respelling | 1 | audio |
 | `sound-wrong` | silence, music, or the wrong sound | sound left to the model | name ambience and effects | 1 | audio |
 | `seam-restart` | a cut between renders reads as a restart | separate renders of one scene | `compile --sequence`; one sound across | 6 | seam |

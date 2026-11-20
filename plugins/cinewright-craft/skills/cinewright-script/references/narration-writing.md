@@ -4,7 +4,7 @@ slug: narration-writing
 summary: Write voice-over against the cut shot list, not before it: each block adds what the picture cannot show, fits the gap before the next sync moment, and reads cleanly aloud.
 tags: [script, narration, voice-over, explainer, documentary]
 last_checked: 2026-11-13
-sources: ["Sheila Curran Bernard, Documentary Storytelling, 5th ed., ch. 14 (book rule, unverified)"]
+sources: ["Sheila Curran Bernard, Documentary Storytelling, 5th ed., ch. 14 (book rule, unverified)", "Robert McKee, Story, 1997"]
 ---
 
 # Narration writing
@@ -18,6 +18,7 @@ sources: ["Sheila Curran Bernard, Documentary Storytelling, 5th ed., ch. 14 (boo
 - Write for the ear: short sentences, subject before verb, no two numbers in one sentence, no words a voice trips on, no "the former and the latter".
 - Do the sums. Ages, spans and totals said aloud must agree with each other and with on-screen text.
 - No hype words ("incredible", "shocking"). Let the picture carry the weight.
+- Fiction: strip the voice-over; if the story no longer reads, the narration is telling and the shots must carry it. A pan over photos is telling too (McKee ch. 20).
 - Leave strong moments without narration; silence over a reaction tells more than a line.
 - Hold one point of view and one tense through the film.
 - Plant what a later block will need, then remind the viewer briefly when it pays off.

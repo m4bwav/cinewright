@@ -736,6 +736,15 @@ class TestContinuity(Base):
         b["screen_order"] = ["y", "z", "x"]
         self.assertIn((b["id"], "GROUP-ORDER"), self.warns(p))
 
+    def test_unphotographable_action(self):
+        p = self.project()
+        self.assertNotIn("UNPHOTOGRAPHABLE", {c for _, c in self.warns(p)}, "old cards stay quiet")
+        b = p.cards[1]
+        b["action"] = "she waits as if she has waited for a long time"
+        self.assertIn((b["id"], "UNPHOTOGRAPHABLE"), self.warns(p))
+        b["action"] = "she stubs out her tenth cigarette"
+        self.assertNotIn((b["id"], "UNPHOTOGRAPHABLE"), self.warns(p))
+
     def test_track26_scene_and_card_codes(self):
         p = self.project()
         new = {"BEAT-REPEAT", "PLANT-MISSING", "INTRO", "REESTABLISH", "REVERSE-SCALE", "SINGLES-ONLY", "PAN-BETWEEN", "EXIT-HOLD", "TRIM", "NO-HOOK"}

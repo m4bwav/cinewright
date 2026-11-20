@@ -3,8 +3,8 @@ title: Screenplay format
 slug: screenplay-format
 summary: Slugline, action, character cue, parenthetical and dialogue layout in plain text, how the slugline maps to the scene bible, and the timing rule of a page.
 tags: [script, screenplay, slugline, format]
-last_checked: 2026-10-04
-sources: ["Christopher Riley, The Hollywood Standard, 3rd ed., 2021", "https://fountain.io/syntax"]
+last_checked: 2026-11-19
+sources: ["Robert McKee, Story, 1997", "Christopher Riley, The Hollywood Standard, 3rd ed., 2021", "https://fountain.io/syntax"]
 ---
 
 # Screenplay format
@@ -18,6 +18,7 @@ sources: ["Christopher Riley, The Hollywood Standard, 3rd ed., 2021", "https://f
 - Introduce a character in capitals the first time, with age and one telling detail; the identity string in the character bible is that detail expanded.
 - Sound that matters goes in the action in capitals once: `RAIN hammers the glass`. It becomes the card's `sound`.
 - Never write camera directions in the script; they belong on the cards.
+- Name the thing: a specific noun and verb ("hammers a spike", "her tenth cigarette"), never noun plus adjective or verb plus adverb. Only what can be filmed: no "as if", "we see", "there is", "seems", time spans (McKee ch. 23). `continuity diff` warns UNPHOTOGRAPHABLE on card action.
 
 ## Numbers
 

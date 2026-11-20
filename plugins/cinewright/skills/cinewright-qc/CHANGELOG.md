@@ -6,6 +6,10 @@ Entry shape: `### C-20261110-1 · 2026-11-10 · failures-framing: re-camera a ke
 - because: technique harvest GPU test 2026-11-10 (CrossView-Warp on MiniMax H3 REF2VA: az 20 measured 19/19/12 deg with the face held; az 40 short; 4-step turbo copied the source)
 - files: vocab failures-framing Rules (one line)
 
+### C-20261119-2 · 2026-11-19 · Williams lip and impact codes, McKee look item (0.6.23)
+- because: book distillation round 6 (Williams, Animator's Survival Kit pp. 86, 294, 309; McKee, Story ch. 14)
+- files: vocab failures-motion (bilabial-miss, impact-sync; rows tightened to stay under the entry budget), references/look-pass.md (pretty-no-turn, no-turn-blink, both warn)
+
 ### C-20261119-1 · 2026-11-19 · qc seam: join and framing checks for chained segments (0.6.22)
 - because: R-20261119-1
 - files: scripts/cine_seam.py (new, not a shared/lib copy: the runtime budget has under 5 KB left), SKILL.md Step 1 (one item), evals action-3, tests TestSeam
