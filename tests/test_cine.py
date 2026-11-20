@@ -2081,6 +2081,75 @@ class TestH3Lint(unittest.TestCase):
             self.assertIn(k, c)
         self.assertIn("h3-no-soundscape", self.codes("no fields ___", 9))
 
+    def test_weak_cut(self):
+        """A cut that only changes the shot size names nothing new; one that brings a new subject or action passes."""
+        head = "integrated_multimodal_description: [Shot 1] A wide shot of a potter at her wheel, shaping a tall jug. "
+        tail = "\n\noverall_soundscape: the wheel hums"
+        weak = head + "[Shot 2] At 00:04.000, the camera cuts to a close-up of the potter at her wheel." + tail
+        new = head + "[Shot 2] At 00:04.000, the camera cuts to a close-up of a cat watching from the shelf." + tail
+        self.assertIn("h3-weak-cut", self.codes(weak, 8.7))
+        self.assertEqual(lib.h3_weak_cuts(weak), [2])
+        self.assertNotIn("h3-weak-cut", self.codes(new, 8.7))
+        # words inside a spoken line do not make a cut new
+        said = head + "[Shot 2] At 00:04.000, the camera cuts to the potter at her wheel: <d>[English] Fetch the kiln key.</d>" + tail
+        self.assertEqual(lib.h3_weak_cuts(said), [2])
+
+
+class TestSetReturn(Base):
+    """compile: a card that comes back to a set after a cut away gets the set's establishing clip (1xlp0kg)."""
+
+    def project(self, clip=None, speak=False):
+        proj = self.tmp / "p"
+        shutil.copytree(EXAMPLE, proj)
+        locs = json.loads(lib.read_text(proj / "bibles/locations.json"))
+        locs["locations"].append({"id": "stair", "name": "Stairwell", "int_ext": "INT",
+                                  "description": "a narrow iron spiral stair winding down the lighthouse tower, rain on a slit window"})
+        if clip:
+            locs["locations"][0]["establishing_clip"] = clip
+        lib.write_text(proj / "bibles/locations.json", json.dumps(locs, indent=2))
+        scenes = json.loads(lib.read_text(proj / "bibles/scenes.json"))
+        s2 = dict(scenes["scenes"][0], id="2", heading="INT. LIGHTHOUSE STAIR - NIGHT", location="stair")
+        scenes["scenes"].append(s2)
+        lib.write_text(proj / "bibles/scenes.json", json.dumps(scenes, indent=2))
+        edit(proj / "cards/1B.json", '"scene": "1"', '"scene": "2"')
+        if speak:
+            edit(proj / "cards/1A.json", '"sound":', '"dialogue": [{"character": "maren", "line": "Come here."}], "sound":')
+        (proj / "takes").mkdir(exist_ok=True)
+        for n, verdict in ((1, "fail"), (2, "pass")):
+            lib.write_text(proj / "takes" / ("1A-%d.json" % n), json.dumps(
+                {"card": "1A", "take": n, "model": "minimax-h3", "date": "2026-11-20", "verdict": verdict, "file": "renders/1A_t%d.mp4" % n}))
+        return proj
+
+    def test_returns_found_in_project_order(self):
+        p = lib.Project(self.project())
+        r = lib.set_returns(p)
+        self.assertEqual(list(r), ["1C"])
+        self.assertEqual(r["1C"][0], "1A")
+        self.assertEqual(lib.approved_take(p, "1A")["file"], "renders/1A_t2.mp4")
+        self.assertEqual(lib.set_returns(lib.Project(EXAMPLE)), {}, "one set, no cut away: nothing to pass")
+
+    def test_h3_attaches_clip(self):
+        proj = self.project(clip="refs/sets/lamp-room/lamp-room_est_1s.mp4")
+        code, out = run("compile", proj, "--model", "minimax-h3", "--resolution", "480p", "--out", self.tmp / "h3")
+        self.assertEqual(code, 0, out)
+        params = json.loads((self.tmp / "h3" / "1C.params.json").read_text(encoding="utf-8"))
+        self.assertEqual(params["ref_videos"], ["refs/sets/lamp-room/lamp-room_est_1s.mp4"])
+        self.assertNotIn("ref_videos", json.loads((self.tmp / "h3" / "1A.params.json").read_text(encoding="utf-8")))
+        self.assertIn("1C returns to Lamp room after a cut away: passed", out)
+
+    def test_names_approved_take_without_clip(self):
+        code, out = run("compile", self.project(), "--model", "minimax-h3", "--resolution", "480p")
+        self.assertEqual(code, 0, out)
+        self.assertIn("pass about 1 s of renders/1A_t2.mp4 (take 2) as a reference video", out)
+        code, out = run("compile", self.project_again(speak=True), "--model", "veo")
+        self.assertEqual(code, 0, out)
+        self.assertIn("takes no reference video: pass its frame as a still reference", out)
+        self.assertIn("someone speaks in 1A", out)
+
+    def project_again(self, **kw):
+        shutil.rmtree(self.tmp / "p")
+        return self.project(**kw)
+
 
 @unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"), "ffmpeg not installed")
 class TestSeam(Base):

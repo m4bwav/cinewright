@@ -20,6 +20,7 @@
           "description": {"type": "string", "minLength": 20, "maxLength": 300},
           "props": {"type": "array", "items": {"type": "string"}},
           "refs": {"type": "array", "items": {"type": "string"}},
+          "establishing_clip": {"type": "string", "description": "Optional: a short clip (about 1 s, nobody speaking) cut from the approved establishing render of this set. compile passes it as a reference video when a card returns here after a cut away, on a model that takes reference video; else it names it."},
           "walls": {"type": "object", "propertyNames": {"pattern": "^[a-z0-9-]+$"}, "additionalProperties": {"type": "string", "minLength": 20, "maxLength": 300}, "description": "Optional: what each wall or view shows, keyed by a name such as north or toward-desk. A card's camera.faces picks one and compile adds it after the description, which then holds only what every angle shares."}
         }
       }

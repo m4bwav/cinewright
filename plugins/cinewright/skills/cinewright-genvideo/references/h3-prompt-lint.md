@@ -3,8 +3,8 @@ title: H3 prompt lint (known misreads)
 slug: h3-prompt-lint
 summary: What cine.py compile's H3 lint warns about before GPU time (short clips, late or short cuts, fast speech, quoted lines, no soundscape, filler). IV Studio thresholds, unmeasured.
 tags: [minimax, h3, prompt-lint, compile, untested]
-last_checked: 2026-11-09
-sources: ["r/StableDiffusion 1xqfux1, IV Studio lint.js (MIT, hollisorg/iv-studio), 2026-11", "MiniMax H3 prompt guide"]
+last_checked: 2026-11-20
+sources: ["r/StableDiffusion 1xqfux1, IV Studio lint.js (MIT, hollisorg/iv-studio), 2026-11", "r/comfyui 1xj2omy, ComfyUI-Picky linter (GPL-3.0, ideas only), 2026-11", "MiniMax H3 prompt guide"]
 ---
 
 # H3 prompt lint (known misreads)
@@ -15,6 +15,7 @@ sources: ["r/StableDiffusion 1xqfux1, IV Studio lint.js (MIT, hollisorg/iv-studi
 
 - `h3-short`: under 124 frames (5.17 s), H3's trained floor; motion runs weak.
 - `h3-cut-late`: a cut within 0.5 s of the end is dropped. `h3-shot-short`: a shot under 1.5 s often does not register. `h3-many-shots`: more than about one shot per 3 s. `h3-cut-order`: shot times must increase.
+- `h3-weak-cut`: a cut whose shot names no new subject or action against the shot before (framing and dialogue words aside); H3 merges it. Name something new or make it a camera move (idea from Picky's linter, GPL, r/comfyui 1xj2omy; unmeasured).
 - `h3-speech-long`: more than 2.5 words a second inside `<d>`. `h3-quoted-line`: a line in quotes instead of `<d>`; H3 invents words.
 - `h3-no-soundscape` (flat sound bed), `h3-silent` (`N/A` asks for silence), `h3-no-description`, `h3-blank` (`___` left in), `h3-filler` (quality tokens).
 

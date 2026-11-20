@@ -6,6 +6,10 @@ Entry shape: `### C-20261109-1 · 2026-11-09 · Time-to-Move measured
 - because: install tests 2026-11-09 in the technique harvest (post 1xjgy2w)
 - files: references/blockout-control.md (41/62/135 px path error, +20-28% GPU, hold 1 of 8 steps)
 
+### C-20261120-1 · 2026-11-20 · establishing clip compiled; clay-pass pitfall
+- because: technique harvest script backlog (verdict #39, r/StableDiffusion 1xlp0kg) and paper note arXiv:2611.16217 WorldDraft (H3 kept conflicting RGB draft colours in 28.6% of checks, framing drift)
+- files: references/master-plates.md (compile does the set-return clip via the location's establishing_clip), references/blockout-control.md (Pitfalls, one line; source)
+
 ### C-20261113-1 · 2026-11-13 · Clearance beyond logos, standing-set check, set tiers and ticks (Art Direction Handbook)
 - because: book distillation (technique-harvest), R-20261113-1
 - files: references/set-check.md, set-plan.md

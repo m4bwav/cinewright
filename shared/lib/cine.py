@@ -1150,7 +1150,7 @@ MOVE_SENTENCES = {
 }
 # Generic parameter names; a Compile block's "param_names" renames them, null drops one.
 DEFAULT_PARAMS = {"model": "model", "duration": "durationSeconds", "aspect": "aspectRatio", "resolution": "resolution",
-                  "seed": "seed", "refs": "referenceImages", "negative": "negativePrompt",
+                  "seed": "seed", "refs": "referenceImages", "ref_videos": "referenceVideos", "negative": "negativePrompt",
                   "width": "width", "height": "height", "frames": "frames", "fps": "fps"}
 
 
@@ -1395,6 +1395,35 @@ def _stamp(tpl, n, start, end):
                       start_s="%g" % round(start, 3), end_s="%g" % round(end, 3), start_ms="%02d:%06.3f" % (mins, secs))
 
 
+def set_returns(p):
+    """{card id: (first card at its set, location)} for cards that come back to a set after a cut away.
+
+    The master plate alone let a returning room drift; a short clip of the approved establishing render carries
+    layout and light (H3 Continuity Studio, MIT, r/StableDiffusion 1xlp0kg; one curated demo, unmeasured here)."""
+    out, first, prev = {}, {}, None
+    for c in p.cards:  # project order
+        lid = p.scene_map[c["scene"]]["location"]
+        if lid in first and prev is not None and prev != lid:
+            out[c["id"]] = (first[lid], p.locs[lid])
+        first.setdefault(lid, c["id"])
+        prev = lid
+    return out
+
+
+def approved_take(p, card_id):
+    """The newest take record of a card with a pass or keep verdict, or None."""
+    best = None
+    for f in sorted((p.root / "takes").glob("%s-*.json" % card_id)):
+        try:
+            rec = json.loads(read_text(f))
+        except (OSError, ValueError):
+            continue
+        if rec.get("card") == card_id and rec.get("verdict") in ("pass", "keep-fix-in-edit"):
+            if best is None or rec.get("take", 0) > best.get("take", 0):
+                best = rec
+    return best
+
+
 def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
     out = []
     st = p.style
@@ -1407,6 +1436,8 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
     if problems:
         raise SystemExit("style bible does not fit %s: %s" % (prof["model_id"], "; ".join(problems)))
     names = dict(DEFAULT_PARAMS, **prof.get("param_names", {}))
+    returns = set_returns(p)
+    by_id = {c["id"]: c for c in p.cards}
     groups = [[c] for c in cards]
     if sequence:
         groups, cur = [], []
@@ -1573,6 +1604,31 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
             put("seed", seeds[0])
         if refs:
             put("refs", refs)
+        clips = []
+        for c in g:
+            back = returns.get(c["id"])
+            if not back or back[0] in [x["id"] for x in g]:  # the same generation already shows the set
+                continue
+            first, loc = back
+            name = loc.get("name", loc["id"])
+            if loc.get("establishing_clip") and prof.get("max_reference_videos"):
+                if loc["establishing_clip"] not in clips:
+                    clips.append(loc["establishing_clip"])
+                warnings.append("%s returns to %s after a cut away: passed %s as a reference video; name it in the prompt with "
+                                "the details to keep" % (c["id"], name, loc["establishing_clip"]))
+            else:
+                take = approved_take(p, first)
+                src = loc.get("establishing_clip") or ("%s (take %s)" % (take.get("file") or "takes/%s-%d.json" % (first, take["take"]), take["take"])
+                                                       if take else "the approved take of %s once there is one" % first)
+                how = "as a reference video (H3 Ref2VA takes 3)" if prof.get("max_reference_videos") else \
+                    "%s takes no reference video: pass its frame as a still reference" % prof["model_id"]
+                warnings.append("%s returns to %s after a cut away: pass about 1 s of %s %s; set locations[].establishing_clip "
+                                "to attach it" % (c["id"], name, src, how))
+            if any(d["character"] in [m["id"] for m in by_id[first].get("cast", [])] for d in by_id[first].get("dialogue", [])):
+                warnings.append("%s: someone speaks in %s; cut the clip from a silent second, else H3 copies the lip movement "
+                                "onto the new shot (pass a still instead)" % (c["id"], first))
+        if clips:
+            put("ref_videos", clips)
         if prof.get("negative_prompt") == "field" and prof.get("negative_terms"):
             put("negative", prof["negative_terms"])
         rate = prof.get("usd_per_s", {}).get(res)
@@ -1618,7 +1674,31 @@ def h3_lint(text, seconds):
     f = H3_FILLER.findall(text)
     if f:
         out.append("h3-filler: quality tokens (%s) do nothing on H3" % ", ".join(sorted(set(x.lower() for x in f))))
+    weak = h3_weak_cuts(text)
+    if weak:
+        out.append("h3-weak-cut: shot %s names nothing new against the shot before (framing words aside); H3 merges such a cut "
+                   "into the previous shot. Name a new subject or action, or make it a camera move" % ", ".join(str(n) for n in weak))
     return out
+
+
+# A cut has to bring something the previous shot did not have; a change of shot size alone gets merged.
+# Idea from Picky's prompt linter (GPL-3.0, chenthedesignmaker/ComfyUI-Picky; idea only, no code read or copied), r/comfyui 1xj2omy.
+H3_FRAMING = set("""shot shots camera cuts cut cutting close closeup medium wide extreme full long angle low high eye level
+lens frame framing framed zoom zooms pan pans tilt tilts dolly push pull pulls pushes static locked tracking track tracks slow
+slowly fast speed amplitude small large view over shoulder from into onto toward towards the and with that this then while
+its his her their them they are was were has have for but not who what where when same again now still also""".split())
+
+
+def h3_weak_cuts(text):
+    """Shot numbers (2, 3...) whose content words are all in the shot before; dialogue and framing words do not count."""
+    body = text.split("overall_soundscape:")[0]
+    blocks = re.split(r"\[Shot \d+\](?: At \d+:\d+(?:\.\d+)?,?)?", body)[1:]
+
+    def words(b):
+        b = re.sub(r"<d>.*?</d>", " ", b, flags=re.S)
+        return {w for w in re.findall(r"[a-z]+", b.lower()) if len(w) > 2 and w not in H3_FRAMING}
+    seen = [words(b) for b in blocks]
+    return [i + 1 for i in range(1, len(seen)) if not seen[i] - seen[i - 1]]
 
 
 def cmd_compile(ctx, a):
