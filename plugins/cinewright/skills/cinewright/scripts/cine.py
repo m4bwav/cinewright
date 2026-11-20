@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:f455cd7246ca27533634090c6ff1a7f5cf702a865305e68b40c054b77bfe56f7; edit the source
+# copied from shared/lib/cine.py sha256:327ead477f10940dd2d1f518babdb1b21ed67a7eb1246f7aff349c4e832b239d; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -85,7 +85,7 @@ SPEECH_WPS = 2.5  # words a second a generated voice speaks clearly (about 150 a
 SPEECH_LEAD_S = 0.5  # breath before the first word
 # Many small figures in a wide frame: legs, faces and clones break (field lessons 020, 021)
 HARD_SUBJECT = re.compile(r"\b(crowds?|herds?|flocks?|swarms?|army|armies|troops|cavalry|caravans?|stampedes?|hordes?|columns? of|dozens|hundreds)\b", re.I)
-# Acting people a free video model holds in one take (genvideo crowd-prompting; a 10-against-10 test, 2026-10-25)
+# Acting people a free model holds in one take (crowd-prompting, 2026-10-25)
 PEOPLE_PER_TAKE = 5
 NUMBER_WORDS = {w: i for i, w in enumerate("zero one two three four five six seven eight nine ten eleven twelve thirteen "
                                            "fourteen fifteen sixteen seventeen eighteen nineteen twenty".split())}
@@ -116,7 +116,7 @@ def counted_people(text):
 
 
 SECTIONS = ["Rules", "Numbers", "Vocabulary", "Pitfalls", "Verify", "Notes", "Compile"]
-# Block's visual structure (cinewright-shots space-types, cinewright-edit attention-continuum)
+# Block's visual structure (space-types, attention-continuum)
 SPACE_WORDS = {
     "deep": "Deep space: lines run to a far vanishing point, people and things stand near, middle and far, one object close to the lens, the distance hazier and cooler",
     "flat": "Flat space: a wall square to the camera closes the background, everyone on one plane at one size, movement only across the frame, even light",
@@ -409,7 +409,7 @@ class Project:
             self.cards = [c for c in self.cards if c.get("id") != new.get("id")] + [new]
         self.cards.sort(key=lambda c: c.get("order", 0))
         self.chars = bible_entries(self.characters, "characters", "id", "characters.json", "character-bible")
-        # how names and invented words are said: respelled inside spoken lines only (library test, 2026-10-07)
+        # respell names inside spoken lines only (2026-10-07)
         self.pronounce = self.characters.get("pronounce", {})
         self.locs = bible_entries(self.locations, "locations", "id", "locations.json", "location-bible")
         self.scene_map = bible_entries(self.scenes, "scenes", "id", "scenes.json", "scene-axis-bible")
@@ -564,7 +564,7 @@ def film_json(p, xfade=0.16, prof=None):
         w, h = model_size(prof, st["resolution"], st["aspect_ratio"])
     refs = list(st.get("refs", []))
     for ch in p.characters.get("characters", []):
-        # staged refs go per shot below: a film-wide list would send every stage to every shot
+        # staged refs go per shot below, not film-wide
         for r in (ch["refs"] if isinstance(ch.get("refs"), list) else []):
             if r not in refs:
                 refs.append(r)
@@ -749,7 +749,7 @@ def graph_lines(rows, flags):
 
 # ---------- continuity diff ----------
 
-# triangle setups that may cut together (Arijon ch. 4-5; entry dialogue-triangle); apex and axis-advance pair with any
+# setups that cut together (Arijon 4-5, dialogue-triangle); apex and axis-advance pair with any
 SETUP_PAIRS = {"external": {"external", "internal"}, "internal": {"external", "internal", "subjective"},
                "subjective": {"internal", "subjective"}, "parallel": {"parallel"}, "right-angle": {"right-angle"}}
 RESULT_WORDS = set("angry sad scared smug desperate sexy quirky intense menacing emotional dramatic defensive sarcastic "
@@ -1132,12 +1132,12 @@ def h3_line(line):
     return line if line[-1:] in ".?!" else line + "."
 
 
-# Delivery notes are pasted after "says", so a tone that starts with a speech verb doubles it ("says mutters").
+# a tone starting with a speech verb doubles "says" ("says mutters").
 SPEECH_VERBS = re.compile(r"^(says|said|mutters|murmurs|whispers|shouts|yells|screams|cries|calls|snaps|growls|hisses|roars|sighs|laughs|sobs|"
                           r"barks|snarls|asks|replies|answers|tells|bellows|groans|moans|grumbles|stammers)\b", re.I)
 
 
-# Moves written as a sentence of type + amplitude + speed (Compile "move_style": "sentence").
+# Moves as type + amplitude + speed ("move_style": "sentence").
 MOVE_SENTENCES = {
     "static": "The camera stays static", "pan-left": "The camera pans left", "pan-right": "The camera pans right",
     "tilt-up": "The camera tilts up", "tilt-down": "The camera tilts down",
@@ -1149,9 +1149,9 @@ MOVE_SENTENCES = {
     "arc-left": "The camera arcs left around the subject", "arc-right": "The camera arcs right around the subject",
     "dolly-zoom": "The camera dollies in while zooming out, the background stretching away behind a subject of fixed size",
 }
-# Generic parameter names; a Compile block's "param_names" renames them, null drops one.
+# Generic parameter names; "param_names" renames, null drops.
 DEFAULT_PARAMS = {"model": "model", "duration": "durationSeconds", "aspect": "aspectRatio", "resolution": "resolution",
-                  "seed": "seed", "refs": "referenceImages", "negative": "negativePrompt",
+                  "seed": "seed", "refs": "referenceImages", "ref_videos": "referenceVideos", "negative": "negativePrompt",
                   "width": "width", "height": "height", "frames": "frames", "fps": "fps"}
 
 
@@ -1183,7 +1183,7 @@ def generation_refs(p, cards, prof):
     for c in cards:
         for m in c.get("cast", []):
             add(refs_for(p.chars[m["id"]], c["scene"], m.get("refs_stage")))
-        # a prop sheet goes with every shot that shows the prop: without it the model redraws the object
+        # a prop sheet goes with every shot showing the prop, else it is redrawn
         # each shot (pre-production gaps, 2026-10-09)
         for name, state in card_props(c):
             look = prop_look(p, name, state)
@@ -1200,7 +1200,7 @@ def generation_refs(p, cards, prof):
                 mine = [refs.index(r) + 1 for r in look.get("refs", []) if r in refs]
                 if mine:
                     tags.setdefault("prop:" + name, " ".join(prof["ref_tag"].format(n=n, n0=n - 1, name=name) for n in mine))
-        # name the set's sheet: unnamed, the model drew a generic hall (set field test, 2026-10-15)
+        # name the set's sheet: unnamed, it drew a generic hall (2026-10-15)
         for lid, loc in p.locs.items():
             mine = [refs.index(r) + 1 for r in loc.get("refs", []) if r in refs]
             if mine:
@@ -1259,7 +1259,7 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
     if card.get("subject"):
         subj.append(_sentence(_cap(card["subject"])))
     parts["subject"] = " ".join(subj)
-    # --sequence: people are introduced once in the header, so each shot restates where they stand and what they hold
+    # --sequence: people are named once in the header; each shot restates place and hold
     stage = []
     for m in card.get("cast", []):
         bits = [POSITION_WORDS[m["position"]]] if m.get("position") else []
@@ -1267,7 +1267,7 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
             bits.append("holding %s" % prop_words(p, m["holding"], m.get("holding_state"), tags))
         if bits:
             stage.append(_sentence("%s is %s" % (p.chars[m["id"]]["name"], ", ".join(bits))))
-    # featured props too: the subject that carries them single-card is not in a sequence block (a held one is said above)
+    # featured props: the single-card subject is not in a sequence block
     held = {m.get("holding") for m in card.get("cast", [])}
     for x in card.get("props", []):
         if x["name"] in held:
@@ -1280,7 +1280,7 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
             t0="%.1f" % (b["t0"] + start), t1="%.1f" % (b["t1"] + start)), _sentence(_cap(b["text"]))) for b in card["beats"]]).strip()]
     for m in card.get("cast", []):
         name = p.chars[m["id"]]["name"]
-        # the card's own travel only: the scene's travel put a seated close-up "walking away" (library test, 2026-10-06)
+        # card travel only: scene travel made a seated close-up "walk away" (2026-10-06)
         t = m.get("travel")
         if t in TRAVEL_WORDS:
             act.append(_sentence("%s is %s" % (name, TRAVEL_WORDS[t])))
@@ -1294,7 +1294,7 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
             on = ", at %s" % target if target and m["eyeline"] != "camera" else ""
             act.append(_sentence("%s is %s%s" % (name, EYELINE_WORDS[m["eyeline"]], on)))
         pf = m.get("perform") or {}
-        # performance as behaviour, task first: models render busy hands better than a named feeling (entry performance-words)
+        # behaviour, task first: busy hands beat a named feeling (performance-words)
         for key, say in (("enters_from", "%s is %s"), ("task", "%s %s"), ("masks", "%s %s"), ("verb", "%s %s"), ("body", "%s, %s")):
             if pf.get(key):
                 act.append(_sentence(say % (name, pf[key].strip().rstrip("."))))
@@ -1307,8 +1307,7 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
     where = loc["description"].rstrip(".")
     if tags.get("loc:" + sc["location"]):
         where = "%s %s" % (where, tags["loc:" + sc["location"]])
-    # the wall the camera faces: a whole-room description names the hero wall, and those words
-    # beat "looking north", so a reverse came back as the establishing view (set field test, 2026-10-07)
+    # the faced wall: room words beat "looking north"; a reverse came back as the establishing view
     if cam.get("faces") in loc.get("walls", {}):
         where = "%s. %s" % (where, _cap(loc["walls"][cam["faces"]].rstrip(".")))
     parts["context"] = _sentence(_cap("%s, %s" % (where, tod)))
@@ -1320,7 +1319,7 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
         lt.append(sc["sun"])
     if light.get("key_side"):
         eyes = [m.get("eyeline") for m in card.get("cast", [])]
-        # the upstage key (Brown): from the side the face turns to, so the far side of the face is lit
+        # upstage key (Brown): from the side the face turns to
         far = ", on the far side of the face" if len(eyes) == 1 and eyes[0] == light["key_side"] else ""
         lt.append("%s key light from %s%s" % (light.get("quality", "soft"), light["key_side"].replace("-", " "), far))
     if light.get("motivation"):
@@ -1332,10 +1331,10 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
     if light.get("tone") == "hide":
         lt.append("the face stays hidden in shadow, only its outline catches the light")
     parts["light"] = _sentence(_cap(", ".join(lt))) if lt else ""
-    # --sequence: the scene's sun goes in the shared header, each shot keeps its own key side
+    # --sequence: sun in the header, key side per shot
     parts["sun"] = _sentence(_cap(sc["sun"])) if sc.get("sun") else ""
     parts["key"] = _sentence(_cap(", ".join(lt[1:] if sc.get("sun") else lt))) if lt[1 if sc.get("sun") else 0:] else ""
-    # look, then the style's lighting and frame: said once per generation, identical in every shot
+    # look, lighting, frame: once per generation, same in every shot
     parts["style"] = " ".join(_sentence(x) for x in (p.style["look"], p.style.get("lighting", ""), frame_words(p.style)) if x)
     lines = []
     if prof["dialogue"]:
@@ -1343,7 +1342,7 @@ def card_parts(p, card, prof, tags=None, speakers=None, start=0.0):
         for d in card.get("dialogue", []):
             ch = p.chars[d["character"]]
             tone = d.get("tone")
-            # off-shot speaker: a plain "says" lip-synced the only visible mouth (library test, 2026-10-07)
+            # off-shot speaker: plain "says" lip-synced the visible mouth (2026-10-07)
             off = d["character"] not in in_shot
             tpl = prof.get("dialogue_offscreen") if off else prof["dialogue"]
             if not tpl:
@@ -1396,6 +1395,24 @@ def _stamp(tpl, n, start, end):
                       start_s="%g" % round(start, 3), end_s="%g" % round(end, 3), start_ms="%02d:%06.3f" % (mins, secs))
 
 
+def set_returns(p):
+    # back at a set after a cut away: {id: (first card there, loc)} (H3 Continuity Studio, MIT, 1xlp0kg)
+    out, first, prev = {}, {}, None
+    for c in p.cards:
+        lid = p.scene_map[c["scene"]]["location"]
+        if lid in first and prev not in (None, lid):
+            out[c["id"]] = (first[lid], p.locs[lid])
+        first.setdefault(lid, c["id"])
+        prev = lid
+    return out
+
+
+def approved_take(p, cid):
+    ok = [json.loads(read_text(f)) for f in (p.root / "takes").glob("%s-*.json" % cid)]
+    ok = [r for r in ok if r.get("verdict") in ("pass", "keep-fix-in-edit")]
+    return max(ok, key=lambda r: r.get("take", 0)) if ok else None
+
+
 def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
     out = []
     st = p.style
@@ -1408,6 +1425,8 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
     if problems:
         raise SystemExit("style bible does not fit %s: %s" % (prof["model_id"], "; ".join(problems)))
     names = dict(DEFAULT_PARAMS, **prof.get("param_names", {}))
+    returns = set_returns(p)
+    by_id = {c["id"]: c for c in p.cards}
     groups = [[c] for c in cards]
     if sequence:
         groups, cur = [], []
@@ -1462,7 +1481,7 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
                 body = " ".join(parts[k] for k in prof.get("sequence_block", ["camera", "staging", "action", "key", "audio"]) if parts.get(k))
                 prev_loc = p.scene_map[g[i - 1]["scene"]]["location"] if i else None
                 if i and p.scene_map[c["scene"]]["location"] != prev_loc:
-                    # the head only describes the first card's place: say the new place where the sequence moves
+                    # the head names only the first place: say the new one where it moves
                     body = " ".join(x for x in (parts.get("context"), parts.get("sun"), body) if x)
                 if stamp and stamp.rstrip()[-1:] not in ".:]),":
                     body = _low(body)
@@ -1544,7 +1563,7 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
                 if m.get("holding") in p.props and prop_words(p, m["holding"], m.get("holding_state")) not in text:
                     raise SystemExit("compiler bug: prop '%s' not verbatim in %s" % (m["holding"], c["id"]))
             for x in c.get("props", []):
-                # [1:]: a featured prop opens its sentence, so its first letter is capitalised
+                # [1:]: a featured prop opens its sentence, capitalised
                 if x["name"] in p.props and prop_words(p, x["name"], x.get("state"))[1:] not in text:
                     raise SystemExit("compiler bug: prop '%s' not verbatim in %s" % (x["name"], c["id"]))
         for key, want in (("lighting", st.get("lighting", "").rstrip(".")), ("frame_aspect", frame_words(st).rstrip("."))):
@@ -1574,6 +1593,24 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
             put("seed", seeds[0])
         if refs:
             put("refs", refs)
+        clips = []
+        for c in g:
+            first, loc = returns.get(c["id"], (None, None))
+            if not first or first in [x["id"] for x in g]:
+                continue
+            clip, vid, nm = loc.get("establishing_clip"), prof.get("max_reference_videos"), loc.get("name", loc["id"])
+            if clip and vid:
+                clips += [clip] if clip not in clips else []
+                warnings.append("%s returns to %s: passed %s as ref video; name it with what to keep" % (c["id"], nm, clip))
+            else:
+                t = approved_take(p, first)
+                src = clip or (t.get("file", "take %s" % t["take"]) if t else "the approved take") + " of " + first
+                warnings.append("%s returns to %s: pass 1 s of %s %s; set its establishing_clip" % (
+                    c["id"], nm, src, "as ref video" if vid else "as a still (no ref video)"))
+            if by_id[first].get("dialogue"):
+                warnings.append("%s: %s has speech; use a silent second, H3 copies lips" % (c["id"], first))
+        if clips:
+            put("ref_videos", clips)
         if prof.get("negative_prompt") == "field" and prof.get("negative_terms"):
             put("negative", prof["negative_terms"])
         rate = prof.get("usd_per_s", {}).get(res)
@@ -1583,7 +1620,7 @@ def compile_cards(p, cards, prof, sequence=False, resolution=None, join=False):
     return out
 
 
-# H3 pre-render lint over a compiled prompt. Rules adapted from IV Studio lint.js (MIT, hollisorg/iv-studio); see minimax-h3.md.
+# H3 prompt lint; rules from IV Studio lint.js (MIT, hollisorg/iv-studio).
 H3_CUT = re.compile(r"\[Shot (\d+)\] At (\d+):(\d+(?:\.\d+)?)")
 H3_FILLER = re.compile(r"\b(masterpiece|best quality|8k|4k|ultra[- ]detailed|highly detailed|trending on artstation)\b", re.I)
 
@@ -1619,7 +1656,22 @@ def h3_lint(text, seconds):
     f = H3_FILLER.findall(text)
     if f:
         out.append("h3-filler: quality tokens (%s) do nothing on H3" % ", ".join(sorted(set(x.lower() for x in f))))
+    weak = h3_weak_cuts(text)
+    if weak:
+        out.append("h3-weak-cut: shot %s adds no new subject or action; H3 merges it" % ", ".join(map(str, weak)))
     return out
+
+
+# a cut must name something new (Picky linter idea, GPL, 1xj2omy; nothing copied)
+H3_FRAMING = set("""shot camera cuts cut close closeup medium wide extreme full angle low high eye level lens frame
+zoom pan tilt dolly push pull static tracking slow slowly fast speed amplitude small large view over shoulder from
+into toward the and with that this then while his her their they are was has for""".split())
+
+
+def h3_weak_cuts(text):
+    bl = re.split(r"\[Shot \d+\](?: At [\d:.]+,?)?", text.split("overall_soundscape:")[0])[1:]
+    w = [{x for x in re.findall("[a-z]{3,}", re.sub("<d>.*?</d>", "", b, flags=re.S).lower()) if x not in H3_FRAMING} for b in bl]
+    return [i + 1 for i in range(1, len(w)) if not w[i] - w[i - 1]]
 
 
 def cmd_compile(ctx, a):
@@ -1660,7 +1712,7 @@ def cmd_compile(ctx, a):
 
 # ---------- qc: rendered takes against their cards ----------
 
-# Rubric checks: (check, what to look at, question). The failure-code entries map codes to checks.
+# Rubric checks: (check, what to look at, question).
 RUBRIC = [
     ("identity", "sheet", "Does {name} match the identity string in every frame: {identity}?"),
     ("wardrobe", "sheet", "Is {name} wearing exactly: {wardrobe}? No added marks or badges?"),
@@ -1671,7 +1723,7 @@ RUBRIC = [
     ("light", "sheet", "Light as planned ({light}), with no change of side or time of day?"),
     ("style", "sheet", "Does the look match: {look}?"),
     ("camera", "sheet", "Is it a {size}, {angle}, with {move} and no other move?"),
-    # the wall the card faces (camera.faces): a take that kept the action but lost the room had no item to fail
+    # camera.faces: a take that lost the room had no item to fail
     # (set field test, 2026-10-15; qc L-005)
     ("set", "sheet", "Is the room behind as planned, with nothing the set does not have: {wall}?"),
     ("space", "sheet", "Does the space read as planned? {space_words}."),
@@ -1764,7 +1816,7 @@ def last_frame(clip, out):
     return out
 
 
-# Delivery loudness targets: integrated LUFS, tolerance in LU, max true peak dBTP, note.
+# Loudness targets: LUFS, tolerance LU, max true peak dBTP, note.
 # Sources and dates: shared vocab loudness-targets (cinewright-sound).
 LOUD_PRESETS = {
     "web": (-18.0, 2.0, -2.0, "web video (EBU R128 s2 distribution range -20 to -16 LUFS; -2 dBTP before a lossy encoder)"),
@@ -1920,8 +1972,7 @@ def standing_items(p, card, codes):
     return out
 
 
-# qc judge: a local vision model's second opinion on a rubric (cinewright-qc entry vision-judge). It never sees the
-# card's action text, describes the frames first, and answers each item by id; the agent's own verdict stays separate.
+# qc judge (entry vision-judge): never sees the action text, describes frames first, answers by id.
 JUDGE_VERSION = "2026-10-15.1"
 JUDGE_ASK = ("You are a strict, sceptical film continuity checker. The picture is 4 frames from one take of an AI video, "
              "in time order: top left, top right, bottom left, bottom right.%s\nFirst describe exactly what you see in "
@@ -1939,7 +1990,7 @@ def judge_grid(clip, start, end):
     dur = max(0.2, end - start)
     with tempfile.TemporaryDirectory() as d:
         out = Path(d) / "grid.jpg"
-        # start an eighth in, 7/8 long: at full length the fourth tile fell past the end, black (qc L-004)
+        # an eighth in, 7/8 long: else the fourth tile is black (qc L-004)
         win = dur * 7 / 8
         run_tool([need_tool("ffmpeg"), "-v", "error", "-y", "-ss", "%.3f" % (start + dur / 8), "-t", "%.3f" % win, "-i",
                   str(clip), "-vf", "fps=4/%.3f,scale=576:-2,tile=2x2" % win, "-frames:v", "1", "-q:v", "3", str(out)])
@@ -1949,7 +2000,7 @@ def judge_grid(clip, start, end):
 def judge_ask(host, model, prompt, img):
     import urllib.error
     import urllib.request
-    # gemma4 thinks by default (minutes, sometimes an empty reply) and can loop at temperature 0: retry warmer
+    # gemma4 thinks (minutes, empty replies) and loops at temperature 0: retry warmer
     for opts in ({"temperature": 0, "num_predict": 1500}, {"temperature": 0.4, "repeat_penalty": 1.3, "seed": 7, "num_predict": 1500}):
         body = {"model": model, "prompt": prompt, "images": [img], "stream": False, "format": "json", "think": False, "options": opts}
         req = urllib.request.Request(host.rstrip("/") + "/api/generate", json.dumps(body).encode(), {"Content-Type": "application/json"})
@@ -2284,7 +2335,7 @@ def cmd_qc(ctx, a):
                                                               for m in card.get("cast", []))
         except (OSError, SystemExit, KeyError):
             pass
-        # the action item quotes the whole card: ask its clauses one by one instead, so the judge never reads the card
+        # ask the action clause by clause, so the judge never reads the card
         qs = []
         for it in items:
             parts = split_clauses(action) if it["check"] == "action" and not it.get("standing_code") and action else []
@@ -2555,7 +2606,7 @@ def cmd_voice(ctx, a):
             args += ["-ss", "%.3f" % a.start]
         if a.end is not None:
             args += ["-to", "%.3f" % a.end]
-        # dry mono clip: rumble cut, edges trimmed of silence, levelled for a cloning engine
+        # dry mono: rumble cut, silence trimmed, levelled for cloning
         flt = ("highpass=f=70,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.15,"
                "areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.25,areverse,"
                "loudnorm=I=-20:TP=-3:LRA=11")

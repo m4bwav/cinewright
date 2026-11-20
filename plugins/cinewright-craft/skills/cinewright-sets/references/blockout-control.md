@@ -3,8 +3,8 @@ title: Blockout control
 slug: blockout-control
 summary: Drive a shot's motion and layout from a rough 3D blockout or phone footage turned into a depth, pose, edge or layout-box video, through a model's control input; references still carry the look.
 tags: [sets, blockout, previs, control, depth, pose, 3d]
-last_checked: 2026-11-11
-sources: ["flick.art, Blender for AI filmmaking, 2026-06", "invideo FAQ, Blender blocking render as camera reference, 2026-10-08", "docs.comfy.org, MiniMax H3 Fun ControlNet tutorial, 2026", "alibaba-pai, MiniMax-H3-Fun-Controlnet-Union-2.0 model card, 2026-09", "RunComfy, H3 Fun Control workflow, 2026", "James Gurney, Imaginative Realism, 2009", "r/comfyui 1v3da53, NKD VFX Tools (GPL-3.0, ideas only), 2026-07"]
+last_checked: 2026-11-20
+sources: ["flick.art, Blender for AI filmmaking, 2026-06", "invideo FAQ, Blender blocking render as camera reference, 2026-10-08", "docs.comfy.org, MiniMax H3 Fun ControlNet tutorial, 2026", "alibaba-pai, MiniMax-H3-Fun-Controlnet-Union-2.0 model card, 2026-09", "RunComfy, H3 Fun Control workflow, 2026", "James Gurney, Imaginative Realism, 2009", "r/comfyui 1v3da53, NKD VFX Tools (GPL-3.0, ideas only), 2026-07", "arXiv:2611.16217 WorldDraft"]
 volatile_claims: ["which open video models take depth or pose control", "Fun ControlNet Union 2.0 is the H3 control release"]
 ---
 
@@ -42,6 +42,7 @@ volatile_claims: ["which open video models take depth or pose control", "Fun Con
 - Control at full strength to the last step: plastic, flat surfaces.
 - Time-to-Move mattes: use SAM 2.1, not the Meta-gated SAM 3.1.
 - A camera-move node that only adds prompt words is not camera control.
+- Never send the side-coloured clay pass or the unpainted clay frame as first frame or RGB control: on RGB drafts H3 kept conflicting draft colours in 28.6% of checks and drifted framing with unasked zooms and rotations (arXiv:2611.16217). Keep proxies at simulation detail; check H3 framing at start, middle and end.
 
 ## Verify
 

@@ -1,5 +1,5 @@
 {
-  "$comment": "copied from shared/schemas/location-bible.schema.json sha256:a15dc1d259fe2cf3d89bce0f412fa29dbf82d0a833b1e40481c8fc511a97b2f0; edit the source",
+  "$comment": "copied from shared/schemas/location-bible.schema.json sha256:7781fdc27875bc30dd37ce20634f55a36a455dcc7d8d0a571e9991d71b6e996f; edit the source",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Location bible",
   "description": "bibles/locations.json: one description string per location, copied verbatim into prompts.",
@@ -52,6 +52,10 @@
             "items": {
               "type": "string"
             }
+          },
+          "establishing_clip": {
+            "type": "string",
+            "description": "Optional: a short clip (about 1 s, nobody speaking) cut from the approved establishing render of this set. compile passes it as a reference video when a card returns here after a cut away, on a model that takes reference video; else it names it."
           },
           "walls": {
             "type": "object",

@@ -137,6 +137,11 @@
           "type": "integer",
           "minimum": 0
         },
+        "max_reference_videos": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Reference videos the model takes. Above 0, compile passes a location's establishing_clip when a card returns to that set after a cut away."
+        },
         "reference_duration_s": {
           "type": "number",
           "description": "Duration forced when reference images are used."
@@ -290,7 +295,7 @@
               "null"
             ]
           },
-          "description": "Renames generic settings (model, duration, aspect, resolution, seed, refs, negative, width, height, frames, fps); null drops one."
+          "description": "Renames generic settings (model, duration, aspect, resolution, seed, refs, ref_videos, negative, width, height, frames, fps); null drops one."
         },
         "aspect_values": {
           "type": "object",
