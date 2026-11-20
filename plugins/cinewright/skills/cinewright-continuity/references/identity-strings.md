@@ -27,6 +27,7 @@ sources: ["Pat P. Miller, Script Supervising and Film Continuity, 3rd ed., 1999"
 - Generic features ("a man with brown hair") give a new person in every clip. Pick one mark a viewer would notice: a scar, a gap tooth, a white streak.
 - Incidental attachments (ropes, straps, lanyards) are drawn differently every time. Leave them out unless the story needs them.
 - A first frame carries composition into the next clip, not identity. The identity string and refs carry identity.
+- Refs carried across story segments bring old looks and dead entities back (old-look similarity +0.15-0.20; arXiv 2610.35001). State the look in the prompt every segment (presence 0.98 vs 0.57), keep 1-2 refs, swap a ref at a costume or state change. Refs fix looks at joins, not drift.
 
 ## Verify
 

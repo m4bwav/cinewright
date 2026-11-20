@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261120-1 · 2026-11-20 · retrieved refs carry old looks across segments (0.6.27)
+- because: technique-harvest papers 2026-11, arXiv 2610.35001 (reference-memory benchmark)
+- files: references/identity-strings.md (one Pitfalls line)
+- Prompt states the look every segment, 1-2 refs, swap refs at a look change.
+
 ### C-20261119-1 · 2026-11-19 · locked scene state, one sound bed across a chain, extension and multi-shot notes (0.6.22)
 - because: technique-harvest sc40 chain-join study (S22, S25, S19, S8, S10, S49, S50, S9)
 - files: SKILL.md (bibles: `locked`), shared/schemas/scene-axis-bible.schema.json (`locked`), shared/lib/cine.py (cards new copies it into start_state), references/ai-continuity.md (one Numbers line), references/chain-models.md (new)
