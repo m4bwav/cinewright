@@ -1,12 +1,12 @@
 ---
 title: Failure codes, composites and scale
 slug: failures-composite
-summary: Failure codes for shots built from parts or meant to read huge: shadows that disagree, toy scale, a clipped fireball, a visible rig.
+summary: Failure codes for shots built from parts or meant to read huge (shadows that disagree, toy scale, a clipped fireball, a visible rig), plus who is in frame and beat order.
 tags: [vocab, qc, failures, taxonomy, composite, scale]
-last_checked: 2026-11-13
-sources: ["Mark Sawicki, Filming the Fantastic: A Guide to Visual Effects Cinematography, 2nd ed. (paraphrased; book rules, unverified on our models)"]
+last_checked: 2026-11-20
+sources: ["PhyRubric, arXiv 2611.13576 (extra-person, beat-order: permanence and count failures 20.4 %, 25 % of takes never showed the event)", "Mark Sawicki, Filming the Fantastic: A Guide to Visual Effects Cinematography, 2nd ed. (paraphrased; book rules, unverified on our models)"]
 ---
-<!-- copied from shared/vocab/failures-composite.md sha256:bdd37100fc23b2e5d69250b04f12f176060fef54bf1c7c8a7736d0c66cdec7d8; edit the source -->
+<!-- copied from shared/vocab/failures-composite.md sha256:0de6b4cb76a1a1589584e601b7468bce8e5360d15de74253efda40bea3d87afc; edit the source -->
 
 # Failure codes, composites and scale
 
@@ -21,6 +21,8 @@ Columns as in failures-picture (rung = the repair ladder, check = the `qc rubric
 | `clipped-fire` | a fireball, flash or lamp is a flat white blob | exposed for the scene, not the brightest source | ask for the flame's texture and a set lit by it; pull highlights in the grade | 1 | light |
 | `visible-rig` | a flying or hanging figure looks held by a cable: stiff hips, clothes bunched at a harness point | pose of a suspended body | name a free pose (arms loose, clothes flowing); new seed | 1 | camera |
 | `locked-drift` | a state the scene locked changes (the glass refills, the door swings shut) | the locked state not restated | paste the scene's `locked` list into start_state and the prompt | 1 | locked |
+| `extra-person` | someone uncast appears, a person vanishes mid-take, or one person doubles | the card names who is there but not that no one else is | cast every visible person and add "no one else in frame"; new seed | 1 | count |
+| `beat-order` | the beats happen out of order, merge, or one never happens | two or more beats in one untimed action | one beat per card, or timed beats (cards beats) | 1 | order |
 
 ## Rules
 

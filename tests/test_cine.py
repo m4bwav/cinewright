@@ -451,9 +451,55 @@ class TestPost(Base):
         self.assertAlmostEqual(report["files"][str(dark)]["after_luma"], 60, delta=4)
 
 
+    def test_conform_checks_and_renders_the_cut(self):
+        # RoughCut-Bench (arXiv 2611.24098): a cut list conformed by script, with a check for repeated material
+        proj = self.tmp / "p"
+        shutil.copytree(EXAMPLE, proj)
+        (proj / "takes").mkdir()
+        self.ffmpeg("-f", "lavfi", "-i", "testsrc2=s=320x180:r=24:d=5", proj / "takes" / "a.mp4")
+        self.ffmpeg("-f", "lavfi", "-i", "smptebars=s=320x180:r=24:d=5", proj / "takes" / "b.mp4")
+        shutil.copy2(proj / "takes" / "a.mp4", proj / "takes" / "c.mp4")
+        for card, f, v in (("1A", "a", "pass"), ("1B", "b", "keep-fix-in-edit"), ("1C", "c", "fail")):
+            rec = {"card": card, "take": 1, "model": "veo", "date": "2026-11-20", "verdict": v, "file": "takes/%s.mp4" % f}
+            (proj / "takes" / ("%s-1.json" % card)).write_text(json.dumps(rec), encoding="utf-8")
+        rows = [{"slate": "1A", "take": "takes/a.mp4", "in": 0.5, "out": 2.0, "cut_type": "straight", "reason": "story: the match"},
+                {"slate": "1B", "take": "takes/b.mp4", "in": 1.0, "out": 3.25, "cut_type": "straight", "reason": "emotion: her reach"},
+                {"slate": "1C", "take": "takes/a.mp4", "in": 1.5, "out": 3.0, "cut_type": "straight", "reason": "rhythm"}]
+        cut = proj / "edit" / "cut.json"
+        cut.parent.mkdir()
+        cut.write_text(json.dumps(rows), encoding="utf-8")
+        code, text = run("conform", proj, script=self.POST)
+        self.assertEqual(code, 0, text)
+        self.assertEqual(text.count("REDUNDANT"), 1, text)
+        self.assertIn("tIoU 0.20", text)
+        self.assertIn("5.250 s against the table's 5.250 s", text)
+        self.assertIn("OK", text)
+        self.assertIn("target 14 s", text)
+        # no reason, a failed take, an out past the end: nothing is rendered
+        rows[2].update(take="takes/c.mp4", reason="", out=9.0)
+        cut.write_text(json.dumps(rows), encoding="utf-8")
+        (proj / "edit" / "cut.mp4").unlink()
+        code, text = run("conform", proj, script=self.POST)
+        self.assertEqual(code, 1, text)
+        for want in ("no reason", "outside the take", "verdict fail"):
+            self.assertIn(want, text)
+        self.assertFalse((proj / "edit" / "cut.mp4").exists())
+        # a copy of the same picture under another name is still repeated material
+        (proj / "takes" / "1C-1.json").write_text(json.dumps(dict(rec, verdict="pass")), encoding="utf-8")
+        rows[2].update(reason="rhythm", **{"in": 0.5, "out": 2.0})
+        md = ["| # | slate | take file | in | out | length | cut in | reason |", "|---|---|---|---|---|---|---|---|"]
+        md += ["| %d | %s | `%s` | %.3f (%d) | %.3f | %.3f | %s | %s |" % (i, r["slate"], r["take"], r["in"], r["in"] * 24, r["out"],
+                                                                     r["out"] - r["in"], r["cut_type"], r["reason"]) for i, r in enumerate(rows, 1)]
+        cut.unlink()
+        (proj / "edit" / "cut.md").write_text("\n".join(md) + "\n", encoding="utf-8")
+        code, text = run("conform", proj, "--check-only", script=self.POST)
+        self.assertEqual(code, 0, text)
+        self.assertIn("REDUNDANT 1A and 1C look the same", text)
+        self.assertFalse((proj / "edit" / "cut.mp4").exists())
+
 class TestFight(Base):
     """cine_fight.py: fight plans replayed and held against the cards (fight plans, 2026-10-15)."""
-    FIGHT = REPO / "shared" / "lib" / "cine_fight.py"
+    FIGHT = REPO / "plugins" / "cinewright-craft" / "skills" / "cinewright-movement" / "scripts" / "cine_fight.py"
 
     def plan(self, **over):
         p = {"id": "match", "scene": "1", "question": "Will Tomas get the last match?", "ending": "Tomas holds the match to his chest.",
@@ -1233,7 +1279,7 @@ class TestQc(Base):
         self.assertIn("FAIL, 3 failed", text)
         self.assertLess(text.index("rung 1"), text.index("rung 7"))
         self.assertIn("--fix", text)
-        rub["items"][0]["code"] = "loudness-off"
+        next(i for i in rub["items"] if i["id"] == "identity:maren")["code"] = "loudness-off"
         lib.write_text(path, json.dumps(rub))
         code, text = run("qc", "rubric", "--read", path)
         self.assertEqual(code, 1)
@@ -1344,6 +1390,77 @@ class TestQc(Base):
         self.assertEqual(code, 0, text)
         self.assertIn("prompt %s" % lib.JUDGE_VERSION, text)
         self.assertIn("its yes right", text)
+
+    def test_rubric_count_and_order(self):
+        # PhyRubric (arXiv 2611.13576): who is in frame, and the beats in order when there are two or more
+        codes = lib.taxonomy(repo_ctx())
+        self.assertEqual((codes["extra-person"]["check"], codes["beat-order"]["check"]), ("count", "order"))
+        code, text = run("qc", "rubric", self.proj, "--card", "1A")
+        self.assertEqual(code, 0, text)
+        rub = json.loads((self.proj / "qc" / "1A.rubric.json").read_text(encoding="utf-8"))
+        count = next(i for i in rub["items"] if i["id"] == "count")
+        self.assertIn("Maren", count["ask"])
+        self.assertIn("Tomas", count["ask"])
+        self.assertNotIn("order", [i["id"] for i in rub["items"]], "one clause: nothing to order")
+        edit(self.proj / "cards" / "1A.json", "holding it still between finger and thumb.",
+             "holding it still between finger and thumb. Then she strikes it on the box.")
+        run("qc", "rubric", self.proj, "--card", "1A")
+        rub = json.loads((self.proj / "qc" / "1A.rubric.json").read_text(encoding="utf-8"))
+        order = next(i for i in rub["items"] if i["id"] == "order")
+        self.assertIn("(1) Maren thumbs", order["ask"])
+        self.assertIn("then (2) Then she strikes", order["ask"])
+        for it in rub["items"]:
+            it["verdict"] = "pass"
+        count = next(i for i in rub["items"] if i["id"] == "count")
+        count.update(verdict="fail", code="extra-person", note="a third man walks in at 3 s")
+        path = self.proj / "qc" / "1A.rubric.json"
+        lib.write_text(path, json.dumps(rub))
+        code, text = run("qc", "rubric", "--read", path)
+        self.assertEqual(code, 1)
+        self.assertIn("extra-person", text)
+        self.assertIn(codes["extra-person"]["fix"], text)
+
+    def test_judge_windows(self):
+        # FVScore (arXiv 2611.22673): always items fail on any window's no; action clauses pass on any window's yes
+        run("qc", "rubric", self.proj, "--card", "1B", "--clip", self.clip)
+        path = self.proj / "qc" / "1B.rubric.json"
+        grids, script = [], {}
+
+        def fake_grid(clip, start, end):
+            grids.append((round(start, 2), round(end, 2)))
+            return "img%d" % (len(grids) - 1)
+
+        def fake_ask(host, model, prompt, img):
+            ids = re.findall(r"^\[([^\]]+)\]", prompt, re.M)
+            k = int(img[3:])
+            return {"verdicts": [{"id": i, "v": script.get(i, ["yes"] * 3)[k], "why": "w%d" % k} for i in ids]}
+
+        saved = (lib.judge_grid, lib.judge_ask, lib.probe)
+        self.addCleanup(lambda: setattr(lib, "judge_grid", saved[0]) or setattr(lib, "judge_ask", saved[1])
+                        or setattr(lib, "probe", saved[2]))
+        lib.judge_grid, lib.judge_ask, lib.probe = fake_grid, fake_ask, lambda clip: {"duration": 9.0}
+        script.update({"identity:maren": ["yes", "no", "yes"], "action#1": ["no", "yes", "no"]})
+        self.assertEqual(lib.main(["qc", "judge", str(path), "--windows", "3"], repo_ctx()), 0)
+        self.assertEqual(grids, [(0.0, 3.0), (3.0, 6.0), (6.0, 9.0)])
+        rub = json.loads(path.read_text(encoding="utf-8"))
+        vlm = {i["id"]: i["vlm"] for i in rub["items"] if "vlm" in i}
+        self.assertEqual(vlm["identity:maren"]["v"], "no")
+        self.assertEqual([w["v"] for w in vlm["identity:maren"]["windows"]], ["yes", "no", "yes"])
+        self.assertEqual(vlm["action"]["v"], "yes")
+        self.assertEqual(vlm["camera"]["v"], "yes")
+        self.assertEqual(rub["judge"]["windows"], 3)
+        # one window: the rubric comes out exactly as before windows existed
+        run("qc", "rubric", self.proj, "--card", "1B", "--clip", self.clip)
+        grids.clear()
+        self.assertEqual(lib.main(["qc", "judge", str(path)], repo_ctx()), 0)
+        self.assertEqual(grids, [(0.0, 9.0)])
+        rub = json.loads(path.read_text(encoding="utf-8"))
+        self.assertNotIn("windows", rub["judge"])
+        vlm = {i["id"]: i["vlm"] for i in rub["items"] if "vlm" in i}
+        self.assertEqual(vlm["identity:maren"], {"v": "yes", "why": ""})
+        self.assertEqual(vlm["action"]["v"], "no")
+        self.assertEqual(lib.judge_over(["yes", "unclear", "none"], "always"), "unclear")
+        self.assertEqual(lib.judge_over(["no", "no"], "eventually"), "no")
 
     def test_every_check_has_codes_and_every_code_a_check(self):
         codes = lib.taxonomy(repo_ctx())
@@ -1753,7 +1870,7 @@ class TestBeats(Base):
                               {"n": 2, "phrase": "P2", "lead": "tomas", "move": "takes it", "answer": "Maren lets go", "result": "disarm",
                                "card": "1C", "changes": [{"who": "tomas", "right": "single match"}]}]}
         f.write_text(json.dumps(plan), encoding="utf-8")
-        fight = REPO / "shared" / "lib" / "cine_fight.py"
+        fight = REPO / "plugins" / "cinewright-craft" / "skills" / "cinewright-movement" / "scripts" / "cine_fight.py"
         code, text = run("check", f, "--project", self.project(), script=fight)
         self.assertIn("copy maren's mark 'soot on her left cheek'", text)
         proj = self.project()

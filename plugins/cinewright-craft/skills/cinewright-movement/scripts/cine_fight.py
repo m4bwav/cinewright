@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine_fight.py sha256:babef215158f1db9f6899feed011168e7cd551462b69e8b15af1a521f862f63f; edit the source
 """cinewright fight plans: replay a fight, hold its cards to it, write its sheet. Run it; do not read it.
 
   python scripts/cine_fight.py check FIGHT.json [--project P] [--json]

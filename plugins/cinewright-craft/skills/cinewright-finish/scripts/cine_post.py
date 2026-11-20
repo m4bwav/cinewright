@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine_post.py sha256:95fb48dab5780153d5051ec1433c5ea6fed4783188a09b4f6b3c2fe62caaeb00; edit the source
+# copied from shared/lib/cine_post.py sha256:d3bb5c9bd9020217029a637ad9f505d971dcab8fc1d82a493c14e88b391f4d42; edit the source
 """cinewright post tools: animatic before any video spend, and one grade across every shot after.
 
 Run it; do not read it. Python 3.9+, standard library only, ffmpeg and ffprobe on PATH.
@@ -9,6 +9,7 @@ Run it; do not read it. Python 3.9+, standard library only, ffmpeg and ffprobe o
   python scripts/cine_post.py grade stabilize FILE ... --out DIR [--ref-time S] [--window S] [--luma-only]
   python scripts/cine_post.py grade match --ref STILL FILE ... [--luma N] [--sat C] [--warm W] [--strength S] [--cube-dir DIR]
                                          [--apply DIR [--look LOOK.cube] [--grain N]]
+  python scripts/cine_post.py conform PROJECT [--cut edit/cut.json] [--out edit/cut.mp4] [--check-only]
 
 animatic: one still per card (DIR/<card id>.png|jpg|webp, e.g. the approved first frames), held for the
 card's duration with its camera move suggested by a slow push or drift, over a scratch audio track; a
@@ -26,6 +27,11 @@ Stats are pooled over up to 12 frames a shot, so the correction is one fixed tra
 grade measure --plan PROJECT: per shot (named by card id) mean luma, tone spread, chroma, warmth, edge
 orientation and motion, each scene's colour row checked by class, and each visual_structure plan ranked
 against the cut order (progression) or the intensity (peaks). Exit 1 when the cut runs against the plan.
+conform: the cut list (edit/cut.json rows {slate, take, in, out, cut_type, reason}, or the edit/cut.md table) is
+checked first: a row with no reason, in or out outside its take, or a take whose record is not pass or
+keep-fix-in-edit stops it. REDUNDANT warns when two rows overlap in one take or look the same (mean grey
+signature). Then one trim, fps and scale per row, concat, libx264 (picture only; sound is laid in cinewright-sound),
+and the file's length against the table, OK within one frame (RoughCut-Bench, arXiv 2611.24098).
 grade stabilize: per-frame gains toward one reference frame, smoothed over a second, applied with ffmpeg
 sendcmd; fixes slow exposure and white balance drift inside a take. Order: stabilize, deflicker, match, look.
 """
@@ -482,6 +488,106 @@ def cmd_grade(a):
     return 0
 
 
+# ---------- conform (RoughCut-Bench, arXiv 2611.24098: model-made cuts score worst on repeated material) ----------
+
+def cut_rows(path):
+    """edit/cut.json (a list of rows), or the table in edit/cut.md: slate, take, in, out, cut type, reason."""
+    if path.suffix == ".json":
+        return json.loads(path.read_text(encoding="utf-8"))
+    rows, num = [], lambda s: float(re.match(r"\s*([0-9.]+)", s).group(1))
+    for line in path.read_text(encoding="utf-8").splitlines():
+        c = [x.strip() for x in line.strip().strip("|").split("|")]
+        if len(c) >= 8 and c[0].isdigit():
+            rows.append({"slate": c[1], "take": c[2].strip("`"), "in": num(c[3]), "out": num(c[4]), "cut_type": c[6], "reason": c[7]})
+    return rows
+
+
+def signature(f, t0, t1):
+    """Mean 64x36 grey picture of a row, one frame a second: two rows that look the same have close signatures."""
+    r = subprocess.run([cine.need_tool("ffmpeg"), "-v", "error", "-ss", "%.3f" % t0, "-t", "%.3f" % max(0.04, t1 - t0), "-i", str(f),
+                        "-vf", "fps=1,scale=64:36", "-f", "rawvideo", "-pix_fmt", "gray", "-"], capture_output=True)
+    fr = [r.stdout[i:i + 2304] for i in range(0, len(r.stdout) - 2303, 2304)] or [bytes(2304)]
+    return [sum(x[k] for x in fr) / len(fr) for k in range(2304)]
+
+
+def conform_checks(p, rows):
+    errs, warns, verdict = [], [], {}
+    for f in sorted((p.root / "takes").glob("*.json")):
+        rec = json.loads(f.read_text(encoding="utf-8"))
+        if rec.get("file"):
+            verdict[(p.root / rec["file"]).resolve()] = (rec.get("verdict"), f.name)
+    order = {c["id"]: k for k, c in enumerate(p.cards)}
+    last = -1
+    for i, r in enumerate(rows, 1):
+        f = (p.root / r.get("take", "")).resolve()
+        tag = "row %d (%s)" % (i, r.get("slate", "?"))
+        if not str(r.get("reason", "")).strip():
+            errs.append("%s: no reason; every cut says why it is there (rule of six)" % tag)
+        if not f.is_file():
+            errs.append("%s: take %s not found" % (tag, r.get("take")))
+            continue
+        r["path"], dur = f, cine.probe(f)["duration"]
+        if not 0 <= r["in"] < r["out"] <= dur + 0.001:
+            errs.append("%s: in %.3f, out %.3f outside the take (0-%.3f)" % (tag, r["in"], r["out"], dur))
+        v = verdict.get(f)
+        if not v or v[0] not in ("pass", "keep-fix-in-edit"):
+            errs.append("%s: %s has %s; only a take qc passed (pass or keep-fix-in-edit) goes in the cut"
+                        % (tag, r["take"], "verdict %s in %s" % v if v else "no take record (takes log)"))
+        k = order.get(str(r.get("slate", "")).split("-")[0])
+        if k is not None and k < last:
+            warns.append("ORDER %s comes before an earlier slate in the cards; fine if its reason says why" % tag)
+        last = max(last, k if k is not None else last)
+    ok = [r for r in rows if "path" in r]
+    for i, a in enumerate(ok):
+        for b in ok[i + 1:]:
+            if a["path"] == b["path"]:
+                inter = min(a["out"], b["out"]) - max(a["in"], b["in"])
+                if inter > 0:
+                    warns.append("REDUNDANT %s and %s use the same part of %s (tIoU %.2f)" % (a.get("slate"), b.get("slate"), a["take"],
+                                 inter / (max(a["out"], b["out"]) - min(a["in"], b["in"]))))
+    sig = [signature(r["path"], r["in"], r["out"]) for r in ok] if not errs else []
+    for i in range(len(sig)):
+        for j in range(i + 1, len(sig)):
+            d = sum(abs(x - y) for x, y in zip(sig[i], sig[j])) / 2304
+            if ok[i]["path"] != ok[j]["path"] and d < 4:
+                warns.append("REDUNDANT %s and %s look the same (mean grey difference %.1f of 255)" % (ok[i].get("slate"), ok[j].get("slate"), d))
+    return errs, warns
+
+
+def cmd_conform(a):
+    p = cine.Project(a.project)
+    cut = Path(a.cut) if a.cut else p.root / "edit" / "cut.json"
+    if not a.cut and not cut.is_file():
+        cut = cut.with_suffix(".md")
+    rows = cut_rows(cut)
+    if not rows:
+        raise SystemExit("%s has no rows" % cut)
+    errs, warns = conform_checks(p, rows)
+    for line in ["FAIL %s" % e for e in errs] + warns:
+        print(line)
+    if errs:
+        print("conform: %d problems; fix the cut list before rendering" % len(errs))
+        return 1
+    st, total = p.style, sum(r["out"] - r["in"] for r in rows)
+    fps, (w, h) = st["fps"], cine.resolution_size(st["resolution"], st["aspect_ratio"])
+    target = st.get("target_seconds")
+    print("table %.3f s in %d rows%s" % (total, len(rows), ", target %g s (%+.2f)" % (target, total - target) if target else ""))
+    if a.check_only:
+        return 0
+    out = Path(a.out) if a.out else p.root / "edit" / "cut.mp4"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    args, fl = [cine.need_tool("ffmpeg"), "-v", "error", "-y"], []
+    for k, r in enumerate(rows):
+        args += ["-i", str(r["path"])]
+        fl.append("[%d:v]trim=%.3f:%.3f,setpts=PTS-STARTPTS,fps=%g,scale=%d:%d,setsar=1[v%d]" % (k, r["in"], r["out"], fps, w, h, k))
+    fc = ";".join(fl) + ";" + "".join("[v%d]" % k for k in range(len(rows))) + "concat=n=%d:v=1:a=0[o]" % len(rows)
+    cine.run_tool(args + ["-filter_complex", fc, "-map", "[o]", "-c:v", "libx264", "-crf", "16", "-pix_fmt", "yuv420p", str(out)])
+    got = cine.probe(out)["duration"]
+    off = abs(got - total) * fps
+    print("%s: %.3f s against the table's %.3f s, %.1f frames off: %s" % (out, got, total, off, "OK" if off <= 1.001 else "FAIL"))
+    return 0 if off <= 1.001 else 1
+
+
 def build_parser():
     ap = argparse.ArgumentParser(prog="cine_post.py", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     g = ap.add_subparsers(dest="group", required=True)
@@ -512,12 +618,17 @@ def build_parser():
     s.add_argument("--apply", metavar="DIR", help="write graded copies here")
     s.add_argument("--look", metavar="CUBE", help="the film's one look LUT, applied after the match (with --apply)")
     s.add_argument("--grain", type=int, default=0, help="film grain after the look, ffmpeg noise strength (with --apply)")
+    s = g.add_parser("conform", help="check the cut list, then render it with one re-encode and check its length")
+    s.add_argument("project")
+    s.add_argument("--cut", help="default PROJECT/edit/cut.json, else edit/cut.md")
+    s.add_argument("--out", help="default PROJECT/edit/cut.mp4")
+    s.add_argument("--check-only", action="store_true", help="run the checks, render nothing")
     return ap
 
 
 def main(argv=None):
     a = build_parser().parse_args(argv)
-    return cmd_animatic(a) if a.group == "animatic" else cmd_grade(a)
+    return {"animatic": cmd_animatic, "conform": cmd_conform}.get(a.group, cmd_grade)(a)
 
 
 if __name__ == "__main__":

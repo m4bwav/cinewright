@@ -6,6 +6,10 @@ Entry shape: `### C-20261109-2 · 2026-11-09 · RESEARCH note: blockout as H3 re
 - because: technique harvest 2026-11 batch 2 (community posts reviewed in a separate harvest workspace), each item single-source and untested here unless stated
 - files: RESEARCH R-20261109-1 (untested)
 
+### C-20261120-1 · 2026-11-20 · cine_fight.py lives in this skill's scripts, no longer in shared/lib
+- because: the runtime budget (shared/lib 200 KB red, measured with CRLF on Windows) had 132 bytes left; this skill was the only one shipping the file, as with cine_seam and cine_analyze
+- files: scripts/cine_fight.py (edit here now), needs.json; the command is unchanged
+
 ### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261109-1 · 2026-11-09 · Walk and talk, action coverage (Katz, Arijon)

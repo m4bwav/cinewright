@@ -3,8 +3,8 @@ title: Using a vision model as a judge
 slug: vision-judge
 summary: Turn a card into short claims, have a vision model describe the frames before judging, never show it the card text, crop small parts, let geometry decide sides and counts, and escalate split verdicts.
 tags: [qc, judge, vlm, claims, crops, escalation]
-last_checked: 2026-10-15
-sources: ["field test 2026-10-14/15: 624 claims on a sky-duel film judged by gemma4:26b against the agent's reads by eye", "caption-then-verify, arXiv 2608.15574, 2026-08", "SPOTLIGHT, arXiv 2511.18102", "ViCrop, arXiv 2502.17422, ICLR 2025", "ViewSpatial-Bench, arXiv 2505.21500", "VQAScore, arXiv 2404.01291", "Gemma 4 model card (visual token budgets), Hugging Face google/gemma-4-26B-A4B-it", "Gemini API video understanding docs, https://ai.google.dev/gemini-api/docs/video-understanding (read 2026-10-15)"]
+last_checked: 2026-11-20
+sources: ["field test 2026-10-14/15: 624 claims on a sky-duel film judged by gemma4:26b against the agent's reads by eye", "caption-then-verify, arXiv 2608.15574, 2026-08", "SPOTLIGHT, arXiv 2511.18102", "ViCrop, arXiv 2502.17422, ICLR 2025", "ViewSpatial-Bench, arXiv 2505.21500", "VQAScore, arXiv 2404.01291", "FVScore, arXiv 2611.22673", "PhyRubric, arXiv 2611.13576", "Gemma 4 model card (visual token budgets), Hugging Face google/gemma-4-26B-A4B-it", "Gemini API video understanding docs, https://ai.google.dev/gemini-api/docs/video-understanding (read 2026-10-15)"]
 volatile_claims: ["Ollama returns logprobs for the first generated token only (0.35.1)", "agreement figures for gemma4:26b"]
 ---
 
@@ -18,10 +18,11 @@ volatile_claims: ["Ollama returns logprobs for the first generated token only (0
 - Small parts (hands, feet, held props, faces, a palm on a blade) go as crops beside the full frame, never only inside a grid: a 2x2 grid gives each frame about a quarter of the model's image budget. A per-person crop of native frames raised detail claims from 28 to 34 of 45.
 - Let geometry answer what it can: screen left or right from detector boxes and face ids, people count from a person detector, gaze to the lens and smiling from face landmarks. Ask the model only what is left. Write sides as screen-left and screen-right; models confuse a person's own left with the viewer's.
 - Timed events (a clash, a spear dissolving, someone rising from cloud) fall between quarter frames: sample densely around motion peaks, or two-second windows at 4 fps.
+- `qc judge --windows 2|3`: a grid per part; clauses pass if any window shows them, other items must hold in all (FVScore). Keep 1 until `qc agree` kappa is no worse.
 - Trust a yes more than a no: in the field test a yes given in both claim orders was almost always right, while most errors were false noes. Re-run the judge with the claims in reverse order; decide where both runs agree, and send splits to the next level.
 - Escalation ladder: the local judge; then the agent itself on full-size frames and crops; then a hosted video model on the clipped window for timed events (it hears the sound, which settles scream against smile); then the reviewer's morning list.
 - Keep a ledger: every claim, the judge's verdict, the agent's own read made before looking at the judge, and the judge's agreement and kappa per prompt version (entry judge-calibration).
-- Physics judges sold as such ignore shuffled and frozen frames; ask concrete physical claims ("the falling spear turns to mist") instead.
+- Physics judges sold as such ignore shuffled and frozen frames (VLMs reach r 0.32 on physics, PhyRubric); ask concrete physical claims ("the falling spear turns to mist") instead.
 
 ## Numbers
 
