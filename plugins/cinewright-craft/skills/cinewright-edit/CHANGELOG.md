@@ -4,6 +4,10 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261120-2 · 2026-11-20 · CINE_POST conform; check the cut for repeated material
+- because: RoughCut-Bench, arXiv 2611.24098 (model-made cuts score worst on redundancy, 2.05-2.97 of 5 against 3.96-4.31 for following requirements; written reasons lifted ordering tau 0.474 to 0.692). Written fresh from the paper's description
+- files: shared/lib/cine_post.py `conform` (checks reason, in and out, take verdict, slate order; REDUNDANT on same-take overlap by tIoU or a near-identical grey signature; one trim, fps and scale per row, concat, libx264; length within one frame), SKILL.md Step 3 item 6 and Step 5 items 2 and 4, tests test_conform_checks_and_renders_the_cut
+
 ### C-20261120-1 · 2026-11-20 · Animatic: still-or-clip decision per card, trim placeholders before rendering
 - because: technique harvest of an r/aivideomaking thread on daily AI video cost (technique-harvest/ai-docs/notes/2026-11-20-reddit-aivideomaking-cost-thread.md)
 - files: references/animatic.md

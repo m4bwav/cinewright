@@ -6,6 +6,14 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-009 · 2026-11-20 · `judge-windows-need-a-gpu-run`: `qc judge --windows` 2 or 3 is built but not yet measured on a labelled ledger
+- Trigger: FVScore (arXiv 2611.22673) found per-window temporal operators lift agreement, but denser frames hurt; our judge is a different model on different films
+- Hypothesis: two or three windows help action clauses (an event between quarter frames) and may add false noes on always items (more grids, more chances to miss a detail)
+- Rule: keep `--windows 1` as the default. Before raising it, run `qc judge --twice` at 1 and at 2 (then 3) on a ledger with the agent's own verdicts and compare `qc agree` kappa per "windows N" row; adopt only when kappa is no worse and the yes bound holds 90 %
+- Evidence: none yet: unit tests only (stubbed judge, no GPU); needs a local vision model run
+- Scope: tool (shared/lib/cine.py qc judge, qc agree)
+- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-11-20
+
 ### L-008 · 2026-10-22 · `eye-trace-needs-faces`: a measured eye trace at a cut needs a face detector and finds faces on few cuts
 - Trigger: books track 4 (Mascelli's eye scan, Murch's eye trace) asked for `qc cutcheck`, the measured version of the `attention` cells
 - Hypothesis: the stdlib runtime has no face or subject detector, and wides, backs and profiles carry no face anyway

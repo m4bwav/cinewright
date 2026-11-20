@@ -6,6 +6,15 @@ Entry shape: `### C-20261110-1 · 2026-11-10 · failures-framing: re-camera a ke
 - because: technique harvest GPU test 2026-11-10 (CrossView-Warp on MiniMax H3 REF2VA: az 20 measured 19/19/12 deg with the face held; az 40 short; 4-step turbo copied the source)
 - files: vocab failures-framing Rules (one line)
 
+### C-20261120-3 · 2026-11-20 · qc judge --windows N (always and eventually operators)
+- because: FVScore, arXiv 2611.22673 (temporal operators 0.550 against 0.183 without; 4x denser frames 0.277). Written fresh from the paper's description; the paper ships no code
+- files: shared/lib/cine.py (`qc judge --windows 1-3`, `judge_over`, `judge_combine`, `qc agree` groups by window count), references/vision-judge (one rule, PhyRubric physics number), tests test_judge_windows
+- Default stays 1 until a GPU judge run shows kappa no worse (L-009)
+
+### C-20261120-2 · 2026-11-20 · Rubric items count and order; codes extra-person and beat-order
+- because: PhyRubric, arXiv 2611.13576 (25 % of takes never showed the event; permanence and count failures 20.4 %, the second-largest type). Idea only: the repository has no licence
+- files: shared/lib/cine.py RUBRIC (`count` for every card with a cast, `order` when the action or beats split into 2+ clauses), shared/vocab/failures-composite.md, SKILL.md Step 2 list, tests test_rubric_count_and_order
+
 ### C-20261120-1 · 2026-11-20 · Track cost per kept shot at picture lock
 - because: technique harvest of an r/aivideomaking thread on daily AI video cost (technique-harvest/ai-docs/notes/2026-11-20-reddit-aivideomaking-cost-thread.md)
 - files: SKILL.md

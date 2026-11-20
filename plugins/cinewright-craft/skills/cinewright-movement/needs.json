@@ -3,8 +3,7 @@
     "screen-direction.md"
   ],
   "lib": [
-    "cine.py",
-    "cine_fight.py"
+    "cine.py"
   ],
   "schemas": [
     "shot-card.schema.json",

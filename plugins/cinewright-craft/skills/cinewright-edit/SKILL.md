@@ -9,7 +9,7 @@ license: MIT
 Turn passing takes into a locked cut at the target length: every cut chosen for a reason, bad frames trimmed, dialogue split where it helps, and a conform that matches the table. Outcome: `edit/cut.md` (the cut list), a conformed cut file, and its length against `target_seconds`.
 
 `CINE` means `python scripts/cine.py` run from the folder holding this file (run it, never read it). Knowledge: read [references/INDEX.md](references/INDEX.md) once, then `CINE kb show <slug> --section Rules`. Never read the whole folder.
-`CINE_POST` means `python scripts/cine_post.py` from the same folder (animatic and grade; ffmpeg on PATH).
+`CINE_POST` means `python scripts/cine_post.py` from the same folder (animatic, grade, conform; ffmpeg on PATH).
 
 ## Step 0: freshness
 
@@ -38,6 +38,7 @@ With approved stills (first frames) and a scratch track, cut the film as stills 
 3. Cut on action where a move continues (`kb show cutting-on-action`); match cuts only where both cards planned one (`kb show match-cuts`).
 4. Dialogue: L cut to hold a line over the reaction, J cut to lead into a speaker or a new place (`kb show j-and-l-cuts`; terms in `kb show cut-terms`).
 5. Battles: geography wides between small fights, sides on fixed screen directions (`kb show cutting-a-battle`).
+6. Check the cut for repeated material (the same moment twice, or two takes that look alike): model-made cuts score worst there (RoughCut-Bench). `CINE_POST conform --check-only` flags it as REDUNDANT.
 
 ## Step 4: pace and length
 
@@ -46,9 +47,9 @@ Set each scene's average shot length, then reach the target by dropping weak sho
 ## Step 5: write and conform
 
 1. Write `edit/cut.md` with the columns in `kb show assembly-to-delivery`: slate, take, in, out, length, cut type, reason.
-2. Conform with ffmpeg trims and concat, re-encoding (never `-c copy`); keep the style's frame rate and size.
+2. Conform: write the same rows to `edit/cut.json` (or keep the table) and run `CINE_POST conform <project>`. It stops on a row with no reason, in or out outside the take, or a take qc did not pass, then renders one re-encode at the style's frame rate and size and checks the length.
 3. Before picture lock, map the cut and check it for draft-cut failures (`kb show draft-cut-review`). Then run the audience pass: a fresh context with no script, brief or cards watches the whole cut and says who is where, what happened and where it got lost (`kb show assembly-to-delivery`). Trace each note to its cause, often scenes earlier.
-4. Check: `ffprobe` duration equals the table total within one frame; quote it. Then hand the locked cut to cinewright-finish and cinewright-sound.
+4. Check: conform's last line (OK: the file is within one frame of the table total); quote it. Then hand the locked cut to cinewright-finish and cinewright-sound.
 
 ## Output
 

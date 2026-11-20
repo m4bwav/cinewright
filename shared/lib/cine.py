@@ -11,7 +11,7 @@ Run it; do not read it. Python 3.9+, standard library only.
   python scripts/cine.py continuity diff PROJECT [--with CARD.json] [--json]
   python scripts/cine.py qc sheet CLIP | qc spec CLIP --project P --card ID | qc loud FILE
   python scripts/cine.py qc rubric PROJECT --card ID | qc rubric --read RUBRIC.json
-  python scripts/cine.py qc judge RUBRIC.json [--clip CLIP] [--twice] | qc agree PROJECT
+  python scripts/cine.py qc judge RUBRIC.json [--clip CLIP] [--twice] [--windows N] | qc agree PROJECT
   python scripts/cine.py takes log PROJECT --card ID --model M --verdict V | takes lastframe CLIP --out PNG
   python scripts/cine.py voice measure FILE [--start S --end S] [--text LINE] | voice ref FILE --out WAV
   python scripts/cine.py voice check PROJECT [--character ID --clip FILE [--start S --end S]]
@@ -1713,6 +1713,8 @@ def cmd_compile(ctx, a):
 
 # Rubric checks: (check, what to look at, question).
 RUBRIC = [
+    # count, order: PhyRubric (arXiv 2611.13576): extras, vanishing and doubled people are the second-largest failure
+    ("count", "sheet", "Are exactly these people seen, nobody else, with nobody appearing, vanishing or doubling: {names}?"),
     ("identity", "sheet", "Does {name} match the identity string in every frame: {identity}?"),
     ("wardrobe", "sheet", "Is {name} wearing exactly: {wardrobe}? No added marks or badges?"),
     ("props", "sheet", "{name} holds the {holding} at the start{holding_end}; same size and shape throughout?"),
@@ -1728,6 +1730,7 @@ RUBRIC = [
     ("space", "sheet", "Does the space read as planned? {space_words}."),
     ("attention", "the previous take's last frame and this take's first frame", "Is the face or moving subject in the {cell} of the first frame{from_cell}?"),
     ("action", "sheet", "Does the action happen and finish at normal speed, already moving at frame 1: {action}"),
+    ("order", "sheet", "Do these happen in this order: {clauses}?"),
     ("locked", "sheet", "Does this stay as the scene locked it, in every frame: {item}?"),
     ("opening", "first frame", "Does the first frame match the start state: {start_state}"),
     ("end-state", "last frame", "Does the last frame match the end state: {end_state} Write what it shows."),
@@ -1900,7 +1903,10 @@ def rubric_items(p, card):
             "wall": p.locs.get(sc.get("location"), {}).get("walls", {}).get(cam.get("faces"), "").rstrip("."),
             "space_words": SPACE_WORDS.get(sc.get("space"), ""),
             "cell": CELL_WORDS[card["attention"]["start"] - 1] if card.get("attention", {}).get("start") else "",
-            "from_cell": ""}
+            "from_cell": "", "names": ", ".join(p.chars[m["id"]]["name"] for m in card.get("cast", [])), "clauses": ""}
+    cl = [_sentence(b["text"]) for b in card.get("beats", [])] or split_clauses(card["action"])
+    if len(cl) > 1:
+        base["clauses"] = " then ".join("(%d) %s" % (i, c.rstrip(".")) for i, c in enumerate(cl, 1))
     pa = prev[-1].get("attention", {}) if prev else {}
     if base["cell"] and pa.get("end", pa.get("start")):
         base["from_cell"] = ", where %s left the eye in the %s" % (prev[-1]["id"], CELL_WORDS[pa.get("end", pa.get("start")) - 1])
@@ -1922,7 +1928,7 @@ def rubric_items(p, card):
         elif check == "locked":  # one item per entry of the scene's locked list (sc40 S22)
             rows += [("locked:%d" % i, ask.format(item=t.rstrip("."))) for i, t in enumerate(sc.get("locked", []), 1)]
         else:
-            need = {"opening": "start_state", "end-state": "end_state", "audio": "audio", "seam": "prev", "set": "wall", "space": "space_words", "attention": "cell"}.get(check)
+            need = {"opening": "start_state", "end-state": "end_state", "audio": "audio", "seam": "prev", "set": "wall", "space": "space_words", "attention": "cell", "count": "names", "order": "clauses"}.get(check)
             if not need or base[need]:
                 rows.append((check, ask.format(**base)))
         hidden = check == "identity" and light.get("tone") == "hide"  # a face kept in shadow cannot fail on its features
@@ -2028,6 +2034,23 @@ def judge_verdicts(reply, ids):
         if k in ids:
             got[k] = {"v": str(v.get("v", "")).lower(), "why": v.get("why", "")}
     return got
+
+
+def _judge_key(rub):
+    j = rub.get("judge") or {}
+    return j.get("prompt", "?") + (" windows %d" % j["windows"] if j.get("windows", 1) > 1 else "")
+
+
+def judge_combine(got):
+    """One run's answers to an item's questions: no if any is no, yes only if all are yes."""
+    return "no" if "no" in got else "yes" if got and all(g == "yes" for g in got) else "unclear" if any(got) else "none"
+
+
+def judge_over(vals, op):
+    """Combine windows (FVScore, arXiv 2611.22673): always fails on any clear no, eventually passes on any yes."""
+    vals = [v for v in vals if v != "none"]
+    hit, miss = ("no", "yes") if op == "always" else ("yes", "no")
+    return "none" if not vals else hit if hit in vals else miss if all(v == miss for v in vals) else "unclear"
 
 
 def agree_stats(pairs):
@@ -2341,24 +2364,42 @@ def cmd_qc(ctx, a):
             qs += [("%s#%d" % (it["id"], k + 1), c) for k, c in enumerate(parts)] or [(it["id"], it["ask"])]
         host = a.host or os.environ.get("CINE_VLM_HOST", "http://localhost:11434")
         model = a.model or os.environ.get("CINE_VLM_MODEL", "gemma4:26b")
-        img = judge_grid(clip, start, end)
-        orders = [qs, list(reversed(qs))] if a.twice else [qs]
-        runs = [judge_verdicts(judge_ask(host, model, JUDGE_ASK % (cast, "\n".join("[%s] %s" % q for q in o)), img),
-                               {q[0] for q in qs}) for o in orders]
+        # FVScore (arXiv 2611.22673): one 2x2 grid per window; order is asked once, over the whole take
+        n, oid = max(1, min(3, a.windows)), {it["id"] for it in items if it["check"] == "order"}
+        step, per = (end - start) / n, []
+        wins = [(start + k * step, start + (k + 1) * step, [q for q in qs if n == 1 or q[0] not in oid]) for k in range(n)]
+        wins += [(start, end, [q for q in qs if q[0] in oid])] if n > 1 and oid else []
+        for ws, we, wq in wins:
+            img = judge_grid(clip, ws, we)
+            ids = {q[0] for q in wq}
+            per.append((ws, we, ids, [judge_verdicts(judge_ask(host, model, JUDGE_ASK % (cast, "\n".join("[%s] %s" % q for q in o)), img), ids)
+                                      for o in ([wq, list(reversed(wq))] if a.twice else [wq])]))
         for it in items:
             mine = [q for q, _ in qs if q == it["id"] or q.startswith(it["id"] + "#")]
-            vs = []
-            for r in runs:
-                got = [r.get(q, {}).get("v") for q in mine]
-                vs.append("no" if "no" in got else "yes" if got and all(g == "yes" for g in got) else "unclear" if any(got) else "none")
+            wn = [w for w in per if mine[0] in w[2]]
+            ev = len(wn) > 1 and it["check"] == "action" and not it.get("standing_code")
+            vs, parts = [], {}
+            for k in range(len(wn[0][3])):
+                if ev:  # each clause passes if any window shows it, then the clauses combine as in one grid
+                    got = [judge_over([w[3][k].get(q, {}).get("v") or "none" for w in wn], "eventually") for q in mine]
+                    parts = parts or dict(zip(mine, got))
+                    vs.append(judge_combine([g if g != "none" else None for g in got]))
+                else:  # every other sheet item must hold in every window
+                    vs.append(judge_over([judge_combine([w[3][k].get(q, {}).get("v") for q in mine]) for w in wn], "always"))
             said = [x for x in vs if x != "none"]  # a run that dropped the item does not count against the other
             v = "split" if {"yes", "no"} <= set(said) else "unclear" if "unclear" in said else said[0] if said else "none"
-            it["vlm"] = {"v": v, "why": "; ".join(runs[0].get(q, {}).get("why", "") for q in mine if runs[0].get(q, {}).get("v") != "yes")[:300]}
-            if len(runs) > 1:
+            it["vlm"] = {"v": v, "why": "; ".join(w[3][0].get(q, {}).get("why", "") for w in wn for q in mine
+                                                 if w[3][0].get(q, {}).get("v") != "yes")[:300]}
+            if len(vs) > 1:
                 it["vlm"]["runs"] = vs
             if len(mine) > 1:
-                it["vlm"]["parts"] = {q: runs[0].get(q, {}).get("v") for q in mine}
-        rub["judge"] = {"model": model, "prompt": JUDGE_VERSION, "orders": len(orders), "date": datetime.date.today().isoformat()}
+                it["vlm"]["parts"] = parts or {q: wn[0][3][0].get(q, {}).get("v") for q in mine}
+            if len(wn) > 1:
+                it["vlm"]["windows"] = [{"start": round(w[0], 2), "end": round(w[1], 2),
+                                         "v": judge_combine([w[3][0].get(q, {}).get("v") for q in mine])} for w in wn]
+        rub["judge"] = {"model": model, "prompt": JUDGE_VERSION, "orders": 2 if a.twice else 1, "date": datetime.date.today().isoformat()}
+        if n > 1:
+            rub["judge"]["windows"] = n
         write_text(a.rubric, json.dumps(rub, indent=2, ensure_ascii=False) + "\n")
         for it in items:
             print("%-8s %-24s %s" % (it["vlm"]["v"], it["id"], it["vlm"]["why"]))
@@ -2374,7 +2415,7 @@ def cmd_qc(ctx, a):
             for it in rub["items"]:
                 j = (it.get("vlm") or {}).get("v")
                 if it.get("verdict") in ("pass", "fail") and j:
-                    rows.append((it["check"], "yes" if it["verdict"] == "pass" else "no", j, (rub.get("judge") or {}).get("prompt", "?")))
+                    rows.append((it["check"], "yes" if it["verdict"] == "pass" else "no", j, _judge_key(rub)))
         if not rows:
             print("qc agree: no item has both your verdict and the judge's (run qc judge, then fill the verdicts)")
             return 1
@@ -2753,6 +2794,8 @@ def build_parser(prog="cine.py"):
     s.add_argument("--host", help="default $CINE_VLM_HOST or http://localhost:11434")
     s.add_argument("--model", help="default $CINE_VLM_MODEL or gemma4:26b")
     s.add_argument("--twice", action="store_true", help="ask again in reverse order; a verdict that changes is 'split'")
+    s.add_argument("--windows", type=int, default=1, help="1-3 grids over equal parts of the take: an action clause passes "
+                   "if any shows it, every other item must hold in all (FVScore); check qc agree before using 2+")
     s = q.add_parser("agree", help="how often the judge agrees with your verdicts: kappa and bounds per prompt and check")
     s.add_argument("project")
 
