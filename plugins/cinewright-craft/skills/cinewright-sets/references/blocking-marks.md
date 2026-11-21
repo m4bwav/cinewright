@@ -4,7 +4,7 @@ slug: blocking-marks
 summary: Mark each person per beat in metres with a facing bearing, place every card's camera from the marks, and compute screen side, axis side, facing and the wall behind instead of typing them.
 tags: [sets, blocking, marks, continuity, axis, camera, plan]
 last_checked: 2026-10-15
-sources: ["Script supervisor continuity practice: start and end positions, screen direction and eyelines per take (secondary sources, 2026-10-15)", "Lino, Christie et al., Director's Lens, ACM MM 2011", "FilmAgent, named standing points per set (paper and code, 2024)", "PersonaShot, arXiv 2608.16717, 2026-08; MuSS, arXiv 2604.23789, 2026-08", "Set field test, 2026-10-15: a rapier duel from a novel, one room, 13 beats"]
+sources: ["Scott McCloud, Making Comics, 2006, p. 105", "Script supervisor continuity practice: start and end positions, screen direction and eyelines per take (secondary sources, 2026-10-15)", "Lino, Christie et al., Director's Lens, ACM MM 2011", "FilmAgent, named standing points per set (paper and code, 2024)", "PersonaShot, arXiv 2608.16717, 2026-08; MuSS, arXiv 2604.23789, 2026-08", "Set field test, 2026-10-15: a rapier duel from a novel, one room, 13 beats"]
 ---
 
 # Blocking marks
@@ -22,6 +22,7 @@ sources: ["Script supervisor continuity practice: start and end positions, scree
   4. the wall at frame centre must equal the card's `camera.faces`; the wall behind each person decides which plate and wall string the card needs;
   5. between cards, the camera turns 30 degrees or more about the pair, or the size changes by two steps (a cut-in);
   6. a person moves more than 3 m between beats only in a card that shows the move.
+- In a status beat the dominant person's head sits higher in frame (standing, on steps, camera low on them); a lower head reads humble whatever else is drawn (`status-height-inverted`; McCloud, Making Comics, 2006, p. 105).
 - An overhead has no left and right of its own: turn the frame so its top points the way side A cameras look, or the order flips.
 - Fix a wrong screen side by moving the camera or rerolling with control from the blockout, not by mirroring: a flip makes a right-handed fencer left-handed and mirrors the room.
 - The same marks and cameras drive the blockout render for control (entry blockout-control), so the check and the control come from one plan.

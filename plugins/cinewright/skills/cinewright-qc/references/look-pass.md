@@ -4,7 +4,7 @@ slug: look-pass
 summary: The review pass for light and visual structure: upstage key, source in frame, backlit atmosphere, subject brightest, space, line, settled moves, pan speed, attention at cuts.
 tags: [qc, review, light, space, attention, visual-structure]
 last_checked: 2026-11-19
-sources: ["Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "Bruce Block, The Visual Story, 3rd ed., 2021", "Robert McKee, Story, 1997", "Richard Williams, The Animator's Survival Kit, 2001"]
+sources: ["Scott McCloud, Making Comics, 2006, pp. 86, 93", "Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "Bruce Block, The Visual Story, 3rd ed., 2021", "Robert McKee, Story, 1997", "Richard Williams, The Animator's Survival Kit, 2001"]
 ---
 
 # Look pass
@@ -22,6 +22,7 @@ sources: ["Blain Brown, Cinematography: Theory and Practice, 3rd ed., 2016", "Br
 - Does a pan or track take at least about 3 s for a thing to cross the frame, with no stepping background? (`pan-strobe`, camera)
 - Does the card's value change between the first and last frame? A pretty take with no change goes back to cinewright-script, not to a reroll (`pretty-no-turn`, warn; McKee ch. 14).
 - Does a calm head turn to a new focus blink on the turn? Eyes held open read as staring (`no-turn-blink`, warn; Williams p. 86).
+- Does the face read as the card's emotion word, with the whole face in it: a smile with squinted eyes and raised cheeks, more than the mouth moving for a big feeling, symmetric unless the card names an outside cause? (`smile-without-eyes`, `face-only-mouth`, `asymmetric-face-no-cause`, warn; entry emotion-words in cinewright-script)
 - At each cut, is the eye where the cards' `attention` cells plan it? (`attention-jump`, attention; the rubric asks it when the card sets `attention`)
 - Across the cut film: `CINE_POST grade measure SHOTS --plan <project>` (cinewright-edit, cinewright-finish) ranks contrast, saturation, warmth, diagonal edges and motion against the plan.
 - For a still's light logic (two value families, shadow colour, rims), artwright's craft rows say the same in more detail; use them when artwright is installed.
