@@ -3,8 +3,8 @@ title: Scene turns
 slug: scene-turns
 summary: Every scene turns a value from positive to negative or back; how to name the value, the goal and the turning point, and place the turn in one shot.
 tags: [script, scene, turn, value, conflict]
-last_checked: 2026-11-19
-sources: ["Robert McKee, Story, 1997", "John Truby, The Anatomy of Story, 2007", "Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques and Aesthetics, 6th ed., 2020", "Nicholas T. Proferes, Film Directing Fundamentals, 4th ed., ch. 2, 7", "David Bordwell, Narration in the Fiction Film, 1985, ch. 9", "Bordwell, Staiger, Thompson, The Classical Hollywood Cinema, 1985, p. 67"]
+last_checked: 2026-11-20
+sources: ["Robert McKee, Story, 1997", "Blake Snyder, Save the Cat!, 2005, ch. 5", "Karl Iglesias, The 101 Habits of Highly Successful Screenwriters, 10th anniv. ed., 2011 (book rule, unverified)", "John Truby, The Anatomy of Story, 2007", "Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques and Aesthetics, 6th ed., 2020", "Nicholas T. Proferes, Film Directing Fundamentals, 4th ed., ch. 2, 7", "David Bordwell, Narration in the Fiction Film, 1985, ch. 9", "Bordwell, Staiger, Thompson, The Classical Hollywood Cinema, 1985, p. 67"]
 ---
 
 # Scene turns
@@ -12,12 +12,12 @@ sources: ["Robert McKee, Story, 1997", "John Truby, The Anatomy of Story, 2007",
 ## Rules
 
 - Every scene turns a value (McKee): name the value (trust, safety, hope, love, life) and its charge at the start and at the end, plus or minus. A scene that ends with the same charge it started with is cut or merged, however pretty its light or music: mood never replaces a turn (ch. 14-15).
-- Write three lines per scene in the script: the character's goal in the scene, what opposes it, and the turn (the moment the charge flips).
+- Write three lines per scene in the script: the character's goal in the scene, what opposes it, and the turn (the moment the charge flips). Beside the charge, one conflict line: who against whom, over what, who wins (Snyder ch. 5). Two conflicts in one scene: split it.
 - The turn happens in one shot. Mark that card in its `beat` ("turn: she trusts him") and give it the insert or the close-up; the shots before it build to it, the shots after show the consequence.
 - Turn on an action or a line the camera can see: a hand opens, a door shuts, a word is said. Never on a thought.
-- Consecutive scenes alternate charge where possible (plus to minus, then minus to plus); two scenes turning the same way flatten the film, and three in a row is a fault unless each is far stronger than the last (McKee ch. 14).
+- Consecutive scenes alternate charge where possible (plus to minus, then minus to plus); two scenes turning the same way flatten the film, and three in a row is a fault unless each is far stronger than the last (McKee ch. 14). Snyder (ch. 5) calls strict alternation too much and asks only that every scene changes: warn, never fail.
 - In a film of one scene, the scene turn is the story's turn.
-- Enter late; the scene's key line or image comes last (Truby ch. 10).
+- Enter late, leave early: no card before the conflict starts and none after the consequence card; the key line or image comes last (Truby ch. 10; Iglesias ch. 14, H68).
 - The crisis choice is between two goods or two evils, never right against wrong. Hold it on a static card on screen, and cut straight from it to the climax, no cutaway between (McKee ch. 14, 17).
 - No coincidence turns the story after the midpoint or at the end (McKee ch. 21).
 - Scene chain: every scene but the last leaves one line open (a question, appointment, threat), and the next opens on it in its first shot or line, hinged on something A's tail and B's head share or oppose (an action, object, word, light, sound) (McKee ch. 16); a dialogue hook answers or echoes the last line across the cut (Bordwell, Narration ch. 9; Classical Hollywood p. 67).

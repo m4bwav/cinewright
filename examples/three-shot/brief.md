@@ -4,6 +4,8 @@ Idea (one line, as given): an old lighthouse keeper and her apprentice, a storm,
 
 - Logline: In a storm, an old lighthouse keeper hands her young apprentice the last match to relight the lamp.
 - Length: 14 s, three shots. Format: 16:9, 720p, 24 fps (720p keeps 4 and 6 s takes open on Veo 3.1).
+- Want: relight the lamp. Need: Maren lets the boy carry the light (trust). Visible task: her hand opens.
+- Bookend: opening image (1A), Maren pinches the last match out of the tin; final image (1C), Tomas closes his fist around it. Axis: whose hand holds the match.
 - Renderer: Veo 3.1 for the compile example; MiniMax H3 at 480p locally (the S2 render).
 
 Beats:
