@@ -19,6 +19,8 @@
     "screen_order": {"type": "array", "items": {"type": "string"}, "description": "On-screen people, frame left to right (cinewright-shots group-order); continuity diff GROUP-ORDER checks changes."},
     "pivot": {"type": "string", "description": "The person or close-up that carries an order change the GROUP-ORDER check would flag."},
     "role": {"enum": ["establishing", "master", "coverage", "reaction", "cut-in", "cut-away", "protection"], "description": "The card's job in the edit. A cut-in shows part of what a wider card established; a protection card is a cheaper stand-in, rendered only if the card in protects fails."},
+    "transition_in": {"enum": ["moment", "action", "subject", "scene", "aspect", "non-sequitur"], "description": "How the cut into this card moves the story (McCloud's six panel transitions): moment-to-moment, action-to-action, subject-to-subject, scene-to-scene, aspect-to-aspect (time stops, the eye wanders), non-sequitur. continuity diff TRANSITION reads the mix."},
+    "dread": {"type": "integer", "minimum": 0, "maximum": 10, "description": "Horror tension 0-10 (Nash's dread score): climbs with each warning, peaks at 8 or more on a scare, then resets. continuity diff DREAD checks the build."},
     "protects": {"type": "string", "description": "With role protection: the id of the risky card this one stands in for."},
     "camera": {
       "type": "object",

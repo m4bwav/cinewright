@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+Entry shape: `### C-20261121-1 · 2026-11-21 · Suspense test, setup-payoff list, five-point finale, horror brief (0.6.30)
+- because: book harvest round 7 (track 64)
+- files: SKILL.md; references/beat-positions-and-tests.md, horror-brief.md (new)
+- Suspense needs care, likely and open (Iglesias 2005 p. 95); climax-solving elements listed with their plant cards; Snyder 2009's five-point finale for 3 min and up with FINALE-NO-NEED, midpoint includes the B character. horror-brief (Nash 2025): monster, house, sin, catalyst has the hero, shrinking house, dread score on cards checked by continuity diff DREAD. By-eye warnings except DREAD.
+
+### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261120-1 · 2026-11-20 · Bookend, want and need, beat tests, revise step (Snyder, Iglesias, Brody) (0.6.29)
 - because: book harvest 2026-11-20, R-20261120-1, R-20261120-2, R-20261120-3

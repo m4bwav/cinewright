@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# copied from shared/lib/cine.py sha256:6f7a07fe64666977e7d51d6ba4cfb88ecb944ab704175623682a63108d30e6f6; edit the source
+# copied from shared/lib/cine.py sha256:fb8e4d61d42694b8c88bb6366894d18c8326e652886253863809d6fbf36596b4; edit the source
 """cinewright runtime CLI: kb, cards, compile, continuity, qc, takes, voice.
 
 Run it; do not read it. Python 3.9+, standard library only.
@@ -1072,6 +1072,21 @@ def continuity_diff(p):
                     run += 1
                 if run > 1:
                     add("warning", c, "REESTABLISH", "someone enters or moves, then %d close cards with no wider one; re-establish (entry coverage)" % run)
+    seq = [c for c in p.cards if c.get("role") != "protection"]
+    for i, c in enumerate(seq):  # Nash: two warnings before every scare, and a rebuild between scares
+        if (c.get("dread") or 0) < 8:
+            continue
+        prev = [n.get("dread") for n in seq[max(0, i - 2):i]]
+        if prev and (prev[-1] or 0) >= 8:
+            add("warning", c, "DREAD", "two scares back to back; reset dread and rebuild, the second lands weaker")
+        elif len(prev) < 2 or any(d is None or not 0 < d < c["dread"] for d in prev):
+            add("warning", c, "DREAD", "scare at dread %d without two rising warning cards before it; stack dread flags (isolation, a sound, something only the viewer sees)" % c["dread"])
+    tr = [c.get("transition_in") for c in seq if c.get("transition_in")]
+    if len(tr) >= 5:
+        top = max(set(tr), key=tr.count)
+        if tr.count(top) > 0.8 * len(tr) and top != "aspect":
+            add("warning", next(c for c in seq if c.get("transition_in") == top), "TRANSITION",
+                "%d of %d cuts are %s; mix action, subject and scene transitions (McCloud's count: about 65/20/15)" % (tr.count(top), len(tr), top))
     for sid, cs in flat_deep.items():
         if len(cs) > 1 and all(cs):
             add("warning", cs[-1], "SPACE", "scene %s is planned as deep space, but every card is a static eye-level frame; stage near, middle "

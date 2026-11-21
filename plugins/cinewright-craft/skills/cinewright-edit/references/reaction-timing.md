@@ -3,8 +3,8 @@ title: Reaction timing
 slug: reaction-timing
 summary: The gap before a reply sets its subtext (clipped, natural, weighted); cut to the person being acted on, lean split edits toward the POV character, and ask the model for the pause you will trim.
 tags: [edit, dialogue, reaction, timing, subtext]
-last_checked: 2026-11-09
-sources: ["Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques and Aesthetics, 6th ed., 2020"]
+last_checked: 2026-11-21
+sources: ["Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques and Aesthetics, 6th ed., 2020", "Frank Thomas and Ollie Johnston, The Illusion of Life, 1981, p. 62", "Scott McCloud, Understanding Comics, 1993, pp. 101-102", "Jessica Brody and Jamie Nash, Save the Cat! Writes Horror, 2025, ch. 13"]
 ---
 
 # Reaction timing
@@ -17,6 +17,9 @@ sources: ["Michael Rabiger and Mick Hurbis-Cherrier, Directing: Film Techniques 
 - In a heated exchange, cut to the person being acted on, mid-line, to see how they take it; cut back as they act in return. Speaker to speaker on every line is the anti-pattern (Rabiger ch. 16, ch. 33).
 - A split edit favours the person whose picture comes in early or returns during the other's line. In a card set with a `pov`, lean the splits toward that person (Rabiger ch. 33).
 - In an exchange of four lines or more, at least one cut is a J or L cut; straight cuts at every speaker change look planned.
+- The reaction after an action gets more seconds than the action; a cut at the moment of the action loses the punch line (`cut-before-payoff`, Thomas and Johnston p. 62).
+- Lengthen a beat with no new action: repeat the angle, hold a black or a breath, or hold a wider frame longer (McCloud 1993 pp. 101-102).
+- Horror: dread climbs card by card to a scare, resets near zero and is rebuilt. Flat dread for over about 15% of the cut, or two scares back to back, is a pacing fault (Nash 2025 ch. 13; cinewright-script horror-brief; continuity diff DREAD).
 
 ## Numbers
 

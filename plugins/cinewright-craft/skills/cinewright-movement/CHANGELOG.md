@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-20261109-2 · 2026-11-09 · RESEARCH note: blockout as H3 reference video
+Entry shape: `### C-20261121-1 · 2026-11-21 · Walk weight, timing ladder, hide contact in the cut (0.6.30)
+- because: book harvest round 7 (track 64)
+- files: references/weight-and-contact.md
+- Blair's back-foot speed read and heavy versus light cues; Thomas and Johnston's inbetween ladder mapped to speed words; cut over a melting contact (McCloud); face changes off the big move.
+
+### C-20261109-2 · 2026-11-09 · RESEARCH note: blockout as H3 reference video
 - because: technique harvest 2026-11 batch 2 (community posts reviewed in a separate harvest workspace), each item single-source and untested here unless stated
 - files: RESEARCH R-20261109-1 (untested)
 
