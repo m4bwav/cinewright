@@ -2,6 +2,11 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
+### C-20261120-2 · 2026-11-20 · face-mush row names comfyui-gen face_refine.py (0.6.28)
+- because: technique-harvest GPU test 2026-11-20 (front-lit 50 px face, bible ref, denoise 0.5: identity 0.24 to 0.48, no shimmer; comfyui-gen PR #236)
+- files: shared/vocab/failures-picture.md (copied to genvideo and qc references)
+- The face-refine rung now names the script with `--ref` and its measured identity gain.
+
 ### C-20261120-1 · 2026-11-20 · compile: set-return clip and h3-weak-cut lint
 - because: technique harvest script backlog, verdicts #39 (r/StableDiffusion 1xlp0kg, H3 Continuity Studio, MIT) and #10 (r/comfyui 1xj2omy, Picky, GPL-3.0: idea only, nothing read or copied); written fresh from the harvest notes
 - files: scripts/cine.py (shared/lib: set_returns, approved_take, h3_weak_cuts; compile passes a location's establishing_clip as ref_videos when a card returns to a set after a cut away, else names the approved take; warns when the establishing card has speech), references/minimax-h3.md (max_reference_videos 3, ref_videos param; three phrases trimmed for budget), references/h3-prompt-lint.md (h3-weak-cut). Cut density and short shots were already linted (h3-many-shots, h3-shot-short). Tests: TestSetReturn, TestH3Lint.test_weak_cut
