@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261120-1 · 2026-11-20 · Bookend, want and need, beat tests, revise step (Snyder, Iglesias, Brody) (0.6.29)
+- because: book harvest 2026-11-20, R-20261120-1, R-20261120-2, R-20261120-3
+- files: SKILL.md; references/logline-and-beats.md, scene-turns.md, dialogue-for-generated-voices.md, beat-positions-and-tests.md (new), revision-and-feedback.md (new); examples/three-shot/brief.md
+- Brief gains `want:`/`need:` and the bookend pair; Snyder misattributions fixed (logline cap and template are a house rule, midpoint is a false high or low mirrored by all is lost); new step 4 revises before hand-off. beat-positions-and-tests holds runtime fractions (Snyder default, Brody alternative), beat tests, named failures, scene jobs with a seconds budget and a scaled finale. scene-turns: conflict line, Snyder's caution on alternation, leave early. Dialogue: split read, hidden speaker, cut what cannot be said. BOOKEND, WANT-NEED, WANT-CONCRETE are by-eye warnings: no script reads briefs, so no lint was added. Book rules, unverified.
+
 ### C-20261119-1 · 2026-11-19 · McKee and Truby scene and line rules (0.6.23)
 - because: book distillation round 6 (McKee, Story ch. 12-23; Truby, Anatomy of Story ch. 10)
 - files: references/screenplay-format.md, scene-turns.md, logline-and-beats.md, dialogue-for-generated-voices.md, narration-writing.md; shared/lib cine.py

@@ -16,7 +16,7 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 
 ## Step 1: brief
 
-Write `brief.md`: the idea as given, a logline of one sentence, length, format, and a numbered beat list sized to the length (`kb show logline-and-beats`). Each beat is one visible change.
+Write `brief.md`: the idea as given, a logline of one sentence, length, format, `want:` and `need:`, the bookend pair (`opening image:`, `final image:`, `axis:`), and a numbered beat list sized to the length (`kb show logline-and-beats`). Each beat is one visible change. Place beats as fractions of the runtime and run the beat tests; give each scene a seconds estimate and sum them against the length (`kb show beat-positions-and-tests`).
 
 ## Step 2: scenes and turns
 
@@ -29,7 +29,11 @@ For each scene, write its goal, its opposition and its turn, with the value and 
 3. Narration (voice-over, explainers): write it once cards exist, against the shots (`kb show narration-writing`). A film that claims to be true follows `kb show nonfiction-honesty`.
 4. Copy each slugline into `bibles/scenes.json` as the scene's `heading`.
 
-## Step 4: hand off and check
+## Step 4: revise
+
+Before hand-off, revise in three passes (scene, whole film, line), fix what you already know is wrong, then have a fresh reader (a new subagent given only the brief and script, or the owner) answer targeted questions. Weigh notes by how many readers raised them and keep the problem, not the reader's fix (`kb show revision-and-feedback`).
+
+## Step 5: hand off and check
 
 1. Hand the script to cinewright-shots for cards. If it is not installed, say "install the cinewright plugin for shot lists".
 2. Once cards exist, and whenever a line changes, put the line in its card and run `CINE continuity diff <project>`; quote its last line and any DIALOGUE warning. Never count words by hand instead: the diff is the check. Fix the line, not the shot length, unless the beat needs the time.
