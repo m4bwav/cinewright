@@ -9,6 +9,11 @@ Entry shape: `### C-20261121-1 · 2026-11-21 · Suspense test, setup-payoff list
 
 ### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
+### C-20261121-2 · 2026-11-21 · emotion-words: six primaries, rung words, blends, muscle clauses, attitude before sync (0.6.31)
+- because: book harvest round 7 track 74 (McCloud, Making Comics pp. 82-93; Thomas and Johnston PDF pp. 466-470)
+- files: references/emotion-words.md (new)
+- Rung word not primary, step one rung to push, muscle clause per primary, named blends, symmetric faces, attitude named before lip sync, eyes change first. Knowledge only.
+
 ### C-20261120-1 · 2026-11-20 · Bookend, want and need, beat tests, revise step (Snyder, Iglesias, Brody) (0.6.29)
 - because: book harvest 2026-11-20, R-20261120-1, R-20261120-2, R-20261120-3
 - files: SKILL.md; references/logline-and-beats.md, scene-turns.md, dialogue-for-generated-voices.md, beat-positions-and-tests.md (new), revision-and-feedback.md (new); examples/three-shot/brief.md

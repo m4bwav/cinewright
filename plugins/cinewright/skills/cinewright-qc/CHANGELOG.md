@@ -6,6 +6,10 @@ Entry shape: `### C-20261110-1 · 2026-11-10 · failures-framing: re-camera a ke
 - because: technique harvest GPU test 2026-11-10 (CrossView-Warp on MiniMax H3 REF2VA: az 20 measured 19/19/12 deg with the face held; az 40 short; 4-step turbo copied the source)
 - files: vocab failures-framing Rules (one line)
 
+### C-20261121-1 · 2026-11-21 · look pass: face reads the emotion word (0.6.31)
+- because: book harvest round 7 track 74 (McCloud, Making Comics pp. 86, 93; Thomas and Johnston PDF p. 470)
+- files: references/look-pass.md (one question: `smile-without-eyes`, `face-only-mouth`, `asymmetric-face-no-cause`)
+
 ### C-20261120-3 · 2026-11-20 · qc judge --windows N (always and eventually operators)
 - because: FVScore, arXiv 2611.22673 (temporal operators 0.550 against 0.183 without; 4x denser frames 0.277). Written fresh from the paper's description; the paper ships no code
 - files: shared/lib/cine.py (`qc judge --windows 1-3`, `judge_over`, `judge_combine`, `qc agree` groups by window count), references/vision-judge (one rule, PhyRubric physics number), tests test_judge_windows
