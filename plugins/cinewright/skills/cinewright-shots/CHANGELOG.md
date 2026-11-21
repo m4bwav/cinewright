@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-20261101-1 · 2026-11-01 · Scene setups for fights, chases, cars and arguments (MS1)
+Entry shape: `### C-20261121-1 · 2026-11-21 · Card field transition_in and TRANSITION check (0.6.30)
+- because: book harvest round 7 (track 64)
+- files: references/shot-list-order.md; shared/schemas/shot-card.schema.json; shared/lib/cine.py
+- McCloud's six transitions as an optional card field; continuity diff TRANSITION warns when one type passes 80% of five or more cuts. Test: test_dread_build_and_transition_mix.
+
+### C-20261101-1 · 2026-11-01 · Scene setups for fights, chases, cars and arguments (MS1)
 - because: book distillation (Kenworthy, *Master Shots* Vol. 1, 2009), pre-approved
 - files: references/scene-setups.md (new), references/blocking.md, SKILL.md
 - A new entry gives book card recipes for fights, chases, car scenes and arguments; blocking gets circling, half-circle crossings and the look back on the camera side. All marked book rule, unverified.

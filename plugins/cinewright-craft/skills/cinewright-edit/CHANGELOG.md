@@ -2,7 +2,12 @@
 
 Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with the reason. Reasons cite findings in [RESEARCH.md](RESEARCH.md) (`R-`), lessons in [LEARNINGS.md](LEARNINGS.md) (`L-`), and test runs in [TESTS.md](TESTS.md) (`T-`). State in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
+Entry shape: `### C-20261121-1 · 2026-11-21 · Dread line, long-beat holds, seconds after the action (0.6.30)
+- because: book harvest round 7 (track 64)
+- files: references/reaction-timing.md (pacing.md is at its token budget)
+- Horror cuts climb, peak and reset dread (Nash 2025 ch. 13; DREAD in continuity diff); McCloud's ways to lengthen a beat; the reaction gets more seconds than the action (Thomas and Johnston p. 62).
+
+### C-YYYYMMDD-n · date · one-line summary`, then `because:`, `files:`, and a sentence on what changed.
 
 ### C-20261120-2 · 2026-11-20 · CINE_POST conform; check the cut for repeated material
 - because: RoughCut-Bench, arXiv 2611.24098 (model-made cuts score worst on redundancy, 2.05-2.97 of 5 against 3.96-4.31 for following requirements; written reasons lifted ordering tau 0.474 to 0.692). Written fresh from the paper's description

@@ -16,7 +16,7 @@ Read `evergreen.json`. If `contradiction` is set or today is on or after `next_d
 
 ## Step 1: brief
 
-Write `brief.md`: the idea as given, a logline of one sentence, length, format, `want:` and `need:`, the bookend pair (`opening image:`, `final image:`, `axis:`), and a numbered beat list sized to the length (`kb show logline-and-beats`). Each beat is one visible change. Place beats as fractions of the runtime and run the beat tests; give each scene a seconds estimate and sum them against the length (`kb show beat-positions-and-tests`).
+Write `brief.md`: the idea as given, a logline of one sentence, length, format, `want:` and `need:`, the bookend pair (`opening image:`, `final image:`, `axis:`), and a numbered beat list sized to the length (`kb show logline-and-beats`). Each beat is one visible change. Place beats as fractions of the runtime and run the beat tests; give each scene a seconds estimate and sum them against the length (`kb show beat-positions-and-tests`; it also holds the suspense test, the setup-payoff list and the finale). Horror: add `monster:`, `house:` (`no_escape:`, `no_help:`) and `sin:` with its guilty party, and give scare cards a `dread` score (`kb show horror-brief`).
 
 ## Step 2: scenes and turns
 

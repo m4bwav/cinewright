@@ -3,8 +3,8 @@ title: Shot list and order
 slug: shot-list-order
 summary: The shot list is the cards; slate letters, cut order versus writing order, how beats map to shots, grouping shots into generations, and which shot to render first.
 tags: [shots, shot-list, slate, order, generations]
-last_checked: 2026-10-22
-sources: ["Steven D. Katz, Film Directing Shot by Shot, 1991", "Giuseppe Cristiano, The Storyboard Design Course, 2007", "https://en.wikipedia.org/wiki/Shot_list", "Joseph V. Mascelli, The Five C's of Cinematography, 1965"]
+last_checked: 2026-11-21
+sources: ["Steven D. Katz, Film Directing Shot by Shot, 1991", "Giuseppe Cristiano, The Storyboard Design Course, 2007", "https://en.wikipedia.org/wiki/Shot_list", "Joseph V. Mascelli, The Five C's of Cinematography, 1965", "Scott McCloud, Understanding Comics, 1993, pp. 70-76"]
 ---
 
 # Shot list and order
@@ -21,6 +21,7 @@ sources: ["Steven D. Katz, Film Directing Shot by Shot, 1991", "Giuseppe Cristia
 - Render first the shot others depend on: the one whose last frame starts a continuation, or the first shot of each recurring character, so identity is checked before the rest are spent.
 - Each `beat` names the question the shot raises or answers. Order cards by what the audience knows when: showing the danger before the person walks into it gives suspense. An establishing wide may come late, or give way to two or three telling details (after Katz, *Shot by Shot*).
 - Re-establish with a wide when a new person enters, someone crosses the room, after four to six close cards in a row in a group, or after a pivot to a new line. After a pivot, return to the old setups through that wide, not a new angle (after Mascelli, *The Five C's*).
+- Set `transition_in` on each card (McCloud 1993 pp. 70-76): moment, action, subject, scene, aspect (time stops, the eye wanders a place or mood), non-sequitur. Kirby's count is about 65% action, 20% subject, 15% scene; moment-to-moment spends several shots on what one action cut tells. `continuity diff` warns TRANSITION when one type passes 80% (aspect runs excepted as a mood choice). Any two adjacent shots are read as linked, so every insert needs an intended relation.
 
 ## Numbers
 

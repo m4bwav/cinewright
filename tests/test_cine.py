@@ -860,6 +860,23 @@ class TestContinuity(Base):
         e["props"] = [{"name": "tin matchbox"}]  # Maren held it in 1A
         self.assertNotIn(("1E", "ESTABLISH"), self.warns(p))
 
+    def test_dread_build_and_transition_mix(self):
+        p = self.project()
+        for k, cid in enumerate(["1D", "1E"]):
+            self.twin(p, 0, cid, 4 + k)
+        seq = p.cards
+        seq[-1]["dread"] = 9
+        self.assertIn((seq[-1]["id"], "DREAD"), self.warns(p))
+        seq[-3]["dread"], seq[-2]["dread"] = 3, 6
+        self.assertNotIn((seq[-1]["id"], "DREAD"), self.warns(p))
+        seq[-2]["dread"] = 9
+        self.assertIn((seq[-1]["id"], "DREAD"), self.warns(p), "back-to-back scares")
+        for c in seq:
+            c["transition_in"] = "moment"
+        self.assertIn("TRANSITION", {w[1] for w in self.warns(p)})
+        seq[1]["transition_in"], seq[2]["transition_in"] = "action", "subject"
+        self.assertNotIn("TRANSITION", {w[1] for w in self.warns(p)})
+
     def test_compile_says_entries_end_states_and_held_moves(self):
         p, prof, _ = compile_one(EXAMPLE, "minimax-h3", "1B")
         c = json.loads(json.dumps(p.cards[1]))
