@@ -1,6 +1,6 @@
 # Log archive: cinewright
 
-Older entries from [log.md](log.md), sessions S1 to S5 (2026-10-03 to 2026-10-04), moved unchanged on 2026-10-05 when the log passed 400 lines.
+Older entries from [log.md](log/), sessions S1 to S5 (2026-10-03 to 2026-10-04), moved unchanged on 2026-10-05 when the log passed 400 lines.
 
 ## 2026-10-03: research and kickoff prompt
 
